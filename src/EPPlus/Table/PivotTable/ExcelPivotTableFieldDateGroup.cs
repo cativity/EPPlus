@@ -47,22 +47,16 @@ public class ExcelPivotTableFieldDateGroup : ExcelPivotTableFieldGroup
                 throw new Exception("Invalid date Groupby");
             }
         }
-        private set { this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
+        private set => this.SetXmlNodeString(groupByPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
     /// Auto detect start date
     /// </summary>
-    public bool AutoStart
-    {
-        get { return this.GetXmlNodeBool("@autoStart", false); }
-    }
+    public bool AutoStart => this.GetXmlNodeBool("@autoStart", false);
 
     /// <summary>
     /// Auto detect end date
     /// </summary>
-    public bool AutoEnd
-    {
-        get { return this.GetXmlNodeBool("@autoStart", false); }
-    }
+    public bool AutoEnd => this.GetXmlNodeBool("@autoStart", false);
 }

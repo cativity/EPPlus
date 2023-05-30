@@ -122,13 +122,9 @@ internal sealed class DeflateManager
             this.Flavor = flavor;
         }
 
-        public static Config Lookup(CompressionLevel level)
-        {
-            return Table[(int)level];
-        }
+        public static Config Lookup(CompressionLevel level) => Table[(int)level];
 
-        static Config()
-        {
+        static Config() =>
             Table = new Config[]
             {
                 new Config(0, 0, 0, 0, DeflateFlavor.Store), new Config(4, 4, 8, 4, DeflateFlavor.Fast), new Config(4, 5, 16, 8, DeflateFlavor.Fast),
@@ -136,7 +132,6 @@ internal sealed class DeflateManager
                 new Config(8, 16, 128, 128, DeflateFlavor.Slow), new Config(8, 32, 128, 256, DeflateFlavor.Slow),
                 new Config(32, 128, 258, 1024, DeflateFlavor.Slow), new Config(32, 258, 258, 4096, DeflateFlavor.Slow),
             };
-        }
 
         private static readonly Config[] Table;
     }
@@ -1612,24 +1607,15 @@ internal sealed class DeflateManager
 
     internal bool WantRfc1950HeaderBytes
     {
-        get { return this._WantRfc1950HeaderBytes; }
-        set { this._WantRfc1950HeaderBytes = value; }
+        get => this._WantRfc1950HeaderBytes;
+        set => this._WantRfc1950HeaderBytes = value;
     }
 
-    internal int Initialize(ZlibCodec codec, CompressionLevel level)
-    {
-        return this.Initialize(codec, level, ZlibConstants.WindowBitsMax);
-    }
+    internal int Initialize(ZlibCodec codec, CompressionLevel level) => this.Initialize(codec, level, ZlibConstants.WindowBitsMax);
 
-    internal int Initialize(ZlibCodec codec, CompressionLevel level, int bits)
-    {
-        return this.Initialize(codec, level, bits, MEM_LEVEL_DEFAULT, CompressionStrategy.Default);
-    }
+    internal int Initialize(ZlibCodec codec, CompressionLevel level, int bits) => this.Initialize(codec, level, bits, MEM_LEVEL_DEFAULT, CompressionStrategy.Default);
 
-    internal int Initialize(ZlibCodec codec, CompressionLevel level, int bits, CompressionStrategy compressionStrategy)
-    {
-        return this.Initialize(codec, level, bits, MEM_LEVEL_DEFAULT, compressionStrategy);
-    }
+    internal int Initialize(ZlibCodec codec, CompressionLevel level, int bits, CompressionStrategy compressionStrategy) => this.Initialize(codec, level, bits, MEM_LEVEL_DEFAULT, compressionStrategy);
 
     internal int Initialize(ZlibCodec codec, CompressionLevel level, int windowBits, int memLevel, CompressionStrategy strategy)
     {

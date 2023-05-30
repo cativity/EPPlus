@@ -62,18 +62,13 @@ public class ExcelDrawingBorder : XmlHelper
     /// <summary>
     /// Access to fill properties
     /// </summary>
-    public ExcelDrawingFillBasic Fill
-    {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFillBasic(this._pictureRelationDocument.Package,
-                                                            this.NameSpaceManager,
-                                                            this.TopNode,
-                                                            this._linePath,
-                                                            this.SchemaNodeOrder,
-                                                            true);
-        }
-    }
+    public ExcelDrawingFillBasic Fill =>
+        this._fill ??= new ExcelDrawingFillBasic(this._pictureRelationDocument.Package,
+                                                 this.NameSpaceManager,
+                                                 this.TopNode,
+                                                 this._linePath,
+                                                 this.SchemaNodeOrder,
+                                                 true);
 
     string _lineStylePath = "{0}/a:prstDash/@val";
 
@@ -131,7 +126,7 @@ public class ExcelDrawingBorder : XmlHelper
     /// </summary>
     public eCompundLineStyle CompoundLineStyle
     {
-        get { return EnumTransl.ToLineCompound(this.GetXmlNodeString(this._compoundLineTypePath)); }
+        get => EnumTransl.ToLineCompound(this.GetXmlNodeString(this._compoundLineTypePath));
         set
         {
             this.InitSpPr();
@@ -146,7 +141,7 @@ public class ExcelDrawingBorder : XmlHelper
     /// </summary>
     public ePenAlignment Alignment
     {
-        get { return EnumTransl.ToPenAlignment(this.GetXmlNodeString(this._alignmentPath)); }
+        get => EnumTransl.ToPenAlignment(this.GetXmlNodeString(this._alignmentPath));
         set
         {
             this.InitSpPr();
@@ -161,7 +156,7 @@ public class ExcelDrawingBorder : XmlHelper
     /// </summary>
     public eLineCap LineCap
     {
-        get { return EnumTransl.ToLineCap(this.GetXmlNodeString(this._lineCapPath)); }
+        get => EnumTransl.ToLineCap(this.GetXmlNodeString(this._lineCapPath));
         set
         {
             this.InitSpPr();
@@ -176,7 +171,7 @@ public class ExcelDrawingBorder : XmlHelper
     /// </summary>
     public double Width
     {
-        get { return this.GetXmlNodeEmuToPt(this._lineWidth); }
+        get => this.GetXmlNodeEmuToPt(this._lineWidth);
         set
         {
             this.InitSpPr();
@@ -245,7 +240,7 @@ public class ExcelDrawingBorder : XmlHelper
     /// </summary>
     public double? MiterJoinLimit
     {
-        get { return this.GetXmlNodePercentage(this._miterJoinLimitPath); }
+        get => this.GetXmlNodePercentage(this._miterJoinLimitPath);
         set
         {
             this.Join = eLineJoin.Miter;
@@ -293,10 +288,7 @@ public class ExcelDrawingBorder : XmlHelper
 
     #endregion
 
-    internal XmlElement LineElement
-    {
-        get { return this.TopNode.SelectSingleNode(this._linePath, this.NameSpaceManager) as XmlElement; }
-    }
+    internal XmlElement LineElement => this.TopNode.SelectSingleNode(this._linePath, this.NameSpaceManager) as XmlElement;
 
     internal void SetFromXml(XmlElement copyFromLineElement)
     {

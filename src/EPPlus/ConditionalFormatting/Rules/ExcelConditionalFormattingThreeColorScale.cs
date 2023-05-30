@@ -151,8 +151,8 @@ public class ExcelConditionalFormattingThreeColorScale : ExcelConditionalFormatt
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue LowValue
     {
-        get { return this._lowValue; }
-        set { this._lowValue = value; }
+        get => this._lowValue;
+        set => this._lowValue = value;
     }
 
     /// <summary>
@@ -160,8 +160,8 @@ public class ExcelConditionalFormattingThreeColorScale : ExcelConditionalFormatt
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue MiddleValue
     {
-        get { return this._middleValue; }
-        set { this._middleValue = value; }
+        get => this._middleValue;
+        set => this._middleValue = value;
     }
 
     /// <summary>
@@ -169,8 +169,8 @@ public class ExcelConditionalFormattingThreeColorScale : ExcelConditionalFormatt
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue HighValue
     {
-        get { return this._highValue; }
-        set { this._highValue = value; }
+        get => this._highValue;
+        set => this._highValue = value;
     }
 
     #endregion Public Properties

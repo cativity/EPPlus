@@ -32,10 +32,7 @@ public class ReadControlTests : TestBase
     }
 
     [TestMethod]
-    public void ValidateNumberOfDrawings()
-    {
-        Assert.AreEqual(11, _ws.Drawings.Count);
-    }
+    public void ValidateNumberOfDrawings() => Assert.AreEqual(11, _ws.Drawings.Count);
 
     [TestMethod]
     public void ValidateButtonControl()

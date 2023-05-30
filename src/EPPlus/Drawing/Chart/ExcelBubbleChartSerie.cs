@@ -41,33 +41,27 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
     /// <summary>
     /// Datalabel
     /// </summary>
-    public ExcelChartSerieDataLabel DataLabel
-    {
-        get { return this._dataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartSerieDataLabel DataLabel => this._dataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     const string BUBBLE3D_PATH = "c:bubble3D/@val";
 
     internal bool Bubble3D
     {
-        get { return this.GetXmlNodeBool(BUBBLE3D_PATH, true); }
-        set { this.SetXmlNodeBool(BUBBLE3D_PATH, value); }
+        get => this.GetXmlNodeBool(BUBBLE3D_PATH, true);
+        set => this.SetXmlNodeBool(BUBBLE3D_PATH, value);
     }
 
     const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
 
     internal bool InvertIfNegative
     {
-        get { return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true); }
-        set { this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value); }
+        get => this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
+        set => this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
     }
 
     /// <summary>
@@ -75,7 +69,7 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
     /// </summary>
     public override string Series
     {
-        get { return base.Series; }
+        get => base.Series;
         set
         {
             base.Series = value;
@@ -95,7 +89,7 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
     /// </summary>
     public string BubbleSize
     {
-        get { return this.GetXmlNodeString(BUBBLESIZE_PATH); }
+        get => this.GetXmlNodeString(BUBBLESIZE_PATH);
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -142,8 +136,5 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 }

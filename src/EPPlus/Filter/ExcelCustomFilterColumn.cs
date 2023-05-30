@@ -69,7 +69,7 @@ public class ExcelCustomFilterColumn : ExcelFilterColumn
     /// </summary>
     public bool IsNumericFilter
     {
-        get { return this._isNumericFilter; }
+        get => this._isNumericFilter;
         set
         {
             this._isNumericFilter = value;

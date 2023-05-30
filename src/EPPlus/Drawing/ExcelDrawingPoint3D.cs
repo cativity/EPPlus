@@ -50,7 +50,7 @@ public class ExcelDrawingPoint3D : XmlHelper
     /// </summary>
     public double X
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._xPath) ?? 0; }
+        get => this.GetXmlNodeEmuToPtNull(this._xPath) ?? 0;
         set
         {
             if (this.isInit == false)
@@ -67,7 +67,7 @@ public class ExcelDrawingPoint3D : XmlHelper
     /// </summary>
     public double Y
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._yPath) ?? 0; }
+        get => this.GetXmlNodeEmuToPtNull(this._yPath) ?? 0;
         set
         {
             if (this.isInit == false)
@@ -84,7 +84,7 @@ public class ExcelDrawingPoint3D : XmlHelper
     /// </summary>
     public double Z
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._zPath) ?? 0; }
+        get => this.GetXmlNodeEmuToPtNull(this._zPath) ?? 0;
         set
         {
             if (this.isInit == false)

@@ -61,18 +61,9 @@ internal class ColonExpression : FunctionExpression
         return this;
     }
 
-    private static CompileResult InternalCompile(string address, IRangeInfo offsetRange)
-    {
-        throw new NotImplementedException();
-    }
+    private static CompileResult InternalCompile(string address, IRangeInfo offsetRange) => throw new NotImplementedException();
 
-    private static CompileResult InternalCompile(IRangeInfo offsetRange, string address)
-    {
-        throw new NotImplementedException();
-    }
+    private static CompileResult InternalCompile(IRangeInfo offsetRange, string address) => throw new NotImplementedException();
 
-    private static CompileResult InternalCompile(IRangeInfo offsetRange1, IRangeInfo offsetRange2)
-    {
-        throw new NotImplementedException();
-    }
+    private static CompileResult InternalCompile(IRangeInfo offsetRange1, IRangeInfo offsetRange2) => throw new NotImplementedException();
 }

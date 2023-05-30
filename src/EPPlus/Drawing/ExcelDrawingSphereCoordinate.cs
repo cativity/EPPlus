@@ -46,7 +46,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     /// </summary>
     public double Latitude
     {
-        get { return this.GetXmlNodeAngel(this._latPath); }
+        get => this.GetXmlNodeAngel(this._latPath);
         set
         {
             this.InitXml();
@@ -59,7 +59,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     /// </summary>
     public double Longitude
     {
-        get { return this.GetXmlNodeAngel(this._lonPath); }
+        get => this.GetXmlNodeAngel(this._lonPath);
         set
         {
             this.InitXml();
@@ -72,7 +72,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     /// </summary>
     public double Revolution
     {
-        get { return this.GetXmlNodeAngel(this._revPath); }
+        get => this.GetXmlNodeAngel(this._revPath);
         set
         {
             this.InitXml();

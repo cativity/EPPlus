@@ -58,9 +58,8 @@ public sealed class WorkerDTO
 
 public static class ExcelItems
 {
-    public static IEnumerable<IntegratedPlatformExcelRow> GetItems1()
-    {
-        return new List<IntegratedPlatformExcelRow>
+    public static IEnumerable<IntegratedPlatformExcelRow> GetItems1() =>
+        new List<IntegratedPlatformExcelRow>
         {
             new IntegratedPlatformExcelRow
             {
@@ -75,5 +74,4 @@ public static class ExcelItems
                 Stepping = "Stepping 1"
             }
         };
-    }
 }

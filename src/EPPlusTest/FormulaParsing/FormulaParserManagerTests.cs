@@ -48,10 +48,7 @@ public class FormulaParserManagerTests
 
     private class MyFunction : ExcelFunction
     {
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => throw new NotImplementedException();
     }
 
     private class MyModule : IFunctionModule

@@ -134,8 +134,8 @@ public class ExcelConditionalFormattingTwoColorScale : ExcelConditionalFormattin
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue LowValue
     {
-        get { return this._lowValue; }
-        set { this._lowValue = value; }
+        get => this._lowValue;
+        set => this._lowValue = value;
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ public class ExcelConditionalFormattingTwoColorScale : ExcelConditionalFormattin
     /// </summary>
     public ExcelConditionalFormattingColorScaleValue HighValue
     {
-        get { return this._highValue; }
-        set { this._highValue = value; }
+        get => this._highValue;
+        set => this._highValue = value;
     }
 
     #endregion Public Properties

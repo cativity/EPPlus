@@ -109,10 +109,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// <summary>
     /// Sets the external link type
     /// </summary>
-    public override eExternalLinkType ExternalLinkType
-    {
-        get { return eExternalLinkType.ExternalWorkbook; }
-    }
+    public override eExternalLinkType ExternalLinkType => eExternalLinkType.ExternalWorkbook;
 
     private ExcelExternalNamedItemCollection<ExcelExternalDefinedName> GetNames(int ix)
     {
@@ -251,7 +248,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// </summary>
     public Uri ExternalLinkUri
     {
-        get { return this.Relation?.TargetUri; }
+        get => this.Relation?.TargetUri;
         set
         {
             this.Relation.TargetUri = value;
@@ -353,19 +350,13 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     /// A reference to the external package, it it has been loaded.
     /// <seealso cref="Load()"/>
     /// </summary>
-    public ExcelPackage Package
-    {
-        get { return this._package; }
-    }
+    public ExcelPackage Package => this._package;
 
     /// <summary>
     /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property
     /// </summary>
     /// <returns>True if the load succeeded, otherwise false. If false, see <see cref="ExcelExternalLink.ErrorLog"/></returns>
-    public bool Load()
-    {
-        return this.Load(this.File);
-    }
+    public bool Load() => this.Load(this.File);
 
     /// <summary>
     /// Tries to Loads the external package using the External Uri into the <see cref="Package"/> property

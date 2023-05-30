@@ -31,8 +31,8 @@ public class ExcelDrawingSchemeColor : XmlHelper
     /// </summary>
     public eSchemeColor Color
     {
-        get { return TranslateFromString(this.GetXmlNodeString("@val")); }
-        set { this.SetXmlNodeString("@val", TranslateFromEnum(value)); }
+        get => TranslateFromString(this.GetXmlNodeString("@val"));
+        set => this.SetXmlNodeString("@val", TranslateFromEnum(value));
     }
 
     private static eSchemeColor TranslateFromString(string v)

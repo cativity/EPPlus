@@ -85,7 +85,7 @@ public class ExcelPivotTableField : XmlHelper
                 return v;
             }
         }
-        set { this.SetXmlNodeString("@name", value); }
+        set => this.SetXmlNodeString("@name", value);
     }
 
     /// <summary>
@@ -93,8 +93,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool Compact
     {
-        get { return this.GetXmlNodeBool("@compact"); }
-        set { this.SetXmlNodeBool("@compact", value); }
+        get => this.GetXmlNodeBool("@compact");
+        set => this.SetXmlNodeBool("@compact", value);
     }
 
     /// <summary>
@@ -102,8 +102,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool Outline
     {
-        get { return this.GetXmlNodeBool("@outline"); }
-        set { this.SetXmlNodeBool("@outline", value); }
+        get => this.GetXmlNodeBool("@outline");
+        set => this.SetXmlNodeBool("@outline", value);
     }
 
     /// <summary>
@@ -111,8 +111,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool SubtotalTop
     {
-        get { return this.GetXmlNodeBool("@subtotalTop"); }
-        set { this.SetXmlNodeBool("@subtotalTop", value); }
+        get => this.GetXmlNodeBool("@subtotalTop");
+        set => this.SetXmlNodeBool("@subtotalTop", value);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool MultipleItemSelectionAllowed
     {
-        get { return this.GetXmlNodeBool("@multipleItemSelectionAllowed"); }
+        get => this.GetXmlNodeBool("@multipleItemSelectionAllowed");
         set
         {
             this.SetXmlNodeBool("@multipleItemSelectionAllowed", value);
@@ -139,8 +139,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowAll
     {
-        get { return this.GetXmlNodeBool("@showAll"); }
-        set { this.SetXmlNodeBool("@showAll", value); }
+        get => this.GetXmlNodeBool("@showAll");
+        set => this.SetXmlNodeBool("@showAll", value);
     }
 
     /// <summary>
@@ -148,8 +148,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowDropDowns
     {
-        get { return this.GetXmlNodeBool("@showDropDowns"); }
-        set { this.SetXmlNodeBool("@showDropDowns", value); }
+        get => this.GetXmlNodeBool("@showDropDowns");
+        set => this.SetXmlNodeBool("@showDropDowns", value);
     }
 
     /// <summary>
@@ -157,8 +157,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowInFieldList
     {
-        get { return this.GetXmlNodeBool("@showInFieldList"); }
-        set { this.SetXmlNodeBool("@showInFieldList", value); }
+        get => this.GetXmlNodeBool("@showInFieldList");
+        set => this.SetXmlNodeBool("@showInFieldList", value);
     }
 
     /// <summary>
@@ -166,8 +166,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowAsCaption
     {
-        get { return this.GetXmlNodeBool("@showPropAsCaption"); }
-        set { this.SetXmlNodeBool("@showPropAsCaption", value); }
+        get => this.GetXmlNodeBool("@showPropAsCaption");
+        set => this.SetXmlNodeBool("@showPropAsCaption", value);
     }
 
     /// <summary>
@@ -175,8 +175,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowMemberPropertyInCell
     {
-        get { return this.GetXmlNodeBool("@showPropCell"); }
-        set { this.SetXmlNodeBool("@showPropCell", value); }
+        get => this.GetXmlNodeBool("@showPropCell");
+        set => this.SetXmlNodeBool("@showPropCell", value);
     }
 
     /// <summary>
@@ -184,8 +184,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool ShowMemberPropertyToolTip
     {
-        get { return this.GetXmlNodeBool("@showPropTip"); }
-        set { this.SetXmlNodeBool("@showPropTip", value); }
+        get => this.GetXmlNodeBool("@showPropTip");
+        set => this.SetXmlNodeBool("@showPropTip", value);
     }
 
     #endregion
@@ -267,8 +267,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool IncludeNewItemsInFilter
     {
-        get { return this.GetXmlNodeBool("@includeNewItemsInFilter"); }
-        set { this.SetXmlNodeBool("@includeNewItemsInFilter", value); }
+        get => this.GetXmlNodeBool("@includeNewItemsInFilter");
+        set => this.SetXmlNodeBool("@includeNewItemsInFilter", value);
     }
 
     /// <summary>
@@ -420,7 +420,7 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool IsRowField
     {
-        get { return this.TopNode.SelectSingleNode(string.Format("../../d:rowFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null; }
+        get => this.TopNode.SelectSingleNode(string.Format("../../d:rowFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null;
         internal set
         {
             if (value)
@@ -466,7 +466,7 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool IsColumnField
     {
-        get { return this.TopNode.SelectSingleNode(string.Format("../../d:colFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null; }
+        get => this.TopNode.SelectSingleNode(string.Format("../../d:colFields/d:field[@x={0}]", this.Index), this.NameSpaceManager) != null;
         internal set
         {
             if (value)
@@ -509,8 +509,8 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool IsDataField
     {
-        get { return this.GetXmlNodeBool("@dataField", false); }
-        set { this.SetXmlNodeBool("@dataField", value, false); }
+        get => this.GetXmlNodeBool("@dataField", false);
+        set => this.SetXmlNodeBool("@dataField", value, false);
     }
 
     /// <summary>
@@ -518,7 +518,7 @@ public class ExcelPivotTableField : XmlHelper
     /// </summary>
     public bool IsPageField
     {
-        get { return this.Axis == ePivotFieldAxis.Page; }
+        get => this.Axis == ePivotFieldAxis.Page;
         internal set
         {
             if (value)
@@ -560,27 +560,18 @@ public class ExcelPivotTableField : XmlHelper
     /// <summary>
     /// Page field settings
     /// </summary>
-    public ExcelPivotTablePageFieldSettings PageFieldSettings
-    {
-        get { return this._pageFieldSettings; }
-    }
+    public ExcelPivotTablePageFieldSettings PageFieldSettings => this._pageFieldSettings;
 
     /// <summary>
     /// Date group by
     /// </summary>
-    internal eDateGroupBy DateGrouping
-    {
-        get { return this.Cache.DateGrouping; }
-    }
+    internal eDateGroupBy DateGrouping => this.Cache.DateGrouping;
 
     /// <summary>
     /// Grouping settings. 
     /// Null if the field has no grouping otherwise ExcelPivotTableFieldDateGroup or ExcelPivotTableFieldNumericGroup.
     /// </summary>        
-    public ExcelPivotTableFieldGroup Grouping
-    {
-        get { return this.Cache.Grouping; }
-    }
+    public ExcelPivotTableFieldGroup Grouping => this.Cache.Grouping;
 
     /// <summary>
     /// The numberformat to use for the column
@@ -671,10 +662,7 @@ public class ExcelPivotTableField : XmlHelper
     /// <summary>
     /// A reference to the cache for the pivot table field.
     /// </summary>
-    public ExcelPivotTableCacheField Cache
-    {
-        get { return this._pivotTable.CacheDefinition._cacheReference.Fields[this.Index]; }
-    }
+    public ExcelPivotTableCacheField Cache => this._pivotTable.CacheDefinition._cacheReference.Fields[this.Index];
 
     /// <summary>
     /// Add numberic grouping to the field
@@ -737,17 +725,14 @@ public class ExcelPivotTableField : XmlHelper
 
             return this._slicer;
         }
-        internal set { this._slicer = value; }
+        internal set => this._slicer = value;
     }
 
     /// <summary>
     /// Add a date grouping on this field.
     /// </summary>
     /// <param name="groupBy">Group by</param>
-    public void AddDateGrouping(eDateGroupBy groupBy)
-    {
-        this.AddDateGrouping(groupBy, DateTime.MinValue, DateTime.MaxValue, 1);
-    }
+    public void AddDateGrouping(eDateGroupBy groupBy) => this.AddDateGrouping(groupBy, DateTime.MinValue, DateTime.MaxValue, 1);
 
     /// <summary>
     /// Add a date grouping on this field.
@@ -755,10 +740,7 @@ public class ExcelPivotTableField : XmlHelper
     /// <param name="groupBy">Group by</param>
     /// <param name="startDate">Fixed start date. Use DateTime.MinValue for auto</param>
     /// <param name="endDate">Fixed end date. Use DateTime.MaxValue for auto</param>
-    public void AddDateGrouping(eDateGroupBy groupBy, DateTime startDate, DateTime endDate)
-    {
-        this.AddDateGrouping(groupBy, startDate, endDate, 1);
-    }
+    public void AddDateGrouping(eDateGroupBy groupBy, DateTime startDate, DateTime endDate) => this.AddDateGrouping(groupBy, startDate, endDate, 1);
 
     /// <summary>
     /// Add a date grouping on this field.
@@ -766,15 +748,9 @@ public class ExcelPivotTableField : XmlHelper
     /// <param name="days">Number of days when grouping on days</param>
     /// <param name="startDate">Fixed start date. Use DateTime.MinValue for auto</param>
     /// <param name="endDate">Fixed end date. Use DateTime.MaxValue for auto</param>
-    public void AddDateGrouping(int days, DateTime startDate, DateTime endDate)
-    {
-        this.AddDateGrouping(eDateGroupBy.Days, startDate, endDate, days);
-    }
+    public void AddDateGrouping(int days, DateTime startDate, DateTime endDate) => this.AddDateGrouping(eDateGroupBy.Days, startDate, endDate, days);
 
-    private ExcelPivotTableField AddField(eDateGroupBy groupBy, DateTime startDate, DateTime endDate, ref bool firstField)
-    {
-        return this.AddField(groupBy, startDate, endDate, ref firstField, 1);
-    }
+    private ExcelPivotTableField AddField(eDateGroupBy groupBy, DateTime startDate, DateTime endDate, ref bool firstField) => this.AddField(groupBy, startDate, endDate, ref firstField, 1);
 
     private ExcelPivotTableField AddField(eDateGroupBy groupBy, DateTime startDate, DateTime endDate, ref bool firstField, int interval)
     {
@@ -1042,38 +1018,26 @@ public class ExcelPivotTableField : XmlHelper
     /// <summary>
     /// Filters used on the pivot table field.
     /// </summary>
-    public ExcelPivotTableFieldFilterCollection Filters
-    {
-        get { return this._filters ??= new ExcelPivotTableFieldFilterCollection(this); }
-    }
+    public ExcelPivotTableFieldFilterCollection Filters => this._filters ??= new ExcelPivotTableFieldFilterCollection(this);
 
     internal int? NumFmtId
     {
-        get { return this.GetXmlNodeIntNull("@numFmtId"); }
-        set { this.SetXmlNodeInt("@numFmtId", value); }
+        get => this.GetXmlNodeIntNull("@numFmtId");
+        set => this.SetXmlNodeInt("@numFmtId", value);
     }
 
     /// <summary>
     /// Allow as column field?
     /// </summary>
-    internal bool DragToCol
-    {
-        get { return this.GetXmlNodeBool("@dragToCol", true); }
-    }
+    internal bool DragToCol => this.GetXmlNodeBool("@dragToCol", true);
 
     /// <summary>
     /// Allow as page row?
     /// </summary>
-    internal bool DragToRow
-    {
-        get { return this.GetXmlNodeBool("@dragToRow", true); }
-    }
+    internal bool DragToRow => this.GetXmlNodeBool("@dragToRow", true);
 
     /// <summary>
     /// Allow as page field?
     /// </summary>
-    internal bool DragToPage
-    {
-        get { return this.GetXmlNodeBool("@dragToPage", true); }
-    }
+    internal bool DragToPage => this.GetXmlNodeBool("@dragToPage", true);
 }

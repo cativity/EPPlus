@@ -50,8 +50,8 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
 
     internal Stream Stream
     {
-        get { return this._stream; }
-        set { this._stream = value; }
+        get => this._stream;
+        set => this._stream = value;
     }
 
     internal override ZipPackageRelationship CreateRelationship(Uri targetUri, TargetMode targetMode, string relationshipType)
@@ -70,15 +70,9 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
         return rel;
     }
 
-    internal Stream GetStream()
-    {
-        return this.GetStream(FileMode.OpenOrCreate, FileAccess.ReadWrite);
-    }
+    internal Stream GetStream() => this.GetStream(FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-    internal Stream GetStream(FileMode fileMode)
-    {
-        return this.GetStream(FileMode.Create, FileAccess.ReadWrite);
-    }
+    internal Stream GetStream(FileMode fileMode) => this.GetStream(FileMode.Create, FileAccess.ReadWrite);
 
     internal Stream GetStream(FileMode fileMode, FileAccess fileAccess)
     {
@@ -98,7 +92,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
 
     public string ContentType
     {
-        get { return this._contentType; }
+        get => this._contentType;
         internal set
         {
             if (!string.IsNullOrEmpty(this._contentType))

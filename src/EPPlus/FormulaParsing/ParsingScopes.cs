@@ -31,10 +31,7 @@ public class ParsingScopes
     /// Constructor
     /// </summary>
     /// <param name="lifetimeEventHandler">An instance of a <see cref="IParsingLifetimeEventHandler"/></param>
-    public ParsingScopes(IParsingLifetimeEventHandler lifetimeEventHandler)
-    {
-        this._lifetimeEventHandler = lifetimeEventHandler;
-    }
+    public ParsingScopes(IParsingLifetimeEventHandler lifetimeEventHandler) => this._lifetimeEventHandler = lifetimeEventHandler;
 
     private Stack<ParsingScope> _scopes = new Stack<ParsingScope>();
 
@@ -64,10 +61,7 @@ public class ParsingScopes
     /// <summary>
     /// The current parsing scope.
     /// </summary>
-    public virtual ParsingScope Current
-    {
-        get { return this._scopes.Count() > 0 ? this._scopes.Peek() : null; }
-    }
+    public virtual ParsingScope Current => this._scopes.Count() > 0 ? this._scopes.Peek() : null;
 
     /// <summary>
     /// Removes the current scope, setting the calling scope to current.

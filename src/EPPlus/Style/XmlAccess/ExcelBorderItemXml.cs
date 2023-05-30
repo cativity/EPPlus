@@ -73,7 +73,7 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderStyle Style
     {
-        get { return this._borderStyle; }
+        get => this._borderStyle;
         set
         {
             this._borderStyle = value;
@@ -89,8 +89,8 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
     /// </summary>s
     public ExcelColorXml Color
     {
-        get { return this._color; }
-        internal set { this._color = value; }
+        get => this._color;
+        internal set => this._color = value;
     }
 
     internal override string Id

@@ -31,7 +31,7 @@ public class ExcelTreemapChartSerie : ExcelChartExSerie
     /// </summary>
     public eParentLabelLayout ParentLabelLayout
     {
-        get { return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None); }
-        set { this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString()); }
+        get => this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
+        set => this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
     }
 }

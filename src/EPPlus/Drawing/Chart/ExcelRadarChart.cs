@@ -34,16 +34,12 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
                              XmlDocument chartXml,
                              XmlNode chartNode,
                              ExcelGroupShape parent = null)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelRadarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
-        : base(topChart, chartNode, parent)
-    {
+        : base(topChart, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelRadarChart(ExcelDrawings drawings,
                              XmlNode node,
@@ -52,10 +48,8 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
                              ExcelPivotTable PivotTableSource,
                              XmlDocument chartXml,
                              ExcelGroupShape parent = null)
-        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent) =>
         this.SetTypeProperties();
-    }
 
     #endregion
 
@@ -101,7 +95,7 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
                 return (eRadarStyle)Enum.Parse(typeof(eRadarStyle), v, true);
             }
         }
-        set { this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
+        set => this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture));
     }
 
     ExcelChartDataLabel _DataLabel;
@@ -109,22 +103,14 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
-    public ExcelChartDataLabel DataLabel
-    {
-        get
-        {
-            return this._DataLabel ??=
-                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartDataLabel DataLabel =>
+        this._DataLabel ??=
+            new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     internal override eChartType GetChartType(string name)
     {

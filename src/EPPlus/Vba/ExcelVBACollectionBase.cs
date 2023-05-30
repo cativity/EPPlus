@@ -32,74 +32,47 @@ public class ExcelVBACollectionBase<T> : IEnumerable<T>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<T> GetEnumerator() => this._list.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Indexer
     /// </summary>
     /// <param name="Name">Name</param>
     /// <returns></returns>
-    public T this[string Name]
-    {
-        get { return this._list.Find((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase)); }
-    }
+    public T this[string Name] => this._list.Find((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>
     /// Indexer
     /// </summary>
     /// <param name="Index">Position</param>
     /// <returns></returns>
-    public T this[int Index]
-    {
-        get { return this._list[Index]; }
-    }
+    public T this[int Index] => this._list[Index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// If a specific name exists in the collection
     /// </summary>
     /// <param name="Name">The name</param>
     /// <returns>True if the name exists</returns>
-    public bool Exists(string Name)
-    {
-        return this._list.Exists((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase));
-    }
+    public bool Exists(string Name) => this._list.Exists((f) => TypeCompat.GetPropertyValue(f, "Name").ToString().Equals(Name, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>
     /// Removes the item
     /// </summary>
     /// <param name="Item"></param>
-    public void Remove(T Item)
-    {
-        _ = this._list.Remove(Item);
-    }
+    public void Remove(T Item) => _ = this._list.Remove(Item);
 
     /// <summary>
     /// Removes the item at the specified index
     /// </summary>
     /// <param name="index">THe index</param>
-    public void RemoveAt(int index)
-    {
-        this._list.RemoveAt(index);
-    }
+    public void RemoveAt(int index) => this._list.RemoveAt(index);
 
-    internal void Clear()
-    {
-        this._list.Clear();
-    }
+    internal void Clear() => this._list.Clear();
 }

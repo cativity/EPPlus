@@ -28,10 +28,8 @@ namespace OfficeOpenXml;
 public class ExcelProtection : XmlHelper
 {
     internal ExcelProtection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorkbook wb)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this.SchemaNodeOrder = wb.SchemaNodeOrder;
-    }
 
     const string workbookPasswordPath = "d:workbookProtection/@workbookPassword";
 
@@ -58,8 +56,8 @@ public class ExcelProtection : XmlHelper
     /// </summary>
     public bool LockStructure
     {
-        get { return this.GetXmlNodeBool(lockStructurePath, false); }
-        set { this.SetXmlNodeBool(lockStructurePath, value, false); }
+        get => this.GetXmlNodeBool(lockStructurePath, false);
+        set => this.SetXmlNodeBool(lockStructurePath, value, false);
     }
 
     const string lockWindowsPath = "d:workbookProtection/@lockWindows";
@@ -69,8 +67,8 @@ public class ExcelProtection : XmlHelper
     /// </summary>
     public bool LockWindows
     {
-        get { return this.GetXmlNodeBool(lockWindowsPath, false); }
-        set { this.SetXmlNodeBool(lockWindowsPath, value, false); }
+        get => this.GetXmlNodeBool(lockWindowsPath, false);
+        set => this.SetXmlNodeBool(lockWindowsPath, value, false);
     }
 
     const string lockRevisionPath = "d:workbookProtection/@lockRevision";
@@ -80,8 +78,8 @@ public class ExcelProtection : XmlHelper
     /// </summary>
     public bool LockRevision
     {
-        get { return this.GetXmlNodeBool(lockRevisionPath, false); }
-        set { this.SetXmlNodeBool(lockRevisionPath, value, false); }
+        get => this.GetXmlNodeBool(lockRevisionPath, false);
+        set => this.SetXmlNodeBool(lockRevisionPath, value, false);
     }
 
     ExcelWriteProtection _writeProtection;
@@ -89,8 +87,5 @@ public class ExcelProtection : XmlHelper
     /// <summary>
     /// File sharing settings for the workbook.
     /// </summary>
-    public ExcelWriteProtection WriteProtection
-    {
-        get { return this._writeProtection ??= new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelWriteProtection WriteProtection => this._writeProtection ??= new ExcelWriteProtection(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 }

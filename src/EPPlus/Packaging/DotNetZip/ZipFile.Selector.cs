@@ -245,10 +245,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         ///
         /// <param name="selectionCriteria">The criteria for file selection</param>
-        public void AddSelectedFiles(string selectionCriteria)
-        {
-            this.AddSelectedFiles(selectionCriteria, ".", null, false);
-        }
+        public void AddSelectedFiles(string selectionCriteria) => this.AddSelectedFiles(selectionCriteria, ".", null, false);
 
         /// <summary>
         ///   Adds to the ZipFile a set of files from the disk that conform to the
@@ -305,10 +302,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="recurseDirectories">
         ///   If true, the file selection will recurse into subdirectories.
         /// </param>
-        public void AddSelectedFiles(string selectionCriteria, bool recurseDirectories)
-        {
-            this.AddSelectedFiles(selectionCriteria, ".", null, recurseDirectories);
-        }
+        public void AddSelectedFiles(string selectionCriteria, bool recurseDirectories) => this.AddSelectedFiles(selectionCriteria, ".", null, recurseDirectories);
 
         /// <summary>
         ///   Adds to the ZipFile a set of files from a specified directory in the
@@ -363,10 +357,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="directoryOnDisk">
         /// The name of the directory on the disk from which to select files.
         /// </param>
-        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk)
-        {
-            this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, false);
-        }
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk) => this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, false);
 
         /// <summary>
         ///   Adds to the ZipFile a set of files from the specified directory on disk,
@@ -438,10 +429,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="recurseDirectories">
         ///   If true, the file selection will recurse into subdirectories.
         /// </param>
-        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, bool recurseDirectories)
-        {
-            this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, recurseDirectories);
-        }
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, bool recurseDirectories) => this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, recurseDirectories);
 
         /// <summary>
         ///   Adds to the ZipFile a selection of files from the specified directory on
@@ -502,10 +490,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   the empty string ("") will insert the item at the root path within the
         ///   archive.
         /// </param>
-        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive)
-        {
-            this.AddSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, false);
-        }
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive) => this.AddSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, false);
 
         /// <summary>
         ///   Adds to the ZipFile a selection of files from the specified directory on
@@ -568,10 +553,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   If true, the method also scans subdirectories for files matching the
         ///   criteria.
         /// </param>
-        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories)
-        {
-            this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, false);
-        }
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories) => this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, false);
 
         /// <summary>
         ///   Updates the ZipFile with a selection of files from the disk that conform
@@ -613,10 +595,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="AddSelectedFiles(String, String, String, bool)" />
-        public void UpdateSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories)
-        {
-            this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, true);
-        }
+        public void UpdateSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories) => this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, true);
 
         private static string EnsureendInSlash(string s)
         {
@@ -1256,10 +1235,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
     internal partial class SizeCriterion : SelectionCriterion
     {
-        internal override bool Evaluate(ZipEntry entry)
-        {
-            return this._Evaluate(entry.UncompressedSize);
-        }
+        internal override bool Evaluate(ZipEntry entry) => this._Evaluate(entry.UncompressedSize);
     }
 
     internal partial class TimeCriterion : SelectionCriterion

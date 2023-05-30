@@ -55,13 +55,11 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
         }
     }
 
-    internal static bool IsBanded(eTableStyleElement type)
-    {
-        return type == eTableStyleElement.FirstColumnStripe
-               || type == eTableStyleElement.FirstRowStripe
-               || type == eTableStyleElement.SecondColumnStripe
-               || type == eTableStyleElement.SecondRowStripe;
-    }
+    internal static bool IsBanded(eTableStyleElement type) =>
+        type == eTableStyleElement.FirstColumnStripe
+        || type == eTableStyleElement.FirstRowStripe
+        || type == eTableStyleElement.SecondColumnStripe
+        || type == eTableStyleElement.SecondRowStripe;
 
     internal ExcelTableStyleElement GetTableStyleElement(eTableStyleElement element)
     {
@@ -96,7 +94,7 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
+        get => this.GetXmlNodeString("@name");
         set
         {
             if (this._styles.TableStyles.ExistsKey(value) || this._styles.SlicerStyles.ExistsKey(value))
@@ -111,82 +109,52 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
     /// <summary>
     /// Applies to the entire content of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement WholeTable
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.WholeTable); }
-    }
+    public ExcelTableStyleElement WholeTable => this.GetTableStyleElement(eTableStyleElement.WholeTable);
 
     /// <summary>
     /// Applies to the first column stripe of a table or pivot table
     /// </summary>
-    public ExcelBandedTableStyleElement FirstColumnStripe
-    {
-        get { return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstColumnStripe); }
-    }
+    public ExcelBandedTableStyleElement FirstColumnStripe => (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstColumnStripe);
 
     /// <summary>
     /// Applies to the second column stripe of a table or pivot table
     /// </summary>
-    public ExcelBandedTableStyleElement SecondColumnStripe
-    {
-        get { return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondColumnStripe); }
-    }
+    public ExcelBandedTableStyleElement SecondColumnStripe => (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondColumnStripe);
 
     /// <summary>
     /// Applies to the first row stripe of a table or pivot table
     /// </summary>
-    public ExcelBandedTableStyleElement FirstRowStripe
-    {
-        get { return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstRowStripe); }
-    }
+    public ExcelBandedTableStyleElement FirstRowStripe => (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.FirstRowStripe);
 
     /// <summary>
     /// Applies to the second row stripe of a table or pivot table
     /// </summary>
-    public ExcelBandedTableStyleElement SecondRowStripe
-    {
-        get { return (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondRowStripe); }
-    }
+    public ExcelBandedTableStyleElement SecondRowStripe => (ExcelBandedTableStyleElement)this.GetTableStyleElement(eTableStyleElement.SecondRowStripe);
 
     /// <summary>
     /// Applies to the last column of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement LastColumn
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.LastColumn); }
-    }
+    public ExcelTableStyleElement LastColumn => this.GetTableStyleElement(eTableStyleElement.LastColumn);
 
     /// <summary>
     /// Applies to the first column of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstColumn
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstColumn); }
-    }
+    public ExcelTableStyleElement FirstColumn => this.GetTableStyleElement(eTableStyleElement.FirstColumn);
 
     /// <summary>
     /// Applies to the header row of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement HeaderRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.HeaderRow); }
-    }
+    public ExcelTableStyleElement HeaderRow => this.GetTableStyleElement(eTableStyleElement.HeaderRow);
 
     /// <summary>
     /// Applies to the total row of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement TotalRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.TotalRow); }
-    }
+    public ExcelTableStyleElement TotalRow => this.GetTableStyleElement(eTableStyleElement.TotalRow);
 
     /// <summary>
     /// Applies to the first header cell of a table or pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstHeaderCell
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstHeaderCell); }
-    }
+    public ExcelTableStyleElement FirstHeaderCell => this.GetTableStyleElement(eTableStyleElement.FirstHeaderCell);
 
     /// <summary>
     /// Provides access to type conversion for all table named styles.
@@ -202,15 +170,9 @@ public abstract class ExcelTableNamedStyleBase : XmlHelper
         }
     }
 
-    internal void SetFromTemplate(TableStyles templateStyle)
-    {
-        this.LoadTableTemplate("TableStyles", templateStyle.ToString());
-    }
+    internal void SetFromTemplate(TableStyles templateStyle) => this.LoadTableTemplate("TableStyles", templateStyle.ToString());
 
-    internal void SetFromTemplate(PivotTableStyles templateStyle)
-    {
-        this.LoadTableTemplate("PivotTableStyles", templateStyle.ToString());
-    }
+    internal void SetFromTemplate(PivotTableStyles templateStyle) => this.LoadTableTemplate("PivotTableStyles", templateStyle.ToString());
 
     private void LoadTableTemplate(string folder, string styleName)
     {

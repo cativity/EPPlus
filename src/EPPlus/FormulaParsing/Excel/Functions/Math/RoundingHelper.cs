@@ -172,15 +172,9 @@ internal static class RoundingHelper
         return isNegativeNumber ? -1 * result : result;
     }
 
-    internal static bool IsInvalidNumberAndSign(double number, double sign)
-    {
-        return number > 0d && sign < 0;
-    }
+    internal static bool IsInvalidNumberAndSign(double number, double sign) => number > 0d && sign < 0;
 
-    internal static double RoundToSignificantFig(double number, double nSignificantFigures)
-    {
-        return RoundToSignificantFig(number, nSignificantFigures, true);
-    }
+    internal static double RoundToSignificantFig(double number, double nSignificantFigures) => RoundToSignificantFig(number, nSignificantFigures, true);
 
     internal static double RoundToSignificantFig(double number, double nSignificantFigures, bool awayFromMidpoint)
     {

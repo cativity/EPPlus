@@ -40,7 +40,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override eLabelPosition Position
     {
-        get { return GetPosEnum(this.GetXmlNodeString("@pos")); }
+        get => GetPosEnum(this.GetXmlNodeString("@pos"));
         set
         {
             this.SetDataLabelNode();
@@ -63,7 +63,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowValue
     {
-        get { return this.GetXmlNodeBool(_showValuePath); }
+        get => this.GetXmlNodeBool(_showValuePath);
         set
         {
             this.SetDataLabelNode();
@@ -78,7 +78,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowCategory
     {
-        get { return this.GetXmlNodeBool(_showCategoryPath); }
+        get => this.GetXmlNodeBool(_showCategoryPath);
         set
         {
             this.SetDataLabelNode();
@@ -93,7 +93,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowSeriesName
     {
-        get { return this.GetXmlNodeBool(_seriesNamePath); }
+        get => this.GetXmlNodeBool(_seriesNamePath);
         set
         {
             this.SetDataLabelNode();
@@ -106,8 +106,8 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowPercent
     {
-        get { return false; }
-        set { throw new NotSupportedException("ShowPercent do not apply to Extension Charts"); }
+        get => false;
+        set => throw new NotSupportedException("ShowPercent do not apply to Extension Charts");
     }
 
     /// <summary>
@@ -115,8 +115,8 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowLeaderLines
     {
-        get { return false; }
-        set { throw new NotSupportedException("ShowLeaderLines do not apply to Extension Charts"); }
+        get => false;
+        set => throw new NotSupportedException("ShowLeaderLines do not apply to Extension Charts");
     }
 
     /// <summary>
@@ -124,8 +124,8 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowBubbleSize
     {
-        get { return false; }
-        set { throw new NotSupportedException("ShowBubbleSize do not apply to Extension Charts"); }
+        get => false;
+        set => throw new NotSupportedException("ShowBubbleSize do not apply to Extension Charts");
     }
 
     /// <summary>
@@ -133,8 +133,8 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override bool ShowLegendKey
     {
-        get { return false; }
-        set { throw new InvalidOperationException("ShowLegendKey do not apply to Extension Charts"); }
+        get => false;
+        set => throw new InvalidOperationException("ShowLegendKey do not apply to Extension Charts");
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class ExcelChartExDataLabel : ExcelChartDataLabel
     /// </summary>
     public override string Separator
     {
-        get { return this.GetXmlNodeString("cx:separator"); }
+        get => this.GetXmlNodeString("cx:separator");
         set
         {
             this.SetDataLabelNode();

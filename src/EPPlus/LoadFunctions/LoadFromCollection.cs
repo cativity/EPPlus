@@ -101,10 +101,7 @@ internal class LoadFromCollection<T> : LoadFunctionBase
 
     internal List<string> SortOrderProperties { get; private set; }
 
-    protected override int GetNumberOfColumns()
-    {
-        return this._columns.Length == 0 ? 1 : this._columns.Length;
-    }
+    protected override int GetNumberOfColumns() => this._columns.Length == 0 ? 1 : this._columns.Length;
 
     protected override int GetNumberOfRows()
     {

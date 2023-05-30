@@ -42,8 +42,8 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
     /// </summary>
     public eCrossFilter CrossFilter
     {
-        get { return this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.ShowItemsWithDataAtTop); }
-        set { this.SetXmlNodeString(_crossFilterPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.ShowItemsWithDataAtTop);
+        set => this.SetXmlNodeString(_crossFilterPath, value.ToEnumString());
     }
 
     const string _sortOrderPath = _topPath + "/@sortOrder";
@@ -53,8 +53,8 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
     /// </summary>
     public eSortOrder SortOrder
     {
-        get { return this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending); }
-        set { this.SetXmlNodeString(_sortOrderPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending);
+        set => this.SetXmlNodeString(_sortOrderPath, value.ToEnumString());
     }
 
     const string _customListSortPath = _topPath + "/@customList";
@@ -64,8 +64,8 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
     /// </summary>
     public bool CustomListSort
     {
-        get { return this.GetXmlNodeBool(_customListSortPath, true); }
-        set { this.SetXmlNodeBool(_customListSortPath, value, true); }
+        get => this.GetXmlNodeBool(_customListSortPath, true);
+        set => this.SetXmlNodeBool(_customListSortPath, value, true);
     }
 
     const string _showMissingPath = _topPath + "/@showMissing";
@@ -75,8 +75,8 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
     /// </summary>
     internal bool ShowMissing
     {
-        get { return this.GetXmlNodeBool(_showMissingPath, true); }
-        set { this.SetXmlNodeBool(_showMissingPath, value, true); }
+        get => this.GetXmlNodeBool(_showMissingPath, true);
+        set => this.SetXmlNodeBool(_showMissingPath, value, true);
     }
 
     private ExcelPivotTableSlicerItemCollection _items;
@@ -86,18 +86,15 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
     /// Note that the sort order of this collection is the same as the pivot table field items, not the sortorder of the slicer.
     /// Showing/hiding items are reflects to the pivot table(s) field items collection.
     /// </summary>
-    public ExcelPivotTableSlicerItemCollection Items
-    {
-        get { return this._items ??= new ExcelPivotTableSlicerItemCollection(this._cache); }
-    }
+    public ExcelPivotTableSlicerItemCollection Items => this._items ??= new ExcelPivotTableSlicerItemCollection(this._cache);
 
     /// <summary>
     /// The pivot table cache id
     /// </summary>
     public int PivotCacheId
     {
-        get { return this.GetXmlNodeInt(_topPath + "/@pivotCacheId"); }
-        private set { this.SetXmlNodeInt(_topPath + "/@pivotCacheId", value); }
+        get => this.GetXmlNodeInt(_topPath + "/@pivotCacheId");
+        private set => this.SetXmlNodeInt(_topPath + "/@pivotCacheId", value);
     }
 
     internal void UpdateItemsXml()

@@ -64,8 +64,5 @@ internal class ExcelDatabaseCriteria
         }
     }
 
-    public virtual IDictionary<ExcelDatabaseCriteriaField, object> Items
-    {
-        get { return this._criterias; }
-    }
+    public virtual IDictionary<ExcelDatabaseCriteriaField, object> Items => this._criterias;
 }

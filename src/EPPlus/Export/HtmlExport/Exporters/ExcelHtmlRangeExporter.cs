@@ -29,18 +29,13 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     internal class ExcelHtmlRangeExporter : ExcelHtmlExporterBase, IExcelHtmlRangeExporter
     {
         public ExcelHtmlRangeExporter(ExcelRangeBase range)
-            : base(range)
-        {
+            : base(range) =>
             this._settings = new HtmlRangeExportSettings();
-        }
 
         private readonly HtmlRangeExportSettings _settings;
         private readonly Dictionary<string, int> _styleCache = new Dictionary<string, int>();
 
-        public HtmlRangeExportSettings Settings
-        {
-            get { return this._settings; }
-        }
+        public HtmlRangeExportSettings Settings => this._settings;
 
         /// <summary>
         /// Exports an <see cref="ExcelTable"/> to a html string

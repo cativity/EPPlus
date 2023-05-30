@@ -23,10 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.Exceptions;
 /// </summary>
 public class ExcelErrorCodes
 {
-    private ExcelErrorCodes(string code)
-    {
-        this.Code = code;
-    }
+    private ExcelErrorCodes(string code) => this.Code = code;
 
     /// <summary>
     /// The error code
@@ -37,10 +34,7 @@ public class ExcelErrorCodes
     /// Returns the hash code for this string.
     /// </summary>
     /// <returns>The hash code</returns>
-    public override int GetHashCode()
-    {
-        return this.Code.GetHashCode();
-    }
+    public override int GetHashCode() => this.Code.GetHashCode();
 
     /// <summary>
     /// Determines whether the specified object is equal to the current object.
@@ -63,10 +57,7 @@ public class ExcelErrorCodes
     /// <param name="c1">The first error code to match</param>
     /// <param name="c2">The second error code to match</param>
     /// <returns></returns>
-    public static bool operator ==(ExcelErrorCodes c1, ExcelErrorCodes c2)
-    {
-        return c1.Code.Equals(c2.Code);
-    }
+    public static bool operator ==(ExcelErrorCodes c1, ExcelErrorCodes c2) => c1.Code.Equals(c2.Code);
 
     /// <summary>
     /// Not equal operator
@@ -74,10 +65,7 @@ public class ExcelErrorCodes
     /// <param name="c1">The first error code to match</param>
     /// <param name="c2">The second error code to match</param>
     /// <returns></returns>
-    public static bool operator !=(ExcelErrorCodes c1, ExcelErrorCodes c2)
-    {
-        return !c1.Code.Equals(c2.Code);
-    }
+    public static bool operator !=(ExcelErrorCodes c1, ExcelErrorCodes c2) => !c1.Code.Equals(c2.Code);
 
     private static readonly IEnumerable<string> Codes = new List<string> { Value.Code, Name.Code, NoValueAvaliable.Code };
 
@@ -106,24 +94,15 @@ public class ExcelErrorCodes
     /// <summary>
     /// Represents a cell value error 
     /// </summary>
-    public static ExcelErrorCodes Value
-    {
-        get { return new ExcelErrorCodes("#VALUE!"); }
-    }
+    public static ExcelErrorCodes Value => new("#VALUE!");
 
     /// <summary>
     /// Represents a cell name error 
     /// </summary>
-    public static ExcelErrorCodes Name
-    {
-        get { return new ExcelErrorCodes("#NAME?"); }
-    }
+    public static ExcelErrorCodes Name => new("#NAME?");
 
     /// <summary>
     /// Reprecents a N/A error
     /// </summary>
-    public static ExcelErrorCodes NoValueAvaliable
-    {
-        get { return new ExcelErrorCodes("#N/A"); }
-    }
+    public static ExcelErrorCodes NoValueAvaliable => new("#N/A");
 }

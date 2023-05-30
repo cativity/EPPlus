@@ -208,7 +208,7 @@ internal partial class ZipEntry
     ///
     public DateTime LastModified
     {
-        get { return this._LastModified.ToLocalTime(); }
+        get => this._LastModified.ToLocalTime();
         set
         {
             this._LastModified = value.Kind == DateTimeKind.Unspecified ? DateTime.SpecifyKind(value, DateTimeKind.Local) : value.ToLocalTime();
@@ -218,10 +218,7 @@ internal partial class ZipEntry
         }
     }
 
-    private int BufferSize
-    {
-        get { return this._container.BufferSize; }
-    }
+    private int BufferSize => this._container.BufferSize;
 
     /// <summary>
     /// Last Modified time for the file represented by the entry.
@@ -374,8 +371,8 @@ internal partial class ZipEntry
     /// <seealso cref="SetEntryTimes"/>
     public DateTime ModifiedTime
     {
-        get { return this._Mtime; }
-        set { this.SetEntryTimes(this._Ctime, this._Atime, value); }
+        get => this._Mtime;
+        set => this.SetEntryTimes(this._Ctime, this._Atime, value);
     }
 
     /// <summary>
@@ -391,8 +388,8 @@ internal partial class ZipEntry
     /// <seealso cref="SetEntryTimes"/>
     public DateTime AccessedTime
     {
-        get { return this._Atime; }
-        set { this.SetEntryTimes(this._Ctime, value, this._Mtime); }
+        get => this._Atime;
+        set => this.SetEntryTimes(this._Ctime, value, this._Mtime);
     }
 
     /// <summary>
@@ -410,8 +407,8 @@ internal partial class ZipEntry
     /// <seealso cref="SetEntryTimes"/>
     public DateTime CreationTime
     {
-        get { return this._Ctime; }
-        set { this.SetEntryTimes(value, this._Atime, this._Mtime); }
+        get => this._Ctime;
+        set => this.SetEntryTimes(value, this._Atime, this._Mtime);
     }
 
     /// <summary>
@@ -564,7 +561,7 @@ internal partial class ZipEntry
     /// <seealso cref="ModifiedTime"/>
     public bool EmitTimesInWindowsFormatWhenSaving
     {
-        get { return this._emitNtfsTimes; }
+        get => this._emitNtfsTimes;
         set
         {
             this._emitNtfsTimes = value;
@@ -649,7 +646,7 @@ internal partial class ZipEntry
     /// <seealso cref="ModifiedTime"/>
     public bool EmitTimesInUnixFormatWhenSaving
     {
-        get { return this._emitUnixTimes; }
+        get => this._emitUnixTimes;
         set
         {
             this._emitUnixTimes = value;
@@ -668,10 +665,7 @@ internal partial class ZipEntry
     ///
     /// <seealso cref="EmitTimesInWindowsFormatWhenSaving"/>
     /// <seealso cref="EmitTimesInUnixFormatWhenSaving"/>
-    internal ZipEntryTimestamp Timestamp
-    {
-        get { return this._timestamp; }
-    }
+    internal ZipEntryTimestamp Timestamp => this._timestamp;
 
     /// <summary>
     ///   The file attributes for the entry.
@@ -731,7 +725,7 @@ internal partial class ZipEntry
     public FileAttributes Attributes
     {
         // workitem 7071
-        get { return (FileAttributes)this._ExternalFileAttrs; }
+        get => (FileAttributes)this._ExternalFileAttrs;
         set
         {
             this._ExternalFileAttrs = (int)value;
@@ -770,10 +764,7 @@ internal partial class ZipEntry
     ///
     /// </remarks>
     /// <seealso cref="FileName"/>
-    internal string LocalFileName
-    {
-        get { return this._LocalFileName; }
-    }
+    internal string LocalFileName => this._LocalFileName;
 
     /// <summary>
     ///   The name of the file contained in the ZipEntry.
@@ -854,7 +845,7 @@ internal partial class ZipEntry
     /// </remarks>
     public string FileName
     {
-        get { return this._FileNameInArchive; }
+        get => this._FileNameInArchive;
         set
         {
             if (this._container.ZipFile == null)
@@ -930,7 +921,7 @@ internal partial class ZipEntry
     ///
     public Stream InputStream
     {
-        get { return this._sourceStream; }
+        get => this._sourceStream;
 
         set
         {
@@ -978,18 +969,12 @@ internal partial class ZipEntry
     ///
     /// </remarks>
     /// <seealso cref="InputStream"/>
-    public bool InputStreamWasJitProvided
-    {
-        get { return this._sourceWasJitProvided; }
-    }
+    public bool InputStreamWasJitProvided => this._sourceWasJitProvided;
 
     /// <summary>
     /// An enum indicating the source of the ZipEntry.
     /// </summary>
-    internal ZipEntrySource Source
-    {
-        get { return this._Source; }
-    }
+    internal ZipEntrySource Source => this._Source;
 
     /// <summary>
     /// The version of the zip engine needed to read the ZipEntry.
@@ -1066,10 +1051,7 @@ internal partial class ZipEntry
     ///   archive.
     /// </para>
     /// </remarks>
-    public short VersionNeeded
-    {
-        get { return this._VersionNeeded; }
-    }
+    public short VersionNeeded => this._VersionNeeded;
 
     /// <summary>
     /// The comment attached to the ZipEntry.
@@ -1092,7 +1074,7 @@ internal partial class ZipEntry
     /// <seealso cref="AlternateEncodingUsage"/>
     public string Comment
     {
-        get { return this._Comment; }
+        get => this._Comment;
         set
         {
             this._Comment = value;
@@ -1140,10 +1122,7 @@ internal partial class ZipEntry
     ///
     /// </remarks>
     /// <seealso cref="OutputUsedZip64"/>
-    public Nullable<bool> RequiresZip64
-    {
-        get { return this._entryRequiresZip64; }
-    }
+    public Nullable<bool> RequiresZip64 => this._entryRequiresZip64;
 
     /// <summary>
     ///   Indicates whether the entry actually used ZIP64 extensions, as it was most
@@ -1168,10 +1147,7 @@ internal partial class ZipEntry
     /// </para>
     /// </remarks>
     /// <seealso cref="RequiresZip64"/>
-    public Nullable<bool> OutputUsedZip64
-    {
-        get { return this._OutputUsesZip64; }
-    }
+    public Nullable<bool> OutputUsedZip64 => this._OutputUsesZip64;
 
     /// <summary>
     ///   The bitfield for the entry as defined in the zip spec. You probably
@@ -1290,10 +1266,7 @@ internal partial class ZipEntry
     /// </list>
     ///
     /// </remarks>
-    public short BitField
-    {
-        get { return this._BitField; }
-    }
+    public short BitField => this._BitField;
 
     /// <summary>
     ///   The compression method employed for this ZipEntry.
@@ -1450,7 +1423,7 @@ internal partial class ZipEntry
     /// <seealso cref="CompressionMethod"/>
     public OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel CompressionLevel
     {
-        get { return this._CompressionLevel; }
+        get => this._CompressionLevel;
         set
         {
             if (this._CompressionMethod != (short)CompressionMethod.Deflate && this._CompressionMethod != (short)CompressionMethod.None)
@@ -1501,10 +1474,7 @@ internal partial class ZipEntry
     /// </remarks>
     ///
     /// <seealso cref="ZipEntry.UncompressedSize"/>
-    public long CompressedSize
-    {
-        get { return this._CompressedSize; }
-    }
+    public long CompressedSize => this._CompressedSize;
 
     /// <summary>
     ///   The size of the file, in bytes, before compression, or after extraction.
@@ -1519,10 +1489,7 @@ internal partial class ZipEntry
     /// </remarks>
     ///
     /// <seealso cref="Ionic.Zip.ZipEntry.CompressedSize"/>
-    public long UncompressedSize
-    {
-        get { return this._UncompressedSize; }
-    }
+    public long UncompressedSize => this._UncompressedSize;
 
     /// <summary>
     /// The ratio of compressed size to uncompressed size of the ZipEntry.
@@ -1584,19 +1551,13 @@ internal partial class ZipEntry
     /// of this property reflects the stored CRC for the entry.  </para>
     ///
     /// </remarks>
-    public int Crc
-    {
-        get { return this._Crc32; }
-    }
+    public int Crc => this._Crc32;
 
     /// <summary>
     /// True if the entry is a directory (not a file).
     /// This is a readonly property on the entry.
     /// </summary>
-    public bool IsDirectory
-    {
-        get { return this._IsDirectory; }
-    }
+    public bool IsDirectory => this._IsDirectory;
 
     /// <summary>
     /// A derived property that is <c>true</c> if the entry uses encryption.
@@ -1613,10 +1574,7 @@ internal partial class ZipEntry
     ///   was something other than <see cref="EncryptionAlgorithm.None"/>.
     /// </para>
     /// </remarks>
-    public bool UsesEncryption
-    {
-        get { return this._Encryption_FromZipFile != EncryptionAlgorithm.None; }
-    }
+    public bool UsesEncryption => this._Encryption_FromZipFile != EncryptionAlgorithm.None;
 
     /// <summary>
     ///   Set this to specify which encryption algorithm to use for the entry when
@@ -1770,7 +1728,7 @@ internal partial class ZipEntry
     /// <seealso cref="Ionic.Zip.ZipFile.Encryption">ZipFile.Encryption</seealso>
     internal EncryptionAlgorithm Encryption
     {
-        get { return this._Encryption; }
+        get => this._Encryption;
         set
         {
             if (value == this._Encryption)
@@ -1970,13 +1928,10 @@ internal partial class ZipEntry
                 }
             }
         }
-        private get { return this._Password; }
+        private get => this._Password;
     }
 
-    internal bool IsChanged
-    {
-        get { return this._restreamRequiredOnSave | this._metadataChanged; }
-    }
+    internal bool IsChanged => this._restreamRequiredOnSave | this._metadataChanged;
 
     /// <summary>
     /// The action the library should take when extracting a file that already exists.
@@ -2083,10 +2038,7 @@ internal partial class ZipEntry
     /// opening or reading the entry.
     /// </remarks>
     /// <seealso cref="ZipErrorAction"/>
-    internal bool IncludedInMostRecentSave
-    {
-        get { return !this._skippedDuringSave; }
-    }
+    internal bool IncludedInMostRecentSave => !this._skippedDuringSave;
 
     /// <summary>
     ///   A callback that allows the application to specify the compression to use
@@ -2129,7 +2081,7 @@ internal partial class ZipEntry
     [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete.  It will be removed in a future version of the library. Your applications should  use AlternateEncoding and AlternateEncodingUsage instead.")]
     public bool UseUnicodeAsNecessary
     {
-        get { return this.AlternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") && this.AlternateEncodingUsage == ZipOption.AsNecessary; }
+        get => this.AlternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") && this.AlternateEncodingUsage == ZipOption.AsNecessary;
         set
         {
             if (value)
@@ -2285,35 +2237,17 @@ internal partial class ZipEntry
     }
 
     // workitem 9073
-    internal static ZipEntry CreateFromNothing(string nameInArchive)
-    {
-        return Create(nameInArchive, ZipEntrySource.None, null, null);
-    }
+    internal static ZipEntry CreateFromNothing(string nameInArchive) => Create(nameInArchive, ZipEntrySource.None, null, null);
 
-    internal static ZipEntry CreateFromFile(string filename, string nameInArchive)
-    {
-        return Create(nameInArchive, ZipEntrySource.FileSystem, filename, null);
-    }
+    internal static ZipEntry CreateFromFile(string filename, string nameInArchive) => Create(nameInArchive, ZipEntrySource.FileSystem, filename, null);
 
-    internal static ZipEntry CreateForStream(string entryName, Stream s)
-    {
-        return Create(entryName, ZipEntrySource.Stream, s, null);
-    }
+    internal static ZipEntry CreateForStream(string entryName, Stream s) => Create(entryName, ZipEntrySource.Stream, s, null);
 
-    internal static ZipEntry CreateForWriter(string entryName, WriteDelegate d)
-    {
-        return Create(entryName, ZipEntrySource.WriteDelegate, d, null);
-    }
+    internal static ZipEntry CreateForWriter(string entryName, WriteDelegate d) => Create(entryName, ZipEntrySource.WriteDelegate, d, null);
 
-    internal static ZipEntry CreateForJitStreamProvider(string nameInArchive, OpenDelegate opener, CloseDelegate closer)
-    {
-        return Create(nameInArchive, ZipEntrySource.JitStream, opener, closer);
-    }
+    internal static ZipEntry CreateForJitStreamProvider(string nameInArchive, OpenDelegate opener, CloseDelegate closer) => Create(nameInArchive, ZipEntrySource.JitStream, opener, closer);
 
-    internal static ZipEntry CreateForZipOutputStream(string nameInArchive)
-    {
-        return Create(nameInArchive, ZipEntrySource.ZipOutputStream, null, null);
-    }
+    internal static ZipEntry CreateForZipOutputStream(string nameInArchive) => Create(nameInArchive, ZipEntrySource.ZipOutputStream, null, null);
 
     private static ZipEntry Create(string nameInArchive, ZipEntrySource source, object arg1, object arg2)
     {
@@ -2521,16 +2455,13 @@ internal partial class ZipEntry
     public bool IsText
     {
         // workitem 7801
-        get { return this._IsText; }
-        set { this._IsText = value; }
+        get => this._IsText;
+        set => this._IsText = value;
     }
 
     /// <summary>Provides a string representation of the instance.</summary>
     /// <returns>a string representation of the instance.</returns>
-    public override string ToString()
-    {
-        return string.Format("ZipEntry::{0}", this.FileName);
-    }
+    public override string ToString() => string.Format("ZipEntry::{0}", this.FileName);
 
     internal Stream ArchiveStream
     {

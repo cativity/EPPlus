@@ -89,8 +89,5 @@ internal static class AttributeExtensions
         return result;
     }
 
-    internal static bool IsComplexType(this Type type)
-    {
-        return type != typeof(string) && (type.IsClass || type.IsInterface);
-    }
+    internal static bool IsComplexType(this Type type) => type != typeof(string) && (type.IsClass || type.IsInterface);
 }

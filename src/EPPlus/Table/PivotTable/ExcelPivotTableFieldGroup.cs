@@ -28,16 +28,10 @@ public class ExcelPivotTableFieldGroup : XmlHelper
     /// <summary>
     /// The index of the base field for this group field
     /// </summary>
-    public int? BaseIndex
-    {
-        get { return this.GetXmlNodeIntNull("d:fieldGroup/@base"); }
-    }
+    public int? BaseIndex => this.GetXmlNodeIntNull("d:fieldGroup/@base");
 
     /// <summary>
     /// The index of the parent field from this group field
     /// </summary>
-    public int? ParentIndex
-    {
-        get { return this.GetXmlNodeIntNull("d:fieldGroup/@par"); }
-    }
+    public int? ParentIndex => this.GetXmlNodeIntNull("d:fieldGroup/@par");
 }

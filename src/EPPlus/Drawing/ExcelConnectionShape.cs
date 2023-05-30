@@ -28,10 +28,8 @@ namespace OfficeOpenXml.Drawing;
 public sealed class ExcelConnectionShape : ExcelShapeBase
 {
     internal ExcelConnectionShape(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent = null)
-        : base(drawings, node, "xdr:cxnSp", "xdr:nvCxnSpPr/xdr:cNvPr", parent)
-    {
+        : base(drawings, node, "xdr:cxnSp", "xdr:nvCxnSpPr/xdr:cNvPr", parent) =>
         this.Init(drawings, node);
-    }
 
     internal ExcelConnectionShape(ExcelDrawings drawings, XmlNode node, eShapeConnectorStyle style, ExcelShape startShape, ExcelShape endShape)
         : base(drawings, node, "xdr:cxnSp", "xdr:nvCxnSpPr/xdr:cNvPr")
@@ -85,10 +83,7 @@ public sealed class ExcelConnectionShape : ExcelShapeBase
         base.DeleteMe();
     }
 
-    internal new string Id
-    {
-        get { return this.Name + this.Text; }
-    }
+    internal new string Id => this.Name + this.Text;
 
     /// <summary>
     /// Connection starting point
@@ -118,6 +113,6 @@ public sealed class ExcelConnectionShape : ExcelShapeBase
                 throw new Exception(string.Format("Invalid shapetype {0}", v));
             }
         }
-        set { this.SetXmlNodeString(this._shapeStylePath, value.ToEnumString()); }
+        set => this.SetXmlNodeString(this._shapeStylePath, value.ToEnumString());
     }
 }

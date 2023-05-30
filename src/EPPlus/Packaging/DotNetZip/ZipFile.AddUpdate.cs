@@ -80,10 +80,7 @@ internal partial class ZipFile
     /// the name of the file or directory to add.</param>
     ///
     /// <returns>The <c>ZipEntry</c> added.</returns>
-    public ZipEntry AddItem(string fileOrDirectoryName)
-    {
-        return this.AddItem(fileOrDirectoryName, null);
-    }
+    public ZipEntry AddItem(string fileOrDirectoryName) => this.AddItem(fileOrDirectoryName, null);
 
     /// <summary>
     ///   Adds an item, either a file or a directory, to a zip file archive,
@@ -293,10 +290,7 @@ internal partial class ZipFile
     ///   The name of the file may be a relative path or a fully-qualified path.
     /// </param>
     /// <returns>The <c>ZipEntry</c> corresponding to the File added.</returns>
-    public ZipEntry AddFile(string fileName)
-    {
-        return this.AddFile(fileName, null);
-    }
+    public ZipEntry AddFile(string fileName) => this.AddFile(fileName, null);
 
     /// <summary>
     ///   Adds a File to a Zip file archive, potentially overriding the path to be
@@ -518,10 +512,7 @@ internal partial class ZipFile
     /// </example>
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<string> fileNames)
-    {
-        this.AddFiles(fileNames, null);
-    }
+    public void AddFiles(IEnumerable<string> fileNames) => this.AddFiles(fileNames, null);
 
     /// <summary>
     ///   Adds or updates a set of files in the <c>ZipFile</c>.
@@ -548,10 +539,7 @@ internal partial class ZipFile
     ///   the filesystem. The name of the file may be a relative path or a fully-qualified path.
     /// </param>
     ///
-    public void UpdateFiles(IEnumerable<string> fileNames)
-    {
-        this.UpdateFiles(fileNames, null);
-    }
+    public void UpdateFiles(IEnumerable<string> fileNames) => this.UpdateFiles(fileNames, null);
 
     /// <summary>
     ///   Adds a set of files to the <c>ZipFile</c>, using the
@@ -595,10 +583,7 @@ internal partial class ZipFile
     /// </param>
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<string> fileNames, string directoryPathInArchive)
-    {
-        this.AddFiles(fileNames, false, directoryPathInArchive);
-    }
+    public void AddFiles(IEnumerable<string> fileNames, string directoryPathInArchive) => this.AddFiles(fileNames, false, directoryPathInArchive);
 
     /// <summary>
     ///   Adds a set of files to the <c>ZipFile</c>, using the specified directory
@@ -847,10 +832,7 @@ internal partial class ZipFile
     /// <returns>
     ///   The <c>ZipEntry</c> corresponding to the File that was added or updated.
     /// </returns>
-    public ZipEntry UpdateFile(string fileName)
-    {
-        return this.UpdateFile(fileName, null);
-    }
+    public ZipEntry UpdateFile(string fileName) => this.UpdateFile(fileName, null);
 
     /// <summary>
     ///   Adds or Updates a File in a Zip file archive.
@@ -947,10 +929,7 @@ internal partial class ZipFile
     /// <returns>
     /// The <c>ZipEntry</c> corresponding to the Directory that was added or updated.
     /// </returns>
-    public ZipEntry UpdateDirectory(string directoryName)
-    {
-        return this.UpdateDirectory(directoryName, null);
-    }
+    public ZipEntry UpdateDirectory(string directoryName) => this.UpdateDirectory(directoryName, null);
 
     /// <summary>
     ///   Add or update a directory in the zip archive at the specified root
@@ -989,10 +968,7 @@ internal partial class ZipFile
     /// <returns>
     ///   The <c>ZipEntry</c> corresponding to the Directory that was added or updated.
     /// </returns>
-    public ZipEntry UpdateDirectory(string directoryName, string directoryPathInArchive)
-    {
-        return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOrUpdate);
-    }
+    public ZipEntry UpdateDirectory(string directoryName, string directoryPathInArchive) => this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOrUpdate);
 
     /// <summary>
     ///   Add or update a file or directory in the zip archive.
@@ -1024,10 +1000,7 @@ internal partial class ZipFile
     /// <param name="itemName">
     ///  the path to the file or directory to be added or updated.
     /// </param>
-    public void UpdateItem(string itemName)
-    {
-        this.UpdateItem(itemName, null);
-    }
+    public void UpdateItem(string itemName) => this.UpdateItem(itemName, null);
 
     /// <summary>
     ///   Add or update a file or directory.
@@ -1965,10 +1938,7 @@ internal partial class ZipFile
     ///
     /// <param name="directoryName">The name of the directory to add.</param>
     /// <returns>The <c>ZipEntry</c> added.</returns>
-    public ZipEntry AddDirectory(string directoryName)
-    {
-        return this.AddDirectory(directoryName, null);
-    }
+    public ZipEntry AddDirectory(string directoryName) => this.AddDirectory(directoryName, null);
 
     /// <summary>
     ///   Adds the contents of a filesystem directory to a Zip file archive,
@@ -2034,10 +2004,7 @@ internal partial class ZipFile
     /// </param>
     ///
     /// <returns>The <c>ZipEntry</c> added.</returns>
-    public ZipEntry AddDirectory(string directoryName, string directoryPathInArchive)
-    {
-        return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOnly);
-    }
+    public ZipEntry AddDirectory(string directoryName, string directoryPathInArchive) => this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOnly);
 
     /// <summary>
     ///   Creates a directory in the zip archive.

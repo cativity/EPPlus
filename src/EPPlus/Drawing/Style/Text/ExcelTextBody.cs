@@ -44,8 +44,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eTextAnchoringType Anchor
     {
-        get { return this.GetXmlNodeString($"{this._path}/@anchor").TranslateTextAchoring(); }
-        set { this.SetXmlNodeString($"{this._path}/@anchor", value.TranslateTextAchoringText()); }
+        get => this.GetXmlNodeString($"{this._path}/@anchor").TranslateTextAchoring();
+        set => this.SetXmlNodeString($"{this._path}/@anchor", value.TranslateTextAchoringText());
     }
 
     /// <summary>
@@ -53,8 +53,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool AnchorCenter
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@anchorCtr"); }
-        set { this.SetXmlNodeBool($"{this._path}/@anchorCtr", value, false); }
+        get => this.GetXmlNodeBool($"{this._path}/@anchorCtr");
+        set => this.SetXmlNodeBool($"{this._path}/@anchorCtr", value, false);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eUnderLineType UnderLine
     {
-        get { return this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline(); }
+        get => this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline();
         set
         {
             if (value == eUnderLineType.None)
@@ -81,8 +81,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? BottomInsert
     {
-        get { return this.GetXmlNodeEmuToPtNull($"{this._path}/@bIns"); }
-        set { this.SetXmlNodeEmuToPt($"{this._path}/@bIns", value); }
+        get => this.GetXmlNodeEmuToPtNull($"{this._path}/@bIns");
+        set => this.SetXmlNodeEmuToPt($"{this._path}/@bIns", value);
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? TopInsert
     {
-        get { return this.GetXmlNodeEmuToPtNull($"{this._path}/@tIns"); }
-        set { this.SetXmlNodeEmuToPt($"{this._path}/@tIns", value); }
+        get => this.GetXmlNodeEmuToPtNull($"{this._path}/@tIns");
+        set => this.SetXmlNodeEmuToPt($"{this._path}/@tIns", value);
     }
 
     /// <summary>
@@ -99,8 +99,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? RightInsert
     {
-        get { return this.GetXmlNodeEmuToPtNull($"{this._path}/@rIns"); }
-        set { this.SetXmlNodeEmuToPt($"{this._path}/@rIns", value); }
+        get => this.GetXmlNodeEmuToPtNull($"{this._path}/@rIns");
+        set => this.SetXmlNodeEmuToPt($"{this._path}/@rIns", value);
     }
 
     /// <summary>
@@ -108,8 +108,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? LeftInsert
     {
-        get { return this.GetXmlNodeEmuToPtNull($"{this._path}/@lIns"); }
-        set { this.SetXmlNodeEmuToPt($"{this._path}/@lIns", value); }
+        get => this.GetXmlNodeEmuToPtNull($"{this._path}/@lIns");
+        set => this.SetXmlNodeEmuToPt($"{this._path}/@lIns", value);
     }
 
     /// <summary>
@@ -117,8 +117,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? Rotation
     {
-        get { return this.GetXmlNodeAngel($"{this._path}/@rot"); }
-        set { this.SetXmlNodeAngel($"{this._path}/@rot", value, "Rotation", -100000, 100000); }
+        get => this.GetXmlNodeAngel($"{this._path}/@rot");
+        set => this.SetXmlNodeAngel($"{this._path}/@rot", value, "Rotation", -100000, 100000);
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double SpaceBetweenColumns
     {
-        get { return this.GetXmlNodeEmuToPt($"{this._path}/@spcCol"); }
+        get => this.GetXmlNodeEmuToPt($"{this._path}/@spcCol");
         set
         {
             if (value < 0)
@@ -143,8 +143,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool ParagraphSpacing
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@spcFirstLastPara"); }
-        set { this.SetXmlNodeBool($"{this._path}/@spcFirstLastPara", value); }
+        get => this.GetXmlNodeBool($"{this._path}/@spcFirstLastPara");
+        set => this.SetXmlNodeBool($"{this._path}/@spcFirstLastPara", value);
     }
 
     /// <summary>
@@ -152,8 +152,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool TextUpright
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@upright"); }
-        set { this.SetXmlNodeBool($"{this._path}/@upright", value); }
+        get => this.GetXmlNodeBool($"{this._path}/@upright");
+        set => this.SetXmlNodeBool($"{this._path}/@upright", value);
     }
 
     /// <summary>
@@ -161,8 +161,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool CompatibleLineSpacing
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@compatLnSpc"); }
-        set { this.SetXmlNodeBool($"{this._path}/@compatLnSpc", value); }
+        get => this.GetXmlNodeBool($"{this._path}/@compatLnSpc");
+        set => this.SetXmlNodeBool($"{this._path}/@compatLnSpc", value);
     }
 
     /// <summary>
@@ -170,8 +170,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool ForceAntiAlias
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@forceAA"); }
-        set { this.SetXmlNodeBool($"{this._path}/@forceAA", value); }
+        get => this.GetXmlNodeBool($"{this._path}/@forceAA");
+        set => this.SetXmlNodeBool($"{this._path}/@forceAA", value);
     }
 
     /// <summary>
@@ -179,8 +179,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public bool FromWordArt
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@fromWordArt"); }
-        set { this.SetXmlNodeBool($"{this._path}/@fromWordArt", value); }
+        get => this.GetXmlNodeBool($"{this._path}/@fromWordArt");
+        set => this.SetXmlNodeBool($"{this._path}/@fromWordArt", value);
     }
 
     /// <summary>
@@ -188,8 +188,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eTextVerticalType VerticalText
     {
-        get { return this.GetXmlNodeString($"{this._path}/@vert").TranslateTextVertical(); }
-        set { this.SetXmlNodeString($"{this._path}/@vert", value.TranslateTextVerticalText()); }
+        get => this.GetXmlNodeString($"{this._path}/@vert").TranslateTextVertical();
+        set => this.SetXmlNodeString($"{this._path}/@vert", value.TranslateTextVerticalText());
     }
 
     /// <summary>
@@ -197,8 +197,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eTextHorizontalOverflow HorizontalTextOverflow
     {
-        get { return this.GetXmlNodeString($"{this._path}/@horzOverflow").ToEnum(eTextHorizontalOverflow.Overflow); }
-        set { this.SetXmlNodeString($"{this._path}/@horzOverflow", value.ToEnumString()); }
+        get => this.GetXmlNodeString($"{this._path}/@horzOverflow").ToEnum(eTextHorizontalOverflow.Overflow);
+        set => this.SetXmlNodeString($"{this._path}/@horzOverflow", value.ToEnumString());
     }
 
     /// <summary>
@@ -206,8 +206,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eTextVerticalOverflow VerticalTextOverflow
     {
-        get { return this.GetXmlNodeString($"{this._path}/@vertOverflow").ToEnum(eTextVerticalOverflow.Overflow); }
-        set { this.SetXmlNodeString($"{this._path}/@vertOverflow", value.ToEnumString()); }
+        get => this.GetXmlNodeString($"{this._path}/@vertOverflow").ToEnum(eTextVerticalOverflow.Overflow);
+        set => this.SetXmlNodeString($"{this._path}/@vertOverflow", value.ToEnumString());
     }
 
     /// <summary>
@@ -215,8 +215,8 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public eTextWrappingType WrapText
     {
-        get { return this.GetXmlNodeString($"{this._path}/@wrap").ToEnum(eTextWrappingType.Square); }
-        set { this.SetXmlNodeString($"{this._path}/@wrap", value.ToEnumString()); }
+        get => this.GetXmlNodeString($"{this._path}/@wrap").ToEnum(eTextWrappingType.Square);
+        set => this.SetXmlNodeString($"{this._path}/@wrap", value.ToEnumString());
     }
 
     /// <summary>
@@ -278,7 +278,7 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? AutofitNormalFontScale
     {
-        get { return this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@fontScale"); }
+        get => this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@fontScale");
         set
         {
             if (this.TextAutofit != eTextAutofit.NormalAutofit)
@@ -296,7 +296,7 @@ public class ExcelTextBody : XmlHelper
     /// </summary>
     public double? LineSpaceReduction
     {
-        get { return this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@lnSpcReduction"); }
+        get => this.GetXmlNodePercentage($"{this._path}/a:normAutofit/@lnSpcReduction");
         set
         {
             if (this.TextAutofit != eTextAutofit.NormalAutofit)

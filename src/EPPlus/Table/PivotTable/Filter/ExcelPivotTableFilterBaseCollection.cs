@@ -63,24 +63,15 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ExcelPivotTableFilter> GetEnumerator()
-    {
-        return this._filters.GetEnumerator();
-    }
+    public IEnumerator<ExcelPivotTableFilter> GetEnumerator() => this._filters.GetEnumerator();
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._filters.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._filters.GetEnumerator();
 
-    internal XmlNode GetOrCreateFiltersNode()
-    {
-        return this._table.CreateNode("d:filters");
-    }
+    internal XmlNode GetOrCreateFiltersNode() => this._table.CreateNode("d:filters");
 
     internal ExcelPivotTableFilter CreateFilter()
     {
@@ -99,10 +90,7 @@ public abstract class ExcelPivotTableFilterBaseCollection : IEnumerable<ExcelPiv
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._filters.Count; }
-    }
+    public int Count => this._filters.Count;
 
     /// <summary>
     /// The indexer for the collection

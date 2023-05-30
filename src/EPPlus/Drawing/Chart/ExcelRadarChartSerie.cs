@@ -48,18 +48,12 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
     /// <summary>
     /// Datalabel
     /// </summary>
-    public ExcelChartSerieDataLabel DataLabel
-    {
-        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartSerieDataLabel DataLabel => this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     const string markerPath = "c:marker/c:symbol/@val";
     ExcelChartMarker _chartMarker;
@@ -67,14 +61,10 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
     /// <summary>
     /// A reference to marker properties
     /// </summary>
-    public ExcelChartMarker Marker
-    {
-        get
-        {
-            //if (IsMarkersAllowed() == false) return null;
-            return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartMarker Marker =>
+
+        //if (IsMarkersAllowed() == false) return null;
+        this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the serie has markers
@@ -105,10 +95,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     const string MARKERSIZE_PATH = "c:marker/c:size/@val";
 
@@ -118,7 +105,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
     [Obsolete("Please use Marker.Size")]
     public int MarkerSize
     {
-        get { return this.GetXmlNodeInt(MARKERSIZE_PATH); }
+        get => this.GetXmlNodeInt(MARKERSIZE_PATH);
         set
         {
             if (value < 2 && value > 72)

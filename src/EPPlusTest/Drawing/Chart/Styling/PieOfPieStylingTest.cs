@@ -41,16 +41,10 @@ public class OfPieChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("OfPieChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("OfPieChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void PieOfPie_Styles()
@@ -73,25 +67,25 @@ public class OfPieChartStylingTest : TestBase
     private static void OfPieStyles(ExcelWorksheet ws, eOfPieChartType chartType)
     {
         //Style 1
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle1", 0, 5, ePresetChartStyle.OfPieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle1", 0, 5, ePresetChartStyle.OfPieChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle2", 0, 18, ePresetChartStyle.OfPieChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle2", 0, 18, ePresetChartStyle.OfPieChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle3", 0, 31, ePresetChartStyle.OfPieChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle3", 0, 31, ePresetChartStyle.OfPieChartStyle3, c => c.DataLabel.ShowPercent = true);
 
         //Style 4
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle4", 22, 5, ePresetChartStyle.OfPieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle4", 22, 5, ePresetChartStyle.OfPieChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle5", 22, 18, ePresetChartStyle.OfPieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle5", 22, 18, ePresetChartStyle.OfPieChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddOfPie(ws, chartType, "OfPieChartStyle6", 22, 31, ePresetChartStyle.OfPieChartStyle6, c => { });
 
         //Style 7
-        _ = AddOfPie(ws, chartType, "OfPieChartStyle7", 44, 5, ePresetChartStyle.OfPieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddOfPie(ws, chartType, "OfPieChartStyle7", 44, 5, ePresetChartStyle.OfPieChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddOfPie(ws,

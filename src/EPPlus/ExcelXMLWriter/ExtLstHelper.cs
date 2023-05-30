@@ -22,10 +22,7 @@ internal class ExtLstHelper
     List<string> listOfExts = new List<string>();
     Dictionary<string, int> uriToIndex = new Dictionary<string, int>();
 
-    public ExtLstHelper(string xml)
-    {
-        this.ParseIntialXmlToList(xml);
-    }
+    public ExtLstHelper(string xml) => this.ParseIntialXmlToList(xml);
 
     private void ParseIntialXmlToList(string xml)
     {

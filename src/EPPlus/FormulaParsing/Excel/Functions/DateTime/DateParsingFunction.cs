@@ -38,8 +38,5 @@ internal abstract class DateParsingFunction : ExcelFunction
         return date;
     }
 
-    protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj)
-    {
-        return this.ParseDate(arguments, dateObj, 0);
-    }
+    protected System.DateTime ParseDate(IEnumerable<FunctionArgument> arguments, object dateObj) => this.ParseDate(arguments, dateObj, 0);
 }

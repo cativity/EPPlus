@@ -39,16 +39,12 @@ internal partial class EpplusTableCssWriter : HtmlWriterBase
     ExcelTheme _theme;
 
     internal EpplusTableCssWriter(Stream stream, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache)
-        : base(stream, settings.Encoding, styleCache)
-    {
+        : base(stream, settings.Encoding, styleCache) =>
         this.Init(table, settings);
-    }
 
     internal EpplusTableCssWriter(StreamWriter writer, ExcelTable table, HtmlTableExportSettings settings, Dictionary<string, int> styleCache)
-        : base(writer, styleCache)
-    {
+        : base(writer, styleCache) =>
         this.Init(table, settings);
-    }
 
     private void Init(ExcelTable table, HtmlTableExportSettings settings)
     {
@@ -151,10 +147,7 @@ internal partial class EpplusTableCssWriter : HtmlWriterBase
         this.WriteClassEnd(this._settings.Minify);
     }
 
-    internal void FlushStream()
-    {
-        this._writer.Flush();
-    }
+    internal void FlushStream() => this._writer.Flush();
 
     private void WriteFillStyles(ExcelDxfFill f)
     {

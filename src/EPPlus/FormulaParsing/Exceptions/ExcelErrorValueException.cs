@@ -41,10 +41,8 @@ public class ExcelErrorValueException : Exception
     /// <param name="error">The error value causing the exception</param>
     /// <param name="message">An error message for the exception</param>
     public ExcelErrorValueException(string message, ExcelErrorValue error)
-        : base(message)
-    {
+        : base(message) =>
         this.ErrorValue = error;
-    }
 
     /// <summary>
     /// Constructor

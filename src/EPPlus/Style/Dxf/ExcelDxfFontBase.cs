@@ -28,10 +28,8 @@ namespace OfficeOpenXml.Style.Dxf;
 public class ExcelDxfFontBase : DxfStyleBase
 {
     internal ExcelDxfFontBase(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-        : base(styles, callback)
-    {
+        : base(styles, callback) =>
         this.Color = new ExcelDxfColor(styles, eStyleClass.Font, callback);
-    }
 
     bool? _bold;
 
@@ -40,7 +38,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// </summary>
     public bool? Bold
     {
-        get { return this._bold; }
+        get => this._bold;
         set
         {
             this._bold = value;
@@ -55,7 +53,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// </summary>
     public bool? Italic
     {
-        get { return this._italic; }
+        get => this._italic;
         set
         {
             this._italic = value;
@@ -70,7 +68,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// </summary>
     public bool? Strike
     {
-        get { return this._strike; }
+        get => this._strike;
         set
         {
             this._strike = value;
@@ -90,7 +88,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// </summary>
     public ExcelUnderLineType? Underline
     {
-        get { return this._underline; }
+        get => this._underline;
         set
         {
             this._underline = value;
@@ -101,22 +99,17 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// <summary>
     /// The id
     /// </summary>
-    internal override string Id
-    {
-        get
-        {
-            return GetAsString(this.Bold)
-                   + "|"
-                   + GetAsString(this.Italic)
-                   + "|"
-                   + GetAsString(this.Strike)
-                   + "|"
-                   + (this.Color == null ? "" : this.Color.Id)
-                   + "|"
-                   + GetAsString(this.Underline)
-                   + "|||||||||";
-        }
-    }
+    internal override string Id =>
+        GetAsString(this.Bold)
+        + "|"
+        + GetAsString(this.Italic)
+        + "|"
+        + GetAsString(this.Strike)
+        + "|"
+        + (this.Color == null ? "" : this.Color.Id)
+        + "|"
+        + GetAsString(this.Underline)
+        + "|||||||||";
 
     /// <summary>
     /// Creates the the xml node
@@ -148,10 +141,7 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue; }
-    }
+    public override bool HasValue => this.Bold != null || this.Italic != null || this.Strike != null || this.Underline != null || this.Color.HasValue;
 
     /// <summary>
     /// Clears all properties
@@ -169,13 +159,11 @@ public class ExcelDxfFontBase : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfFontBase(this._styles, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfFontBase(this._styles, this._callback)
         {
             Bold = this.Bold, Color = (ExcelDxfColor)this.Color.Clone(), Italic = this.Italic, Strike = this.Strike, Underline = this.Underline
         };
-    }
 
     internal override void SetValuesFromXml(XmlHelper helper)
     {

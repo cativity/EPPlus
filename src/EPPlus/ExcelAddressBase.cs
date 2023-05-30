@@ -706,10 +706,7 @@ public class ExcelAddressBase : ExcelCellBase
     /// Gets the row and column of the top left cell.
     /// </summary>
     /// <value>The start row column.</value>
-    public ExcelCellAddress Start
-    {
-        get { return this._start ??= new ExcelCellAddress(this._fromRow, this._fromCol, this._fromRowFixed, this._fromColFixed); }
-    }
+    public ExcelCellAddress Start => this._start ??= new ExcelCellAddress(this._fromRow, this._fromCol, this._fromRowFixed, this._fromColFixed);
 
     internal ExcelCellAddress _end;
 
@@ -717,10 +714,7 @@ public class ExcelAddressBase : ExcelCellBase
     /// Gets the row and column of the bottom right cell.
     /// </summary>
     /// <value>The end row column.</value>
-    public ExcelCellAddress End
-    {
-        get { return this._end ??= new ExcelCellAddress(this._toRow, this._toCol, this._toRowFixed, this._toColFixed); }
-    }
+    public ExcelCellAddress End => this._end ??= new ExcelCellAddress(this._toRow, this._toCol, this._toRowFixed, this._toColFixed);
 
     /// <summary>
     /// The index to the external reference. Return 0, the current workbook, if no reference exists.
@@ -752,18 +746,12 @@ public class ExcelAddressBase : ExcelCellBase
     /// <summary>
     /// If the address is refering a table, this property contains additional information 
     /// </summary>
-    public ExcelTableAddress Table
-    {
-        get { return this._table; }
-    }
+    public ExcelTableAddress Table => this._table;
 
     /// <summary>
     /// The address for the range
     /// </summary>
-    public virtual string Address
-    {
-        get { return this._address; }
-    }
+    public virtual string Address => this._address;
 
     /// <summary>
     /// The full address including the worksheet
@@ -795,28 +783,19 @@ public class ExcelAddressBase : ExcelCellBase
     /// <summary>
     /// If the address is a defined name
     /// </summary>
-    public bool IsName
-    {
-        get { return this._fromRow < 0; }
-    }
+    public bool IsName => this._fromRow < 0;
 
     /// <summary>
     /// Returns the address text
     /// </summary>
     /// <returns></returns>
-    public override string ToString()
-    {
-        return this._address;
-    }
+    public override string ToString() => this._address;
 
     /// <summary>
     /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public override int GetHashCode() => base.GetHashCode();
 
     string _firstAddress;
 
@@ -855,13 +834,7 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
-    internal string AddressSpaceSeparated
-    {
-        get
-        {
-            return this._address.Replace(',', ' '); //Conditional formatting and a few other places use space as separator for mulit addresses.
-        }
-    }
+    internal string AddressSpaceSeparated => this._address.Replace(',', ' '); //Conditional formatting and a few other places use space as separator for mulit addresses.
 
     /// <summary>
     /// Validate the address
@@ -874,17 +847,11 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
-    internal string WorkSheetName
-    {
-        get { return this._ws; }
-    }
+    internal string WorkSheetName => this._ws;
 
     internal List<ExcelAddressBase> _addresses;
 
-    internal virtual List<ExcelAddressBase> Addresses
-    {
-        get { return this._addresses; }
-    }
+    internal virtual List<ExcelAddressBase> Addresses => this._addresses;
 
     internal virtual List<ExcelAddressBase> GetAllAddresses()
     {
@@ -1145,10 +1112,7 @@ public class ExcelAddressBase : ExcelCellBase
         return this.Collide(address._fromRow, address._fromCol, address._toRow, address._toCol);
     }
 
-    internal eAddressCollition Collide(int row, int col)
-    {
-        return this.Collide(row, col, row, col);
-    }
+    internal eAddressCollition Collide(int row, int col) => this.Collide(row, col, row, col);
 
     internal eAddressCollition Collide(int fromRow, int fromCol, int toRow, int toCol)
     {
@@ -1170,41 +1134,21 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
-    internal bool DoNotCollide(int fromRow, int fromCol, int toRow, int toCol)
-    {
-        return fromRow > this._toRow || fromCol > this._toCol || this._fromRow > toRow || this._fromCol > toCol;
-    }
+    internal bool DoNotCollide(int fromRow, int fromCol, int toRow, int toCol) => fromRow > this._toRow || fromCol > this._toCol || this._fromRow > toRow || this._fromCol > toCol;
 
-    internal bool CollideFullRowOrColumn(ExcelAddressBase address)
-    {
-        return this.CollideFullRowOrColumn(address._fromRow, address._fromCol, address._toRow, address._toCol);
-    }
+    internal bool CollideFullRowOrColumn(ExcelAddressBase address) => this.CollideFullRowOrColumn(address._fromRow, address._fromCol, address._toRow, address._toCol);
 
-    internal bool CollideFullRowOrColumn(int fromRow, int fromCol, int toRow, int toCol)
-    {
-        return (this.CollideFullRow(fromRow, toRow) && this.CollideColumn(fromCol, toCol))
-               || (this.CollideFullColumn(fromCol, toCol) && this.CollideRow(fromRow, toRow));
-    }
+    internal bool CollideFullRowOrColumn(int fromRow, int fromCol, int toRow, int toCol) =>
+        (this.CollideFullRow(fromRow, toRow) && this.CollideColumn(fromCol, toCol))
+        || (this.CollideFullColumn(fromCol, toCol) && this.CollideRow(fromRow, toRow));
 
-    private bool CollideColumn(int fromCol, int toCol)
-    {
-        return fromCol <= this._toCol && toCol >= this._fromCol;
-    }
+    private bool CollideColumn(int fromCol, int toCol) => fromCol <= this._toCol && toCol >= this._fromCol;
 
-    internal bool CollideRow(int fromRow, int toRow)
-    {
-        return fromRow <= this._toRow && toRow >= this._fromRow;
-    }
+    internal bool CollideRow(int fromRow, int toRow) => fromRow <= this._toRow && toRow >= this._fromRow;
 
-    internal bool CollideFullRow(int fromRow, int toRow)
-    {
-        return fromRow <= this._fromRow && toRow >= this._toRow;
-    }
+    internal bool CollideFullRow(int fromRow, int toRow) => fromRow <= this._fromRow && toRow >= this._toRow;
 
-    internal bool CollideFullColumn(int fromCol, int toCol)
-    {
-        return fromCol <= this._fromCol && toCol >= this._toCol;
-    }
+    internal bool CollideFullColumn(int fromCol, int toCol) => fromCol <= this._fromCol && toCol >= this._toCol;
 
     internal ExcelAddressBase AddRow(int row, int rows, bool setFixed = false, bool setRefOnMinMax = true, bool extendIfLastRow = false)
     {
@@ -1883,41 +1827,26 @@ public class ExcelAddressBase : ExcelCellBase
     /// <summary>
     /// Number of rows int the address
     /// </summary>
-    public int Rows
-    {
-        get { return this._toRow - this._fromRow + 1; }
-    }
+    public int Rows => this._toRow - this._fromRow + 1;
 
     /// <summary>
     /// Number of columns int the address
     /// </summary>
-    public int Columns
-    {
-        get { return this._toCol - this._fromCol + 1; }
-    }
+    public int Columns => this._toCol - this._fromCol + 1;
 
     /// <summary>
     /// Returns true if the range spans a full row
     /// </summary>
     /// <returns></returns>
-    public bool IsFullRow
-    {
-        get { return this._fromCol == 1 && this._toCol == ExcelPackage.MaxColumns; }
-    }
+    public bool IsFullRow => this._fromCol == 1 && this._toCol == ExcelPackage.MaxColumns;
 
     /// <summary>
     /// Returns true if the range spans a full column
     /// </summary>
     /// <returns></returns>
-    public bool IsFullColumn
-    {
-        get { return this._fromRow == 1 && this._toRow == ExcelPackage.MaxRows; }
-    }
+    public bool IsFullColumn => this._fromRow == 1 && this._toRow == ExcelPackage.MaxRows;
 
-    internal bool IsSingleCell
-    {
-        get { return this._fromRow == this._toRow && this._fromCol == this._toCol; }
-    }
+    internal bool IsSingleCell => this._fromRow == this._toRow && this._fromCol == this._toCol;
 
     /// <summary>
     /// The address without the workbook or worksheet reference
@@ -2226,15 +2155,13 @@ public class ExcelAddressBase : ExcelCellBase
         return address.Substring(ix, endIx - ix - 1).Replace("''", "'");
     }
 
-    internal bool IsValidRowCol()
-    {
-        return !(this._fromRow > this._toRow
-                 || this._fromCol > this._toCol
-                 || this._fromRow < 1
-                 || this._fromCol < 1
-                 || this._toRow > ExcelPackage.MaxRows
-                 || this._toCol > ExcelPackage.MaxColumns);
-    }
+    internal bool IsValidRowCol() =>
+        !(this._fromRow > this._toRow
+          || this._fromCol > this._toCol
+          || this._fromRow < 1
+          || this._fromCol < 1
+          || this._toRow > ExcelPackage.MaxRows
+          || this._toCol > ExcelPackage.MaxColumns);
 
     /// <summary>
     /// Returns true if the item is equal to another item.
@@ -2278,16 +2205,10 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
-    private static bool IsEqual(ExcelAddressBase a1, ExcelAddressBase a2)
-    {
-        return a1._fromRow == a2._fromRow && a1._toRow == a2._toRow && a1._fromCol == a2._fromCol && a1._toCol == a2._toCol;
-    }
+    private static bool IsEqual(ExcelAddressBase a1, ExcelAddressBase a2) => a1._fromRow == a2._fromRow && a1._toRow == a2._toRow && a1._fromCol == a2._fromCol && a1._toCol == a2._toCol;
 
     /// <summary>
     /// Returns true the address contains an external reference
     /// </summary>
-    public bool IsExternal
-    {
-        get { return !string.IsNullOrEmpty(this._wb); }
-    }
+    public bool IsExternal => !string.IsNullOrEmpty(this._wb);
 }

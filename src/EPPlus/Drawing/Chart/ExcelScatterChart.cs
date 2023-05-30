@@ -33,10 +33,8 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
                                ExcelPivotTable PivotTableSource,
                                XmlDocument chartXml,
                                ExcelGroupShape parent = null)
-        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelScatterChart(ExcelDrawings drawings,
                                XmlNode node,
@@ -45,16 +43,12 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
                                XmlDocument chartXml,
                                XmlNode chartNode,
                                ExcelGroupShape parent)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelScatterChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent)
-        : base(topChart, chartNode, parent)
-    {
+        : base(topChart, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     internal override void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
     {
@@ -110,7 +104,7 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public eScatterStyle ScatterStyle
     {
-        get { return GetScatterEnum(this._chartXmlHelper.GetXmlNodeString(this._scatterTypePath)); }
+        get => GetScatterEnum(this._chartXmlHelper.GetXmlNodeString(this._scatterTypePath));
         internal set
         {
             _ = this._chartXmlHelper.CreateNode(this._scatterTypePath, true);
@@ -125,8 +119,8 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public bool Marker
     {
-        get { return this.GetXmlNodeBool(this.MARKER_PATH, false); }
-        set { this.SetXmlNodeBool(this.MARKER_PATH, value, false); }
+        get => this.GetXmlNodeBool(this.MARKER_PATH, false);
+        set => this.SetXmlNodeBool(this.MARKER_PATH, value, false);
     }
 
     ExcelChartDataLabel _dataLabel;
@@ -134,22 +128,14 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
-    public ExcelChartDataLabel DataLabel
-    {
-        get
-        {
-            return this._dataLabel ??=
-                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartDataLabel DataLabel =>
+        this._dataLabel ??=
+            new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     internal override eChartType GetChartType(string name)
     {

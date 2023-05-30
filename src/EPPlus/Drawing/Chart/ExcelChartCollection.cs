@@ -26,15 +26,9 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     List<ExcelChart> _list = new List<ExcelChart>();
     ExcelChart _topChart;
 
-    internal ExcelChartCollection(ExcelChart chart)
-    {
-        this._topChart = chart;
-    }
+    internal ExcelChartCollection(ExcelChart chart) => this._topChart = chart;
 
-    internal void Add(ExcelChart chart)
-    {
-        this._list.Add(chart);
-    }
+    internal void Add(ExcelChart chart) => this._list.Add(chart);
 
     #region Add charts
 
@@ -70,108 +64,72 @@ public class ExcelChartCollection : IEnumerable<ExcelChart>
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelLineChart AddLineChart(eLineChartType chartType)
-    {
-        return (ExcelLineChart)this.Add((eChartType)chartType);
-    }
+    public ExcelLineChart AddLineChart(eLineChartType chartType) => (ExcelLineChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new bar chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelBarChart AddBarChart(eBarChartType chartType)
-    {
-        return (ExcelBarChart)this.Add((eChartType)chartType);
-    }
+    public ExcelBarChart AddBarChart(eBarChartType chartType) => (ExcelBarChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new area chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelAreaChart AddAreaChart(eAreaChartType chartType)
-    {
-        return (ExcelAreaChart)this.Add((eChartType)chartType);
-    }
+    public ExcelAreaChart AddAreaChart(eAreaChartType chartType) => (ExcelAreaChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new pie chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelPieChart AddPieChart(ePieChartType chartType)
-    {
-        return (ExcelPieChart)this.Add((eChartType)chartType);
-    }
+    public ExcelPieChart AddPieChart(ePieChartType chartType) => (ExcelPieChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new column of pie- or bar of pie chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelOfPieChart AddOfPieChart(eOfPieChartType chartType)
-    {
-        return (ExcelOfPieChart)this.Add((eChartType)chartType);
-    }
+    public ExcelOfPieChart AddOfPieChart(eOfPieChartType chartType) => (ExcelOfPieChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new doughnut chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelDoughnutChart AddDoughnutChart(eDoughnutChartType chartType)
-    {
-        return (ExcelDoughnutChart)this.Add((eChartType)chartType);
-    }
+    public ExcelDoughnutChart AddDoughnutChart(eDoughnutChartType chartType) => (ExcelDoughnutChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new radar chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelRadarChart AddRadarChart(eRadarChartType chartType)
-    {
-        return (ExcelRadarChart)this.Add((eChartType)chartType);
-    }
+    public ExcelRadarChart AddRadarChart(eRadarChartType chartType) => (ExcelRadarChart)this.Add((eChartType)chartType);
 
     /// <summary>
     /// Adds a new scatter chart to the chart
     /// </summary>
     /// <param name="chartType">The type of the new chart</param>
     /// <returns>The chart</returns>
-    public ExcelScatterChart AddScatterChart(eScatterChartType chartType)
-    {
-        return (ExcelScatterChart)this.Add((eChartType)chartType);
-    }
+    public ExcelScatterChart AddScatterChart(eScatterChartType chartType) => (ExcelScatterChart)this.Add((eChartType)chartType);
 
     #endregion
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
-    IEnumerator<ExcelChart> IEnumerable<ExcelChart>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<ExcelChart> IEnumerable<ExcelChart>.GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Returns a chart at the specific position.  
     /// </summary>
     /// <param name="PositionID">The position of the chart. 0-base</param>
     /// <returns></returns>
-    public ExcelChart this[int PositionID]
-    {
-        get { return this._list[PositionID]; }
-    }
+    public ExcelChart this[int PositionID] => this._list[PositionID];
 }

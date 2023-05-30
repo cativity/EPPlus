@@ -27,47 +27,35 @@ namespace OfficeOpenXml.Style.Dxf;
 public class ExcelDxfGradientFill : DxfStyleBase
 {
     internal ExcelDxfGradientFill(ExcelStyles styles, Action<eStyleClass, eStyleProperty, object> callback)
-        : base(styles, callback)
-    {
+        : base(styles, callback) =>
         this.Colors = new ExcelDxfGradientFillColorCollection(styles, callback);
-    }
 
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get
-        {
-            return this.Colors.HasValue
-                   || this.Degree.HasValue
-                   || this.Left.HasValue
-                   || this.Right.HasValue
-                   || this.Top.HasValue
-                   || this.Bottom.HasValue
-                   || this.GradientType.HasValue;
-        }
-    }
+    public override bool HasValue =>
+        this.Colors.HasValue
+        || this.Degree.HasValue
+        || this.Left.HasValue
+        || this.Right.HasValue
+        || this.Top.HasValue
+        || this.Bottom.HasValue
+        || this.GradientType.HasValue;
 
-    internal override string Id
-    {
-        get
-        {
-            return this.Colors.Id
-                   + "|"
-                   + GetAsString(this.Degree)
-                   + "|"
-                   + GetAsString(this.Left)
-                   + "|"
-                   + GetAsString(this.Right)
-                   + "|"
-                   + GetAsString(this.Top)
-                   + "|"
-                   + GetAsString(this.Bottom)
-                   + "|"
-                   + GetAsString(this.GradientType);
-        }
-    }
+    internal override string Id =>
+        this.Colors.Id
+        + "|"
+        + GetAsString(this.Degree)
+        + "|"
+        + GetAsString(this.Left)
+        + "|"
+        + GetAsString(this.Right)
+        + "|"
+        + GetAsString(this.Top)
+        + "|"
+        + GetAsString(this.Bottom)
+        + "|"
+        + GetAsString(this.GradientType);
 
     /// <summary>
     /// Clears all properties
@@ -87,9 +75,8 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public ExcelDxfGradientFillColorCollection Colors { get; private set; }
 
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfGradientFill(this._styles, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfGradientFill(this._styles, this._callback)
         {
             Colors = (ExcelDxfGradientFillColorCollection)this.Colors.Clone(),
             Degree = this.Degree,
@@ -98,7 +85,6 @@ public class ExcelDxfGradientFill : DxfStyleBase
             Top = this.Top,
             Bottom = this.Bottom
         };
-    }
 
     eDxfGradientFillType? _gradientType;
 
@@ -107,7 +93,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public eDxfGradientFillType? GradientType
     {
-        get { return this._gradientType; }
+        get => this._gradientType;
         set
         {
             this._gradientType = value;
@@ -122,7 +108,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public double? Degree
     {
-        get { return this._degree; }
+        get => this._degree;
         set
         {
             this._degree = value;
@@ -137,7 +123,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public double? Left
     {
-        get { return this._left; }
+        get => this._left;
         set
         {
             this._left = value;
@@ -152,7 +138,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public double? Right
     {
-        get { return this._right; }
+        get => this._right;
         set
         {
             this._right = value;
@@ -167,7 +153,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public double? Top
     {
-        get { return this._top; }
+        get => this._top;
         set
         {
             this._top = value;
@@ -182,7 +168,7 @@ public class ExcelDxfGradientFill : DxfStyleBase
     /// </summary>
     public double? Bottom
     {
-        get { return this._bottom; }
+        get => this._bottom;
         set
         {
             this._bottom = value;

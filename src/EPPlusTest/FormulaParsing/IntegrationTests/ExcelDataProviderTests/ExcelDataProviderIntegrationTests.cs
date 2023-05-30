@@ -41,10 +41,7 @@ namespace EPPlusTest.FormulaParsing.IntegrationTests.ExcelDataProviderTests;
 [TestClass]
 public class ExcelDataProviderIntegrationTests
 {
-    private static ExcelCell CreateItem(object val, int row)
-    {
-        return new ExcelCell(val, null, 0, row);
-    }
+    private static ExcelCell CreateItem(object val, int row) => new(val, null, 0, row);
 
     //[TestMethod]
     //public void ShouldExecuteFormulaInRange()

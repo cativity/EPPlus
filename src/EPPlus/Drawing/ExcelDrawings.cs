@@ -105,10 +105,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <summary>
     /// A reference to the drawing xml document
     /// </summary>
-    public XmlDocument DrawingXml
-    {
-        get { return this._drawingsXml; }
-    }
+    public XmlDocument DrawingXml => this._drawingsXml;
 
     private void AddDrawings()
     {
@@ -185,17 +182,11 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// Get the enumerator
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._drawingsList.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._drawingsList.GetEnumerator();
 
     #region IEnumerable<ExcelDrawing> Members
 
-    IEnumerator<ExcelDrawing> IEnumerable<ExcelDrawing>.GetEnumerator()
-    {
-        return this._drawingsList.GetEnumerator();
-    }
+    IEnumerator<ExcelDrawing> IEnumerable<ExcelDrawing>.GetEnumerator() => this._drawingsList.GetEnumerator();
 
     #endregion
 
@@ -204,10 +195,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// </summary>
     /// <param name="PositionID">The position of the drawing. 0-base</param>
     /// <returns></returns>
-    public ExcelDrawing this[int PositionID]
-    {
-        get { return this._drawingsList[PositionID]; }
-    }
+    public ExcelDrawing this[int PositionID] => this._drawingsList[PositionID];
 
     /// <summary>
     /// Returns the drawing matching the specified name
@@ -249,10 +237,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
 
     ZipPackagePart _part;
 
-    internal ZipPackagePart Part
-    {
-        get { return this._part; }
-    }
+    internal ZipPackagePart Part => this._part;
 
     Uri _uriDrawing;
     internal int _nextChartStyleId = 100;
@@ -260,10 +245,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <summary>
     /// The uri to the drawing xml file inside the package
     /// </summary>
-    internal Uri UriDrawing
-    {
-        get { return this._uriDrawing; }
-    }
+    internal Uri UriDrawing => this._uriDrawing;
 
     ExcelPackage IPictureRelationDocument.Package => this._package;
 
@@ -325,10 +307,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>
-    public ExcelChart AddChart(string Name, eChartType ChartType)
-    {
-        return this.AddChart(Name, ChartType, null);
-    }
+    public ExcelChart AddChart(string Name, eChartType ChartType) => this.AddChart(Name, ChartType, null);
 
     /// <summary>
     /// Adds a new chart to the worksheet.
@@ -336,40 +315,28 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>
-    public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType)
-    {
-        return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType) => (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new sunburst chart to the worksheet.
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelSunburstChart AddSunburstChart(string Name)
-    {
-        return (ExcelSunburstChart)this.AddAllChartTypes(Name, eChartType.Sunburst, null);
-    }
+    public ExcelSunburstChart AddSunburstChart(string Name) => (ExcelSunburstChart)this.AddAllChartTypes(Name, eChartType.Sunburst, null);
 
     /// <summary>
     /// Adds a new treemap chart to the worksheet.
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelTreemapChart AddTreemapChart(string Name)
-    {
-        return (ExcelTreemapChart)this.AddAllChartTypes(Name, eChartType.Treemap, null);
-    }
+    public ExcelTreemapChart AddTreemapChart(string Name) => (ExcelTreemapChart)this.AddAllChartTypes(Name, eChartType.Treemap, null);
 
     /// <summary>
     /// Adds a new box &amp; whisker chart to the worksheet.
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelBoxWhiskerChart AddBoxWhiskerChart(string Name)
-    {
-        return (ExcelBoxWhiskerChart)this.AddAllChartTypes(Name, eChartType.BoxWhisker, null);
-    }
+    public ExcelBoxWhiskerChart AddBoxWhiskerChart(string Name) => (ExcelBoxWhiskerChart)this.AddAllChartTypes(Name, eChartType.BoxWhisker, null);
 
     /// <summary>
     /// Adds a new Histogram or Pareto chart to the worksheet.
@@ -377,30 +344,21 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="AddParetoLine">If true a pareto line is added to the chart. The <see cref="ExcelChart.ChartType"/> will also be Pareto.</param>
     /// <returns>The chart</returns>
-    public ExcelHistogramChart AddHistogramChart(string Name, bool AddParetoLine = false)
-    {
-        return (ExcelHistogramChart)this.AddAllChartTypes(Name, AddParetoLine ? eChartType.Pareto : eChartType.Histogram, null);
-    }
+    public ExcelHistogramChart AddHistogramChart(string Name, bool AddParetoLine = false) => (ExcelHistogramChart)this.AddAllChartTypes(Name, AddParetoLine ? eChartType.Pareto : eChartType.Histogram, null);
 
     /// <summary>
     /// Adds a waterfall chart to the worksheet.
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelWaterfallChart AddWaterfallChart(string Name)
-    {
-        return (ExcelWaterfallChart)this.AddAllChartTypes(Name, eChartType.Waterfall, null);
-    }
+    public ExcelWaterfallChart AddWaterfallChart(string Name) => (ExcelWaterfallChart)this.AddAllChartTypes(Name, eChartType.Waterfall, null);
 
     /// <summary>
     /// Adds a funnel chart to the worksheet.
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelFunnelChart AddFunnelChart(string Name)
-    {
-        return (ExcelFunnelChart)this.AddAllChartTypes(Name, eChartType.Funnel, null);
-    }
+    public ExcelFunnelChart AddFunnelChart(string Name) => (ExcelFunnelChart)this.AddAllChartTypes(Name, eChartType.Funnel, null);
 
     /// <summary>
     /// Adds a region map chart to the worksheet.
@@ -408,10 +366,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// </summary>
     /// <param name="Name"></param>
     /// <returns>The chart</returns>
-    public ExcelRegionMapChart AddRegionMapChart(string Name)
-    {
-        return (ExcelRegionMapChart)this.AddAllChartTypes(Name, eChartType.RegionMap, null);
-    }
+    public ExcelRegionMapChart AddRegionMapChart(string Name) => (ExcelRegionMapChart)this.AddAllChartTypes(Name, eChartType.RegionMap, null);
 
     /// <summary>
     /// Adds a new extended chart to the worksheet.
@@ -421,10 +376,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelChartEx AddExtendedChart(string Name, eChartExType ChartType, ExcelPivotTable PivotTableSource) => (ExcelChartEx)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new stock chart to the worksheet.
@@ -619,10 +571,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of linechart</param>
     /// <returns>The chart</returns>
-    public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType)
-    {
-        return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType) => (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new linechart to the worksheet.
@@ -631,10 +580,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelLineChart AddLineChart(string Name, eLineChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelLineChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Add a new area chart to the worksheet.
@@ -642,10 +588,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of linechart</param>
     /// <returns>The chart</returns>
-    public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType)
-    {
-        return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType) => (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new area chart to the worksheet.
@@ -654,10 +597,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelAreaChart AddAreaChart(string Name, eAreaChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelAreaChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new barchart to the worksheet.
@@ -665,10 +605,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of linechart</param>
     /// <returns>The chart</returns>
-    public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType)
-    {
-        return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType) => (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new column- or bar- chart to the worksheet.
@@ -677,10 +614,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelBarChart AddBarChart(string Name, eBarChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelBarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new pie chart to the worksheet.
@@ -688,10 +622,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType)
-    {
-        return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType) => (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new pie chart to the worksheet.
@@ -700,10 +631,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelPieChart AddPieChart(string Name, ePieChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new doughnut chart to the worksheet.
@@ -712,10 +640,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new doughnut chart to the worksheet.
@@ -723,10 +648,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType)
-    {
-        return (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelDoughnutChart AddDoughnutChart(string Name, eDoughnutChartType ChartType) => (ExcelDoughnutChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new line chart to the worksheet.
@@ -734,10 +656,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType)
-    {
-        return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType) => (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Add a new pie of pie or bar of pie chart to the worksheet.
@@ -746,10 +665,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelOfPieChart AddOfPieChart(string Name, eOfPieChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelOfPieChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new bubble chart to the worksheet.
@@ -757,10 +673,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType)
-    {
-        return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType) => (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new bubble chart to the worksheet.
@@ -769,10 +682,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelBubbleChart AddBubbleChart(string Name, eBubbleChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelBubbleChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new scatter chart to the worksheet.
@@ -781,10 +691,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new scatter chart to the worksheet.
@@ -792,10 +699,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType)
-    {
-        return (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelScatterChart AddScatterChart(string Name, eScatterChartType ChartType) => (ExcelScatterChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new radar chart to the worksheet.
@@ -804,10 +708,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new radar chart to the worksheet.
@@ -815,10 +716,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType)
-    {
-        return (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelRadarChart AddRadarChart(string Name, eRadarChartType ChartType) => (ExcelRadarChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a new surface chart to the worksheet.
@@ -827,10 +725,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ChartType">Type of chart</param>
     /// <param name="PivotTableSource">The pivottable source for a pivotchart</param>    
     /// <returns>The chart</returns>
-    public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType, ExcelPivotTable PivotTableSource)
-    {
-        return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
-    }
+    public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType, ExcelPivotTable PivotTableSource) => (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, PivotTableSource);
 
     /// <summary>
     /// Adds a new surface chart to the worksheet.
@@ -838,10 +733,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ChartType">Type of chart</param>
     /// <returns>The chart</returns>    
-    public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType)
-    {
-        return (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
-    }
+    public ExcelSurfaceChart AddSurfaceChart(string Name, eSurfaceChartType ChartType) => (ExcelSurfaceChart)this.AddAllChartTypes(Name, (eChartType)ChartType, null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -849,10 +741,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ImageFile">The image file</param>
     /// <returns>A picture object</returns>
-    public ExcelPicture AddPicture(string Name, FileInfo ImageFile)
-    {
-        return this.AddPicture(Name, ImageFile, null);
-    }
+    public ExcelPicture AddPicture(string Name, FileInfo ImageFile) => this.AddPicture(Name, ImageFile, null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -879,10 +768,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="PictureStream">An stream image.</param>
     /// <returns>A picture object</returns>
-    public ExcelPicture AddPicture(string Name, Stream PictureStream)
-    {
-        return this.AddImageInternal(Name, PictureStream, null, null);
-    }
+    public ExcelPicture AddPicture(string Name, Stream PictureStream) => this.AddImageInternal(Name, PictureStream, null, null);
 
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -891,10 +777,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="PictureStream">An stream image.</param>        
     /// <param name="Hyperlink">The Picture Hyperlink</param>
     /// <returns>A picture object</returns>
-    public ExcelPicture AddPicture(string Name, Stream PictureStream, Uri Hyperlink)
-    {
-        return this.AddImageInternal(Name, PictureStream, null, Hyperlink);
-    }
+    public ExcelPicture AddPicture(string Name, Stream PictureStream, Uri Hyperlink) => this.AddImageInternal(Name, PictureStream, null, Hyperlink);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -904,10 +787,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="PictureType">The type of image.  A null value means that EPPlus will identify the type of image automatically.</param>
     /// <returns>A picture object</returns>
     [Obsolete("This overload is deprecated, please use AddPicture(string, Stream) instead.")]
-    public ExcelPicture AddPicture(string Name, Stream PictureStream, ePictureType? PictureType)
-    {
-        return this.AddPicture(Name, PictureStream, PictureType, null);
-    }
+    public ExcelPicture AddPicture(string Name, Stream PictureStream, ePictureType? PictureType) => this.AddPicture(Name, PictureStream, PictureType, null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -918,10 +798,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Hyperlink">Picture Hyperlink</param>
     /// <returns>A picture object</returns>
     [Obsolete("This overload is deprecated, please use AddPicture(string, Stream, Uri) instead.")]
-    public ExcelPicture AddPicture(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
-    {
-        return this.AddImageInternal(Name, pictureStream, pictureType, Hyperlink);
-    }
+    public ExcelPicture AddPicture(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink) => this.AddImageInternal(Name, pictureStream, pictureType, Hyperlink);
 
     private ExcelPicture AddImageInternal(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
     {
@@ -965,10 +842,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ImageFile">The image file</param>
     /// <returns>A picture object</returns>
-    public async Task<ExcelPicture> AddPictureAsync(string Name, FileInfo ImageFile)
-    {
-        return await this.AddPictureAsync(Name, ImageFile, null);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, FileInfo ImageFile) => await this.AddPictureAsync(Name, ImageFile, null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -995,10 +869,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="ImagePath">The path to the image file</param>
     /// <returns>A picture object</returns>
-    public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath)
-    {
-        return await this.AddPictureAsync(Name, new FileInfo(ImagePath), null);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath) => await this.AddPictureAsync(Name, new FileInfo(ImagePath), null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -1007,10 +878,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="ImagePath">The path to the image file</param>
     /// <param name="Hyperlink">Picture Hyperlink</param>
     /// <returns>A picture object</returns>
-    public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath, Uri Hyperlink)
-    {
-        return await this.AddPictureAsync(Name, new FileInfo(ImagePath), Hyperlink);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, string ImagePath, Uri Hyperlink) => await this.AddPictureAsync(Name, new FileInfo(ImagePath), Hyperlink);
 
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -1018,10 +886,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Name"></param>
     /// <param name="PictureStream">An stream image.</param>        
     /// <returns>A picture object</returns>
-    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream)
-    {
-        return await this.AddPictureInternalAsync(Name, PictureStream, null, null);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream) => await this.AddPictureInternalAsync(Name, PictureStream, null, null);
 
     /// <summary>
     /// Adds a picture to the worksheet from a stream. EPPlus will identify the type of image automatically.
@@ -1030,10 +895,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="PictureStream">An stream image.</param>        
     /// <param name="Hyperlink">The Picture Hyperlink</param>
     /// <returns>A picture object</returns>
-    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, Uri Hyperlink)
-    {
-        return await this.AddPictureInternalAsync(Name, PictureStream, null, Hyperlink);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, Uri Hyperlink) => await this.AddPictureInternalAsync(Name, PictureStream, null, Hyperlink);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -1043,10 +905,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="PictureType">The type of image. A null value means that EPPlus will identify the type of image automatically.</param>
     /// <returns>A picture object</returns>
     [Obsolete("This overload is deprecated, please use AddPictureAsync(string, Stream) instead.")]
-    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, ePictureType? PictureType)
-    {
-        return await this.AddPictureInternalAsync(Name, PictureStream, PictureType, null);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream PictureStream, ePictureType? PictureType) => await this.AddPictureInternalAsync(Name, PictureStream, PictureType, null);
 
     /// <summary>
     /// Adds a picture to the worksheet
@@ -1057,10 +916,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="Hyperlink">The Picture Hyperlink</param>
     /// <returns>A picture object</returns>
     [Obsolete("This overload is deprecated, please use AddPictureAsync(string, Stream, Uri) instead.")]
-    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
-    {
-        return await this.AddPictureInternalAsync(Name, pictureStream, pictureType, Hyperlink);
-    }
+    public async Task<ExcelPicture> AddPictureAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink) => await this.AddPictureInternalAsync(Name, pictureStream, pictureType, Hyperlink);
 
     private async Task<ExcelPicture> AddPictureInternalAsync(string Name, Stream pictureStream, ePictureType? pictureType, Uri Hyperlink)
     {
@@ -1156,10 +1012,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="crtxFile">The crtx file</param>
     /// <param name="name">The name of the chart</param>
     /// <returns>The new chart</returns>
-    public ExcelChart AddChartFromTemplate(FileInfo crtxFile, string name)
-    {
-        return this.AddChartFromTemplate(crtxFile, name, null);
-    }
+    public ExcelChart AddChartFromTemplate(FileInfo crtxFile, string name) => this.AddChartFromTemplate(crtxFile, name, null);
 
     /// <summary>
     /// Adds a new chart using an crtx template
@@ -1202,10 +1055,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// <param name="crtxStream">The crtx file as a stream</param>
     /// <param name="name">The name of the chart</param>
     /// <returns>The new chart</returns>
-    public ExcelChart AddChartFromTemplate(Stream crtxStream, string name)
-    {
-        return this.AddChartFromTemplate(crtxStream, name, null);
-    }
+    public ExcelChart AddChartFromTemplate(Stream crtxStream, string name) => this.AddChartFromTemplate(crtxStream, name, null);
 
     /// <summary>
     /// Adds a new chart using an crtx template
@@ -1466,90 +1316,63 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// </summary>
     /// <param name="Name">The name of the button</param>
     /// <returns>The button form control</returns>
-    public ExcelControlButton AddButtonControl(string Name)
-    {
-        return (ExcelControlButton)this.AddControl(Name, eControlType.Button);
-    }
+    public ExcelControlButton AddButtonControl(string Name) => (ExcelControlButton)this.AddControl(Name, eControlType.Button);
 
     /// <summary>
     /// Adds a checkbox form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the checkbox control</param>
     /// <returns>The checkbox form control</returns>
-    public ExcelControlCheckBox AddCheckBoxControl(string Name)
-    {
-        return (ExcelControlCheckBox)this.AddControl(Name, eControlType.CheckBox);
-    }
+    public ExcelControlCheckBox AddCheckBoxControl(string Name) => (ExcelControlCheckBox)this.AddControl(Name, eControlType.CheckBox);
 
     /// <summary>
     /// Adds a radio button form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the radio button control</param>
     /// <returns>The radio button form control</returns>
-    public ExcelControlRadioButton AddRadioButtonControl(string Name)
-    {
-        return (ExcelControlRadioButton)this.AddControl(Name, eControlType.RadioButton);
-    }
+    public ExcelControlRadioButton AddRadioButtonControl(string Name) => (ExcelControlRadioButton)this.AddControl(Name, eControlType.RadioButton);
 
     /// <summary>
     /// Adds a list box form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the list box control</param>
     /// <returns>The list box form control</returns>
-    public ExcelControlListBox AddListBoxControl(string Name)
-    {
-        return (ExcelControlListBox)this.AddControl(Name, eControlType.ListBox);
-    }
+    public ExcelControlListBox AddListBoxControl(string Name) => (ExcelControlListBox)this.AddControl(Name, eControlType.ListBox);
 
     /// <summary>
     /// Adds a drop-down form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the drop-down control</param>
     /// <returns>The drop-down form control</returns>
-    public ExcelControlDropDown AddDropDownControl(string Name)
-    {
-        return (ExcelControlDropDown)this.AddControl(Name, eControlType.DropDown);
-    }
+    public ExcelControlDropDown AddDropDownControl(string Name) => (ExcelControlDropDown)this.AddControl(Name, eControlType.DropDown);
 
     /// <summary>
     /// Adds a group box form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the group box control</param>
     /// <returns>The group box form control</returns>
-    public ExcelControlGroupBox AddGroupBoxControl(string Name)
-    {
-        return (ExcelControlGroupBox)this.AddControl(Name, eControlType.GroupBox);
-    }
+    public ExcelControlGroupBox AddGroupBoxControl(string Name) => (ExcelControlGroupBox)this.AddControl(Name, eControlType.GroupBox);
 
     /// <summary>
     /// Adds a label form control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the label control</param>
     /// <returns>The label form control</returns>
-    public ExcelControlLabel AddLabelControl(string Name)
-    {
-        return (ExcelControlLabel)this.AddControl(Name, eControlType.Label);
-    }
+    public ExcelControlLabel AddLabelControl(string Name) => (ExcelControlLabel)this.AddControl(Name, eControlType.Label);
 
     /// <summary>
     /// Adds a spin button control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the spin button control</param>
     /// <returns>The spin button form control</returns>
-    public ExcelControlSpinButton AddSpinButtonControl(string Name)
-    {
-        return (ExcelControlSpinButton)this.AddControl(Name, eControlType.SpinButton);
-    }
+    public ExcelControlSpinButton AddSpinButtonControl(string Name) => (ExcelControlSpinButton)this.AddControl(Name, eControlType.SpinButton);
 
     /// <summary>
     /// Adds a scroll bar control to the worksheet
     /// </summary>
     /// <param name="Name">The name of the scroll bar control</param>
     /// <returns>The scroll bar form control</returns>
-    public ExcelControlScrollBar AddScrollBarControl(string Name)
-    {
-        return (ExcelControlScrollBar)this.AddControl(Name, eControlType.ScrollBar);
-    }
+    public ExcelControlScrollBar AddScrollBarControl(string Name) => (ExcelControlScrollBar)this.AddControl(Name, eControlType.ScrollBar);
 
     #endregion
 
@@ -1685,19 +1508,13 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     /// Removes a drawing.
     /// </summary>
     /// <param name="Drawing">The drawing</param>
-    public void Remove(ExcelDrawing Drawing)
-    {
-        this.Remove(this._drawingNames[Drawing.Name]);
-    }
+    public void Remove(ExcelDrawing Drawing) => this.Remove(this._drawingNames[Drawing.Name]);
 
     /// <summary>
     /// Removes a drawing.
     /// </summary>
     /// <param name="Name">The name of the drawing</param>
-    public void Remove(string Name)
-    {
-        this.Remove(this._drawingNames[Name]);
-    }
+    public void Remove(string Name) => this.Remove(this._drawingNames[Name]);
 
     /// <summary>
     /// Removes all drawings from the collection

@@ -29,63 +29,34 @@ public class FunctionArgument
     }
 
     public FunctionArgument(object val, DataType dataType)
-        : this(val)
-    {
+        : this(val) =>
         this.DataType = dataType;
-    }
 
     private ExcelCellState _excelCellState;
 
-    public void SetExcelStateFlag(ExcelCellState state)
-    {
-        this._excelCellState |= state;
-    }
+    public void SetExcelStateFlag(ExcelCellState state) => this._excelCellState |= state;
 
-    public bool ExcelStateFlagIsSet(ExcelCellState state)
-    {
-        return (this._excelCellState & state) != 0;
-    }
+    public bool ExcelStateFlagIsSet(ExcelCellState state) => (this._excelCellState & state) != 0;
 
     public object Value { get; private set; }
 
     public DataType DataType { get; }
 
-    public Type Type
-    {
-        get { return this.Value != null ? this.Value.GetType() : null; }
-    }
+    public Type Type => this.Value != null ? this.Value.GetType() : null;
 
     public int ExcelAddressReferenceId { get; set; }
 
-    public bool IsExcelRange
-    {
-        get { return this.Value != null && this.Value is IRangeInfo; }
-    }
+    public bool IsExcelRange => this.Value != null && this.Value is IRangeInfo;
 
-    public bool IsEnumerableOfFuncArgs
-    {
-        get { return this.Value != null && this.Value is IEnumerable<FunctionArgument>; }
-    }
+    public bool IsEnumerableOfFuncArgs => this.Value != null && this.Value is IEnumerable<FunctionArgument>;
 
-    public IEnumerable<FunctionArgument> ValueAsEnumerableOfFuncArgs
-    {
-        get { return this.Value as IEnumerable<FunctionArgument>; }
-    }
+    public IEnumerable<FunctionArgument> ValueAsEnumerableOfFuncArgs => this.Value as IEnumerable<FunctionArgument>;
 
-    public bool ValueIsExcelError
-    {
-        get { return ExcelErrorValue.Values.IsErrorValue(this.Value); }
-    }
+    public bool ValueIsExcelError => ExcelErrorValue.Values.IsErrorValue(this.Value);
 
-    public ExcelErrorValue ValueAsExcelErrorValue
-    {
-        get { return ExcelErrorValue.Parse(this.Value.ToString()); }
-    }
+    public ExcelErrorValue ValueAsExcelErrorValue => ExcelErrorValue.Parse(this.Value.ToString());
 
-    public IRangeInfo ValueAsRangeInfo
-    {
-        get { return this.Value as IRangeInfo; }
-    }
+    public IRangeInfo ValueAsRangeInfo => this.Value as IRangeInfo;
 
     public object ValueFirst
     {

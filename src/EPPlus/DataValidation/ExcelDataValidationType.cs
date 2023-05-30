@@ -79,10 +79,7 @@ internal static class DataValidationSchemaNames
 /// </summary>
 public class ExcelDataValidationType
 {
-    internal ExcelDataValidationType(eDataValidationType validationType)
-    {
-        this.Type = validationType;
-    }
+    internal ExcelDataValidationType(eDataValidationType validationType) => this.Type = validationType;
 
     /// <summary>
     /// Validation type

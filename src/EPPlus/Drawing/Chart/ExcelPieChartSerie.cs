@@ -43,7 +43,7 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
     /// </summary>
     public int Explosion
     {
-        get { return this.GetXmlNodeInt(explosionPath); }
+        get => this.GetXmlNodeInt(explosionPath);
         set
         {
             if (value < 0 || value > 400)
@@ -60,26 +60,17 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
     /// <summary>
     /// DataLabels
     /// </summary>
-    public ExcelChartSerieDataLabel DataLabel
-    {
-        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartSerieDataLabel DataLabel => this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 }

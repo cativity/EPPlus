@@ -24,10 +24,8 @@ public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollection
     private readonly ExcelPivotTable _table;
 
     internal ExcelPivotTableDataFieldCollection(ExcelPivotTable table)
-        : base()
-    {
+        : base() =>
         this._table = table;
-    }
 
     /// <summary>
     /// Add a new datafield

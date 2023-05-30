@@ -41,10 +41,7 @@ public class View3DReadTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("Drawing3DRead.xlsx");
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("Drawing3DRead.xlsx");
 
     [TestMethod]
     public void Scene3dDefaultCameraRead()

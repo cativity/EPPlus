@@ -43,10 +43,7 @@ public class ExcelChartStyleColor : XmlHelper
     /// <summary>
     /// The index, maps to the style matrix in the theme
     /// </summary>
-    public int? Index
-    {
-        get { return this.GetXmlNodeIntNull("@val"); }
-    }
+    public int? Index => this.GetXmlNodeIntNull("@val");
 
     internal void SetValue(bool isAuto, int index)
     {

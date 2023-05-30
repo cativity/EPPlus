@@ -49,10 +49,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     /// <param name="externalWb">The external workbook</param>
     /// <param name="wb">The workbook having the external reference</param>
     /// <param name="address">The address within the external workbook including the worksheet name</param>
-    public EpplusExcelExternalRangeInfo(ExcelExternalWorkbook externalWb, ExcelWorkbook wb, ExcelAddressBase address)
-    {
-        this.SetAddress(wb, address, externalWb);
-    }
+    public EpplusExcelExternalRangeInfo(ExcelExternalWorkbook externalWb, ExcelWorkbook wb, ExcelAddressBase address) => this.SetAddress(wb, address, externalWb);
 
     private void SetAddress(ExcelWorkbook wb, ExcelAddressBase address, ExcelExternalWorkbook externalWb)
     {
@@ -77,18 +74,12 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     /// Get the number of cells in the range
     /// </summary>
     /// <returns></returns>
-    public int GetNCells()
-    {
-        return (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
-    }
+    public int GetNCells() => (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
 
     /// <summary>
     /// If the range is invalid (#REF!)
     /// </summary>
-    public bool IsRef
-    {
-        get { return this._externalWs == null || this._fromRow < 0 || this._toRow < 0; }
-    }
+    public bool IsRef => this._externalWs == null || this._fromRow < 0 || this._toRow < 0;
 
     /// <summary>
     /// If the range is empty, ie contains no set cells.
@@ -157,18 +148,12 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     /// <summary>
     /// Return the current object in the enumeration
     /// </summary>
-    public ICellInfo Current
-    {
-        get { return this._cell; }
-    }
+    public ICellInfo Current => this._cell;
 
     /// <summary>
     /// Not applicable for external ranges.. Returns null
     /// </summary>
-    public ExcelWorksheet Worksheet
-    {
-        get { return null; }
-    }
+    public ExcelWorksheet Worksheet => null;
 
     /// <summary>
     /// Called when the object is disposed.
@@ -177,10 +162,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     {
     }
 
-    object System.Collections.IEnumerator.Current
-    {
-        get { return this; }
-    }
+    object System.Collections.IEnumerator.Current => this;
 
     /// <summary>
     /// Moves to the next item in the enumeration
@@ -234,18 +216,12 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
         return this;
     }
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this;
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this;
 
     /// <summary>
     /// The address of the range
     /// </summary>
-    public ExcelAddressBase Address
-    {
-        get { return this._address; }
-    }
+    public ExcelAddressBase Address => this._address;
 
     /// <summary>
     /// Gets the value 
@@ -253,10 +229,7 @@ public class EpplusExcelExternalRangeInfo : IRangeInfo
     /// <param name="row">The row</param>
     /// <param name="col">The column</param>
     /// <returns></returns>
-    public object GetValue(int row, int col)
-    {
-        return this._externalWs?.CellValues.GetValue(row, col);
-    }
+    public object GetValue(int row, int col) => this._externalWs?.CellValues.GetValue(row, col);
 
     /// <summary>
     /// Get the value from the range with the offset from the top-left cell
@@ -299,96 +272,60 @@ public class ExternalCellInfo : ICellInfo
     /// <summary>
     /// The cell address.
     /// </summary>
-    public string Address
-    {
-        get { return this._values.CellAddress; }
-    }
+    public string Address => this._values.CellAddress;
 
     /// <summary>
     /// The row of the cell
     /// </summary>
-    public int Row
-    {
-        get { return this._values.Row; }
-    }
+    public int Row => this._values.Row;
 
     /// <summary>
     /// The column of the cell
     /// </summary>
-    public int Column
-    {
-        get { return this._values.Column; }
-    }
+    public int Column => this._values.Column;
 
     /// <summary>
     /// Formula. Always return Empty.String for external cells.
     /// </summary>
-    public string Formula
-    {
-        get { return ""; }
-    }
+    public string Formula => "";
 
     /// <summary>
     /// The value of the current cell.
     /// </summary>
-    public object Value
-    {
-        get { return this._values.Value; }
-    }
+    public object Value => this._values.Value;
 
     /// <summary>
     /// The value as double of the current cell. Bools will be ignored.
     /// </summary>
-    public double ValueDouble
-    {
-        get { return ConvertUtil.GetValueDouble(this._values.Value, true); }
-    }
+    public double ValueDouble => ConvertUtil.GetValueDouble(this._values.Value, true);
 
     /// <summary>
     /// The value as double of the current cell.
     /// </summary>
-    public double ValueDoubleLogical
-    {
-        get { return ConvertUtil.GetValueDouble(this._values.Value, false); }
-    }
+    public double ValueDoubleLogical => ConvertUtil.GetValueDouble(this._values.Value, false);
 
     /// <summary>
     /// If the row of the cell is hidden
     /// </summary>
-    public bool IsHiddenRow
-    {
-        get { return false; }
-    }
+    public bool IsHiddenRow => false;
 
     /// <summary>
     /// If the value of the cell is an Excel Error
     /// </summary>
-    public bool IsExcelError
-    {
-        get { return ExcelErrorValue.Values.IsErrorValue(this._values.Value); }
-    }
+    public bool IsExcelError => ExcelErrorValue.Values.IsErrorValue(this._values.Value);
 
     /// <summary>
     /// Tokens for the formula. Not applicable to External cells.
     /// </summary>
-    public IList<Token> Tokens
-    {
-        get { return new List<Token>(); }
-    }
+    public IList<Token> Tokens => new List<Token>();
 
     /// <summary>
     /// The cell id
     /// </summary>
-    public ulong Id
-    {
-        get { return ExcelCellBase.GetCellId(this._ws.SheetId, this._values.Row, this._values.Column); }
-    }
+    public ulong Id => ExcelCellBase.GetCellId(this._ws.SheetId, this._values.Row, this._values.Column);
 
     /// <summary>
     /// The name of the worksheet.
     /// </summary>
-    public string WorksheetName
-    {
-        get { return this._ws.Name; }
-    }
+    public string WorksheetName => this._ws.Name;
 }

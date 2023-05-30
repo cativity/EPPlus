@@ -49,10 +49,7 @@ public abstract class ExcelCellBase
     /// <param name="row"></param>
     /// <param name="col"></param>
     /// <returns></returns>
-    internal static ulong GetCellId(int sheetId, int row, int col)
-    {
-        return (ulong)sheetId + ((ulong)col << 15) + ((ulong)row << 29);
-    }
+    internal static ulong GetCellId(int sheetId, int row, int col) => (ulong)sheetId + ((ulong)col << 15) + ((ulong)row << 29);
 
     #endregion
 
@@ -69,13 +66,9 @@ public abstract class ExcelCellBase
     /// <param name="row">Current row</param>
     /// <param name="col">Current column</param>
     /// <returns>The RC address</returns>
-    public static string TranslateFromR1C1(string value, int row, int col)
-    {
-        return R1C1Translator.FromR1C1Formula(value, row, col);
+    public static string TranslateFromR1C1(string value, int row, int col) => R1C1Translator.FromR1C1Formula(value, row, col);
 
-        //return Translate(value, ToAbs, row, col);
-    }
-
+    //return Translate(value, ToAbs, row, col);
     /// <summary>
     /// Translates a absolut address to R1C1 Format
     /// </summary>
@@ -83,13 +76,9 @@ public abstract class ExcelCellBase
     /// <param name="row">Current row</param>
     /// <param name="col">Current column</param>
     /// <returns>The absolut address/Formula</returns>
-    public static string TranslateToR1C1(string value, int row, int col)
-    {
-        return R1C1Translator.ToR1C1Formula(value, row, col);
+    public static string TranslateToR1C1(string value, int row, int col) => R1C1Translator.ToR1C1Formula(value, row, col);
 
-        //return Translate(value, ToR1C1, row, col);
-    }
-
+    //return Translate(value, ToR1C1, row, col);
     //    //    return part;
     //    if (rStart != 0 && cStart != 0)
 
@@ -104,10 +93,7 @@ public abstract class ExcelCellBase
     /// </summary>
     /// <param name="iColumnNumber">The number of the column</param>
     /// <returns>The letter representing the column</returns>
-    protected internal static string GetColumnLetter(int iColumnNumber)
-    {
-        return GetColumnLetter(iColumnNumber, false);
-    }
+    protected internal static string GetColumnLetter(int iColumnNumber) => GetColumnLetter(iColumnNumber, false);
 
     /// <summary>
     /// Returns the character representation of the numbered column
@@ -136,10 +122,7 @@ public abstract class ExcelCellBase
 
     #endregion
 
-    internal static bool GetRowColFromAddress(string CellAddress, out int FromRow, out int FromColumn, out int ToRow, out int ToColumn)
-    {
-        return GetRowColFromAddress(CellAddress, out FromRow, out FromColumn, out ToRow, out ToColumn, out _, out _, out _, out _);
-    }
+    internal static bool GetRowColFromAddress(string CellAddress, out int FromRow, out int FromColumn, out int ToRow, out int ToColumn) => GetRowColFromAddress(CellAddress, out FromRow, out FromColumn, out ToRow, out ToColumn, out _, out _, out _, out _);
 
     internal static string GetWorkbookFromAddress(string address)
     {
@@ -429,20 +412,11 @@ public abstract class ExcelCellBase
     /// <param name="Row">Returns Tthe row</param>
     /// <param name="Column">Returns the column</param>
     /// <returns>true if valid</returns>
-    internal static bool GetRowColFromAddress(string CellAddress, out int Row, out int Column)
-    {
-        return GetRowCol(CellAddress, out Row, out Column, true);
-    }
+    internal static bool GetRowColFromAddress(string CellAddress, out int Row, out int Column) => GetRowCol(CellAddress, out Row, out Column, true);
 
-    internal static bool GetRowColFromAddress(string CellAddress, out int row, out int col, out bool fixedRow, out bool fixedCol)
-    {
-        return GetRowCol(CellAddress, out row, out col, true, out fixedRow, out fixedCol);
-    }
+    internal static bool GetRowColFromAddress(string CellAddress, out int row, out int col, out bool fixedRow, out bool fixedCol) => GetRowCol(CellAddress, out row, out col, true, out fixedRow, out fixedCol);
 
-    internal static bool IsAlpha(char c)
-    {
-        return c >= 'A' && c <= 'Z';
-    }
+    internal static bool IsAlpha(char c) => c >= 'A' && c <= 'Z';
 
     /// <summary>
     /// Get the row/column for a Cell-address
@@ -452,10 +426,7 @@ public abstract class ExcelCellBase
     /// <param name="col">returns the column</param>
     /// <param name="throwException">throw exception if invalid, otherwise returns false</param>
     /// <returns></returns>
-    internal static bool GetRowCol(string address, out int row, out int col, bool throwException)
-    {
-        return GetRowCol(address, out row, out col, throwException, out bool _, out bool _);
-    }
+    internal static bool GetRowCol(string address, out int row, out int col, bool throwException) => GetRowCol(address, out row, out col, throwException, out bool _, out bool _);
 
     const int numberOfCharacters = 'Z' - 'A' + 1;
     const int startChar = 'A' - 1;
@@ -620,10 +591,7 @@ public abstract class ExcelCellBase
     /// <param name="Row">The number of the row</param>
     /// <param name="Column">The number of the column in the worksheet</param>
     /// <returns>The cell address in the format A1</returns>
-    public static string GetAddress(int Row, int Column)
-    {
-        return GetAddress(Row, Column, false);
-    }
+    public static string GetAddress(int Row, int Column) => GetAddress(Row, Column, false);
 
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
@@ -675,10 +643,7 @@ public abstract class ExcelCellBase
     /// <param name="ToRow">To row number</param>
     /// <param name="ToColumn">From column number</param>
     /// <returns>The cell address in the format A1</returns>
-    public static string GetAddress(int FromRow, int FromColumn, int ToRow, int ToColumn)
-    {
-        return GetAddress(FromRow, FromColumn, ToRow, ToColumn, false);
-    }
+    public static string GetAddress(int FromRow, int FromColumn, int ToRow, int ToColumn) => GetAddress(FromRow, FromColumn, ToRow, ToColumn, false);
 
     /// <summary>
     /// Returns the AlphaNumeric representation that Excel expects for a Cell Address
@@ -764,10 +729,7 @@ public abstract class ExcelCellBase
     /// <param name="worksheetName">The name of the worksheet</param>
     /// <param name="address">The address</param>
     /// <returns>The full address</returns>
-    public static string GetFullAddress(string worksheetName, string address)
-    {
-        return GetFullAddress(worksheetName, address, true);
-    }
+    public static string GetFullAddress(string worksheetName, string address) => GetFullAddress(worksheetName, address, true);
 
     /// <summary>
     /// Get the full address including the worksheet name
@@ -1028,15 +990,9 @@ public abstract class ExcelCellBase
         return true;
     }
 
-    private static bool IsCol(char c)
-    {
-        return c >= 'A' && c <= 'Z';
-    }
+    private static bool IsCol(char c) => c >= 'A' && c <= 'Z';
 
-    private static bool IsRow(char r)
-    {
-        return r >= '0' && r <= '9';
-    }
+    private static bool IsRow(char r) => r >= '0' && r <= '9';
 
     /// <summary>
     /// Checks that a cell address (e.g. A5) is valid.
@@ -1393,11 +1349,9 @@ public abstract class ExcelCellBase
         }
     }
 
-    private static bool IsReferencesModifiedWorksheet(string currentSheet, string modifiedSheet, ExcelAddressBase a)
-    {
-        return (string.IsNullOrEmpty(a._ws) && currentSheet.Equals(modifiedSheet, StringComparison.CurrentCultureIgnoreCase))
-               || modifiedSheet.Equals(a._ws, StringComparison.CurrentCultureIgnoreCase);
-    }
+    private static bool IsReferencesModifiedWorksheet(string currentSheet, string modifiedSheet, ExcelAddressBase a) =>
+        (string.IsNullOrEmpty(a._ws) && currentSheet.Equals(modifiedSheet, StringComparison.CurrentCultureIgnoreCase))
+        || modifiedSheet.Equals(a._ws, StringComparison.CurrentCultureIgnoreCase);
 
     /// <summary>
     /// Updates all formulas after a worksheet has been renamed
@@ -1450,10 +1404,7 @@ public abstract class ExcelCellBase
 
     #endregion
 
-    internal static bool IsExternalAddress(string address)
-    {
-        return address.StartsWith("[") || address.StartsWith("'[");
-    }
+    internal static bool IsExternalAddress(string address) => address.StartsWith("[") || address.StartsWith("'[");
 
     #endregion
 

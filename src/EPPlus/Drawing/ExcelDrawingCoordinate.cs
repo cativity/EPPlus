@@ -59,7 +59,7 @@ public class ExcelDrawingCoordinate : XmlHelper
     /// </summary>
     public int X
     {
-        get { return this._x; }
+        get => this._x;
         set
         {
             this._x = value;
@@ -83,7 +83,7 @@ public class ExcelDrawingCoordinate : XmlHelper
     /// </summary>
     public int Y
     {
-        get { return this._y; }
+        get => this._y;
         set
         {
             this._y = value;

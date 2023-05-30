@@ -2383,10 +2383,7 @@ internal partial class ZipEntry
         } while (!done);
     }
 
-    internal void StoreRelativeOffset()
-    {
-        this._RelativeOffsetOfLocalHeader = this._future_ROLH;
-    }
+    internal void StoreRelativeOffset() => this._RelativeOffsetOfLocalHeader = this._future_ROLH;
 
     internal void NotifySaveComplete()
     {

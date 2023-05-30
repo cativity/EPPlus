@@ -65,11 +65,10 @@ public class ExcelVmlDrawingBaseCollection
         }
     }
 
-    private static string RemoveUnclosedBrTags(string xml)
-    {
+    private static string RemoveUnclosedBrTags(string xml) =>
+
         //TODO:Vml can contain unclosed BR tags. Replace with correctly closed tag and retry. Replace this code with a better approach.
-        return xml.Replace("</br>", "").Replace("<br>", "<br/>");
-    }
+        xml.Replace("</br>", "").Replace("<br>", "<br/>");
 
     internal XmlDocument VmlDrawingXml { get; set; }
 

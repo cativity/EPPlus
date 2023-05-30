@@ -34,7 +34,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public float? Size
     {
-        get { return this._size; }
+        get => this._size;
         set
         {
             this._size = value;
@@ -49,7 +49,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public string Name
     {
-        get { return this._name; }
+        get => this._name;
         set
         {
             this._name = value;
@@ -64,7 +64,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public int? Family
     {
-        get { return this._family; }
+        get => this._family;
         set
         {
             this._family = value;
@@ -79,7 +79,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public ExcelVerticalAlignmentFont VerticalAlign
     {
-        get { return this._verticalAlign; }
+        get => this._verticalAlign;
         set
         {
             this._verticalAlign = value;
@@ -94,8 +94,8 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public bool? Outline
     {
-        get { return this._outline; }
-        set { this._outline = value; }
+        get => this._outline;
+        set => this._outline = value;
     }
 
     bool? _shadow;
@@ -105,8 +105,8 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public bool? Shadow
     {
-        get { return this._shadow; }
-        set { this._shadow = value; }
+        get => this._shadow;
+        set => this._shadow = value;
     }
 
     bool? _condense;
@@ -116,8 +116,8 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public bool? Condense
     {
-        get { return this._condense; }
-        set { this._condense = value; }
+        get => this._condense;
+        set => this._condense = value;
     }
 
     bool? _extend;
@@ -127,8 +127,8 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public bool? Extend
     {
-        get { return this._extend; }
-        set { this._extend = value; }
+        get => this._extend;
+        set => this._extend = value;
     }
 
     eThemeFontCollectionType? _scheme;
@@ -138,7 +138,7 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// </summary>
     public eThemeFontCollectionType? Scheme
     {
-        get { return this._scheme; }
+        get => this._scheme;
         set
         {
             this._scheme = value;
@@ -149,52 +149,43 @@ public class ExcelDxfFont : ExcelDxfFontBase
     /// <summary>
     /// The Id to identify the font uniquely
     /// </summary>
-    internal override string Id
-    {
-        get
-        {
-            return GetAsString(this.Bold)
-                   + "|"
-                   + GetAsString(this.Italic)
-                   + "|"
-                   + GetAsString(this.Strike)
-                   + "|"
-                   + (this.Color == null ? "" : this.Color.Id)
-                   + "|"
-                   + GetAsString(this.Underline)
-                   + "|"
-                   + GetAsString(this.Name)
-                   + "|"
-                   + GetAsString(this.Size)
-                   + "|"
-                   + GetAsString(this.Family)
-                   + "|"
-                   + this.GetVAlign()
-                   + "|"
-                   + GetAsString(this.Outline)
-                   + "|"
-                   + GetAsString(this.Shadow)
-                   + "|"
-                   + GetAsString(this.Condense)
-                   + "|"
-                   + GetAsString(this.Extend)
-                   + "|"
-                   + GetAsString(this.Scheme);
-        }
-    }
+    internal override string Id =>
+        GetAsString(this.Bold)
+        + "|"
+        + GetAsString(this.Italic)
+        + "|"
+        + GetAsString(this.Strike)
+        + "|"
+        + (this.Color == null ? "" : this.Color.Id)
+        + "|"
+        + GetAsString(this.Underline)
+        + "|"
+        + GetAsString(this.Name)
+        + "|"
+        + GetAsString(this.Size)
+        + "|"
+        + GetAsString(this.Family)
+        + "|"
+        + this.GetVAlign()
+        + "|"
+        + GetAsString(this.Outline)
+        + "|"
+        + GetAsString(this.Shadow)
+        + "|"
+        + GetAsString(this.Condense)
+        + "|"
+        + GetAsString(this.Extend)
+        + "|"
+        + GetAsString(this.Scheme);
 
-    private string GetVAlign()
-    {
-        return this.VerticalAlign == ExcelVerticalAlignmentFont.None ? "" : GetAsString(this.VerticalAlign);
-    }
+    private string GetVAlign() => this.VerticalAlign == ExcelVerticalAlignmentFont.None ? "" : GetAsString(this.VerticalAlign);
 
     /// <summary>
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfFont(this._styles, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfFont(this._styles, this._callback)
         {
             Name = this.Name,
             Size = this.Size,
@@ -211,27 +202,21 @@ public class ExcelDxfFont : ExcelDxfFontBase
             Shadow = this.Shadow,
             VerticalAlign = this.VerticalAlign
         };
-    }
 
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get
-        {
-            return base.HasValue
-                   || string.IsNullOrEmpty(this.Name) == false
-                   || this.Size.HasValue
-                   || this.Family.HasValue
-                   || this.Condense.HasValue
-                   || this.Extend.HasValue
-                   || this.Scheme.HasValue
-                   || this.Outline.HasValue
-                   || this.Shadow.HasValue
-                   || this.VerticalAlign != ExcelVerticalAlignmentFont.None;
-        }
-    }
+    public override bool HasValue =>
+        base.HasValue
+        || string.IsNullOrEmpty(this.Name) == false
+        || this.Size.HasValue
+        || this.Family.HasValue
+        || this.Condense.HasValue
+        || this.Extend.HasValue
+        || this.Scheme.HasValue
+        || this.Outline.HasValue
+        || this.Shadow.HasValue
+        || this.VerticalAlign != ExcelVerticalAlignmentFont.None;
 
     /// <summary>
     /// Clears all properties

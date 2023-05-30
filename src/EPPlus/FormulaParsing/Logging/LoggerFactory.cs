@@ -29,8 +29,5 @@ public static class LoggerFactory
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static IFormulaParserLogger CreateTextFileLogger(FileInfo file)
-    {
-        return new TextFileLogger(file);
-    }
+    public static IFormulaParserLogger CreateTextFileLogger(FileInfo file) => new TextFileLogger(file);
 }

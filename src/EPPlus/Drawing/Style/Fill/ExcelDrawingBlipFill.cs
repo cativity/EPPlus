@@ -73,25 +73,16 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
     /// <summary>
     /// The type of fill
     /// </summary>
-    public override eFillStyle Style
-    {
-        get { return eFillStyle.BlipFill; }
-    }
+    public override eFillStyle Style => eFillStyle.BlipFill;
 
     ExcelDrawingBlipEffects _effects;
 
     /// <summary>
     /// Blip fill effects
     /// </summary>
-    public ExcelDrawingBlipEffects Effects
-    {
-        get { return this._effects ??= new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm)); }
-    }
+    public ExcelDrawingBlipEffects Effects => this._effects ??= new ExcelDrawingBlipEffects(this._nsm, this._topNode.SelectSingleNode("a:blip", this._nsm));
 
-    internal override string NodeName
-    {
-        get { return "a:blipFill"; }
-    }
+    internal override string NodeName => "a:blipFill";
 
     internal override void GetXml()
     {
@@ -174,10 +165,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
         }
     }
 
-    internal override void UpdateXml()
-    {
-        this.SetXml(this._xml.NameSpaceManager, this._xml.TopNode);
-    }
+    internal override void UpdateXml() => this.SetXml(this._xml.NameSpaceManager, this._xml.TopNode);
 
     internal void AddImage(FileInfo file)
     {
@@ -218,10 +206,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
 
     internal string ContentType { get; set; }
 
-    IPictureRelationDocument IPictureContainer.RelationDocument
-    {
-        get => this._pictureRelationDocument;
-    }
+    IPictureRelationDocument IPictureContainer.RelationDocument => this._pictureRelationDocument;
 
     #endregion
 }

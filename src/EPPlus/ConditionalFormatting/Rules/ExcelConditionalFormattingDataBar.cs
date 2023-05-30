@@ -150,8 +150,8 @@ public class ExcelConditionalFormattingDataBar : ExcelConditionalFormattingRule,
     /// </summary>
     public bool ShowValue
     {
-        get { return this.GetXmlNodeBool(_showValuePath, true); }
-        set { this.SetXmlNodeBool(_showValuePath, value); }
+        get => this.GetXmlNodeBool(_showValuePath, true);
+        set => this.SetXmlNodeBool(_showValuePath, value);
     }
 
     /// <summary>
@@ -182,6 +182,6 @@ public class ExcelConditionalFormattingDataBar : ExcelConditionalFormattingRule,
 
             return Color.White;
         }
-        set { this.SetXmlNodeString(_colorPath, value.ToArgb().ToString("X")); }
+        set => this.SetXmlNodeString(_colorPath, value.ToArgb().ToString("X"));
     }
 }

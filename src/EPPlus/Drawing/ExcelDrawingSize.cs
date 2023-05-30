@@ -55,7 +55,7 @@ public class ExcelDrawingSize : XmlHelper
     /// </summary>
     public long Height
     {
-        get { return this._height; }
+        get => this._height;
         set
         {
             this._height = value;
@@ -79,7 +79,7 @@ public class ExcelDrawingSize : XmlHelper
     /// </summary>
     public long Width
     {
-        get { return this._width; }
+        get => this._width;
         set
         {
             this._width = value;

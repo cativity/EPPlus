@@ -365,10 +365,7 @@ internal partial class ZipEntry
         return additionalBytesRead;
     }
 
-    private static bool IsNotValidSig(int signature)
-    {
-        return signature != ZipConstants.ZipEntrySignature;
-    }
+    private static bool IsNotValidSig(int signature) => signature != ZipConstants.ZipEntrySignature;
 
     /// <summary>
     ///   Reads one <c>ZipEntry</c> from the given stream.  The content for

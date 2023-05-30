@@ -47,10 +47,8 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     }
 
     internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelRangeBase cells)
-        : this(ns, topNode, cells._worksheet)
-    {
+        : this(ns, topNode, cells._worksheet) =>
         this._cells = cells;
-    }
 
     /// <summary>
     /// Collection containing the richtext objects
@@ -75,10 +73,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     /// <summary>
     /// Items in the list
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Add a rich text string
@@ -216,10 +211,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
         }
     }
 
-    internal void UpdateCells()
-    {
-        this._cells.SetValueRichText(this.TopNode.InnerXml);
-    }
+    internal void UpdateCells() => this._cells.SetValueRichText(this.TopNode.InnerXml);
 
     /// <summary>
     /// Clear the collection
@@ -325,31 +317,27 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 
     #region IEnumerable<ExcelRichText> Members
 
-    IEnumerator<ExcelRichText> IEnumerable<ExcelRichText>.GetEnumerator()
-    {
-        return this._list.Select(x =>
-                   {
-                       x.SetCallback(this.UpdateCells);
+    IEnumerator<ExcelRichText> IEnumerable<ExcelRichText>.GetEnumerator() =>
+        this._list.Select(x =>
+            {
+                x.SetCallback(this.UpdateCells);
 
-                       return x;
-                   })
-                   .GetEnumerator();
-    }
+                return x;
+            })
+            .GetEnumerator();
 
     #endregion
 
     #region IEnumerable Members
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.Select(x =>
-                   {
-                       x.SetCallback(this.UpdateCells);
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() =>
+        this._list.Select(x =>
+            {
+                x.SetCallback(this.UpdateCells);
 
-                       return x;
-                   })
-                   .GetEnumerator();
-    }
+                return x;
+            })
+            .GetEnumerator();
 
     #endregion
 }

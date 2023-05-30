@@ -43,18 +43,13 @@ internal class RangeAddressFactory
         this._indexToAddressTranslator = indexToAddressTranslator;
     }
 
-    public RangeAddress Create(int col, int row)
-    {
-        return this.Create(string.Empty, col, row);
-    }
+    public RangeAddress Create(int col, int row) => this.Create(string.Empty, col, row);
 
-    public RangeAddress Create(string worksheetName, int col, int row)
-    {
-        return new RangeAddress()
+    public RangeAddress Create(string worksheetName, int col, int row) =>
+        new()
         {
             Address = this._indexToAddressTranslator.ToAddress(col, row), Worksheet = worksheetName, FromCol = col, ToCol = col, FromRow = row, ToRow = row
         };
-    }
 
     /// <summary>
     /// 

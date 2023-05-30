@@ -67,8 +67,8 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// </summary>            
     public int NumFmtID
     {
-        get { return this._numFmtID; }
-        internal set { this._numFmtID = value; }
+        get => this._numFmtID;
+        internal set => this._numFmtID = value;
     }
 
     string _format = "";
@@ -78,7 +78,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// </summary>s
     public string Format
     {
-        get { return this._format; }
+        get => this._format;
         set
         {
             this._format = value;
@@ -90,10 +90,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// <summary>
     /// The id
     /// </summary>
-    internal override string Id
-    {
-        get { return this.Format; }
-    }
+    internal override string Id => this.Format;
 
     /// <summary>
     /// Creates the the xml node
@@ -115,10 +112,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return !string.IsNullOrEmpty(this.Format) && this.NumFmtID != 0; }
-    }
+    public override bool HasValue => !string.IsNullOrEmpty(this.Format) && this.NumFmtID != 0;
 
     /// <summary>
     /// Clears all properties
@@ -133,10 +127,7 @@ public class ExcelDxfNumberFormat : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfNumberFormat(this._styles, this._callback) { NumFmtID = this.NumFmtID, Format = this.Format };
-    }
+    internal override DxfStyleBase Clone() => new ExcelDxfNumberFormat(this._styles, this._callback) { NumFmtID = this.NumFmtID, Format = this.Format };
 
     internal override void SetValuesFromXml(XmlHelper helper)
     {

@@ -50,10 +50,7 @@ public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingCha
     /// </summary>
     /// <param name="barType"></param>
     /// <param name="valueType"></param>
-    public virtual void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
-    {
-        this.ErrorBars = this.GetNewErrorBar(barType, valueType, this.ErrorBars);
-    }
+    public virtual void AddErrorBars(eErrorBarType barType, eErrorValueType valueType) => this.ErrorBars = this.GetNewErrorBar(barType, valueType, this.ErrorBars);
 
     internal ExcelChartErrorBars GetNewErrorBar(eErrorBarType barType, eErrorValueType valueType, ExcelChartErrorBars errorBars)
     {
@@ -71,8 +68,5 @@ public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingCha
     /// Returns true if the serie has Error Bars
     /// </summary>
     /// <returns>True if the serie has Error Bars</returns>
-    public bool HasErrorBars()
-    {
-        return this.ExistsNode("c:errBars");
-    }
+    public bool HasErrorBars() => this.ExistsNode("c:errBars");
 }

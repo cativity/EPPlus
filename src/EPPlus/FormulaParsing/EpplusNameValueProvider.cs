@@ -61,18 +61,9 @@ internal class EpplusNameValueProvider : INameValueProvider
         return this._values != null && this._values.ContainsKey(key);
     }
 
-    public virtual object GetNamedValue(string key)
-    {
-        return this._values[key];
-    }
+    public virtual object GetNamedValue(string key) => this._values[key];
 
-    public virtual object GetNamedValue(string key, string worksheet)
-    {
-        return this._excelDataProvider.GetName(worksheet, key)?.Value;
-    }
+    public virtual object GetNamedValue(string key, string worksheet) => this._excelDataProvider.GetName(worksheet, key)?.Value;
 
-    public virtual void Reload()
-    {
-        this._values = this._excelDataProvider.GetWorkbookNameValues();
-    }
+    public virtual void Reload() => this._values = this._excelDataProvider.GetWorkbookNameValues();
 }

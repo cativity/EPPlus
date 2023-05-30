@@ -32,17 +32,14 @@ public class ExcelDrawingSystemColor : XmlHelper
     /// </summary>
     public eSystemColor Color
     {
-        get { return TranslateFromString(this.GetXmlNodeString("@val")); }
-        set { this.SetXmlNodeString("@val", TranslateFromEnum(value)); }
+        get => TranslateFromString(this.GetXmlNodeString("@val"));
+        set => this.SetXmlNodeString("@val", TranslateFromEnum(value));
     }
 
     /// <summary>
     /// Last color computed. 
     /// </summary>
-    public Color LastColor
-    {
-        get { return ExcelDrawingRgbColor.GetColorFromString(this.GetXmlNodeString("@lastClr")); }
-    }
+    public Color LastColor => ExcelDrawingRgbColor.GetColorFromString(this.GetXmlNodeString("@lastClr"));
 
     private static eSystemColor TranslateFromString(string v)
     {

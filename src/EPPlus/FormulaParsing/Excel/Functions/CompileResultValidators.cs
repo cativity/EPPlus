@@ -38,8 +38,5 @@ public class CompileResultValidators
         return CompileResultValidator.Empty;
     }
 
-    public CompileResultValidator GetValidator(DataType dataType)
-    {
-        return this.CreateOrGet(dataType);
-    }
+    public CompileResultValidator GetValidator(DataType dataType) => this.CreateOrGet(dataType);
 }

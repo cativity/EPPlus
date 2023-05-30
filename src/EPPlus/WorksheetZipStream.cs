@@ -51,10 +51,7 @@ internal class WorksheetZipStream : Stream
         set => this._stream.Position = value;
     }
 
-    public override void Flush()
-    {
-        this._stream.Flush();
-    }
+    public override void Flush() => this._stream.Flush();
 
     //byte[] _buffer = null;
     //byte[] _prevBuffer, _tempBuffer = new byte[8192];
@@ -80,20 +77,11 @@ internal class WorksheetZipStream : Stream
         return r;
     }
 
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        return this._stream.Seek(offset, origin);
-    }
+    public override long Seek(long offset, SeekOrigin origin) => this._stream.Seek(offset, origin);
 
-    public override void SetLength(long value)
-    {
-        this._stream.SetLength(value);
-    }
+    public override void SetLength(long value) => this._stream.SetLength(value);
 
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-        this._stream.Write(buffer, offset, count);
-    }
+    public override void Write(byte[] buffer, int offset, int count) => this._stream.Write(buffer, offset, count);
 
     public BinaryWriter Buffer = new BinaryWriter(RecyclableMemory.GetStream());
 

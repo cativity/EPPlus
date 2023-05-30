@@ -45,16 +45,10 @@ public class Column3DChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ColumnChart3DStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ColumnChart3DStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void ColumnChart3D_Styles()
@@ -155,7 +149,7 @@ public class Column3DChartStylingTest : TestBase
                        0,
                        18,
                        ePresetChartStyleMultiSeries.Column3dChartStyle2,
-                       c => { c.Legend.Position = eLegendPosition.Top; });
+                       c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddColumnMulti(ws,
@@ -164,7 +158,7 @@ public class Column3DChartStylingTest : TestBase
                        0,
                        31,
                        ePresetChartStyleMultiSeries.Column3dChartStyle3,
-                       c => { c.DataLabel.ShowPercent = true; });
+                       c => c.DataLabel.ShowPercent = true);
 
         //Style 4
         _ = AddColumnMulti(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyleMultiSeries.Column3dChartStyle4, c => { });
@@ -176,7 +170,7 @@ public class Column3DChartStylingTest : TestBase
                        22,
                        18,
                        ePresetChartStyleMultiSeries.Column3dChartStyle5,
-                       c => { c.Legend.Position = eLegendPosition.Top; });
+                       c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 6
         _ = AddColumnMulti(ws,
@@ -185,7 +179,7 @@ public class Column3DChartStylingTest : TestBase
                        22,
                        31,
                        ePresetChartStyleMultiSeries.Column3dChartStyle6,
-                       c => { c.DataLabel.ShowPercent = true; });
+                       c => c.DataLabel.ShowPercent = true);
 
         //Style 7
         _ = AddColumnMulti(ws, chartType, "Column3DChartStyle7", 44, 5, ePresetChartStyleMultiSeries.Column3dChartStyle7, c => { });
@@ -197,7 +191,7 @@ public class Column3DChartStylingTest : TestBase
                        44,
                        18,
                        ePresetChartStyleMultiSeries.Column3dChartStyle8,
-                       c => { c.Legend.Position = eLegendPosition.Top; });
+                       c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 9
         _ = AddColumnMulti(ws,
@@ -206,7 +200,7 @@ public class Column3DChartStylingTest : TestBase
                        44,
                        31,
                        ePresetChartStyleMultiSeries.Column3dChartStyle9,
-                       c => { c.DataLabel.ShowPercent = true; });
+                       c => c.DataLabel.ShowPercent = true);
 
         //Style 10
         _ = AddColumnMulti(ws, chartType, "Column3DChartStyle10", 66, 5, ePresetChartStyleMultiSeries.Column3dChartStyle10, c => { });
@@ -218,7 +212,7 @@ public class Column3DChartStylingTest : TestBase
                        66,
                        18,
                        ePresetChartStyleMultiSeries.Column3dChartStyle11,
-                       c => { c.Legend.Position = eLegendPosition.Top; });
+                       c => c.Legend.Position = eLegendPosition.Top);
     }
 
     private static void StyleColumn3DChart(ExcelWorksheet ws, eBarChartType chartType)
@@ -246,7 +240,7 @@ public class Column3DChartStylingTest : TestBase
                   0,
                   18,
                   ePresetChartStyle.Column3dChartStyle2,
-                  c => { c.Legend.Position = eLegendPosition.Top; });
+                  c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddColumn(ws,
@@ -255,34 +249,34 @@ public class Column3DChartStylingTest : TestBase
                   0,
                   31,
                   ePresetChartStyle.Column3dChartStyle3,
-                  c => { c.DataLabel.ShowPercent = true; });
+                  c => c.DataLabel.ShowPercent = true);
 
         //Style 4
         _ = AddColumn(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyle.Column3dChartStyle4, c => { });
 
         //Style 5
-        _ = AddColumn(ws, chartType, "Column3DChartStyle5", 22, 18, ePresetChartStyle.Column3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle5", 22, 18, ePresetChartStyle.Column3dChartStyle5, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 6
-        _ = AddColumn(ws, chartType, "Column3DChartStyle6", 22, 31, ePresetChartStyle.Column3dChartStyle6, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle6", 22, 31, ePresetChartStyle.Column3dChartStyle6, c => c.DataLabel.ShowPercent = true);
 
         //Style 7
         _ = AddColumn(ws, chartType, "Column3DChartStyle7", 44, 5, ePresetChartStyle.Column3dChartStyle7, c => { });
 
         //Style 8
-        _ = AddColumn(ws, chartType, "Column3DChartStyle8", 44, 18, ePresetChartStyle.Column3dChartStyle8, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle8", 44, 18, ePresetChartStyle.Column3dChartStyle8, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 9
-        _ = AddColumn(ws, chartType, "Column3DChartStyle9", 44, 31, ePresetChartStyle.Column3dChartStyle9, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle9", 44, 31, ePresetChartStyle.Column3dChartStyle9, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 10
-        _ = AddColumn(ws, chartType, "Column3DChartStyle10", 66, 5, ePresetChartStyle.Column3dChartStyle10, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle10", 66, 5, ePresetChartStyle.Column3dChartStyle10, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 11
-        _ = AddColumn(ws, chartType, "Column3DChartStyle11", 66, 18, ePresetChartStyle.Column3dChartStyle11, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle11", 66, 18, ePresetChartStyle.Column3dChartStyle11, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 12
-        _ = AddColumn(ws, chartType, "Column3DChartStyle12", 66, 31, ePresetChartStyle.Column3dChartStyle12, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle12", 66, 31, ePresetChartStyle.Column3dChartStyle12, c => c.Legend.Position = eLegendPosition.Top);
     }
 
     private static void StyleColumnStacked3DChart(ExcelWorksheet ws, eBarChartType chartType)
@@ -310,7 +304,7 @@ public class Column3DChartStylingTest : TestBase
                   0,
                   18,
                   ePresetChartStyle.StackedColumn3dChartStyle2,
-                  c => { c.Legend.Position = eLegendPosition.Top; });
+                  c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddColumn(ws,
@@ -319,7 +313,7 @@ public class Column3DChartStylingTest : TestBase
                   0,
                   31,
                   ePresetChartStyle.StackedColumn3dChartStyle3,
-                  c => { c.DataLabel.ShowPercent = true; });
+                  c => c.DataLabel.ShowPercent = true);
 
         //Style 4
         _ = AddColumn(ws, chartType, "Column3DChartStyle4", 22, 5, ePresetChartStyle.StackedColumn3dChartStyle4, c => { });
@@ -331,10 +325,10 @@ public class Column3DChartStylingTest : TestBase
                   22,
                   18,
                   ePresetChartStyle.StackedColumn3dChartStyle5,
-                  c => { c.Legend.Position = eLegendPosition.Top; });
+                  c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 6
-        _ = AddColumn(ws, chartType, "Column3DChartStyle6", 22, 31, ePresetChartStyle.StackedColumn3dChartStyle6, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddColumn(ws, chartType, "Column3DChartStyle6", 22, 31, ePresetChartStyle.StackedColumn3dChartStyle6, c => c.DataLabel.ShowPercent = true);
 
         //Style 7
         _ = AddColumn(ws, chartType, "Column3DChartStyle7", 44, 5, ePresetChartStyle.StackedColumn3dChartStyle7, c => { });
@@ -346,7 +340,7 @@ public class Column3DChartStylingTest : TestBase
                   44,
                   18,
                   ePresetChartStyle.StackedColumn3dChartStyle8,
-                  c => { c.Legend.Position = eLegendPosition.Top; });
+                  c => c.Legend.Position = eLegendPosition.Top);
     }
 
     private static ExcelBarChart AddColumn(ExcelWorksheet ws,

@@ -40,7 +40,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
     /// </summary>
     public ExcelBorderStyle? Style
     {
-        get { return this._style; }
+        get => this._style;
         set
         {
             this._style = value;
@@ -56,10 +56,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
     /// <summary>
     /// The Id
     /// </summary>
-    internal override string Id
-    {
-        get { return GetAsString(this.Style) + "|" + (this.Color == null ? "" : this.Color.Id); }
-    }
+    internal override string Id => GetAsString(this.Style) + "|" + (this.Color == null ? "" : this.Color.Id);
 
     /// <summary>
     /// Creates the the xml node
@@ -75,10 +72,7 @@ public class ExcelDxfBorderItem : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return (this.Style != null && this.Style != ExcelBorderStyle.None) || this.Color.HasValue; }
-    }
+    public override bool HasValue => (this.Style != null && this.Style != ExcelBorderStyle.None) || this.Color.HasValue;
 
     /// <summary>
     /// Clears all properties
@@ -102,8 +96,5 @@ public class ExcelDxfBorderItem : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfBorderItem(this._styles, this._styleClass, this._callback) { Style = this.Style, Color = this.Color };
-    }
+    internal override DxfStyleBase Clone() => new ExcelDxfBorderItem(this._styles, this._styleClass, this._callback) { Style = this.Style, Color = this.Color };
 }

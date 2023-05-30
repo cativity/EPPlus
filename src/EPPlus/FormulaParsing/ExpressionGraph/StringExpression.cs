@@ -25,8 +25,5 @@ public class StringExpression : AtomicExpression
     {
     }
 
-    public override CompileResult Compile()
-    {
-        return new CompileResult(this.ExpressionString, DataType.String);
-    }
+    public override CompileResult Compile() => new(this.ExpressionString, DataType.String);
 }

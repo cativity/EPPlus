@@ -22,10 +22,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlDropDown : ExcelControlList
 {
     internal ExcelControlDropDown(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(150, 20); //Default size
-    }
 
     internal ExcelControlDropDown(ExcelDrawings drawings,
                                   XmlNode drawNode,
@@ -47,7 +45,7 @@ public class ExcelControlDropDown : ExcelControlList
     /// </summary>
     public bool Colored
     {
-        get { return this._ctrlProp.GetXmlNodeBool("@colored"); }
+        get => this._ctrlProp.GetXmlNodeBool("@colored");
         set
         {
             this._ctrlProp.SetXmlNodeBool("@colored", value);
@@ -60,7 +58,7 @@ public class ExcelControlDropDown : ExcelControlList
     /// </summary>
     public int DropLines
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@dropLines", 8); }
+        get => this._ctrlProp.GetXmlNodeInt("@dropLines", 8);
         set
         {
             this._ctrlProp.SetXmlNodeInt("@dropLines", value, null, false);
@@ -99,7 +97,7 @@ public class ExcelControlDropDown : ExcelControlList
     /// </summary>
     public int? MinimumWidth
     {
-        get { return this._ctrlProp.GetXmlNodeIntNull("@widthMin"); }
+        get => this._ctrlProp.GetXmlNodeIntNull("@widthMin");
         set
         {
             this._ctrlProp.SetXmlNodeInt("@widthMin", value, null, false);

@@ -27,10 +27,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
     private static Dictionary<uint, SerializedFontMetrics> _fonts;
     private static object _syncRoot = new object();
 
-    public GenericFontMetricsTextMeasurerBase()
-    {
-        Initialize();
-    }
+    public GenericFontMetricsTextMeasurerBase() => Initialize();
 
     private static void Initialize()
     {
@@ -40,10 +37,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
         }
     }
 
-    protected internal static bool IsValidFont(uint fontKey)
-    {
-        return _fonts.ContainsKey(fontKey);
-    }
+    protected internal static bool IsValidFont(uint fontKey) => _fonts.ContainsKey(fontKey);
 
     internal protected TextMeasurement MeasureTextInternal(string text, uint fontKey, MeasurementFontStyles style, float size)
     {

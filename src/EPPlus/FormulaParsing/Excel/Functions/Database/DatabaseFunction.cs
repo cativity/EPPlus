@@ -29,10 +29,7 @@ internal abstract class DatabaseFunction : ExcelFunction
     {
     }
 
-    public DatabaseFunction(RowMatcher rowMatcher)
-    {
-        this.RowMatcher = rowMatcher;
-    }
+    public DatabaseFunction(RowMatcher rowMatcher) => this.RowMatcher = rowMatcher;
 
     protected IEnumerable<double> GetMatchingValues(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

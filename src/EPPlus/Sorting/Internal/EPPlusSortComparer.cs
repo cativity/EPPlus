@@ -28,10 +28,8 @@ internal class EPPlusSortComparer : EPPlusSortComparerBase<SortItem<ExcelValue>,
                               Dictionary<int, string[]> customLists,
                               CultureInfo culture = null,
                               CompareOptions compareOptions = CompareOptions.None)
-        : base(descending, customLists, culture, compareOptions)
-    {
+        : base(descending, customLists, culture, compareOptions) =>
         this._columns = columns;
-    }
 
     private readonly int[] _columns;
 

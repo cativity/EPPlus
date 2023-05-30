@@ -26,8 +26,5 @@ public class ExcelVbaReferenceCollection : ExcelVBACollectionBase<ExcelVbaRefere
     /// Adds a new reference 
     /// </summary>
     /// <param name="Item">The reference object</param>
-    public void Add(ExcelVbaReference Item)
-    {
-        this._list.Add(Item);
-    }
+    public void Add(ExcelVbaReference Item) => this._list.Add(Item);
 }

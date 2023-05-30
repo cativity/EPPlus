@@ -72,20 +72,11 @@ internal static class EnumExtensions
         }
     }
 
-    internal static string GetStringValueForXml(this bool boolValue)
-    {
-        return boolValue ? "1" : "0";
-    }
+    internal static string GetStringValueForXml(this bool boolValue) => boolValue ? "1" : "0";
 
-    internal static bool IsInt(this string s)
-    {
-        return !s.Any(x => x < '0' && x > '9');
-    }
+    internal static bool IsInt(this string s) => !s.Any(x => x < '0' && x > '9');
 
-    internal static string ToColorString(this Color color)
-    {
-        return (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
-    }
+    internal static string ToColorString(this Color color) => (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
 
     internal static string GetXmlAttributeValue(this bool value, string attribute, bool? defaultValue)
     {

@@ -26,10 +26,8 @@ namespace OfficeOpenXml.Sorting;
 public class SortState : XmlHelper
 {
     internal SortState(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this._sortConditions = new SortConditionCollection(nameSpaceManager, topNode);
-    }
 
     internal SortState(XmlNamespaceManager nameSpaceManager, ExcelWorksheet worksheet)
         : base(nameSpaceManager, null)
@@ -79,26 +77,20 @@ public class SortState : XmlHelper
     /// <summary>
     /// Removes all sort conditions
     /// </summary>
-    public void Clear()
-    {
-        this._sortConditions.Clear();
-    }
+    public void Clear() => this._sortConditions.Clear();
 
     /// <summary>
     /// The preserved sort conditions of the sort state.
     /// </summary>
-    public SortConditionCollection SortConditions
-    {
-        get { return this._sortConditions; }
-    }
+    public SortConditionCollection SortConditions => this._sortConditions;
 
     /// <summary>
     /// Indicates whether or not the sort is case-sensitive
     /// </summary>
     public bool CaseSensitive
     {
-        get { return this.GetXmlNodeBool(this._caseSensitivePath); }
-        internal set { this.SetXmlNodeBool(this._caseSensitivePath, value, false); }
+        get => this.GetXmlNodeBool(this._caseSensitivePath);
+        internal set => this.SetXmlNodeBool(this._caseSensitivePath, value, false);
     }
 
     /// <summary>
@@ -106,8 +98,8 @@ public class SortState : XmlHelper
     /// </summary>
     public bool ColumnSort
     {
-        get { return this.GetXmlNodeBool(this._columnSortPath); }
-        internal set { this.SetXmlNodeBool(this._columnSortPath, value, false); }
+        get => this.GetXmlNodeBool(this._columnSortPath);
+        internal set => this.SetXmlNodeBool(this._columnSortPath, value, false);
     }
 
     /// <summary>
@@ -115,7 +107,7 @@ public class SortState : XmlHelper
     /// </summary>
     public string Ref
     {
-        get { return this.GetXmlNodeString(this._refPath); }
-        internal set { this.SetXmlNodeString(this._refPath, value); }
+        get => this.GetXmlNodeString(this._refPath);
+        internal set => this.SetXmlNodeString(this._refPath, value);
     }
 }

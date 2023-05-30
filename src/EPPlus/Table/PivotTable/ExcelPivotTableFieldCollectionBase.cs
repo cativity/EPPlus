@@ -37,10 +37,7 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
     /// </summary>
     /// <param name="value">The object to check for existance</param>
     /// <returns></returns>
-    public bool Contains(object value)
-    {
-        return this._cache._cacheLookup.ContainsKey(value);
-    }
+    public bool Contains(object value) => this._cache._cacheLookup.ContainsKey(value);
 
     /// <summary>
     /// Get the item with the value supplied. If the value does not exist, null is returned.
@@ -136,10 +133,7 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
     /// <summary>
     /// Refreshes the data of the cache field
     /// </summary>
-    public void Refresh()
-    {
-        this._cache.Refresh();
-    }
+    public void Refresh() => this._cache.Refresh();
 }
 
 /// <summary>
@@ -158,33 +152,18 @@ public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
     /// Gets the enumerator of the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<T> GetEnumerator() => this._list.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
-    internal void AddInternal(T field)
-    {
-        this._list.Add(field);
-    }
+    internal void AddInternal(T field) => this._list.Add(field);
 
-    internal void Clear()
-    {
-        this._list.Clear();
-    }
+    internal void Clear() => this._list.Clear();
 
     /// <summary>
     /// Indexer for the  collection
@@ -209,8 +188,5 @@ public abstract class ExcelPivotTableFieldCollectionBase<T> : IEnumerable<T>
     /// </summary>
     /// <param name="item">The item</param>
     /// <returns>the zero-based index of the item in the list</returns>
-    internal int IndexOf(T item)
-    {
-        return this._list.IndexOf(item);
-    }
+    internal int IndexOf(T item) => this._list.IndexOf(item);
 }

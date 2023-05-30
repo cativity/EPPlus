@@ -62,7 +62,7 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override eLabelPosition Position
     {
-        get { return GetPosEnum(this.GetXmlNodeString(positionPath)); }
+        get => GetPosEnum(this.GetXmlNodeString(positionPath));
         set
         {
             if (ForbiddDataLabelPosition(this._chart))
@@ -74,10 +74,7 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
         }
     }
 
-    internal static bool ForbiddDataLabelPosition(ExcelChart _chart)
-    {
-        return (_chart.IsType3D() && !_chart.IsTypePie() && _chart.ChartType != eChartType.Line3D) || _chart.IsTypeDoughnut();
-    }
+    internal static bool ForbiddDataLabelPosition(ExcelChart _chart) => (_chart.IsType3D() && !_chart.IsTypePie() && _chart.ChartType != eChartType.Line3D) || _chart.IsTypeDoughnut();
 
     const string showValPath = "c:showVal/@val";
 
@@ -86,8 +83,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowValue
     {
-        get { return this.GetXmlNodeBool(showValPath); }
-        set { this.SetXmlNodeString(showValPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showValPath);
+        set => this.SetXmlNodeString(showValPath, value ? "1" : "0");
     }
 
     const string showCatPath = "c:showCatName/@val";
@@ -97,8 +94,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowCategory
     {
-        get { return this.GetXmlNodeBool(showCatPath); }
-        set { this.SetXmlNodeString(showCatPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showCatPath);
+        set => this.SetXmlNodeString(showCatPath, value ? "1" : "0");
     }
 
     const string showSerPath = "c:showSerName/@val";
@@ -108,8 +105,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowSeriesName
     {
-        get { return this.GetXmlNodeBool(showSerPath); }
-        set { this.SetXmlNodeString(showSerPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showSerPath);
+        set => this.SetXmlNodeString(showSerPath, value ? "1" : "0");
     }
 
     const string showPerentPath = "c:showPercent/@val";
@@ -119,8 +116,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowPercent
     {
-        get { return this.GetXmlNodeBool(showPerentPath); }
-        set { this.SetXmlNodeString(showPerentPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showPerentPath);
+        set => this.SetXmlNodeString(showPerentPath, value ? "1" : "0");
     }
 
     const string showLeaderLinesPath = "c:showLeaderLines/@val";
@@ -130,8 +127,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowLeaderLines
     {
-        get { return this.GetXmlNodeBool(showLeaderLinesPath); }
-        set { this.SetXmlNodeString(showLeaderLinesPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showLeaderLinesPath);
+        set => this.SetXmlNodeString(showLeaderLinesPath, value ? "1" : "0");
     }
 
     const string showBubbleSizePath = "c:showBubbleSize/@val";
@@ -141,8 +138,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowBubbleSize
     {
-        get { return this.GetXmlNodeBool(showBubbleSizePath); }
-        set { this.SetXmlNodeString(showBubbleSizePath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showBubbleSizePath);
+        set => this.SetXmlNodeString(showBubbleSizePath, value ? "1" : "0");
     }
 
     const string showLegendKeyPath = "c:showLegendKey/@val";
@@ -152,8 +149,8 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override bool ShowLegendKey
     {
-        get { return this.GetXmlNodeBool(showLegendKeyPath); }
-        set { this.SetXmlNodeString(showLegendKeyPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(showLegendKeyPath);
+        set => this.SetXmlNodeString(showLegendKeyPath, value ? "1" : "0");
     }
 
     const string separatorPath = "c:separator";
@@ -163,7 +160,7 @@ public class ExcelChartDataLabelStandard : ExcelChartDataLabel
     /// </summary>
     public override string Separator
     {
-        get { return this.GetXmlNodeString(separatorPath); }
+        get => this.GetXmlNodeString(separatorPath);
         set
         {
             if (string.IsNullOrEmpty(value))

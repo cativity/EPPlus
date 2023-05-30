@@ -100,20 +100,14 @@ public class ExcelThreadedCommentThread
     /// <summary>
     /// When this method is called the legacy comment representing the thread will be rebuilt.
     /// </summary>
-    internal void OnCommentThreadChanged()
-    {
-        this.ReplicateThreadToLegacyComment();
-    }
+    internal void OnCommentThreadChanged() => this.ReplicateThreadToLegacyComment();
 
     /// <summary>
     /// Adds a <see cref="ExcelThreadedComment"/> to the thread
     /// </summary>
     /// <param name="personId">Id of the author, see <see cref="ExcelThreadedCommentPerson"/></param>
     /// <param name="text">Text of the comment</param>
-    public ExcelThreadedComment AddComment(string personId, string text)
-    {
-        return this.AddComment(personId, text, true);
-    }
+    public ExcelThreadedComment AddComment(string personId, string text) => this.AddComment(personId, text, true);
 
     internal ExcelThreadedComment AddComment(string personId, string text, bool replicateLegacyComment)
     {
@@ -285,8 +279,5 @@ public class ExcelThreadedCommentThread
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return "Count = " + this.Comments.Count;
-    }
+    public override string ToString() => "Count = " + this.Comments.Count;
 }

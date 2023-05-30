@@ -25,10 +25,7 @@ public class MatchTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     [TestMethod]
     public void Match_Without_Wildcard()

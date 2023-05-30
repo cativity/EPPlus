@@ -22,10 +22,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlGroupBox : ExcelControlWithText
 {
     internal ExcelControlGroupBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(200, 200); //Default size
-    }
 
     internal ExcelControlGroupBox(ExcelDrawings drawings,
                                   XmlNode drawNode,

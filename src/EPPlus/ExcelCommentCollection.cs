@@ -101,10 +101,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// <summary>
     /// Number of comments in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._listIndex.Count; }
-    }
+    public int Count => this._listIndex.Count;
 
     /// <summary>
     /// Indexer for the comments collection
@@ -151,10 +148,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// </summary>
     /// <param name="cellAddress">The cell address</param>
     /// <returns>The comment</returns>
-    public ExcelComment this[string cellAddress]
-    {
-        get { return this[new ExcelCellAddress(cellAddress)]; }
-    }
+    public ExcelComment this[string cellAddress] => this[new ExcelCellAddress(cellAddress)];
 
     /// <summary>
     /// Adds a comment to the top left cell of the range
@@ -222,10 +216,7 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// Removes the comment
     /// </summary>
     /// <param name="comment">The comment to remove</param>
-    public void Remove(ExcelComment comment)
-    {
-        this.Remove(comment, false);
-    }
+    public void Remove(ExcelComment comment) => this.Remove(comment, false);
 
     internal void Remove(ExcelComment comment, bool shift)
     {
@@ -340,17 +331,11 @@ public class ExcelCommentCollection : IEnumerable, IDisposable
     /// Removes the comment at the specified position
     /// </summary>
     /// <param name="Index">The index</param>
-    public void RemoveAt(int Index)
-    {
-        this.Remove(this[Index]);
-    }
+    public void RemoveAt(int Index) => this.Remove(this[Index]);
 
     #region IEnumerable Members
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.Where(x => x != null).GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.Where(x => x != null).GetEnumerator();
 
     #endregion
 

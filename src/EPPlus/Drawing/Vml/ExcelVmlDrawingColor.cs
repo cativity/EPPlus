@@ -14,10 +14,8 @@ public class ExcelVmlDrawingColor : XmlHelper
     string _path;
 
     internal ExcelVmlDrawingColor(XmlNamespaceManager ns, XmlNode topNode, string path)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this._path = path;
-    }
 
     /// <summary>
     /// A color string representing a color. Uses the HTML 4.0 color names, rgb decimal triplets or rgb hex triplets
@@ -29,27 +27,21 @@ public class ExcelVmlDrawingColor : XmlHelper
     /// </summary>
     public string ColorString
     {
-        get { return this.GetXmlNodeString(this._path); }
-        set { this.SetXmlNodeString(this._path, value); }
+        get => this.GetXmlNodeString(this._path);
+        set => this.SetXmlNodeString(this._path, value);
     }
 
     /// <summary>
     /// Sets the Color string with the color supplied.
     /// </summary>
     /// <param name="color"></param>
-    public void SetColor(Color color)
-    {
-        this.ColorString = "#" + (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
-    }
+    public void SetColor(Color color) => this.ColorString = "#" + (color.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0');
 
     /// <summary>
     /// Gets the color for the color string
     /// </summary>
     /// <returns></returns>
-    public Color GetColor()
-    {
-        return GetColor(this.ColorString);
-    }
+    public Color GetColor() => GetColor(this.ColorString);
 
     internal static Color GetColor(string c)
     {

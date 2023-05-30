@@ -43,10 +43,7 @@ internal class TokenHandler : ITokenIndexProvider
 
     public string Worksheet { get; set; }
 
-    public bool HasMore()
-    {
-        return this._tokenIndex < this._context.FormulaChars.Length - 1;
-    }
+    public bool HasMore() => this._tokenIndex < this._context.FormulaChars.Length - 1;
 
     public void Next()
     {
@@ -146,13 +143,7 @@ internal class TokenHandler : ITokenIndexProvider
         return this._tokenFactory.Create(context.Result, context.CurrentToken, worksheet);
     }
 
-    int ITokenIndexProvider.Index
-    {
-        get { return this._tokenIndex; }
-    }
+    int ITokenIndexProvider.Index => this._tokenIndex;
 
-    void ITokenIndexProvider.MoveIndexPointerForward()
-    {
-        this._tokenIndex++;
-    }
+    void ITokenIndexProvider.MoveIndexPointerForward() => this._tokenIndex++;
 }

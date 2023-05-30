@@ -39,10 +39,8 @@ public class ExcelTreemapChart : ExcelChartEx
                                XmlDocument chartXml,
                                XmlNode chartNode,
                                ExcelGroupShape parent = null)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.Series.Init(this, this.NameSpaceManager, this.TopNode, false, base.Series._list);
-    }
 
     /// <summary>
     /// The series for a treemap chart

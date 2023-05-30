@@ -41,16 +41,10 @@ public class DynamicFilterTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ValueFilter.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ValueFilter.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void AboveAverage()

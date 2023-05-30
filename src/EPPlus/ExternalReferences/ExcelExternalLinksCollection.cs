@@ -36,46 +36,31 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
         this.LoadExternalReferences();
     }
 
-    internal void AddInternal(ExcelExternalLink externalLink)
-    {
-        this._list.Add(externalLink);
-    }
+    internal void AddInternal(ExcelExternalLink externalLink) => this._list.Add(externalLink);
 
     /// <summary>
     ///     Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ExcelExternalLink> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelExternalLink> GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     ///     Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Gets the number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// The indexer for the collection
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns></returns>
-    public ExcelExternalLink this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelExternalLink this[int index] => this._list[index];
 
     /// <summary>
     /// Adds an external reference to another workbook. 
@@ -325,10 +310,7 @@ public class ExcelExternalLinksCollection : IEnumerable<ExcelExternalLink>
         return -1;
     }
 
-    internal int GetIndex(ExcelExternalLink link)
-    {
-        return this._list.IndexOf(link);
-    }
+    internal int GetIndex(ExcelExternalLink link) => this._list.IndexOf(link);
 
     /// <summary>
     /// Updates the value cache for any external workbook in the collection. The link must be an workbook and of type xlsx, xlsm or xlst.

@@ -29,10 +29,7 @@ internal class TableStyleToCss
 {
     ExcelTable _table;
 
-    internal TableStyleToCss(ExcelTable table)
-    {
-        this._table = table;
-    }
+    internal TableStyleToCss(ExcelTable table) => this._table = table;
 
     internal void Render(StreamWriter sw)
     {

@@ -25,10 +25,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph.FunctionCompilers;
 public class IfErrorFunctionCompiler : FunctionCompiler
 {
     public IfErrorFunctionCompiler(ExcelFunction function, ParsingContext context)
-        : base(function, context)
-    {
+        : base(function, context) =>
         Require.That(function).Named("function").IsNotNull();
-    }
 
     public override CompileResult Compile(IEnumerable<Expression> children)
     {

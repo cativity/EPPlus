@@ -21,10 +21,8 @@ namespace OfficeOpenXml.Sorting;
 public class TableSortLayer : SortLayerBase
 {
     internal TableSortLayer(TableSortOptions options)
-        : base(options)
-    {
+        : base(options) =>
         this._options = options;
-    }
 
     private readonly TableSortOptions _options;
 

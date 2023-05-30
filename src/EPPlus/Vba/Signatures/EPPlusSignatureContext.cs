@@ -30,10 +30,7 @@ internal class EPPlusSignatureContext
         public const string SHA512 = "2.16.840.1.101.3.4.2.3";
     }
 
-    public EPPlusSignatureContext(ExcelVbaSignatureType signatureType)
-    {
-        this._signatureType = signatureType;
-    }
+    public EPPlusSignatureContext(ExcelVbaSignatureType signatureType) => this._signatureType = signatureType;
 
     private readonly ExcelVbaSignatureType _signatureType;
 

@@ -48,10 +48,7 @@ public class SlicerStyleTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("SlicerStyle.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("SlicerStyle.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

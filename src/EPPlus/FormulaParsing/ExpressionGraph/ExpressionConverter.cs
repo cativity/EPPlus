@@ -95,8 +95,5 @@ public class ExpressionConverter : IExpressionConverter
 
     private static IExpressionConverter _instance;
 
-    public static IExpressionConverter Instance
-    {
-        get { return _instance ??= new ExpressionConverter(); }
-    }
+    public static IExpressionConverter Instance => _instance ??= new ExpressionConverter();
 }

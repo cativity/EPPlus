@@ -335,10 +335,7 @@ internal class ZipInputStream : Stream
     ///   true if the application would like the stream
     ///   to remain open after the <c>ZipInputStream</c> has been closed.
     /// </param>
-    public ZipInputStream(Stream stream, bool leaveOpen)
-    {
-        this._Init(stream, leaveOpen, null);
-    }
+    public ZipInputStream(Stream stream, bool leaveOpen) => this._Init(stream, leaveOpen, null);
 
     private void _Init(Stream stream, bool leaveOpen, string name)
     {
@@ -363,10 +360,7 @@ internal class ZipInputStream : Stream
     ///   </para>
     /// </remarks>
     /// <returns>a string representation of the instance.</returns>
-    public override string ToString()
-    {
-        return string.Format("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
-    }
+    public override string ToString() => string.Format("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
 
     /// <summary>
     ///   Size of the work buffer to use for the ZLIB codec during decompression.
@@ -457,10 +451,7 @@ internal class ZipInputStream : Stream
         this._needSetup = false;
     }
 
-    internal Stream ReadStream
-    {
-        get { return this._inputStream; }
-    }
+    internal Stream ReadStream => this._inputStream;
 
     /// <summary>
     ///   Read the data from the stream into the buffer.
@@ -661,34 +652,22 @@ internal class ZipInputStream : Stream
     /// <summary>
     /// Always returns true.
     /// </summary>
-    public override bool CanRead
-    {
-        get { return true; }
-    }
+    public override bool CanRead => true;
 
     /// <summary>
     /// Returns the value of <c>CanSeek</c> for the underlying (wrapped) stream.
     /// </summary>
-    public override bool CanSeek
-    {
-        get { return this._inputStream.CanSeek; }
-    }
+    public override bool CanSeek => this._inputStream.CanSeek;
 
     /// <summary>
     /// Always returns false.
     /// </summary>
-    public override bool CanWrite
-    {
-        get { return false; }
-    }
+    public override bool CanWrite => false;
 
     /// <summary>
     /// Returns the length of the underlying stream.
     /// </summary>
-    public override long Length
-    {
-        get { return this._inputStream.Length; }
-    }
+    public override long Length => this._inputStream.Length;
 
     /// <summary>
     /// Gets or sets the position of the underlying stream.
@@ -698,17 +677,14 @@ internal class ZipInputStream : Stream
     /// </remarks>
     public override long Position
     {
-        get { return this._inputStream.Position; }
-        set { _ = this.Seek(value, SeekOrigin.Begin); }
+        get => this._inputStream.Position;
+        set => _ = this.Seek(value, SeekOrigin.Begin);
     }
 
     /// <summary>
     /// This is a no-op.
     /// </summary>
-    public override void Flush()
-    {
-        throw new NotSupportedException("Flush");
-    }
+    public override void Flush() => throw new NotSupportedException("Flush");
 
     /// <summary>
     /// This method always throws a NotSupportedException.
@@ -716,10 +692,7 @@ internal class ZipInputStream : Stream
     /// <param name="buffer">ignored</param>
     /// <param name="offset">ignored</param>
     /// <param name="count">ignored</param>
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-        throw new NotSupportedException("Write");
-    }
+    public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException("Write");
 
     /// <summary>
     ///   This method seeks in the underlying stream.
@@ -758,10 +731,7 @@ internal class ZipInputStream : Stream
     /// This method always throws a NotSupportedException.
     /// </summary>
     /// <param name="value">ignored</param>
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 
     private Stream _inputStream;
     private ZipEntry _currentEntry;

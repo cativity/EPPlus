@@ -42,10 +42,7 @@ public class ValueMatcherTests
     private ValueMatcher _matcher;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._matcher = new ValueMatcher();
-    }
+    public void Setup() => this._matcher = new ValueMatcher();
 
     [TestMethod]
     public void ShouldReturnMinus1WhenFirstParamIsSomethingAndSecondParamIsNull()

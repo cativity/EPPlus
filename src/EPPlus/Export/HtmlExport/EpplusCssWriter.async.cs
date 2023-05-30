@@ -466,10 +466,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             await this._writer.WriteAsync(");");
         }
 
-        public async Task FlushStreamAsync()
-        {
-            await this._writer.FlushAsync();
-        }
+        public async Task FlushStreamAsync() => await this._writer.FlushAsync();
     }
 #endif
 }

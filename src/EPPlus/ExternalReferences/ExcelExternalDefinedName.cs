@@ -37,8 +37,5 @@ public class ExcelExternalDefinedName : IExcelExternalNamedItem
     /// The string representation of the name
     /// </summary>
     /// <returns></returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 }

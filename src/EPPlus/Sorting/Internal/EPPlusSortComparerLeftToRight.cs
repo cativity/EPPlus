@@ -28,10 +28,8 @@ internal class EPPlusSortComparerLeftToRight : EPPlusSortComparerBase<SortItemLe
                                          Dictionary<int, string[]> customLists,
                                          CultureInfo culture = null,
                                          CompareOptions compareOptions = CompareOptions.None)
-        : base(descending, customLists, culture, compareOptions)
-    {
+        : base(descending, customLists, culture, compareOptions) =>
         this._rows = rows;
-    }
 
     private readonly int[] _rows;
 

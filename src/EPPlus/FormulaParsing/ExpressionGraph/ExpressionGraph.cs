@@ -22,10 +22,7 @@ public class ExpressionGraph
 {
     private List<Expression> _expressions = new List<Expression>();
 
-    public IEnumerable<Expression> Expressions
-    {
-        get { return this._expressions; }
-    }
+    public IEnumerable<Expression> Expressions => this._expressions;
 
     public Expression Current { get; private set; }
 

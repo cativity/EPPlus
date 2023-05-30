@@ -40,13 +40,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
         this._diagonalDown = this.GetBoolValue(topNode, diagonalDownPath);
     }
 
-    internal override string Id
-    {
-        get
-        {
-            return this.Left.Id + this.Right.Id + this.Top.Id + this.Bottom.Id + this.Diagonal.Id + this.DiagonalUp.ToString() + this.DiagonalDown.ToString();
-        }
-    }
+    internal override string Id => this.Left.Id + this.Right.Id + this.Top.Id + this.Bottom.Id + this.Diagonal.Id + this.DiagonalUp.ToString() + this.DiagonalDown.ToString();
 
     const string leftPath = "d:left";
     ExcelBorderItemXml _left;
@@ -56,8 +50,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderItemXml Left
     {
-        get { return this._left; }
-        internal set { this._left = value; }
+        get => this._left;
+        internal set => this._left = value;
     }
 
     const string rightPath = "d:right";
@@ -68,8 +62,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderItemXml Right
     {
-        get { return this._right; }
-        internal set { this._right = value; }
+        get => this._right;
+        internal set => this._right = value;
     }
 
     const string topPath = "d:top";
@@ -80,8 +74,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderItemXml Top
     {
-        get { return this._top; }
-        internal set { this._top = value; }
+        get => this._top;
+        internal set => this._top = value;
     }
 
     const string bottomPath = "d:bottom";
@@ -92,8 +86,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderItemXml Bottom
     {
-        get { return this._bottom; }
-        internal set { this._bottom = value; }
+        get => this._bottom;
+        internal set => this._bottom = value;
     }
 
     const string diagonalPath = "d:diagonal";
@@ -104,8 +98,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public ExcelBorderItemXml Diagonal
     {
-        get { return this._diagonal; }
-        internal set { this._diagonal = value; }
+        get => this._diagonal;
+        internal set => this._diagonal = value;
     }
 
     const string diagonalUpPath = "@diagonalUp";
@@ -116,8 +110,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public bool DiagonalUp
     {
-        get { return this._diagonalUp; }
-        internal set { this._diagonalUp = value; }
+        get => this._diagonalUp;
+        internal set => this._diagonalUp = value;
     }
 
     const string diagonalDownPath = "@diagonalDown";
@@ -128,8 +122,8 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     /// </summary>
     public bool DiagonalDown
     {
-        get { return this._diagonalDown; }
-        internal set { this._diagonalDown = value; }
+        get => this._diagonalDown;
+        internal set => this._diagonalDown = value;
     }
 
     internal ExcelBorderXml Copy()

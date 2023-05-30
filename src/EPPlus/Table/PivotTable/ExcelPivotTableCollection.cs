@@ -143,10 +143,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <param name="PivotCacheDefinition">A pivot table cache shared with another pivot table</param>
     /// <param name="Name">The name of the pivottable. Must be unique </param>
     /// <returns>The pivottable object</returns>
-    public ExcelPivotTable Add(ExcelAddressBase Range, ExcelPivotCacheDefinition PivotCacheDefinition, string Name)
-    {
-        return this.Add(new ExcelPivotTable(this._ws, Range, PivotCacheDefinition._cacheReference, Name, this._ws.Workbook._nextPivotTableID++));
-    }
+    public ExcelPivotTable Add(ExcelAddressBase Range, ExcelPivotCacheDefinition PivotCacheDefinition, string Name) => this.Add(new ExcelPivotTable(this._ws, Range, PivotCacheDefinition._cacheReference, Name, this._ws.Workbook._nextPivotTableID++));
 
     internal string GetNewTableName()
     {
@@ -164,10 +161,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._pivotTables.Count; }
-    }
+    public int Count => this._pivotTables.Count;
 
     /// <summary>
     /// The pivottable Index. Base 0.
@@ -211,15 +205,9 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// Gets the enumerator of the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelPivotTable> GetEnumerator()
-    {
-        return this._pivotTables.GetEnumerator();
-    }
+    public IEnumerator<ExcelPivotTable> GetEnumerator() => this._pivotTables.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._pivotTables.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._pivotTables.GetEnumerator();
 
     /// <summary>
     /// Delete the pivottable with the supplied name

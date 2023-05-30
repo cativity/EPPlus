@@ -34,10 +34,7 @@ internal class TokenSeparatorHandler
     {
     }
 
-    public TokenSeparatorHandler(params SeparatorHandler[] handlers)
-    {
-        this._handlers = handlers;
-    }
+    public TokenSeparatorHandler(params SeparatorHandler[] handlers) => this._handlers = handlers;
 
     private readonly SeparatorHandler[] _handlers;
 

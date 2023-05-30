@@ -29,9 +29,8 @@ internal class RowInternal
     internal bool CustomHeight;
     internal int MergeID;
 
-    internal RowInternal Clone()
-    {
-        return new RowInternal()
+    internal RowInternal Clone() =>
+        new()
         {
             Height = this.Height,
             Hidden = this.Hidden,
@@ -42,7 +41,6 @@ internal class RowInternal
             CustomHeight = this.CustomHeight,
             MergeID = this.MergeID
         };
-    }
 }
 
 /// <summary>
@@ -57,10 +55,7 @@ public class ExcelRow : IRangeID
     /// Internal RowID.
     /// </summary>
     [Obsolete]
-    public ulong RowID
-    {
-        get { return GetRowID(this._worksheet.SheetId, this.Row); }
-    }
+    public ulong RowID => GetRowID(this._worksheet.SheetId, this.Row);
 
     #region ExcelRow Constructor
 
@@ -81,10 +76,7 @@ public class ExcelRow : IRangeID
     /// <summary>
     /// Provides access to the node representing the row.
     /// </summary>
-    internal XmlNode Node
-    {
-        get { return this._rowElement; }
-    }
+    internal XmlNode Node => this._rowElement;
 
     #region ExcelRow Hidden
 
@@ -194,7 +186,7 @@ public class ExcelRow : IRangeID
     /// </summary>
     public string StyleName
     {
-        get { return this._styleName; }
+        get => this._styleName;
         set
         {
             this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
@@ -207,8 +199,8 @@ public class ExcelRow : IRangeID
     /// </summary>
     public int StyleID
     {
-        get { return this._worksheet.GetStyleInner(this.Row, 0); }
-        set { this._worksheet.SetStyleInner(this.Row, 0, value); }
+        get => this._worksheet.GetStyleInner(this.Row, 0);
+        set => this._worksheet.SetStyleInner(this.Row, 0, value);
     }
 
     /// <summary>
@@ -266,10 +258,7 @@ public class ExcelRow : IRangeID
         }
     }
 
-    private RowInternal GetRowInternal()
-    {
-        return GetRowInternal(this._worksheet, this.Row);
-    }
+    private RowInternal GetRowInternal() => GetRowInternal(this._worksheet, this.Row);
 
     internal static RowInternal GetRowInternal(ExcelWorksheet ws, int row)
     {
@@ -313,17 +302,12 @@ public class ExcelRow : IRangeID
     /// The Style applied to the whole row. Only effekt cells with no individual style set. 
     /// Use the <see cref="ExcelWorksheet.Cells"/> Style property if you want to set specific styles.
     /// </summary>
-    public ExcelStyle Style
-    {
-        get
-        {
-            return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID,
-                                                                  this._worksheet.PositionId,
-                                                                  this.Row.ToString(CultureInfo.InvariantCulture)
-                                                                  + ":"
-                                                                  + this.Row.ToString(CultureInfo.InvariantCulture));
-        }
-    }
+    public ExcelStyle Style =>
+        this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID,
+                                                       this._worksheet.PositionId,
+                                                       this.Row.ToString(CultureInfo.InvariantCulture)
+                                                       + ":"
+                                                       + this.Row.ToString(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Adds a manual page break after the row.
@@ -355,22 +339,19 @@ public class ExcelRow : IRangeID
     /// </summary>
     public bool Merged
     {
-        get { return this._worksheet.MergedCells[this.Row, 0] != null; }
-        set { this._worksheet.MergedCells.Add(new ExcelAddressBase(this.Row, 1, this.Row, ExcelPackage.MaxColumns), true); }
+        get => this._worksheet.MergedCells[this.Row, 0] != null;
+        set => this._worksheet.MergedCells.Add(new ExcelAddressBase(this.Row, 1, this.Row, ExcelPackage.MaxColumns), true);
     }
 
-    internal static ulong GetRowID(int sheetID, int row)
-    {
-        return (ulong)sheetID + ((ulong)row << 29);
-    }
+    internal static ulong GetRowID(int sheetID, int row) => (ulong)sheetID + ((ulong)row << 29);
 
     #region IRangeID Members
 
     [Obsolete]
     ulong IRangeID.RangeID
     {
-        get { return this.RowID; }
-        set { this.Row = (int)(value >> 29); }
+        get => this.RowID;
+        set => this.Row = (int)(value >> 29);
     }
 
     #endregion

@@ -51,18 +51,12 @@ public class ExcelWorksheetThreadedComments
     /// <summary>
     /// An enumerable of the existing <see cref="ExcelThreadedCommentThread"/>s on the <see cref="ExcelWorksheet">worksheet</see>
     /// </summary>
-    public IEnumerable<ExcelThreadedCommentThread> Threads
-    {
-        get { return this._threads.Where(x => x != null); }
-    }
+    public IEnumerable<ExcelThreadedCommentThread> Threads => this._threads.Where(x => x != null);
 
     /// <summary>
     /// Number of <see cref="ExcelThreadedCommentThread"/>s on the <see cref="ExcelWorksheet">worksheet</see> 
     /// </summary>
-    public int Count
-    {
-        get { return this._threadsIndex.Count; }
-    }
+    public int Count => this._threadsIndex.Count;
 
     /// <summary>
     /// The raw xml for the threaded comments
@@ -235,10 +229,7 @@ public class ExcelWorksheetThreadedComments
     /// Removes the <see cref="ExcelThreadedCommentThread"/> index position in the collection
     /// </summary>
     /// <param name="index">The index for the threaded comment to be removed</param>
-    public void RemoveAt(int index)
-    {
-        this.Remove(this[index]);
-    }
+    public void RemoveAt(int index) => this.Remove(this[index]);
 
     /// <summary>
     /// Removes the <see cref="ExcelThreadedCommentThread"/> supplied
@@ -362,8 +353,5 @@ public class ExcelWorksheetThreadedComments
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return "Count = " + this._threadsIndex.Count;
-    }
+    public override string ToString() => "Count = " + this._threadsIndex.Count;
 }

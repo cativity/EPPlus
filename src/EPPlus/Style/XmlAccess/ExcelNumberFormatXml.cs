@@ -32,10 +32,8 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
     }
 
     internal ExcelNumberFormatXml(XmlNamespaceManager nameSpaceManager, bool buildIn)
-        : base(nameSpaceManager)
-    {
+        : base(nameSpaceManager) =>
         this.BuildIn = buildIn;
-    }
 
     internal ExcelNumberFormatXml(XmlNamespaceManager nsm, XmlNode topNode)
         : base(nsm, topNode)
@@ -87,14 +85,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
     /// </summary>            
     public int NumFmtId
     {
-        get { return this._numFmtId; }
-        set { this._numFmtId = value; }
+        get => this._numFmtId;
+        set => this._numFmtId = value;
     }
 
-    internal override string Id
-    {
-        get { return this._format; }
-    }
+    internal override string Id => this._format;
 
     const string fmtPath = "@formatCode";
     string _format = string.Empty;
@@ -104,7 +99,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
     /// </summary>
     public string Format
     {
-        get { return this._format; }
+        get => this._format;
         set
         {
             this._numFmtId = ExcelNumberFormat.GetFromBuildIdFromFormat(value);
@@ -174,10 +169,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
     ExcelFormatTranslator _translator;
 
-    internal ExcelFormatTranslator FormatTranslator
-    {
-        get { return this._translator ??= new ExcelFormatTranslator(this.Format, this.NumFmtId); }
-    }
+    internal ExcelFormatTranslator FormatTranslator => this._translator ??= new ExcelFormatTranslator(this.Format, this.NumFmtId);
 
     #region Excel --> .Net Format
 
@@ -251,14 +243,11 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
         internal CultureInfo Culture
         {
-            get { return this._ci ?? CultureInfo.CurrentCulture; }
-            set { this._ci = value; }
+            get => this._ci ?? CultureInfo.CurrentCulture;
+            set => this._ci = value;
         }
 
-        internal bool HasCulture
-        {
-            get { return this._ci != null; }
-        }
+        internal bool HasCulture => this._ci != null;
 
         internal eFormatType DataType { get; private set; }
 

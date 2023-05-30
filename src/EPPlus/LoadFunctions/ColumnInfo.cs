@@ -23,10 +23,7 @@ namespace OfficeOpenXml.LoadFunctions;
 [DebuggerDisplay("Header: {Header}, SortOrder: {SortOrder}, Index: {Index}")]
 internal class ColumnInfo
 {
-    public ColumnInfo()
-    {
-        this.TotalsRowFunction = RowFunctions.None;
-    }
+    public ColumnInfo() => this.TotalsRowFunction = RowFunctions.None;
 
     public int SortOrder { get; set; }
 

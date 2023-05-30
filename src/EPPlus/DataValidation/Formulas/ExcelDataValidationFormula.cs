@@ -88,7 +88,7 @@ internal abstract class ExcelDataValidationFormula : IExcelDataValidationFormula
     /// </summary>
     public string ExcelFormula
     {
-        get { return this._formula; }
+        get => this._formula;
         set
         {
             if (value != null && MeasureFormulaLength(value) > 255)

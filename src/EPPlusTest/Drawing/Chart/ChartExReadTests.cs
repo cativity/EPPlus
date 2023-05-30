@@ -21,10 +21,7 @@ public class ChartExReadTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ChartExRead.xlsx");
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ChartExRead.xlsx");
 
     [ClassCleanup]
     public static void Cleanup()

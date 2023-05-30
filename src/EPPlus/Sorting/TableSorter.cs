@@ -21,17 +21,11 @@ namespace OfficeOpenXml.Sorting;
 
 internal class TableSorter
 {
-    public TableSorter(ExcelTable table)
-    {
-        this._table = table;
-    }
+    public TableSorter(ExcelTable table) => this._table = table;
 
     private readonly ExcelTable _table;
 
-    public void Sort(TableSortOptions options)
-    {
-        this._table.DataRange.Sort(options, this._table);
-    }
+    public void Sort(TableSortOptions options) => this._table.DataRange.Sort(options, this._table);
 
     public void Sort(Action<TableSortOptions> configuration)
     {

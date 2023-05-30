@@ -47,17 +47,15 @@ internal abstract partial class HtmlWriterBase
 
     internal int Indent { get; set; }
 
-    protected internal static bool HasStyle(ExcelXfs xfs)
-    {
-        return xfs.FontId > 0
-               || xfs.FillId > 0
-               || xfs.BorderId > 0
-               || xfs.HorizontalAlignment != ExcelHorizontalAlignment.General
-               || xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom
-               || xfs.TextRotation != 0
-               || xfs.Indent > 0
-               || xfs.WrapText;
-    }
+    protected internal static bool HasStyle(ExcelXfs xfs) =>
+        xfs.FontId > 0
+        || xfs.FillId > 0
+        || xfs.BorderId > 0
+        || xfs.HorizontalAlignment != ExcelHorizontalAlignment.General
+        || xfs.VerticalAlignment != ExcelVerticalAlignment.Bottom
+        || xfs.TextRotation != 0
+        || xfs.Indent > 0
+        || xfs.WrapText;
 
     protected internal static string GetStyleKey(ExcelXfs xfs)
     {
@@ -171,10 +169,7 @@ internal abstract partial class HtmlWriterBase
         this._writer.WriteLine();
     }
 
-    public void Write(string text)
-    {
-        this._writer.Write(text);
-    }
+    public void Write(string text) => this._writer.Write(text);
 
     internal protected void WriteIndent()
     {

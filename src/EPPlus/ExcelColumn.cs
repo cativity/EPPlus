@@ -48,13 +48,9 @@ public class ExcelColumn : IRangeID
     /// <summary>
     /// Sets the first column the definition refers to.
     /// </summary>
-    public int ColumnMin
-    {
-        get { return this._columnMin; }
+    public int ColumnMin => this._columnMin;
 
-        //set { _columnMin=value; } 
-    }
-
+    //set { _columnMin=value; } 
     internal int _columnMax;
 
     /// <summary>
@@ -62,7 +58,7 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public int ColumnMax
     {
-        get { return this._columnMax; }
+        get => this._columnMax;
         set
         {
             if (value < this._columnMin && value > ExcelPackage.MaxColumns)
@@ -89,10 +85,7 @@ public class ExcelColumn : IRangeID
     /// <summary>
     /// Internal range id for the column
     /// </summary>
-    internal ulong ColumnID
-    {
-        get { return GetColumnID(this._worksheet.SheetId, this.ColumnMin); }
-    }
+    internal ulong ColumnID => GetColumnID(this._worksheet.SheetId, this.ColumnMin);
 
     #region ExcelColumn Hidden
 
@@ -106,7 +99,7 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public bool Hidden
     {
-        get { return this._hidden; }
+        get => this._hidden;
         set
         {
             if (this._worksheet._package.DoAdjustDrawings)
@@ -148,7 +141,7 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public double Width
     {
-        get { return this._width; }
+        get => this._width;
         set
         {
             if (this._worksheet._package.DoAdjustDrawings)
@@ -215,7 +208,7 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public string StyleName
     {
-        get { return this._styleName; }
+        get => this._styleName;
         set
         {
             this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
@@ -228,8 +221,8 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public int StyleID
     {
-        get { return this._worksheet.GetStyleInner(0, this.ColumnMin); }
-        set { this._worksheet.SetStyleInner(0, this.ColumnMin, value); }
+        get => this._worksheet.GetStyleInner(0, this.ColumnMin);
+        set => this._worksheet.SetStyleInner(0, this.ColumnMin, value);
     }
 
     /// <summary>
@@ -242,8 +235,8 @@ public class ExcelColumn : IRangeID
     /// </summary>
     public bool Merged
     {
-        get { return this._worksheet.MergedCells[0, this.ColumnMin] != null; }
-        set { this._worksheet.MergedCells.Add(new ExcelAddressBase(1, this.ColumnMin, ExcelPackage.MaxRows, this.ColumnMax), true); }
+        get => this._worksheet.MergedCells[0, this.ColumnMin] != null;
+        set => this._worksheet.MergedCells.Add(new ExcelAddressBase(1, this.ColumnMin, ExcelPackage.MaxRows, this.ColumnMax), true);
     }
 
     #endregion
@@ -252,20 +245,14 @@ public class ExcelColumn : IRangeID
     /// Returns the range of columns covered by the column definition.
     /// </summary>
     /// <returns>A string describing the range of columns covered by the column definition.</returns>
-    public override string ToString()
-    {
-        return string.Format("Column Range: {0} to {1}", this.ColumnMin, this.ColumnMax);
-    }
+    public override string ToString() => string.Format("Column Range: {0} to {1}", this.ColumnMin, this.ColumnMax);
 
     /// <summary>
     /// Set the column width from the content of the range. The minimum width is the value of the ExcelWorksheet.defaultColumnWidth property.
     /// Note: Cells containing formulas are ignored unless a calculation is performed.
     ///       Wrapped and merged cells are also ignored.
     /// </summary>
-    public void AutoFit()
-    {
-        this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns();
-    }
+    public void AutoFit() => this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns();
 
     /// <summary>
     /// Set the column width from the content.
@@ -273,10 +260,7 @@ public class ExcelColumn : IRangeID
     ///       Wrapped and merged cells are also ignored.
     /// </summary>
     /// <param name="MinimumWidth">Minimum column width</param>
-    public void AutoFit(double MinimumWidth)
-    {
-        this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth);
-    }
+    public void AutoFit(double MinimumWidth) => this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth);
 
     /// <summary>
     /// Set the column width from the content.
@@ -285,10 +269,7 @@ public class ExcelColumn : IRangeID
     /// </summary>
     /// <param name="MinimumWidth">Minimum column width</param>
     /// <param name="MaximumWidth">Maximum column width</param>
-    public void AutoFit(double MinimumWidth, double MaximumWidth)
-    {
-        this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth, MaximumWidth);
-    }
+    public void AutoFit(double MinimumWidth, double MaximumWidth) => this._worksheet.Cells[1, this._columnMin, ExcelPackage.MaxRows, this._columnMax].AutoFitColumns(MinimumWidth, MaximumWidth);
 
     /// <summary>
     /// Get the internal RangeID
@@ -296,21 +277,15 @@ public class ExcelColumn : IRangeID
     /// <param name="sheetID">Sheet no</param>
     /// <param name="column">Column</param>
     /// <returns></returns>
-    internal static ulong GetColumnID(int sheetID, int column)
-    {
-        return (ulong)sheetID + ((ulong)column << 15);
-    }
+    internal static ulong GetColumnID(int sheetID, int column) => (ulong)sheetID + ((ulong)column << 15);
 
-    internal static int ColumnWidthToPixels(decimal columnWidth, decimal mdw)
-    {
-        return (int)decimal.Truncate(((256 * columnWidth) + decimal.Truncate(128 / mdw)) / 256 * mdw);
-    }
+    internal static int ColumnWidthToPixels(decimal columnWidth, decimal mdw) => (int)decimal.Truncate(((256 * columnWidth) + decimal.Truncate(128 / mdw)) / 256 * mdw);
 
     #region IRangeID Members
 
     ulong IRangeID.RangeID
     {
-        get { return this.ColumnID; }
+        get => this.ColumnID;
         set
         {
             int prevColMin = this._columnMin;
@@ -331,10 +306,7 @@ public class ExcelColumn : IRangeID
     /// Copies the current column to a new worksheet
     /// </summary>
     /// <param name="added">The worksheet where the copy will be created</param>
-    internal ExcelColumn Clone(ExcelWorksheet added)
-    {
-        return this.Clone(added, this.ColumnMin);
-    }
+    internal ExcelColumn Clone(ExcelWorksheet added) => this.Clone(added, this.ColumnMin);
 
     internal ExcelColumn Clone(ExcelWorksheet added, int col)
     {

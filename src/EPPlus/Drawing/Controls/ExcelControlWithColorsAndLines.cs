@@ -23,10 +23,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
 {
     internal ExcelControlWithColorsAndLines(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(90, 30); //Default size        
-    }
 
     internal ExcelControlWithColorsAndLines(ExcelDrawings drawings,
                                             XmlNode drawingNode,
@@ -41,20 +39,14 @@ public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
     /// <summary>
     /// Fill settings for the control
     /// </summary>
-    public ExcelVmlDrawingFill Fill
-    {
-        get { return this._vml.GetFill(); }
-    }
+    public ExcelVmlDrawingFill Fill => this._vml.GetFill();
 
     ExcelVmlDrawingBorder _border;
 
     /// <summary>
     /// Border settings for the control
     /// </summary>
-    public ExcelVmlDrawingBorder Border
-    {
-        get { return this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder); }
-    }
+    public ExcelVmlDrawingBorder Border => this._border ??= new ExcelVmlDrawingBorder(this._drawings, this._vml.NameSpaceManager, this._vml.TopNode, this._vml.SchemaNodeOrder);
 
     internal override void UpdateXml()
     {

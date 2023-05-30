@@ -94,7 +94,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     /// </summary>
     public override string Header
     {
-        get { return this.GetXmlNodeString(headerPath); }
+        get => this.GetXmlNodeString(headerPath);
         set
         {
             this.Cleartx();
@@ -158,7 +158,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     /// </summary>
     public override string Series
     {
-        get { return this.GetXmlNodeString(this._seriesPath); }
+        get => this.GetXmlNodeString(this._seriesPath);
         set
         {
             value = value.Trim();
@@ -201,7 +201,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     /// </summary>
     public override string XSeries
     {
-        get { return this.GetXmlNodeString(this._xSeriesPath); }
+        get => this.GetXmlNodeString(this._xSeriesPath);
         set
         {
             this._xSeries = value.Trim();
@@ -435,10 +435,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
     /// <summary>
     /// Access to the trendline collection
     /// </summary>
-    public override ExcelChartTrendlineCollection TrendLines
-    {
-        get { return this._trendLines ??= new ExcelChartTrendlineCollection(this); }
-    }
+    public override ExcelChartTrendlineCollection TrendLines => this._trendLines ??= new ExcelChartTrendlineCollection(this);
 
     /// <summary>
     /// Number of items in the serie

@@ -208,18 +208,12 @@ public class ExcelChartSeries<T> : IEnumerable<T>
     /// </summary>
     /// <param name="PositionID">The position of the series.</param>
     /// <returns></returns>
-    public T this[int PositionID]
-    {
-        get { return (T)this._list[PositionID]; }
-    }
+    public T this[int PositionID] => (T)this._list[PositionID];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list?.Count ?? 0; }
-    }
+    public int Count => this._list?.Count ?? 0;
 
     /// <summary>
     /// Delete the chart at the specific position
@@ -235,10 +229,7 @@ public class ExcelChartSeries<T> : IEnumerable<T>
     /// <summary>
     /// A reference to the chart object
     /// </summary>
-    public ExcelChart Chart
-    {
-        get { return this._chart; }
-    }
+    public ExcelChart Chart => this._chart;
 
     #region "Add Series"
 
@@ -541,18 +532,9 @@ public class ExcelChartSeries<T> : IEnumerable<T>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return this._list.Cast<T>().GetEnumerator();
-    }
+    public IEnumerator<T> GetEnumerator() => this._list.Cast<T>().GetEnumerator();
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator()
-    {
-        return this._list.Cast<T>().GetEnumerator();
-    }
+    IEnumerator<T> IEnumerable<T>.GetEnumerator() => this._list.Cast<T>().GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 }

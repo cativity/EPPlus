@@ -60,8 +60,8 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// </summary>
     public bool Marker
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(this.MARKER_PATH, false); }
-        set { this._chartXmlHelper.SetXmlNodeBool(this.MARKER_PATH, value, false); }
+        get => this._chartXmlHelper.GetXmlNodeBool(this.MARKER_PATH, false);
+        set => this._chartXmlHelper.SetXmlNodeBool(this.MARKER_PATH, value, false);
     }
 
     string SMOOTH_PATH = "c:smooth/@val";
@@ -71,7 +71,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// </summary>
     public bool Smooth
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(this.SMOOTH_PATH, false); }
+        get => this._chartXmlHelper.GetXmlNodeBool(this.SMOOTH_PATH, false);
         set
         {
             if (this.ChartType == eChartType.Line3D)
@@ -89,22 +89,14 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
-    public ExcelChartDataLabel DataLabel
-    {
-        get
-        {
-            return this._dataLabel ??=
-                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartDataLabel DataLabel =>
+        this._dataLabel ??=
+            new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     const string _gapWidthPath = "c:upDownBars/c:gapWidth/@val";
 
@@ -113,7 +105,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// </summary>
     public double? UpDownBarGapWidth
     {
-        get { return this._chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath); }
+        get => this._chartXmlHelper.GetXmlNodeIntNull(_gapWidthPath);
         set
         {
             if (value == null)
@@ -136,10 +128,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// <summary>
     /// Format the up bars on the chart
     /// </summary>
-    public ExcelChartStyleItem UpBar
-    {
-        get { return this._upBar; }
-    }
+    public ExcelChartStyleItem UpBar => this._upBar;
 
     ExcelChartStyleItem _downBar;
     const string _downBarPath = "c:upDownBars/c:downBars";
@@ -147,10 +136,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// <summary>
     /// Format the down bars on the chart
     /// </summary>
-    public ExcelChartStyleItem DownBar
-    {
-        get { return this._downBar; }
-    }
+    public ExcelChartStyleItem DownBar => this._downBar;
 
     ExcelChartStyleItem _hiLowLines;
     const string _hiLowLinesPath = "c:hiLowLines";
@@ -158,10 +144,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// <summary>
     /// Format the high-low lines for the series.
     /// </summary>
-    public ExcelChartStyleItem HighLowLine
-    {
-        get { return this._hiLowLines; }
-    }
+    public ExcelChartStyleItem HighLowLine => this._hiLowLines;
 
     ExcelChartStyleItem _dropLines;
     const string _dropLinesPath = "c:dropLines";
@@ -169,10 +152,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     /// <summary>
     /// Format the drop lines for the series.
     /// </summary>
-    public ExcelChartStyleItem DropLine
-    {
-        get { return this._dropLines; }
-    }
+    public ExcelChartStyleItem DropLine => this._dropLines;
 
     /// <summary>
     /// Adds up and/or down bars to the chart.        
@@ -329,25 +309,13 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
 
     #region Remove Line/Bar
 
-    private void RemoveUpBar()
-    {
-        this._upBar = null;
-    }
+    private void RemoveUpBar() => this._upBar = null;
 
-    private void RemoveDownBar()
-    {
-        this._downBar = null;
-    }
+    private void RemoveDownBar() => this._downBar = null;
 
-    private void RemoveDropLines()
-    {
-        this._dropLines = null;
-    }
+    private void RemoveDropLines() => this._dropLines = null;
 
-    private void RemoveHiLowLines()
-    {
-        this._hiLowLines = null;
-    }
+    private void RemoveHiLowLines() => this._hiLowLines = null;
 
     #endregion
 }

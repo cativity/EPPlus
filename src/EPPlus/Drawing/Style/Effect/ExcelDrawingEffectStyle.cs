@@ -68,94 +68,63 @@ public class ExcelDrawingEffectStyle : XmlHelper
     /// <summary>
     /// The blur effect
     /// </summary>
-    public ExcelDrawingBlurEffect Blur
-    {
-        get { return this._blur ??= new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath); }
-    }
+    public ExcelDrawingBlurEffect Blur => this._blur ??= new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath);
 
     ExcelDrawingFillOverlayEffect _fillOverlay;
 
     /// <summary>
     /// The fill overlay effect. A fill overlay can be used to specify an additional fill for a drawing and blend the two together.
     /// </summary>
-    public ExcelDrawingFillOverlayEffect FillOverlay
-    {
-        get
-        {
-            return this._fillOverlay ??= new ExcelDrawingFillOverlayEffect(this._pictureRelationDocument,
-                                                                           this.NameSpaceManager,
-                                                                           this.TopNode,
-                                                                           this.SchemaNodeOrder,
-                                                                           this._fillOverlayPath);
-        }
-    }
+    public ExcelDrawingFillOverlayEffect FillOverlay =>
+        this._fillOverlay ??= new ExcelDrawingFillOverlayEffect(this._pictureRelationDocument,
+                                                                this.NameSpaceManager,
+                                                                this.TopNode,
+                                                                this.SchemaNodeOrder,
+                                                                this._fillOverlayPath);
 
     ExcelDrawingGlowEffect _glow;
 
     /// <summary>
     /// The glow effect. A color blurred outline is added outside the edges of the drawing
     /// </summary>
-    public ExcelDrawingGlowEffect Glow
-    {
-        get { return this._glow ??= new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath); }
-    }
+    public ExcelDrawingGlowEffect Glow => this._glow ??= new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath);
 
     ExcelDrawingInnerShadowEffect _innerShadowEffect;
 
     /// <summary>
     /// The inner shadow effect. A shadow is applied within the edges of the drawing.
     /// </summary>
-    public ExcelDrawingInnerShadowEffect InnerShadow
-    {
-        get
-        {
-            return this._innerShadowEffect ??=
-                       new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
-        }
-    }
+    public ExcelDrawingInnerShadowEffect InnerShadow =>
+        this._innerShadowEffect ??=
+            new ExcelDrawingInnerShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._innerShadowPath);
 
     ExcelDrawingOuterShadowEffect _outerShadow;
 
     /// <summary>
     /// The outer shadow effect. A shadow is applied outside the edges of the drawing.
     /// </summary>
-    public ExcelDrawingOuterShadowEffect OuterShadow
-    {
-        get
-        {
-            return this._outerShadow ??= new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
-        }
-    }
+    public ExcelDrawingOuterShadowEffect OuterShadow => this._outerShadow ??= new ExcelDrawingOuterShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._outerShadowPath);
 
     ExcelDrawingPresetShadowEffect _presetShadow;
 
     /// <summary>
     /// The preset shadow effect.
     /// </summary>
-    public ExcelDrawingPresetShadowEffect PresetShadow
-    {
-        get
-        {
-            return this._presetShadow ??= new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
-        }
-    }
+    public ExcelDrawingPresetShadowEffect PresetShadow => this._presetShadow ??= new ExcelDrawingPresetShadowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._presetShadowPath);
 
     ExcelDrawingReflectionEffect _reflection;
 
     /// <summary>
     /// The reflection effect.
     /// </summary>
-    public ExcelDrawingReflectionEffect Reflection
-    {
-        get { return this._reflection ??= new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath); }
-    }
+    public ExcelDrawingReflectionEffect Reflection => this._reflection ??= new ExcelDrawingReflectionEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._reflectionPath);
 
     /// <summary>
     /// Soft edge radius. A null value indicates no radius
     /// </summary>
     public double? SoftEdgeRadius
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._softEdgeRadiusPath); }
+        get => this.GetXmlNodeEmuToPtNull(this._softEdgeRadiusPath);
         set
         {
             if (value.HasValue)
@@ -190,50 +159,32 @@ public class ExcelDrawingEffectStyle : XmlHelper
     /// <summary>
     /// If the drawing has any inner shadow properties set
     /// </summary>
-    public bool HasInnerShadow
-    {
-        get { return this.ExistsNode(this._innerShadowPath); }
-    }
+    public bool HasInnerShadow => this.ExistsNode(this._innerShadowPath);
 
     /// <summary>
     /// If the drawing has any outer shadow properties set
     /// </summary>
-    public bool HasOuterShadow
-    {
-        get { return this.ExistsNode(this._outerShadowPath); }
-    }
+    public bool HasOuterShadow => this.ExistsNode(this._outerShadowPath);
 
     /// <summary>
     /// If the drawing has any preset shadow properties set
     /// </summary>
-    public bool HasPresetShadow
-    {
-        get { return this.ExistsNode(this._presetShadowPath); }
-    }
+    public bool HasPresetShadow => this.ExistsNode(this._presetShadowPath);
 
     /// <summary>
     /// If the drawing has any blur properties set
     /// </summary>
-    public bool HasBlur
-    {
-        get { return this.ExistsNode(this._blurPath); }
-    }
+    public bool HasBlur => this.ExistsNode(this._blurPath);
 
     /// <summary>
     /// If the drawing has any glow properties set
     /// </summary>
-    public bool HasGlow
-    {
-        get { return this.ExistsNode(this._glowPath); }
-    }
+    public bool HasGlow => this.ExistsNode(this._glowPath);
 
     /// <summary>
     /// If the drawing has any fill overlay properties set
     /// </summary>
-    public bool HasFillOverlay
-    {
-        get { return this.ExistsNode(this._fillOverlayPath); }
-    }
+    public bool HasFillOverlay => this.ExistsNode(this._fillOverlayPath);
 
     internal void SetFromXml(XmlElement copyFromEffectElement)
     {

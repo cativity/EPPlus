@@ -38,8 +38,8 @@ public sealed class ExcelBorderItem : StyleBase
     /// </summary>
     public ExcelBorderStyle Style
     {
-        get { return this.GetSource().Style; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address)); }
+        get => this.GetSource().Style;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address));
     }
 
     ExcelColor _color;
@@ -47,20 +47,11 @@ public sealed class ExcelBorderItem : StyleBase
     /// <summary>
     /// The color of the border
     /// </summary>
-    public ExcelColor Color
-    {
-        get { return this._color ??= new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, this._cls, this._parent); }
-    }
+    public ExcelColor Color => this._color ??= new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, this._cls, this._parent);
 
-    internal override string Id
-    {
-        get { return this.Style + this.Color.Id; }
-    }
+    internal override string Id => this.Style + this.Color.Id;
 
-    internal override void SetIndex(int index)
-    {
-        this._parent.Index = index;
-    }
+    internal override void SetIndex(int index) => this._parent.Index = index;
 
     private ExcelBorderItemXml GetSource()
     {

@@ -42,16 +42,10 @@ public class CellStoreInWorksheetTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("CellStore.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("CellStore.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void Insert1()
@@ -197,10 +191,7 @@ public class CellStoreInWorksheetTest : TestBase
         }
     }
 
-    private static void LoadData(ExcelWorksheet ws)
-    {
-        LoadData(ws, 1000);
-    }
+    private static void LoadData(ExcelWorksheet ws) => LoadData(ws, 1000);
 
     private static void LoadData(ExcelWorksheet ws, int rows, int cols = 1, bool isNumeric = false)
     {

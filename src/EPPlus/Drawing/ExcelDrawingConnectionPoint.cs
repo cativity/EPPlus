@@ -41,7 +41,7 @@ public class ExcelDrawingConnectionPoint : XmlHelper
     /// </summary>
     public int Index
     {
-        get { return this.GetXmlNodeIntNull(this._path + "/@idx") ?? 0; }
+        get => this.GetXmlNodeIntNull(this._path + "/@idx") ?? 0;
         set
         {
             if (value <= 0)
@@ -99,8 +99,5 @@ public class ExcelDrawingConnectionPoint : XmlHelper
         }
     }
 
-    private void SetIndex(int value)
-    {
-        this.SetXmlNodeString(this._path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
-    }
+    private void SetIndex(int value) => this.SetXmlNodeString(this._path + "/@idx", value.ToString(CultureInfo.InvariantCulture));
 }

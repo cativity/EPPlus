@@ -139,10 +139,7 @@ public class ExpressionCompiler : IExpressionCompiler
         return this.RefreshList(first);
     }
 
-    private int FindLowestPrecedence()
-    {
-        return this._expressions.Where(x => x.Operator != null).Min(x => x.Operator.Precedence);
-    }
+    private int FindLowestPrecedence() => this._expressions.Where(x => x.Operator != null).Min(x => x.Operator.Precedence);
 
     private IEnumerable<Expression> RefreshList(Expression first)
     {

@@ -79,7 +79,7 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Theme;
         }
-        internal set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address)); }
+        internal set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Theme, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Rgb;
         }
-        internal set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address)); }
+        internal set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Color, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -164,43 +164,31 @@ public sealed class ExcelColor : StyleBase, IColor
 
             return this.GetSource().Auto;
         }
-        private set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address)); }
+        private set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.AutoColor, value, this._positionID, this._address));
     }
 
     /// <summary>
     /// Set the color of the object
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(Color color)
-    {
-        this.Rgb = color.ToArgb().ToString("X");
-    }
+    public void SetColor(Color color) => this.Rgb = color.ToArgb().ToString("X");
 
     /// <summary>
     /// Set the color of the object
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(eThemeSchemeColor color)
-    {
-        this.Theme = color;
-    }
+    public void SetColor(eThemeSchemeColor color) => this.Theme = color;
 
     /// <summary>
     /// Set the color of the object
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(ExcelIndexedColor color)
-    {
-        this.Indexed = (int)color;
-    }
+    public void SetColor(ExcelIndexedColor color) => this.Indexed = (int)color;
 
     /// <summary>
     /// Set the color to automatic
     /// </summary>
-    public void SetAuto()
-    {
-        this.Auto = true;
-    }
+    public void SetAuto() => this.Auto = true;
 
     /// <summary>
     /// Set the color of the object
@@ -219,10 +207,7 @@ public sealed class ExcelColor : StyleBase, IColor
         this.Rgb = alpha.ToString("X2") + red.ToString("X2") + green.ToString("X2") + blue.ToString("X2");
     }
 
-    internal override string Id
-    {
-        get { return this.Theme.ToString() + this.Tint + this.Rgb + this.Indexed; }
-    }
+    internal override string Id => this.Theme.ToString() + this.Tint + this.Rgb + this.Indexed;
 
     private ExcelColorXml GetSource()
     {
@@ -265,19 +250,13 @@ public sealed class ExcelColor : StyleBase, IColor
         }
     }
 
-    internal override void SetIndex(int index)
-    {
-        this._parent.Index = index;
-    }
+    internal override void SetIndex(int index) => this._parent.Index = index;
 
     /// <summary>
     /// Return the RGB hex string for the Indexed or Tint property
     /// </summary>
     /// <returns>The RGB color starting with a #FF (alpha)</returns>
-    public string LookupColor()
-    {
-        return this.LookupColor(this);
-    }
+    public string LookupColor() => this.LookupColor(this);
 
     /// <summary>
     /// Return the RGB value as a string for the color object that uses the Indexed or Tint property

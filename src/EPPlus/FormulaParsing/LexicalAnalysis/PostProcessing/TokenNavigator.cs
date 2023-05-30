@@ -22,10 +22,7 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis.PostProcessing;
 /// </summary>
 public class TokenNavigator
 {
-    public TokenNavigator(IList<Token> tokens)
-    {
-        this._tokens = tokens;
-    }
+    public TokenNavigator(IList<Token> tokens) => this._tokens = tokens;
 
     private readonly IList<Token> _tokens;
 
@@ -33,27 +30,18 @@ public class TokenNavigator
     /// Returns true if there is a next token relative to the current token.
     /// </summary>
     /// <returns></returns>
-    public bool HasNext()
-    {
-        return this.Index < this._tokens.Count - 1;
-    }
+    public bool HasNext() => this.Index < this._tokens.Count - 1;
 
     /// <summary>
     /// Returns true if there is a previous token relative to the current token.
     /// </summary>
     /// <returns></returns>
-    public bool HasPrev()
-    {
-        return this.Index > 0;
-    }
+    public bool HasPrev() => this.Index > 0;
 
     /// <summary>
     /// Moves to the next token
     /// </summary>
-    public void MoveNext()
-    {
-        this.Index++;
-    }
+    public void MoveNext() => this.Index++;
 
     /// <summary>
     /// The index of the current token.
@@ -63,26 +51,17 @@ public class TokenNavigator
     /// <summary>
     /// Remaining number of tokens
     /// </summary>
-    public int NbrOfRemainingTokens
-    {
-        get { return this._tokens.Count - this.Index - 1; }
-    }
+    public int NbrOfRemainingTokens => this._tokens.Count - this.Index - 1;
 
     /// <summary>
     /// The current token.
     /// </summary>
-    public Token CurrentToken
-    {
-        get { return this._tokens[this.Index]; }
-    }
+    public Token CurrentToken => this._tokens[this.Index];
 
     /// <summary>
     /// The token before the current token. If current token is the first token, null will be returned.
     /// </summary>
-    public Token? PreviousToken
-    {
-        get { return this.Index == 0 ? default(Token?) : this._tokens[this.Index - 1]; }
-    }
+    public Token? PreviousToken => this.Index == 0 ? default(Token?) : this._tokens[this.Index - 1];
 
     public Token NextToken
     {

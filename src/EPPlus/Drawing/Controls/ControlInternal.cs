@@ -56,106 +56,100 @@ internal class ControlInternal : XmlHelper
 
     public string RelationshipId
     {
-        get { return this.GetXmlNodeString("@r:id"); }
-        set { this.SetXmlNodeString("@r:id", value); }
+        get => this.GetXmlNodeString("@r:id");
+        set => this.SetXmlNodeString("@r:id", value);
     }
 
     public string Macro
     {
-        get { return this.GetXmlNodeString("d:controlPr/@macro"); }
-        internal set { this.SetXmlNodeString("d:controlPr/@macro", value); }
+        get => this.GetXmlNodeString("d:controlPr/@macro");
+        internal set => this.SetXmlNodeString("d:controlPr/@macro", value);
     }
 
     public bool Print
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@print", true); }
-        set { this.SetXmlNodeBool("d:controlPr/@print", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@print", true);
+        set => this.SetXmlNodeBool("d:controlPr/@print", value);
     }
 
     public bool Locked
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@locked", true); }
-        set { this.SetXmlNodeBool("d:controlPr/@locked", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@locked", true);
+        set => this.SetXmlNodeBool("d:controlPr/@locked", value);
     }
 
     public bool AutoPict
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@autoPict", true); }
-        set { this.SetXmlNodeBool("d:controlPr/@autoPict", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@autoPict", true);
+        set => this.SetXmlNodeBool("d:controlPr/@autoPict", value);
     }
 
     public bool AutoFill
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@autoFill", true); }
-        set { this.SetXmlNodeBool("d:controlPr/@autoFill", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@autoFill", true);
+        set => this.SetXmlNodeBool("d:controlPr/@autoFill", value);
     }
 
     public bool DefaultSize
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@defaultSize", true); }
-        set { this.SetXmlNodeBool("d:controlPr/@defaultSize", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@defaultSize", true);
+        set => this.SetXmlNodeBool("d:controlPr/@defaultSize", value);
     }
 
     public bool Disabled
     {
-        get { return this.GetXmlNodeBool("d:controlPr/@disabled", false); }
-        set { this.SetXmlNodeBool("d:controlPr/@disabled", value); }
+        get => this.GetXmlNodeBool("d:controlPr/@disabled", false);
+        set => this.SetXmlNodeBool("d:controlPr/@disabled", value);
     }
 
     internal string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value);
     }
 
     internal int ShapeId
     {
-        get { return this.GetXmlNodeInt("@shapeId"); }
-        set { this.SetXmlNodeInt("@shapeId", value); }
+        get => this.GetXmlNodeInt("@shapeId");
+        set => this.SetXmlNodeInt("@shapeId", value);
     }
 
     internal string AlternativeText
     {
-        get { return ConvertUtil.ExcelDecodeString(this.GetXmlNodeString("d:controlPr/@altText")); }
-        set { this.SetXmlNodeString("d:controlPr/@altText", ConvertUtil.ExcelEncodeString(value)); }
+        get => ConvertUtil.ExcelDecodeString(this.GetXmlNodeString("d:controlPr/@altText"));
+        set => this.SetXmlNodeString("d:controlPr/@altText", ConvertUtil.ExcelEncodeString(value));
     }
 
     public string FormulaRange
     {
-        get { return this.GetXmlNodeString("d:controlPr/@fmlaRange"); }
-        set { this.SetXmlNodeString("d:controlPr/@fmlaRange", value); }
+        get => this.GetXmlNodeString("d:controlPr/@fmlaRange");
+        set => this.SetXmlNodeString("d:controlPr/@fmlaRange", value);
     }
 
     public string LinkedCell
     {
-        get { return this.GetXmlNodeString("d:controlPr/@linkedCell"); }
-        set { this.SetXmlNodeString("d:controlPr/@linkedCell", value); }
+        get => this.GetXmlNodeString("d:controlPr/@linkedCell");
+        set => this.SetXmlNodeString("d:controlPr/@linkedCell", value);
     }
 
     ExcelPosition _from;
 
-    public ExcelPosition From
-    {
-        get { return this._from ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null); }
-    }
+    public ExcelPosition From => this._from ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null);
 
     ExcelPosition _to;
 
-    public ExcelPosition To
-    {
-        get { return this._to ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null); }
-    }
+    public ExcelPosition To => this._to ??= new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:to"), null);
 
     public bool MoveWithCells
     {
-        get { return this.GetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells"); }
-        set { this.SetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells", value, false); }
+        get => this.GetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells");
+        set => this.SetXmlNodeBool("d:controlPr/d:anchor/@moveWithCells", value, false);
     }
 
     public bool SizeWithCells
     {
-        get { return this.GetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells"); }
-        set { this.SetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells", value, false); }
+        get => this.GetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells");
+        set => this.SetXmlNodeBool("d:controlPr/d:anchor/@sizeWithCells", value, false);
     }
 
     internal void DeleteMe()

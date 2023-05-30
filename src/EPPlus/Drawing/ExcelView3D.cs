@@ -25,10 +25,8 @@ namespace OfficeOpenXml.Drawing;
 public sealed class ExcelView3D : XmlHelper
 {
     internal ExcelView3D(XmlNamespaceManager ns, XmlNode node)
-        : base(ns, node)
-    {
+        : base(ns, node) =>
         this.SchemaNodeOrder = new string[] { "rotX", "hPercent", "rotY", "depthPercent", "rAngAx", "perspective" };
-    }
 
     const string perspectivePath = "c:perspective/@val";
 
@@ -37,8 +35,8 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public decimal Perspective
     {
-        get { return this.GetXmlNodeInt(perspectivePath); }
-        set { this.SetXmlNodeString(perspectivePath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt(perspectivePath);
+        set => this.SetXmlNodeString(perspectivePath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string rotXPath = "c:rotX/@val";
@@ -48,7 +46,7 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public decimal RotX
     {
-        get { return this.GetXmlNodeDecimal(rotXPath); }
+        get => this.GetXmlNodeDecimal(rotXPath);
         set
         {
             _ = this.CreateNode(rotXPath);
@@ -63,7 +61,7 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public decimal RotY
     {
-        get { return this.GetXmlNodeDecimal(rotYPath); }
+        get => this.GetXmlNodeDecimal(rotYPath);
         set
         {
             _ = this.CreateNode(rotYPath);
@@ -78,8 +76,8 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public bool RightAngleAxes
     {
-        get { return this.GetXmlNodeBool(rAngAxPath); }
-        set { this.SetXmlNodeBool(rAngAxPath, value); }
+        get => this.GetXmlNodeBool(rAngAxPath);
+        set => this.SetXmlNodeBool(rAngAxPath, value);
     }
 
     const string depthPercentPath = "c:depthPercent/@val";
@@ -89,7 +87,7 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public int DepthPercent
     {
-        get { return this.GetXmlNodeInt(depthPercentPath); }
+        get => this.GetXmlNodeInt(depthPercentPath);
         set
         {
             if (value < 0 || value > 2000)
@@ -108,7 +106,7 @@ public sealed class ExcelView3D : XmlHelper
     /// </summary>
     public int HeightPercent
     {
-        get { return this.GetXmlNodeInt(heightPercentPath); }
+        get => this.GetXmlNodeInt(heightPercentPath);
         set
         {
             if (value < 5 || value > 500)

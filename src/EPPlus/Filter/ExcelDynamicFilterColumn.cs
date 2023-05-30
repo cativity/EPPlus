@@ -26,10 +26,8 @@ namespace OfficeOpenXml.Filter;
 public class ExcelDynamicFilterColumn : ExcelFilterColumn
 {
     internal ExcelDynamicFilterColumn(XmlNamespaceManager namespaceManager, XmlNode topNode)
-        : base(namespaceManager, topNode)
-    {
+        : base(namespaceManager, topNode) =>
         DynamicDateFilterMatcher.SetMatchDates(this);
-    }
 
     /// <summary>
     /// Type of filter

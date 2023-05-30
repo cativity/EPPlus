@@ -30,10 +30,7 @@ public class ExcelThemeManager
     ExcelWorkbook _wb;
     internal static string _defaultTheme = "";
 
-    internal ExcelThemeManager(ExcelWorkbook wb)
-    {
-        this._wb = wb;
-    }
+    internal ExcelThemeManager(ExcelWorkbook wb) => this._wb = wb;
 
     ExcelTheme _theme;
 
@@ -211,10 +208,7 @@ public class ExcelThemeManager
         }
     }
 
-    private ExcelNamedStyleXml GetNormalStyle()
-    {
-        return this._wb.Styles.GetNormalStyle();
-    }
+    private ExcelNamedStyleXml GetNormalStyle() => this._wb.Styles.GetNormalStyle();
 
     internal void Save()
     {

@@ -70,10 +70,7 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     /// </summary>
     /// <param name="Name">The name</param>
     /// <param name="Range">The range</param>
-    public ExcelNamedRange Add(string Name, ExcelRangeBase Range)
-    {
-        return this.Add(Name, Range, false);
-    }
+    public ExcelNamedRange Add(string Name, ExcelRangeBase Range) => this.Add(Name, Range, false);
 
     /// <summary>
     /// Adds the name without validation as Excel allows some names on load that is not permitted in the GUI
@@ -144,10 +141,7 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
         return item;
     }
 
-    internal void Insert(int rowFrom, int colFrom, int rows, int cols, int lowerLimint = 0, int upperLimit = int.MaxValue)
-    {
-        this.Insert(rowFrom, colFrom, rows, cols, n => true, lowerLimint, upperLimit);
-    }
+    internal void Insert(int rowFrom, int colFrom, int rows, int cols, int lowerLimint = 0, int upperLimit = int.MaxValue) => this.Insert(rowFrom, colFrom, rows, cols, n => true, lowerLimint, upperLimit);
 
     internal void Insert(int rowFrom, int colFrom, int rows, int cols, Func<ExcelNamedRange, bool> filter, int lowerLimint = 0, int upperLimit = int.MaxValue)
     {
@@ -171,10 +165,7 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
         }
     }
 
-    internal void Delete(int rowFrom, int colFrom, int rows, int cols, int lowerLimint = 0, int upperLimit = int.MaxValue)
-    {
-        this.Delete(rowFrom, colFrom, rows, cols, n => true, lowerLimint, upperLimit);
-    }
+    internal void Delete(int rowFrom, int colFrom, int rows, int cols, int lowerLimint = 0, int upperLimit = int.MaxValue) => this.Delete(rowFrom, colFrom, rows, cols, n => true, lowerLimint, upperLimit);
 
     internal void Delete(int rowFrom, int colFrom, int rows, int cols, Func<ExcelNamedRange, bool> filter, int lowerLimint = 0, int upperLimit = int.MaxValue)
     {
@@ -232,18 +223,12 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     /// </summary>
     /// <param name="key">key to search for</param>
     /// <returns>true if the key is in the collection</returns>
-    public bool ContainsKey(string key)
-    {
-        return this._dic.ContainsKey(key);
-    }
+    public bool ContainsKey(string key) => this._dic.ContainsKey(key);
 
     /// <summary>
     /// The current number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._dic.Count; }
-    }
+    public int Count => this._dic.Count;
 
     /// <summary>
     /// Name indexer
@@ -253,20 +238,14 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     /// <remarks>
     /// Throws a KeyNotFoundException if the key is not in the collection.
     /// </remarks>
-    public ExcelNamedRange this[string Name]
-    {
-        get { return this._list[this._dic[Name]]; }
-    }
+    public ExcelNamedRange this[string Name] => this._list[this._dic[Name]];
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="Index">The index</param>
     /// <returns>The named range</returns>
-    public ExcelNamedRange this[int Index]
-    {
-        get { return this._list[Index]; }
-    }
+    public ExcelNamedRange this[int Index] => this._list[Index];
 
     #region "IEnumerable"
 
@@ -276,10 +255,7 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     /// Implement interface method IEnumerator&lt;ExcelNamedRange&gt; GetEnumerator()
     /// </summary>
     /// <returns></returns>
-    public IEnumerator<ExcelNamedRange> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelNamedRange> GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 
@@ -289,10 +265,7 @@ public class ExcelNamedRangeCollection : IEnumerable<ExcelNamedRange>
     /// Implement interface method IEnumeratable GetEnumerator()
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 

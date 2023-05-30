@@ -50,10 +50,7 @@ public class FunctionCompilerFactoryTests
     private ParsingContext _context;
 
     [TestInitialize]
-    public void Initialize()
-    {
-        this._context = ParsingContext.Create();
-    }
+    public void Initialize() => this._context = ParsingContext.Create();
 
     #region Create Tests
 
@@ -147,10 +144,7 @@ public class FunctionCompilerFactoryTests
     {
         public const string Name = "MyFunction";
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => throw new NotImplementedException();
     }
 
     public class MyFunctionCompiler : FunctionCompiler
@@ -160,10 +154,7 @@ public class FunctionCompilerFactoryTests
         {
         }
 
-        public override CompileResult Compile(IEnumerable<Expression> children)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Compile(IEnumerable<Expression> children) => throw new NotImplementedException();
     }
 
     #endregion

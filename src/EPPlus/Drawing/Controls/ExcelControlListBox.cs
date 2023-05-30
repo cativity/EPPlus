@@ -27,10 +27,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlListBox : ExcelControlList
 {
     internal ExcelControlListBox(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(150, 100); //Default size
-    }
 
     internal ExcelControlListBox(ExcelDrawings drawings,
                                  XmlNode drawNode,
@@ -52,7 +50,7 @@ public class ExcelControlListBox : ExcelControlList
     /// </summary>
     public eSelectionType SelectionType
     {
-        get { return this._ctrlProp.GetXmlNodeString("@seltype").ToEnum(eSelectionType.Single); }
+        get => this._ctrlProp.GetXmlNodeString("@seltype").ToEnum(eSelectionType.Single);
         set
         {
             this._ctrlProp.SetXmlNodeString("@seltype", value.ToEnumString());

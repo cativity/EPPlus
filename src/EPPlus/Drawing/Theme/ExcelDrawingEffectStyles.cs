@@ -44,25 +44,16 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelThemeEffectStyle> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelThemeEffectStyle> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns>The effect style</returns>
-    public ExcelThemeEffectStyle this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelThemeEffectStyle this[int index] => this._list[index];
 
     /// <summary>
     /// Adds a new effect style
@@ -116,8 +107,5 @@ public class ExcelThemeEffectStyles : XmlHelper, IEnumerable<ExcelThemeEffectSty
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }

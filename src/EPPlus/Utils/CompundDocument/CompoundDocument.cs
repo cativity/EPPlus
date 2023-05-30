@@ -44,35 +44,17 @@ internal class CompoundDocument
     /// </summary>
     internal List<CompoundDocumentItem> Directories { get; private set; }
 
-    internal CompoundDocument()
-    {
-        this.Storage = new StoragePart();
-    }
+    internal CompoundDocument() => this.Storage = new StoragePart();
 
-    internal CompoundDocument(MemoryStream ms)
-    {
-        this.Read(ms);
-    }
+    internal CompoundDocument(MemoryStream ms) => this.Read(ms);
 
-    internal CompoundDocument(FileInfo fi)
-    {
-        this.Read(fi);
-    }
+    internal CompoundDocument(FileInfo fi) => this.Read(fi);
 
-    internal static bool IsCompoundDocument(FileInfo fi)
-    {
-        return CompoundDocumentFile.IsCompoundDocument(fi);
-    }
+    internal static bool IsCompoundDocument(FileInfo fi) => CompoundDocumentFile.IsCompoundDocument(fi);
 
-    internal static bool IsCompoundDocument(MemoryStream ms)
-    {
-        return CompoundDocumentFile.IsCompoundDocument(ms);
-    }
+    internal static bool IsCompoundDocument(MemoryStream ms) => CompoundDocumentFile.IsCompoundDocument(ms);
 
-    internal CompoundDocument(byte[] doc)
-    {
-        this.Read(doc);
-    }
+    internal CompoundDocument(byte[] doc) => this.Read(doc);
 
     internal void Read(FileInfo fi)
     {

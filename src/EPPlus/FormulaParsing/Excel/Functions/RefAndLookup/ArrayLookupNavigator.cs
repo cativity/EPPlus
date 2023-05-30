@@ -45,10 +45,7 @@ internal class ArrayLookupNavigator : LookupNavigator
         //this.SetCurrentValue();
     }
 
-    public override int Index
-    {
-        get { return this._index; }
-    }
+    public override int Index => this._index;
 
     //private void SetCurrentValue()
     //{
@@ -84,13 +81,7 @@ internal class ArrayLookupNavigator : LookupNavigator
         return true;
     }
 
-    public override object CurrentValue
-    {
-        get { return this._arrayData[this._index].Value; }
-    }
+    public override object CurrentValue => this._arrayData[this._index].Value;
 
-    public override object GetLookupValue()
-    {
-        return this._arrayData[this._index].Value;
-    }
+    public override object GetLookupValue() => this._arrayData[this._index].Value;
 }

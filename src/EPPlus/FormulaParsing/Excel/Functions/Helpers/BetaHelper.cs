@@ -172,10 +172,7 @@ internal static class BetaHelper
         return x + y > 170 ? System.Math.Exp(Betaln(x, y)) : GammaHelper.gamma(x) * GammaHelper.gamma(y) / GammaHelper.gamma(x + y);
     }
 
-    internal static double Betaln(double x, double y)
-    {
-        return GammaHelper.logGamma(x) + GammaHelper.logGamma(y) - GammaHelper.logGamma(x + y);
-    }
+    internal static double Betaln(double x, double y) => GammaHelper.logGamma(x) + GammaHelper.logGamma(y) - GammaHelper.logGamma(x + y);
 
     internal static double BetaCdf(double x, double a, double b)
     {

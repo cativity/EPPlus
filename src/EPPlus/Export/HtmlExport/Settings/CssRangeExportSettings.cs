@@ -18,10 +18,7 @@ namespace OfficeOpenXml.Export.HtmlExport;
 /// </summary>
 public class CssRangeExportSettings : CssExportSettings
 {
-    internal CssRangeExportSettings()
-    {
-        this.ResetToDefault();
-    }
+    internal CssRangeExportSettings() => this.ResetToDefault();
 
     /// <summary>
     /// Settings to exclude specific styles from the css.

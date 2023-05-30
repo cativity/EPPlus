@@ -31,8 +31,8 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
 
         public event EventHandler<EventArgs> ListChanged
         {
-            add { this._listChanged += value; }
-            remove { this._listChanged -= value; }
+            add => this._listChanged += value;
+            remove => this._listChanged -= value;
         }
 
         private void OnListChanged()
@@ -45,10 +45,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
 
         #region IList members
 
-        int IList<string>.IndexOf(string item)
-        {
-            return this._items.IndexOf(item);
-        }
+        int IList<string>.IndexOf(string item) => this._items.IndexOf(item);
 
         void IList<string>.Insert(int index, string item)
         {
@@ -64,7 +61,7 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
 
         string IList<string>.this[int index]
         {
-            get { return this._items[index]; }
+            get => this._items[index];
             set
             {
                 this._items[index] = value;
@@ -84,25 +81,13 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
             this.OnListChanged();
         }
 
-        bool ICollection<string>.Contains(string item)
-        {
-            return this._items.Contains(item);
-        }
+        bool ICollection<string>.Contains(string item) => this._items.Contains(item);
 
-        void ICollection<string>.CopyTo(string[] array, int arrayIndex)
-        {
-            this._items.CopyTo(array, arrayIndex);
-        }
+        void ICollection<string>.CopyTo(string[] array, int arrayIndex) => this._items.CopyTo(array, arrayIndex);
 
-        int ICollection<string>.Count
-        {
-            get { return this._items.Count; }
-        }
+        int ICollection<string>.Count => this._items.Count;
 
-        bool ICollection<string>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<string>.IsReadOnly => false;
 
         bool ICollection<string>.Remove(string item)
         {
@@ -112,37 +97,19 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
             return retVal;
         }
 
-        IEnumerator<string> IEnumerable<string>.GetEnumerator()
-        {
-            return this._items.GetEnumerator();
-        }
+        IEnumerator<string> IEnumerable<string>.GetEnumerator() => this._items.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this._items.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => this._items.GetEnumerator();
 
         #endregion
 
-        public void CopyTo(Array array, int index)
-        {
-            this._items.CopyTo((string[])array, index);
-        }
+        public void CopyTo(Array array, int index) => this._items.CopyTo((string[])array, index);
 
-        int ICollection.Count
-        {
-            get { return this._items.Count; }
-        }
+        int ICollection.Count => this._items.Count;
 
-        public bool IsSynchronized
-        {
-            get { return ((ICollection)this._items).IsSynchronized; }
-        }
+        public bool IsSynchronized => ((ICollection)this._items).IsSynchronized;
 
-        public object SyncRoot
-        {
-            get { return ((ICollection)this._items).SyncRoot; }
-        }
+        public object SyncRoot => ((ICollection)this._items).SyncRoot;
     }
 
     #endregion
@@ -222,8 +189,5 @@ internal class ExcelDataValidationFormulaList : ExcelDataValidationFormula, IExc
         return sb.ToString();
     }
 
-    internal override void ResetValue()
-    {
-        this.Values.Clear();
-    }
+    internal override void ResetValue() => this.Values.Clear();
 }

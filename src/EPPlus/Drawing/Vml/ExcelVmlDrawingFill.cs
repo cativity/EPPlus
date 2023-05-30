@@ -24,7 +24,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// </summary>
     public eVmlFillType Style
     {
-        get { return this.GetXmlNodeString("v:fill/@type").ToEnum(eVmlFillType.NoFill); }
+        get => this.GetXmlNodeString("v:fill/@type").ToEnum(eVmlFillType.NoFill);
         set
         {
             if (value == eVmlFillType.NoFill)
@@ -45,10 +45,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// <summary>
     /// The primary color used for filling the drawing.
     /// </summary>
-    public ExcelVmlDrawingColor Color
-    {
-        get { return this._fillColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "@fillcolor"); }
-    }
+    public ExcelVmlDrawingColor Color => this._fillColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "@fillcolor");
 
     /// <summary>
     /// Opacity for fill color 1. Spans 0-100%. 
@@ -56,7 +53,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// </summary>
     public double Opacity
     {
-        get { return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@opacity")); }
+        get => VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@opacity"));
         set
         {
             if (value < 0 || value > 100)
@@ -73,10 +70,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// <summary>
     /// Fill color 2. 
     /// </summary>
-    public ExcelVmlDrawingColor SecondColor
-    {
-        get { return this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2"); }
-    }
+    public ExcelVmlDrawingColor SecondColor => this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
 
     /// <summary>
     /// Opacity for fill color 2. Spans 0-100%
@@ -84,7 +78,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// </summary>
     public double SecondColorOpacity
     {
-        get { return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2")); }
+        get => VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2"));
         set
         {
             if (value < 0 || value > 100)
@@ -101,28 +95,22 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// <summary>
     /// Gradient specific settings used when <see cref="Style"/> is set to Gradient or GradientRadial.
     /// </summary>
-    public ExcelVmlDrawingGradientFill GradientSettings
-    {
-        get { return this._gradientSettings ??= new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode); }
-    }
+    public ExcelVmlDrawingGradientFill GradientSettings => this._gradientSettings ??= new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode);
 
     internal ExcelVmlDrawingPictureFill _patternPictureSettings;
 
     /// <summary>
     /// Image and pattern specific settings used when <see cref="Style"/> is set to Pattern, Tile or Frame.
     /// </summary>
-    public ExcelVmlDrawingPictureFill PatternPictureSettings
-    {
-        get { return this._patternPictureSettings ??= new ExcelVmlDrawingPictureFill(this, this.NameSpaceManager, this.TopNode); }
-    }
+    public ExcelVmlDrawingPictureFill PatternPictureSettings => this._patternPictureSettings ??= new ExcelVmlDrawingPictureFill(this, this.NameSpaceManager, this.TopNode);
 
     /// <summary>
     /// Recolor with picture
     /// </summary>
     public bool Recolor
     {
-        get { return this.GetXmlNodeBool("v:fill/@recolor"); }
-        set { this.SetXmlNodeBoolVml("v:fill/@recolor", value); }
+        get => this.GetXmlNodeBool("v:fill/@recolor");
+        set => this.SetXmlNodeBoolVml("v:fill/@recolor", value);
     }
 
     /// <summary>
@@ -130,7 +118,7 @@ public class ExcelVmlDrawingFill : XmlHelper
     /// </summary>
     public bool Rotate
     {
-        get { return this.GetXmlNodeBool("v:fill/@rotate"); }
-        set { this.SetXmlNodeBoolVml("v:fill/@rotate", value); }
+        get => this.GetXmlNodeBool("v:fill/@rotate");
+        set => this.SetXmlNodeBoolVml("v:fill/@rotate", value);
     }
 }

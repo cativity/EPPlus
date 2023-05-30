@@ -110,10 +110,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
     #endregion
 
-    private void Init(ExcelWorksheet xlWorksheet)
-    {
-        this._worksheet = xlWorksheet;
-    }
+    private void Init(ExcelWorksheet xlWorksheet) => this._worksheet = xlWorksheet;
 
     /// <summary>
     /// On change address handler
@@ -190,10 +187,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <param name="range"></param>
     /// <param name="valueMethod"></param>
     /// <param name="value"></param>
-    private static void SetSingle(ExcelRangeBase range, _setValue valueMethod, object value)
-    {
-        valueMethod(range, value, range._fromRow, range._fromCol);
-    }
+    private static void SetSingle(ExcelRangeBase range, _setValue valueMethod, object value) => valueMethod(range, value, range._fromRow, range._fromCol);
 
     /// <summary>
     /// Set a range
@@ -201,10 +195,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <param name="range"></param>
     /// <param name="valueMethod"></param>
     /// <param name="value"></param>
-    private static void SetRange(ExcelRangeBase range, _setValue valueMethod, object value)
-    {
-        range.SetValueAddress(range, valueMethod, value);
-    }
+    private static void SetRange(ExcelRangeBase range, _setValue valueMethod, object value) => range.SetValueAddress(range, valueMethod, value);
 
     /// <summary>
     /// Set a multirange (A1:A2,C1:C2)
@@ -285,15 +276,9 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     private static _setValue _setExistsThreadedCommentDelegate = Exists_ThreadedComment;
     private static _setValue _setThreadedCommentDelegate = Set_ThreadedComment;
 
-    private static void Set_StyleID(ExcelRangeBase range, object value, int row, int col)
-    {
-        range._worksheet.SetStyleInner(row, col, (int)value);
-    }
+    private static void Set_StyleID(ExcelRangeBase range, object value, int row, int col) => range._worksheet.SetStyleInner(row, col, (int)value);
 
-    private static void Set_StyleName(ExcelRangeBase range, object value, int row, int col)
-    {
-        range._worksheet.SetStyleInner(row, col, range._styleID);
-    }
+    private static void Set_StyleName(ExcelRangeBase range, object value, int row, int col) => range._worksheet.SetStyleInner(row, col, range._styleID);
 
     private static void Set_Value(ExcelRangeBase range, object value, int row, int col)
     {
@@ -475,10 +460,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         }
     }
 
-    private static void Set_ThreadedComment(ExcelRangeBase range, object value, int row, int col)
-    {
-        _ = range._worksheet.ThreadedComments.Add(GetAddress(row, col));
-    }
+    private static void Set_ThreadedComment(ExcelRangeBase range, object value, int row, int col) => _ = range._worksheet.ThreadedComments.Add(GetAddress(row, col));
 
     #endregion
 
@@ -763,7 +745,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
             return s;
         }
-        set { this._changePropMethod(this, _setStyleIdDelegate, value); }
+        set => this._changePropMethod(this, _setStyleIdDelegate, value);
     }
 
     /// <summary>
@@ -820,10 +802,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// Sets the range to an Error value
     /// </summary>
     /// <param name="errorType">The type of error</param>
-    public void SetErrorValue(eErrorType errorType)
-    {
-        this.Value = ExcelErrorValue.Create(errorType);
-    }
+    public void SetErrorValue(eErrorType errorType) => this.Value = ExcelErrorValue.Create(errorType);
 
     private object GetValueArray()
     {
@@ -932,10 +911,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// Cells containing formulas must be calculated before autofit is called.
     /// Wrapped and merged cells are also ignored.
     /// </remarks>
-    public void AutoFitColumns()
-    {
-        this.AutoFitColumns(this._worksheet.DefaultColWidth);
-    }
+    public void AutoFitColumns() => this.AutoFitColumns(this._worksheet.DefaultColWidth);
 
     /// <summary>
     /// Set the column width from the content of the range. Columns outside of the worksheets dimension are ignored.
@@ -946,10 +922,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// Wrapped and merged cells are also ignored.
     /// </remarks>
     /// <param name="MinimumWidth">Minimum column width</param>
-    public void AutoFitColumns(double MinimumWidth)
-    {
-        this.AutoFitColumns(MinimumWidth, double.MaxValue);
-    }
+    public void AutoFitColumns(double MinimumWidth) => this.AutoFitColumns(MinimumWidth, double.MaxValue);
 
     /// <summary>
     /// Set the column width from the content of the range. Columns outside of the worksheets dimension are ignored.
@@ -975,10 +948,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 #endif
     }
 
-    internal string TextForWidth
-    {
-        get { return ValueToTextHandler.GetFormattedText(this.Value, this._workbook, this.StyleID, true); }
-    }
+    internal string TextForWidth => ValueToTextHandler.GetFormattedText(this.Value, this._workbook, this.StyleID, true);
 
     /// <summary>
     /// Gets or sets a formula for a range.
@@ -1179,10 +1149,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// Creates an <see cref="IExcelHtmlRangeExporter"/> for html export of this range.
     /// </summary>
     /// <returns>A html exporter</returns>
-    public IExcelHtmlRangeExporter CreateHtmlExporter()
-    {
-        return new Export.HtmlExport.Exporters.ExcelHtmlRangeExporter(this);
-    }
+    public IExcelHtmlRangeExporter CreateHtmlExporter() => new Export.HtmlExport.Exporters.ExcelHtmlRangeExporter(this);
 
     //public ExcelHtmlRangeExporter CreateHtmlExporter()
     //{
@@ -1199,26 +1166,20 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
             return this._worksheet._hyperLinks.GetValue(this._fromRow, this._fromCol);
         }
-        set { this._changePropMethod(this, _setHyperLinkDelegate, value); }
+        set => this._changePropMethod(this, _setHyperLinkDelegate, value);
     }
 
     /// <summary>
     /// Sets the hyperlink property
     /// </summary>
     /// <param name="uri">The URI to set</param>
-    public void SetHyperlink(Uri uri)
-    {
-        this.Hyperlink = uri;
-    }
+    public void SetHyperlink(Uri uri) => this.Hyperlink = uri;
 
     /// <summary>
     /// Sets the Hyperlink property using the ExcelHyperLink class.
     /// </summary>
     /// <param name="uri">The <see cref="ExcelHyperLink"/> uri to set</param>
-    public void SetHyperlink(ExcelHyperLink uri)
-    {
-        this.Hyperlink = uri;
-    }
+    public void SetHyperlink(ExcelHyperLink uri) => this.Hyperlink = uri;
 
     /// <summary>
     /// Sets the Hyperlink property to an url within the workbook.
@@ -1239,10 +1200,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// Sets the Hyperlink property to an url within the workbook. The hyperlink will display the value of the cell.
     /// </summary>
     /// <param name="range">A reference within the same workbook</param>
-    public void SetHyperlink(ExcelRange range)
-    {
-        this.SetHyperlinkLocal(range, null);
-    }
+    public void SetHyperlink(ExcelRange range) => this.SetHyperlinkLocal(range, null);
 
     private void SetHyperlinkLocal(ExcelRange range, string display)
     {
@@ -1437,32 +1395,23 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
             return this._worksheet._flags.GetFlagValue(this._fromRow, this._fromCol, CellFlags.RichText);
         }
-        set { this.SetIsRichTextFlag(value); }
+        set => this.SetIsRichTextFlag(value);
     }
 
     /// <summary>
     /// Returns true if the range is a table. If the range partly matches a table range false will be returned.
     /// <seealso cref="IsTable"/>
     /// </summary>
-    public bool IsTable
-    {
-        get { return ExcelTableCollection.GetFromRange(this) != null; }
-    }
+    public bool IsTable => ExcelTableCollection.GetFromRange(this) != null;
 
     /// <summary>
     /// Returns the <see cref="ExcelTable"/> if the range is a table. 
     /// If the range doesn't or partly matches a table range, null is returned.
     /// <seealso cref="IsTable"/>
     /// </summary>
-    public ExcelTable GetTable()
-    {
-        return ExcelTableCollection.GetFromRange(this);
-    }
+    public ExcelTable GetTable() => ExcelTableCollection.GetFromRange(this);
 
-    internal void SetIsRichTextFlag(bool value)
-    {
-        this._changePropMethod(this, _setIsRichTextDelegate, value);
-    }
+    internal void SetIsRichTextFlag(bool value) => this._changePropMethod(this, _setIsRichTextDelegate, value);
 
     /// <summary>
     /// Insert cells into the worksheet and shift the cells to the selected direction.
@@ -1583,10 +1532,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// WorkSheet object 
     /// </summary>
-    public ExcelWorksheet Worksheet
-    {
-        get { return this._worksheet; }
-    }
+    public ExcelWorksheet Worksheet => this._worksheet;
 
     /// <summary>
     /// Address including sheet name
@@ -2049,10 +1995,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// Conditional Formatting for this range.
     /// </summary>
-    public IRangeConditionalFormatting ConditionalFormatting
-    {
-        get { return new RangeConditionalFormatting(this._worksheet, new ExcelAddress(this.Address)); }
-    }
+    public IRangeConditionalFormatting ConditionalFormatting => new RangeConditionalFormatting(this._worksheet, new ExcelAddress(this.Address));
 
     #endregion
 
@@ -2061,10 +2004,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// Data validation for this range.
     /// </summary>
-    public IRangeDataValidation DataValidation
-    {
-        get { return new RangeDataValidation(this._worksheet, this.Address); }
-    }
+    public IRangeDataValidation DataValidation => new RangeDataValidation(this._worksheet, this.Address);
 
     #endregion
 
@@ -2093,10 +2033,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <exception cref="InvalidCastException">
     ///      <see cref="Value"/> is not string and direct conversion fails
     /// </exception>
-    public T GetValue<T>()
-    {
-        return ConvertUtil.GetTypedCellValue<T>(this.Value);
-    }
+    public T GetValue<T>() => ConvertUtil.GetTypedCellValue<T>(this.Value);
 
     #endregion
 
@@ -2247,10 +2184,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// Clear all cells
     /// </summary>
-    public void Clear()
-    {
-        this.DeleteMe(this, false);
-    }
+    public void Clear() => this.DeleteMe(this, false);
 
     /// <summary>
     /// Creates an array-formula.
@@ -2561,20 +2495,14 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// Sort the range by value of the first column, Ascending.
     /// </summary>
-    public void Sort()
-    {
-        this.SortInternal(new int[] { 0 }, new bool[] { false }, null, null, CompareOptions.None, null);
-    }
+    public void Sort() => this.SortInternal(new int[] { 0 }, new bool[] { false }, null, null, CompareOptions.None, null);
 
     /// <summary>
     /// Sort the range by value of the supplied column, Ascending.
     /// <param name="column">The column to sort by within the range. Zerobased</param>
     /// <param name="descending">Descending if true, otherwise Ascending. Default Ascending. Zerobased</param>
     /// </summary>
-    public void Sort(int column, bool descending = false)
-    {
-        this.SortInternal(new int[] { column }, new bool[] { descending }, null, null, CompareOptions.None, null);
-    }
+    public void Sort(int column, bool descending = false) => this.SortInternal(new int[] { column }, new bool[] { descending }, null, null, CompareOptions.None, null);
 
     /// <summary>
     /// Sort the range by value
@@ -2583,10 +2511,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <param name="descending">Descending if true, otherwise Ascending. Default Ascending. Zerobased</param>
     /// <param name="culture">The CultureInfo used to compare values. A null value means CurrentCulture</param>
     /// <param name="compareOptions">String compare option</param>
-    public void Sort(int[] columns, bool[] descending = null, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None)
-    {
-        this.SortInternal(columns, descending, null, culture, compareOptions, null);
-    }
+    public void Sort(int[] columns, bool[] descending = null, CultureInfo culture = null, CompareOptions compareOptions = CompareOptions.None) => this.SortInternal(columns, descending, null, culture, compareOptions, null);
 
     /// <summary>
     /// Sort the range by value
@@ -2647,10 +2572,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         }
     }
 
-    internal void Sort(SortOptionsBase options, ExcelTable table)
-    {
-        this.SortInternal(options.ColumnIndexes.ToArray(), options.Descending.ToArray(), options.CustomLists, options.Culture, options.CompareOptions, table);
-    }
+    internal void Sort(SortOptionsBase options, ExcelTable table) => this.SortInternal(options.ColumnIndexes.ToArray(), options.Descending.ToArray(), options.CustomLists, options.Culture, options.CompareOptions, table);
 
     /// <summary>
     /// Sort the range by value. Supports top-down and left to right sort.
@@ -2693,10 +2615,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// worksheet.Cells["A1:D15"].Sort(options);
     /// </code>
     /// </example>
-    public void Sort(RangeSortOptions options)
-    {
-        this.SortInternal(options);
-    }
+    public void Sort(RangeSortOptions options) => this.SortInternal(options);
 
     private static void SortSetValue(List<ExcelValue> list, int index, object value)
     {
@@ -2770,20 +2689,14 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// </summary>
     /// <typeparam name="T">The returned type</typeparam>
     /// <returns>The value of the cell</returns>
-    public T GetCellValue<T>()
-    {
-        return this.GetCellValue<T>(0, 0);
-    }
+    public T GetCellValue<T>() => this.GetCellValue<T>(0, 0);
 
     /// <summary>
     /// Gets the value of a cell using an offset from the top-left cell in the range.
     /// </summary>
     /// <typeparam name="T">The returned type</typeparam>
     /// <param name="columnOffset">Column offset from the top-left cell in the range</param>
-    public T GetCellValue<T>(int columnOffset)
-    {
-        return this.GetCellValue<T>(0, columnOffset);
-    }
+    public T GetCellValue<T>(int columnOffset) => this.GetCellValue<T>(0, columnOffset);
 
     /// <summary>
     /// Gets the value of a cell using an offset from the top-left cell in the range.

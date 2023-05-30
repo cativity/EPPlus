@@ -25,22 +25,13 @@ public class EnumerableExpression : Expression
     {
     }
 
-    public EnumerableExpression(IExpressionCompiler expressionCompiler)
-    {
-        this._expressionCompiler = expressionCompiler;
-    }
+    public EnumerableExpression(IExpressionCompiler expressionCompiler) => this._expressionCompiler = expressionCompiler;
 
     private readonly IExpressionCompiler _expressionCompiler;
 
-    public override bool IsGroupedExpression
-    {
-        get { return false; }
-    }
+    public override bool IsGroupedExpression => false;
 
-    public override Expression PrepareForNextChild()
-    {
-        return this;
-    }
+    public override Expression PrepareForNextChild() => this;
 
     public override CompileResult Compile()
     {

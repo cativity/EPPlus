@@ -45,8 +45,8 @@ public class ExcelThreadedCommentMention : XmlHelper
     /// </summary>
     public int StartIndex
     {
-        get { return this.GetXmlNodeInt("@startIndex"); }
-        set { this.SetXmlNodeInt("@startIndex", value); }
+        get => this.GetXmlNodeInt("@startIndex");
+        set => this.SetXmlNodeInt("@startIndex", value);
     }
 
     /// <summary>
@@ -54,8 +54,8 @@ public class ExcelThreadedCommentMention : XmlHelper
     /// </summary>
     public int Length
     {
-        get { return this.GetXmlNodeInt("@length"); }
-        set { this.SetXmlNodeInt("@length", value); }
+        get => this.GetXmlNodeInt("@length");
+        set => this.SetXmlNodeInt("@length", value);
     }
 
     /// <summary>
@@ -63,8 +63,8 @@ public class ExcelThreadedCommentMention : XmlHelper
     /// </summary>
     public string MentionId
     {
-        get { return this.GetXmlNodeString("@mentionId"); }
-        set { this.SetXmlNodeString("@mentionId", value); }
+        get => this.GetXmlNodeString("@mentionId");
+        set => this.SetXmlNodeString("@mentionId", value);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class ExcelThreadedCommentMention : XmlHelper
     /// </summary>
     public string MentionPersonId
     {
-        get { return this.GetXmlNodeString("@mentionpersonId"); }
-        set { this.SetXmlNodeString("@mentionpersonId", value); }
+        get => this.GetXmlNodeString("@mentionpersonId");
+        set => this.SetXmlNodeString("@mentionpersonId", value);
     }
 }

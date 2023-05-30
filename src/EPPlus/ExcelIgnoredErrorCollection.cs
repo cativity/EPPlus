@@ -56,19 +56,13 @@ public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisp
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Adds an IgnoreError item to the collection
@@ -87,19 +81,13 @@ public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisp
 
     XmlNode _topNode;
 
-    internal XmlNode TopNode
-    {
-        get { return this._topNode ??= this._excelWorksheet.CreateNode("d:ignoredErrors"); }
-    }
+    internal XmlNode TopNode => this._topNode ??= this._excelWorksheet.CreateNode("d:ignoredErrors");
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator<ExcelIgnoredError> IEnumerable<ExcelIgnoredError>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<ExcelIgnoredError> IEnumerable<ExcelIgnoredError>.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Called when the class is disposed.

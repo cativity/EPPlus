@@ -27,16 +27,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters;
 internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
 {
     internal HtmlRangeExporterSync(HtmlRangeExportSettings settings, ExcelRangeBase range)
-        : base(settings, range)
-    {
+        : base(settings, range) =>
         this._settings = settings;
-    }
 
     internal HtmlRangeExporterSync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
-        : base(settings, ranges)
-    {
+        : base(settings, ranges) =>
         this._settings = settings;
-    }
 
     private readonly HtmlRangeExportSettings _settings;
 
@@ -105,10 +101,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     /// </summary>
     /// <param name="stream">The stream to write to</param>
     /// <returns>A html table</returns>
-    public void RenderHtml(Stream stream)
-    {
-        this.RenderHtml(stream, 0);
-    }
+    public void RenderHtml(Stream stream) => this.RenderHtml(stream, 0);
 
     /// <summary>
     /// Exports an <see cref="ExcelTable"/> to a html string
@@ -186,10 +179,7 @@ internal class HtmlRangeExporterSync : HtmlRangeExporterSyncBase
     /// <summary>
     /// The ranges used in the export.
     /// </summary>
-    public EPPlusReadOnlyList<ExcelRangeBase> Ranges
-    {
-        get { return this._ranges; }
-    }
+    public EPPlusReadOnlyList<ExcelRangeBase> Ranges => this._ranges;
 
     /// <summary>
     /// Renders both the Html and the Css to a single page. 

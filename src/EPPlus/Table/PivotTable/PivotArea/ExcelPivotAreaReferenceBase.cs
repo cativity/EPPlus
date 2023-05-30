@@ -23,10 +23,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     internal ExcelPivotTable _pt;
 
     internal ExcelPivotAreaReferenceBase(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._pt = pt;
-    }
 
     internal int FieldIndex
     {
@@ -61,8 +59,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool Selected
     {
-        get { return this.GetXmlNodeBool("@selected", true); }
-        set { this.SetXmlNodeBool("@selected", value); }
+        get => this.GetXmlNodeBool("@selected", true);
+        set => this.SetXmlNodeBool("@selected", value);
     }
 
     /// <summary>
@@ -70,8 +68,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     internal bool Relative
     {
-        get { return this.GetXmlNodeBool("@relative"); }
-        set { this.SetXmlNodeBool("@relative", value); }
+        get => this.GetXmlNodeBool("@relative");
+        set => this.SetXmlNodeBool("@relative", value);
     }
 
     /// <summary>
@@ -79,8 +77,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     internal bool ByPosition
     {
-        get { return this.GetXmlNodeBool("@byPosition"); }
-        set { this.SetXmlNodeBool("@byPosition", value); }
+        get => this.GetXmlNodeBool("@byPosition");
+        set => this.SetXmlNodeBool("@byPosition", value);
     }
 
     internal abstract void UpdateXml();
@@ -90,8 +88,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool DefaultSubtotal
     {
-        get { return this.GetXmlNodeBool("@defaultSubtotal"); }
-        set { this.SetXmlNodeBool("@defaultSubtotal", value); }
+        get => this.GetXmlNodeBool("@defaultSubtotal");
+        set => this.SetXmlNodeBool("@defaultSubtotal", value);
     }
 
     /// <summary>
@@ -99,8 +97,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool AvgSubtotal
     {
-        get { return this.GetXmlNodeBool("@avgSubtotal"); }
-        set { this.SetXmlNodeBool("@avgSubtotal", value); }
+        get => this.GetXmlNodeBool("@avgSubtotal");
+        set => this.SetXmlNodeBool("@avgSubtotal", value);
     }
 
     /// <summary>
@@ -108,8 +106,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool CountSubtotal
     {
-        get { return this.GetXmlNodeBool("@countSubtotal"); }
-        set { this.SetXmlNodeBool("@countSubtotal", value); }
+        get => this.GetXmlNodeBool("@countSubtotal");
+        set => this.SetXmlNodeBool("@countSubtotal", value);
     }
 
     /// <summary>
@@ -117,8 +115,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool CountASubtotal
     {
-        get { return this.GetXmlNodeBool("@countASubtotal"); }
-        set { this.SetXmlNodeBool("@countASubtotal", value); }
+        get => this.GetXmlNodeBool("@countASubtotal");
+        set => this.SetXmlNodeBool("@countASubtotal", value);
     }
 
     /// <summary>
@@ -126,8 +124,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool MaxSubtotal
     {
-        get { return this.GetXmlNodeBool("@maxSubtotal"); }
-        set { this.SetXmlNodeBool("@maxSubtotal", value); }
+        get => this.GetXmlNodeBool("@maxSubtotal");
+        set => this.SetXmlNodeBool("@maxSubtotal", value);
     }
 
     /// <summary>
@@ -135,8 +133,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool MinSubtotal
     {
-        get { return this.GetXmlNodeBool("@minSubtotal"); }
-        set { this.SetXmlNodeBool("@minSubtotal", value); }
+        get => this.GetXmlNodeBool("@minSubtotal");
+        set => this.SetXmlNodeBool("@minSubtotal", value);
     }
 
     /// <summary>
@@ -144,8 +142,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool ProductSubtotal
     {
-        get { return this.GetXmlNodeBool("@productSubtotal"); }
-        set { this.SetXmlNodeBool("@productSubtotal", value); }
+        get => this.GetXmlNodeBool("@productSubtotal");
+        set => this.SetXmlNodeBool("@productSubtotal", value);
     }
 
     /// <summary>
@@ -153,8 +151,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool StdDevPSubtotal
     {
-        get { return this.GetXmlNodeBool("@StdDevPSubtotal"); }
-        set { this.SetXmlNodeBool("@StdDevPSubtotal", value); }
+        get => this.GetXmlNodeBool("@StdDevPSubtotal");
+        set => this.SetXmlNodeBool("@StdDevPSubtotal", value);
     }
 
     /// <summary>
@@ -162,8 +160,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool StdDevSubtotal
     {
-        get { return this.GetXmlNodeBool("@StdDevSubtotal"); }
-        set { this.SetXmlNodeBool("@StdDevSubtotal", value); }
+        get => this.GetXmlNodeBool("@StdDevSubtotal");
+        set => this.SetXmlNodeBool("@StdDevSubtotal", value);
     }
 
     /// <summary>
@@ -171,8 +169,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool SumSubtotal
     {
-        get { return this.GetXmlNodeBool("@sumSubtotal"); }
-        set { this.SetXmlNodeBool("@sumSubtotal", value); }
+        get => this.GetXmlNodeBool("@sumSubtotal");
+        set => this.SetXmlNodeBool("@sumSubtotal", value);
     }
 
     /// <summary>
@@ -180,8 +178,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool VarPSubtotal
     {
-        get { return this.GetXmlNodeBool("@varPSubtotal"); }
-        set { this.SetXmlNodeBool("@varPSubtotal", value); }
+        get => this.GetXmlNodeBool("@varPSubtotal");
+        set => this.SetXmlNodeBool("@varPSubtotal", value);
     }
 
     /// <summary>
@@ -189,8 +187,8 @@ public abstract class ExcelPivotAreaReferenceBase : XmlHelper
     /// </summary>
     public bool VarSubtotal
     {
-        get { return this.GetXmlNodeBool("@varSubtotal"); }
-        set { this.SetXmlNodeBool("@varSubtotal", value); }
+        get => this.GetXmlNodeBool("@varSubtotal");
+        set => this.SetXmlNodeBool("@varSubtotal", value);
     }
 
     internal void SetFunction(DataFieldFunctions function)

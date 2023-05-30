@@ -117,8 +117,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString(NAMEPATH); }
-        set { this.SetXmlNodeString(NAMEPATH, value, true); }
+        get => this.GetXmlNodeString(NAMEPATH);
+        set => this.SetXmlNodeString(NAMEPATH, value, true);
     }
 
     const string ORDERPATH = "c:order/@val";
@@ -128,7 +128,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public decimal Order
     {
-        get { return this.GetXmlNodeDecimal(ORDERPATH); }
+        get => this.GetXmlNodeDecimal(ORDERPATH);
         set
         {
             if (this.Type == eTrendLine.MovingAvgerage)
@@ -148,7 +148,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public decimal Period
     {
-        get { return this.GetXmlNodeDecimal(PERIODPATH); }
+        get => this.GetXmlNodeDecimal(PERIODPATH);
         set
         {
             if (this.Type == eTrendLine.Polynomial)
@@ -168,8 +168,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public decimal Forward
     {
-        get { return this.GetXmlNodeDecimal(FORWARDPATH); }
-        set { this.SetXmlNodeString(FORWARDPATH, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeDecimal(FORWARDPATH);
+        set => this.SetXmlNodeString(FORWARDPATH, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string BACKWARDPATH = "c:backward/@val";
@@ -179,8 +179,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public decimal Backward
     {
-        get { return this.GetXmlNodeDecimal(BACKWARDPATH); }
-        set { this.SetXmlNodeString(BACKWARDPATH, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeDecimal(BACKWARDPATH);
+        set => this.SetXmlNodeString(BACKWARDPATH, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string INTERCEPTPATH = "c:intercept/@val";
@@ -190,8 +190,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public decimal Intercept
     {
-        get { return this.GetXmlNodeDecimal(INTERCEPTPATH); }
-        set { this.SetXmlNodeString(INTERCEPTPATH, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeDecimal(INTERCEPTPATH);
+        set => this.SetXmlNodeString(INTERCEPTPATH, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string DISPLAYRSQUAREDVALUEPATH = "c:dispRSqr/@val";
@@ -201,8 +201,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public bool DisplayRSquaredValue
     {
-        get { return this.GetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, true); }
-        set { this.SetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, value, true); }
+        get => this.GetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, true);
+        set => this.SetXmlNodeBool(DISPLAYRSQUAREDVALUEPATH, value, true);
     }
 
     const string DISPLAYEQUATIONPATH = "c:dispEq/@val";
@@ -212,8 +212,8 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// </summary>
     public bool DisplayEquation
     {
-        get { return this.GetXmlNodeBool(DISPLAYEQUATIONPATH, true); }
-        set { this.SetXmlNodeBool(DISPLAYEQUATIONPATH, value, true); }
+        get => this.GetXmlNodeBool(DISPLAYEQUATIONPATH, true);
+        set => this.SetXmlNodeBool(DISPLAYEQUATIONPATH, value, true);
     }
 
     ExcelDrawingFill _fill;
@@ -221,72 +221,47 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
     /// <summary>
     /// Access to fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
     ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get { return this._border ??= new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingBorder Border => this._border ??= new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._serie._chart,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                "c:spPr/a:effectLst",
-                                                                this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect =>
+        this._effect ??= new ExcelDrawingEffectStyle(this._serie._chart,
+                                                     this.NameSpaceManager,
+                                                     this.TopNode,
+                                                     "c:spPr/a:effectLst",
+                                                     this.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode();
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode();
 
     ExcelChartTrendlineLabel _label;
 
     /// <summary>
     /// Trendline labels
     /// </summary>
-    public ExcelChartTrendlineLabel Label
-    {
-        get { return this._label ??= new ExcelChartTrendlineLabel(this.NameSpaceManager, this.TopNode, this._serie); }
-    }
+    public ExcelChartTrendlineLabel Label => this._label ??= new ExcelChartTrendlineLabel(this.NameSpaceManager, this.TopNode, this._serie);
 
     /// <summary>
     /// Return true if the trendline has labels.
     /// </summary>
-    public bool HasLbl
-    {
-        get
-        {
-            return this.ExistsNode("c:trendlineLbl")
-                   || (this.Type != eTrendLine.MovingAvgerage && (this.DisplayRSquaredValue == true || this.DisplayEquation == true));
-        }
-    }
+    public bool HasLbl =>
+        this.ExistsNode("c:trendlineLbl")
+        || (this.Type != eTrendLine.MovingAvgerage && (this.DisplayRSquaredValue == true || this.DisplayEquation == true));
 }

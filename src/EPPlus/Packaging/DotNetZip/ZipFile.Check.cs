@@ -68,10 +68,7 @@ internal partial class ZipFile
     ///
     /// <seealso cref="FixZipDirectory(string)"/>
     /// <seealso cref="CheckZip(string,bool,System.IO.TextWriter)"/>
-    public static bool CheckZip(string zipFileName)
-    {
-        return CheckZip(zipFileName, false, null);
-    }
+    public static bool CheckZip(string zipFileName) => CheckZip(zipFileName, false, null);
 
     /// <summary>
     ///   Checks a zip file to see if its directory is consistent,

@@ -46,16 +46,10 @@ public class PieChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("PieChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("PieChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void PieChart_Styles()
@@ -78,7 +72,7 @@ public class PieChartStylingTest : TestBase
     private static void PieStyles(ExcelWorksheet ws, ePieChartType chartType)
     {
         //Style 1
-        _ = AddPie(ws, chartType, "PieChartStyle1", 0, 5, ePresetChartStyle.PieChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle1", 0, 5, ePresetChartStyle.PieChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
         _ = AddPie(ws,
@@ -87,7 +81,7 @@ public class PieChartStylingTest : TestBase
                0,
                18,
                ePresetChartStyle.PieChartStyle2,
-               c => { c.Legend.Position = eLegendPosition.Top; });
+               c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddPie(ws,
@@ -103,16 +97,16 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 4
-        _ = AddPie(ws, chartType, "PieChartStyle4", 22, 5, ePresetChartStyle.PieChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle4", 22, 5, ePresetChartStyle.PieChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddPie(ws, chartType, "PieChartStyle5", 22, 18, ePresetChartStyle.PieChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle5", 22, 18, ePresetChartStyle.PieChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddPie(ws, chartType, "PieChartStyle6", 22, 31, ePresetChartStyle.PieChartStyle6, c => { });
 
         //Style 7
-        _ = AddPie(ws, chartType, "PieChartStyle7", 44, 5, ePresetChartStyle.PieChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, chartType, "PieChartStyle7", 44, 5, ePresetChartStyle.PieChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddPie(ws,
@@ -208,7 +202,7 @@ public class PieChartStylingTest : TestBase
     private static void Pie3DStyles(ExcelWorksheet ws, ePieChartType ePieChartType)
     {
         //Style 1
-        _ = AddPie(ws, ePieChartType, "PieChartStyle1", 0, 5, ePresetChartStyle.Pie3dChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle1", 0, 5, ePresetChartStyle.Pie3dChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
         _ = AddPie(ws,
@@ -242,16 +236,16 @@ public class PieChartStylingTest : TestBase
                });
 
         //Style 4
-        _ = AddPie(ws, ePieChartType, "PieChartStyle4", 22, 5, ePresetChartStyle.Pie3dChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle4", 22, 5, ePresetChartStyle.Pie3dChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddPie(ws, ePieChartType, "PieChartStyle5", 22, 18, ePresetChartStyle.Pie3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle5", 22, 18, ePresetChartStyle.Pie3dChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddPie(ws, ePieChartType, "PieChartStyle6", 22, 31, ePresetChartStyle.Pie3dChartStyle6, c => { });
 
         //Style 7
-        _ = AddPie(ws, ePieChartType, "PieChartStyle7", 44, 5, ePresetChartStyle.Pie3dChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddPie(ws, ePieChartType, "PieChartStyle7", 44, 5, ePresetChartStyle.Pie3dChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddPie(ws,

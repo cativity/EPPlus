@@ -87,8 +87,8 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// </summary>
     public ExcelAddress Address
     {
-        get { return this._address; }
-        internal set { this._address = (ExcelDatavalidationAddress)value; }
+        get => this._address;
+        internal set => this._address = (ExcelDatavalidationAddress)value;
     }
 
     /// <summary>
@@ -189,10 +189,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// <summary>
     /// True if the current validation type allows operator.
     /// </summary>
-    public virtual bool AllowsOperator
-    {
-        get { return true; }
-    }
+    public virtual bool AllowsOperator => true;
 
     /// <summary>
     /// This method will validate the state of the validation
@@ -207,10 +204,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// <summary>
     /// Us this property to case <see cref="IExcelDataValidation"/>s to its subtypes
     /// </summary>
-    public ExcelDataValidationAsType As
-    {
-        get { return this._as ??= new ExcelDataValidationAsType(this); }
-    }
+    public ExcelDataValidationAsType As => this._as ??= new ExcelDataValidationAsType(this);
 
     /// <summary>
     /// Indicates whether this instance is stale, see https://github.com/EPPlusSoftware/EPPlus/wiki/Data-validation-Exceptions
@@ -358,10 +352,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     {
     }
 
-    internal static string NewId()
-    {
-        return "{" + Guid.NewGuid().ToString().ToUpperInvariant() + "}";
-    }
+    internal static string NewId() => "{" + Guid.NewGuid().ToString().ToUpperInvariant() + "}";
 
     internal void SetAddress(string address)
     {

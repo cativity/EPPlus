@@ -14,10 +14,7 @@ public class SlicerReadTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("SlicerRead.xlsx");
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("SlicerRead.xlsx");
 
     [ClassCleanup]
     public static void Cleanup()

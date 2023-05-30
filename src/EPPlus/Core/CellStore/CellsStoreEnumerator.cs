@@ -86,10 +86,7 @@ internal class CellStoreEnumerator<T> : IEnumerable<T>, IEnumerator<T>
         }
     }
 
-    internal int Row
-    {
-        get { return this.row; }
-    }
+    internal int Row => this.row;
 
     internal int Column
     {
@@ -122,10 +119,7 @@ internal class CellStoreEnumerator<T> : IEnumerable<T>, IEnumerator<T>
         }
     }
 
-    internal bool Next()
-    {
-        return this._cellStore.GetNextCell(ref this.row, ref this.colPos, this.minColPos, this.maxRow, this.maxColPos);
-    }
+    internal bool Next() => this._cellStore.GetNextCell(ref this.row, ref this.colPos, this.minColPos, this.maxRow, this.maxColPos);
 
     internal bool Previous()
     {
@@ -135,10 +129,7 @@ internal class CellStoreEnumerator<T> : IEnumerable<T>, IEnumerator<T>
         }
     }
 
-    public string CellAddress
-    {
-        get { return ExcelCellBase.GetAddress(this.Row, this.Column); }
-    }
+    public string CellAddress => ExcelCellBase.GetAddress(this.Row, this.Column);
 
     public IEnumerator<T> GetEnumerator()
     {
@@ -154,10 +145,7 @@ internal class CellStoreEnumerator<T> : IEnumerable<T>, IEnumerator<T>
         return this;
     }
 
-    public T Current
-    {
-        get { return this.Value; }
-    }
+    public T Current => this.Value;
 
     public void Dispose()
     {
@@ -173,13 +161,7 @@ internal class CellStoreEnumerator<T> : IEnumerable<T>, IEnumerator<T>
         }
     }
 
-    public bool MoveNext()
-    {
-        return this.Next();
-    }
+    public bool MoveNext() => this.Next();
 
-    public void Reset()
-    {
-        this.Init();
-    }
+    public void Reset() => this.Init();
 }

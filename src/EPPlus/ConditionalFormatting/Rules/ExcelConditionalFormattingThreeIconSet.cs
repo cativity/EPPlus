@@ -215,8 +215,8 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
     /// </summary>
     public bool Reverse
     {
-        get { return this.GetXmlNodeBool(_reversePath, false); }
-        set { this.SetXmlNodeBool(_reversePath, value); }
+        get => this.GetXmlNodeBool(_reversePath, false);
+        set => this.SetXmlNodeBool(_reversePath, value);
     }
 
     private const string _showValuePath = "d:iconSet/@showValue";
@@ -226,8 +226,8 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
     /// </summary>
     public bool ShowValue
     {
-        get { return this.GetXmlNodeBool(_showValuePath, true); }
-        set { this.SetXmlNodeBool(_showValuePath, value); }
+        get => this.GetXmlNodeBool(_showValuePath, true);
+        set => this.SetXmlNodeBool(_showValuePath, value);
     }
 
     private const string _iconSetPath = "d:iconSet/@iconSet";
@@ -244,7 +244,7 @@ public class ExcelConditionalFormattingIconSetBase<T> : ExcelConditionalFormatti
 
             return (T)Enum.Parse(typeof(T), v, true);
         }
-        set { this.SetXmlNodeString(_iconSetPath, this.GetIconSetString(value)); }
+        set => this.SetXmlNodeString(_iconSetPath, this.GetIconSetString(value));
     }
 
     private string GetIconSetString(T value)

@@ -23,10 +23,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlSpinButton : ExcelControl
 {
     internal ExcelControlSpinButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(40, 80); //Default size
-    }
 
     internal ExcelControlSpinButton(ExcelDrawings drawings,
                                     XmlNode drawNode,
@@ -48,7 +46,7 @@ public class ExcelControlSpinButton : ExcelControl
     /// </summary>
     public int Increment
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@inc", 1); }
+        get => this._ctrlProp.GetXmlNodeInt("@inc", 1);
         set
         {
             if (value < 0 || value > 30000)
@@ -66,7 +64,7 @@ public class ExcelControlSpinButton : ExcelControl
     /// </summary>
     public int MinValue
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@min", 0); }
+        get => this._ctrlProp.GetXmlNodeInt("@min", 0);
         set
         {
             if (value < 0 || value > 30000)
@@ -84,7 +82,7 @@ public class ExcelControlSpinButton : ExcelControl
     /// </summary>
     public int MaxValue
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@max", 30000); }
+        get => this._ctrlProp.GetXmlNodeInt("@max", 30000);
         set
         {
             if (value < 0 || value > 30000)
@@ -102,7 +100,7 @@ public class ExcelControlSpinButton : ExcelControl
     /// </summary>
     public int Value
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@val", 0); }
+        get => this._ctrlProp.GetXmlNodeInt("@val", 0);
         set
         {
             if (value < 0 || value > 30000)

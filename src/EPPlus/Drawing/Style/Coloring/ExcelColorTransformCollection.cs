@@ -52,10 +52,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// </summary>
     /// <param name="index">The position in the list</param>
     /// <returns></returns>
-    public IColorTransformItem this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public IColorTransformItem this[int index] => this._list[index];
 
     /// <summary>
     /// Clear all items
@@ -77,10 +74,7 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Remote item at a specific position
     /// </summary>
     /// <param name="index">The postion in the list</param>
-    public void RemoveAt(int index)
-    {
-        this.Remove(this._list[index]);
-    }
+    public void RemoveAt(int index) => this.Remove(this._list[index]);
 
     /// <summary>
     /// Removes the specific item
@@ -121,29 +115,20 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Alpha equals 100-Transparancy
     /// </summary>
     /// <param name="value">The alpha value in percentage 0-100</param>
-    public void AddAlpha(double value)
-    {
-        this.AddValue("alpha", eColorTransformType.Alpha, value);
-    }
+    public void AddAlpha(double value) => this.AddValue("alpha", eColorTransformType.Alpha, value);
 
     /// <summary>
     /// Specifies a more or less opaque version of its input color
     /// Alpha equals 100-Transparancy
     /// </summary>
     /// <param name="value">The alpha modulation in a positive percentage</param>
-    public void AddAlphaModulation(double value)
-    {
-        this.AddValue("alphaMod", eColorTransformType.AlphaMod, value);
-    }
+    public void AddAlphaModulation(double value) => this.AddValue("alphaMod", eColorTransformType.AlphaMod, value);
 
     /// <summary>
     /// Adds an alpha offset value. 
     /// </summary>
     /// <param name="value">The tint percentage. From 0-100</param>
-    public void AddAlphaOffset(double value)
-    {
-        this.AddValue("alphaOff", eColorTransformType.AlphaOff, value);
-    }
+    public void AddAlphaOffset(double value) => this.AddValue("alphaOff", eColorTransformType.AlphaOff, value);
 
     #endregion
 
@@ -153,29 +138,20 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specified hue, but with its saturation and luminance unchanged
     /// </summary>
     /// <param name="value">The hue angle from 0-360</param>
-    public void AddHue(double value)
-    {
-        this.AddValue("hue", eColorTransformType.Hue, value);
-    }
+    public void AddHue(double value) => this.AddValue("hue", eColorTransformType.Hue, value);
 
     /// <summary>
     /// Specifies the hue as expressed by a percentage relative to the input color
     /// </summary>
     /// <param name="value">The hue modulation in a positive percentage</param>
-    public void AddHueModulation(double value)
-    {
-        this.AddValue("hueMod", eColorTransformType.HueMod, value);
-    }
+    public void AddHueModulation(double value) => this.AddValue("hueMod", eColorTransformType.HueMod, value);
 
     /// <summary>
     /// Specifies the actual angular value of the shift. The result of the shift shall be between 0 and 360 degrees.Shifts resulting in angular values less than 0 are treated as 0. 
     /// Shifts resulting in angular values greater than 360 are treated as 360.
     /// </summary>
     /// <param name="value">The hue offset value.</param>
-    public void AddHueOffset(double value)
-    {
-        this.AddValue("hueOff", eColorTransformType.HueOff, value);
-    }
+    public void AddHueOffset(double value) => this.AddValue("hueOff", eColorTransformType.HueOff, value);
 
     #endregion
 
@@ -185,29 +161,20 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specified saturation, but with its hue and luminance unchanged
     /// </summary>
     /// <param name="value">The saturation percentage from 0-100</param>
-    public void AddSaturation(double value)
-    {
-        this.AddValue("sat", eColorTransformType.Sat, value);
-    }
+    public void AddSaturation(double value) => this.AddValue("sat", eColorTransformType.Sat, value);
 
     /// <summary>
     /// Specifies the saturation as expressed by a percentage relative to the input color
     /// </summary>
     /// <param name="value">The saturation modulation in a positive percentage</param>
-    public void AddSaturationModulation(double value)
-    {
-        this.AddValue("satMod", eColorTransformType.SatMod, value);
-    }
+    public void AddSaturationModulation(double value) => this.AddValue("satMod", eColorTransformType.SatMod, value);
 
     /// <summary>
     /// Specifies the saturation as expressed by a percentage offset increase or decrease to the input color.
     /// Increases never increase the saturation beyond 100%, decreases never decrease the saturation below 0%.
     /// </summary>
     /// <param name="value">The saturation offset value</param>
-    public void AddSaturationOffset(double value)
-    {
-        this.AddValue("satOff", eColorTransformType.SatOff, value);
-    }
+    public void AddSaturationOffset(double value) => this.AddValue("satOff", eColorTransformType.SatOff, value);
 
     #endregion
 
@@ -217,29 +184,20 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specified luminance, but with its hue and saturation unchanged
     /// </summary>
     /// <param name="value">The luminance percentage from 0-100</param>
-    public void AddLuminance(double value)
-    {
-        this.AddValue("lum", eColorTransformType.Lum, value);
-    }
+    public void AddLuminance(double value) => this.AddValue("lum", eColorTransformType.Lum, value);
 
     /// <summary>
     /// Specifies the luminance as expressed by a percentage relative to the input color
     /// </summary>
     /// <param name="value">The luminance modulation in a positive percentage</param>
-    public void AddLuminanceModulation(double value)
-    {
-        this.AddValue("lumMod", eColorTransformType.LumMod, value);
-    }
+    public void AddLuminanceModulation(double value) => this.AddValue("lumMod", eColorTransformType.LumMod, value);
 
     /// <summary>
     /// Specifies the luminance as expressed by a percentage offset increase or decrease to the input color.
     /// Increases never increase the luminance beyond 100%, decreases never decrease the saturation below 0%.
     /// </summary>
     /// <param name="value">The luminance offset value</param>
-    public void AddLuminanceOffset(double value)
-    {
-        this.AddValue("lumOff", eColorTransformType.LumOff, value);
-    }
+    public void AddLuminanceOffset(double value) => this.AddValue("lumOff", eColorTransformType.LumOff, value);
 
     #endregion
 
@@ -249,28 +207,19 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specific red component
     /// </summary>
     /// <param name="value">The red value</param>
-    public void AddRed(double value)
-    {
-        this.AddValue("red", eColorTransformType.Red, value);
-    }
+    public void AddRed(double value) => this.AddValue("red", eColorTransformType.Red, value);
 
     /// <summary>
     /// Specifies the red component as expressed by a percentage relative to the input color component
     /// </summary>
     /// <param name="value">The red modulation value</param>
-    public void AddRedModulation(double value)
-    {
-        this.AddValue("redMod", eColorTransformType.RedMod, value);
-    }
+    public void AddRedModulation(double value) => this.AddValue("redMod", eColorTransformType.RedMod, value);
 
     /// <summary>
     /// Specifies the red component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
     /// <param name="value">The red offset value.</param>
-    public void AddRedOffset(double value)
-    {
-        this.AddValue("redOff", eColorTransformType.RedOff, value);
-    }
+    public void AddRedOffset(double value) => this.AddValue("redOff", eColorTransformType.RedOff, value);
 
     #endregion
 
@@ -280,28 +229,19 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specific green component
     /// </summary>
     /// <param name="value">The green value</param>
-    public void AddGreen(double value)
-    {
-        this.AddValue("green", eColorTransformType.Green, value);
-    }
+    public void AddGreen(double value) => this.AddValue("green", eColorTransformType.Green, value);
 
     /// <summary>
     /// Specifies the green component as expressed by a percentage relative to the input color component
     /// </summary>
     /// <param name="value">The green modulation value</param>
-    public void AddGreenModulation(double value)
-    {
-        this.AddValue("greenMod", eColorTransformType.GreenMod, value);
-    }
+    public void AddGreenModulation(double value) => this.AddValue("greenMod", eColorTransformType.GreenMod, value);
 
     /// <summary>
     /// Specifies the green component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
     /// <param name="value">The green offset value.</param>
-    public void AddGreenOffset(double value)
-    {
-        this.AddValue("greenOff", eColorTransformType.GreenOff, value);
-    }
+    public void AddGreenOffset(double value) => this.AddValue("greenOff", eColorTransformType.GreenOff, value);
 
     #endregion
 
@@ -311,38 +251,23 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies the input color with the specific blue component
     /// </summary>
     /// <param name="value">The blue value</param>
-    public void AddBlue(double value)
-    {
-        this.AddValue("blue", eColorTransformType.Blue, value);
-    }
+    public void AddBlue(double value) => this.AddValue("blue", eColorTransformType.Blue, value);
 
-    internal double FindValue(eColorTransformType alpha)
-    {
-        return this._list.Find(x => x.Type == alpha)?.Value ?? 0;
-    }
+    internal double FindValue(eColorTransformType alpha) => this._list.Find(x => x.Type == alpha)?.Value ?? 0;
 
-    internal IColorTransformItem Find(eColorTransformType alpha)
-    {
-        return this._list.Find(x => x.Type == alpha);
-    }
+    internal IColorTransformItem Find(eColorTransformType alpha) => this._list.Find(x => x.Type == alpha);
 
     /// <summary>
     /// Specifies the blue component as expressed by a percentage relative to the input color component
     /// </summary>
     /// <param name="value">The blue modulation value</param>
-    public void AddBlueModulation(double value)
-    {
-        this.AddValue("blueMod", eColorTransformType.BlueMod, value);
-    }
+    public void AddBlueModulation(double value) => this.AddValue("blueMod", eColorTransformType.BlueMod, value);
 
     /// <summary>
     /// Specifies the blue component as expressed by a percentage offset increase or decrease to the input color component
     /// </summary>
     /// <param name="value">The blue offset value.</param>
-    public void AddBlueOffset(double value)
-    {
-        this.AddValue("blueOff", eColorTransformType.BlueOff, value);
-    }
+    public void AddBlueOffset(double value) => this.AddValue("blueOff", eColorTransformType.BlueOff, value);
 
     #endregion
 
@@ -350,19 +275,13 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies a lighter version of its input color
     /// </summary>
     /// <param name="value">The tint value in percentage 0-100</param>
-    public void AddTint(double value)
-    {
-        this.AddValue("tint", eColorTransformType.Tint, value);
-    }
+    public void AddTint(double value) => this.AddValue("tint", eColorTransformType.Tint, value);
 
     /// <summary>
     /// Specifies a lighter version of its input color
     /// </summary>
     /// <param name="value">The tint value in percentage 0-100</param>
-    public void AddShade(double value)
-    {
-        this.AddValue("shade", eColorTransformType.Shade, value);
-    }
+    public void AddShade(double value) => this.AddValue("shade", eColorTransformType.Shade, value);
 
     #region Boolean Types
 
@@ -370,42 +289,27 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Specifies that the color rendered should be the complement of its input color with the complement being defined as such.
     /// Two colors are called complementary if, when mixed they produce a shade of grey.For instance, the complement of red which is RGB (255, 0, 0) is cyan which is RGB(0, 255, 255)
     /// </summary>
-    public void AddComplement()
-    {
-        this.AddValue("comp", eColorTransformType.Comp);
-    }
+    public void AddComplement() => this.AddValue("comp", eColorTransformType.Comp);
 
     /// <summary>
     /// Specifies that the output color rendered by the generating application should be the sRGB gamma shift of the input color.
     /// </summary>
-    public void AddGamma()
-    {
-        this.AddValue("gamma", eColorTransformType.Gamma);
-    }
+    public void AddGamma() => this.AddValue("gamma", eColorTransformType.Gamma);
 
     /// <summary>
     /// Specifies a grayscale of its input color, taking into relative intensities of the red, green, and blue primaries.
     /// </summary>
-    public void AddGray()
-    {
-        this.AddValue("gray", eColorTransformType.Gray);
-    }
+    public void AddGray() => this.AddValue("gray", eColorTransformType.Gray);
 
     /// <summary>
     /// Specifies the inverse of its input color
     /// </summary>
-    public void AddInverse()
-    {
-        this.AddValue("inv", eColorTransformType.Inv);
-    }
+    public void AddInverse() => this.AddValue("inv", eColorTransformType.Inv);
 
     /// <summary>
     /// Specifies that the output color rendered by the generating application should be the inverse sRGB gamma shift of the input color
     /// </summary>
-    public void AddInverseGamma()
-    {
-        this.AddValue("invGamma", eColorTransformType.InvGamma);
-    }
+    public void AddInverseGamma() => this.AddValue("invGamma", eColorTransformType.InvGamma);
 
     #endregion
 
@@ -442,21 +346,12 @@ public class ExcelColorTransformCollection : IEnumerable<IColorTransformItem>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<IColorTransformItem> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<IColorTransformItem> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }

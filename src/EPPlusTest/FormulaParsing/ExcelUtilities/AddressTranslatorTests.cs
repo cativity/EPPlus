@@ -54,10 +54,7 @@ public class AddressTranslatorTests
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void ConstructorShouldThrowIfProviderIsNull()
-    {
-        _ = new AddressTranslator(null);
-    }
+    public void ConstructorShouldThrowIfProviderIsNull() => _ = new AddressTranslator(null);
 
     [TestMethod]
     public void ShouldTranslateRowNumber()

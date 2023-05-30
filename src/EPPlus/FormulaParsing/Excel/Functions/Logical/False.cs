@@ -23,8 +23,5 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 [FunctionMetadata(Category = ExcelFunctionCategory.Logical, EPPlusVersion = "4", Description = "Returns the logical value FALSE")]
 internal class False : ExcelFunction
 {
-    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this.CreateResult(false, DataType.Boolean);
-    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => this.CreateResult(false, DataType.Boolean);
 }

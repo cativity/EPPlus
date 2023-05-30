@@ -25,20 +25,15 @@ public abstract class ExcelDrawingShadowEffect : ExcelDrawingShadowEffectBase
     private readonly string _directionPath = "{0}/@dir";
 
     internal ExcelDrawingShadowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
-        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
-    {
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path) =>
         this._directionPath = string.Format(this._directionPath, path);
-    }
 
     ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the shadow effect
     /// </summary>
-    public ExcelDrawingColorManager Color
-    {
-        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingColorManager Color => this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
 
     /// <summary>
     /// The direction angle to offset the shadow.
@@ -46,7 +41,7 @@ public abstract class ExcelDrawingShadowEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? Direction
     {
-        get { return this.GetXmlNodeAngel(this._directionPath); }
+        get => this.GetXmlNodeAngel(this._directionPath);
         set
         {
             this.InitXml();

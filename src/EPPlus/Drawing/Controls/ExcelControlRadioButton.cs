@@ -46,8 +46,8 @@ public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
     /// </summary>
     public bool Checked
     {
-        get { return this._ctrlProp.GetXmlNodeString("@checked") == "Checked"; }
-        set { this._ctrlProp.SetXmlNodeString("@checked", value ? "Checked" : "Unchecked"); }
+        get => this._ctrlProp.GetXmlNodeString("@checked") == "Checked";
+        set => this._ctrlProp.SetXmlNodeString("@checked", value ? "Checked" : "Unchecked");
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class ExcelControlRadioButton : ExcelControlWithColorsAndLines
     /// </summary>
     public bool FirstButton
     {
-        get { return this._ctrlProp.GetXmlNodeBool("@firstButton"); }
+        get => this._ctrlProp.GetXmlNodeBool("@firstButton");
         set
         {
             this._ctrlProp.SetXmlNodeBool("@firstButton", value);

@@ -131,8 +131,5 @@ internal abstract class RankFunctionBase : ExcelFunction
     /// <param name="number">The number to round</param>
     /// <param name="sign">Number of siginicant digits</param>
     /// <returns></returns>
-    protected static double RoundResult(double number, int sign)
-    {
-        return RoundingHelper.RoundToSignificantFig(number, sign, false);
-    }
+    protected static double RoundResult(double number, int sign) => RoundingHelper.RoundToSignificantFig(number, sign, false);
 }

@@ -138,10 +138,7 @@ internal class ExpressionEvaluator
     /// <param name="left">The object to evaluate</param>
     /// <param name="expression">The expressions to evaluate the object against</param>
     /// <returns></returns>
-    public bool Evaluate(object left, string expression)
-    {
-        return this.Evaluate(left, expression, true);
-    }
+    public bool Evaluate(object left, string expression) => this.Evaluate(left, expression, true);
 
     /// <summary>
     /// Returns true if the supplied expression evaluates to true

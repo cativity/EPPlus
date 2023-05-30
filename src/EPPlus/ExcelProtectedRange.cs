@@ -40,8 +40,8 @@ public class ExcelProtectedRange : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value);
     }
 
     ExcelAddress _address;
@@ -51,7 +51,7 @@ public class ExcelProtectedRange : XmlHelper
     /// </summary>
     public ExcelAddress Address
     {
-        get { return this._address ??= new ExcelAddress(this.GetXmlNodeString("@sqref")); }
+        get => this._address ??= new ExcelAddress(this.GetXmlNodeString("@sqref"));
         set
         {
             this.SetXmlNodeString("@sqref", SqRefUtility.ToSqRefAddress(value.Address));
@@ -103,26 +103,26 @@ public class ExcelProtectedRange : XmlHelper
     /// </summary>
     public string SecurityDescriptor
     {
-        get { return this.GetXmlNodeString("@securityDescriptor"); }
-        set { this.SetXmlNodeString("@securityDescriptor", value); }
+        get => this.GetXmlNodeString("@securityDescriptor");
+        set => this.SetXmlNodeString("@securityDescriptor", value);
     }
 
     internal int SpinCount
     {
-        get { return this.GetXmlNodeInt("@spinCount"); }
-        set { this.SetXmlNodeString("@spinCount", value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt("@spinCount");
+        set => this.SetXmlNodeString("@spinCount", value.ToString(CultureInfo.InvariantCulture));
     }
 
     internal string Salt
     {
-        get { return this.GetXmlNodeString("@saltValue"); }
-        set { this.SetXmlNodeString("@saltValue", value); }
+        get => this.GetXmlNodeString("@saltValue");
+        set => this.SetXmlNodeString("@saltValue", value);
     }
 
     internal string Hash
     {
-        get { return this.GetXmlNodeString("@hashValue"); }
-        set { this.SetXmlNodeString("@hashValue", value); }
+        get => this.GetXmlNodeString("@hashValue");
+        set => this.SetXmlNodeString("@hashValue", value);
     }
 
     internal eProtectedRangeAlgorithm Algorithm

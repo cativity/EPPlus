@@ -28,10 +28,8 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelThemeLine : XmlHelper
 {
     internal ExcelThemeLine(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this.SchemaNodeOrder = new string[] { "noFill", "solidFill", "gradientFill", "pattFill", "prstDash", "round", "bevel", "miter", "headEnd", " tailEnd" };
-    }
 
     const string widthPath = "@w";
 
@@ -45,8 +43,8 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public int Width
     {
-        get { return this.GetXmlNodeInt(widthPath); }
-        set { this.SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt(widthPath);
+        set => this.SetXmlNodeString(widthPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string CapPath = "@cap";
@@ -56,8 +54,8 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public eLineCap Cap
     {
-        get { return EnumTransl.ToLineCap(this.GetXmlNodeString(CapPath)); }
-        set { this.SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value)); }
+        get => EnumTransl.ToLineCap(this.GetXmlNodeString(CapPath));
+        set => this.SetXmlNodeString(CapPath, EnumTransl.FromLineCap(value));
     }
 
     const string CompoundPath = "@cmpd";
@@ -67,8 +65,8 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public eCompundLineStyle CompoundLineStyle
     {
-        get { return EnumTransl.ToLineCompound(this.GetXmlNodeString(CompoundPath)); }
-        set { this.SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value)); }
+        get => EnumTransl.ToLineCompound(this.GetXmlNodeString(CompoundPath));
+        set => this.SetXmlNodeString(CompoundPath, EnumTransl.FromLineCompound(value));
     }
 
     const string PenAlignmentPath = "@algn";
@@ -78,8 +76,8 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public ePenAlignment Alignment
     {
-        get { return EnumTransl.ToPenAlignment(this.GetXmlNodeString(PenAlignmentPath)); }
-        set { this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value)); }
+        get => EnumTransl.ToPenAlignment(this.GetXmlNodeString(PenAlignmentPath));
+        set => this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value));
     }
 
     ExcelDrawingFill _fill;
@@ -116,8 +114,8 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public eLineStyle Style
     {
-        get { return EnumTransl.ToLineStyle(this.GetXmlNodeString(StylePath)); }
-        set { this.SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value)); }
+        get => EnumTransl.ToLineStyle(this.GetXmlNodeString(StylePath));
+        set => this.SetXmlNodeString(StylePath, EnumTransl.FromLineStyle(value));
     }
 
     const string BevelPath = "a:bevel";
@@ -178,7 +176,7 @@ public class ExcelThemeLine : XmlHelper
     /// </summary>
     public double? MiterJoinLimit
     {
-        get { return this.GetXmlNodePercentage(MiterJoinLimitPath); }
+        get => this.GetXmlNodePercentage(MiterJoinLimitPath);
         set
         {
             this.Join = eLineJoin.Miter;
@@ -222,10 +220,7 @@ public class ExcelThemeLine : XmlHelper
         }
     }
 
-    internal XmlElement LineElement
-    {
-        get { return this.TopNode as XmlElement; }
-    }
+    internal XmlElement LineElement => this.TopNode as XmlElement;
 
     private static void Init()
     {

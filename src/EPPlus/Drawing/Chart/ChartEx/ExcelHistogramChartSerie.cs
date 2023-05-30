@@ -50,10 +50,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
     /// <summary>
     /// The data binning properties
     /// </summary>
-    public ExcelChartExSerieBinning Binning
-    {
-        get { return this._binning ??= new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode); }
-    }
+    public ExcelChartExSerieBinning Binning => this._binning ??= new ExcelChartExSerieBinning(this.NameSpaceManager, this.TopNode);
 
     internal const string _aggregationPath = "cx:layoutPr/cx:aggregation";
     internal const string _binningPath = "cx:layoutPr/cx:binning";
@@ -63,7 +60,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
     /// </summary>
     public bool Aggregation
     {
-        get { return this.ExistsNode(_aggregationPath); }
+        get => this.ExistsNode(_aggregationPath);
         set
         {
             if (value)
@@ -83,10 +80,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
         }
     }
 
-    internal void AddParetoLineFromSerie(XmlElement serElement)
-    {
-        this.ParetoLine = new ExcelChartExParetoLine(this._chart, this.NameSpaceManager, serElement);
-    }
+    internal void AddParetoLineFromSerie(XmlElement serElement) => this.ParetoLine = new ExcelChartExParetoLine(this._chart, this.NameSpaceManager, serElement);
 
     internal void RemoveParetoLine()
     {

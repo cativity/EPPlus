@@ -51,10 +51,7 @@ public class FormulaR1C1Tests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._pck.Dispose();
-    }
+    public void Cleanup() => this._pck.Dispose();
 
     [TestMethod]
     public void RC2()

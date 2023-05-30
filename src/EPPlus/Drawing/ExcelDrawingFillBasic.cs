@@ -181,10 +181,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
     {
     }
 
-    internal string GetFromXml()
-    {
-        return this._fillTypeNode.OuterXml;
-    }
+    internal string GetFromXml() => this._fillTypeNode.OuterXml;
 
     internal virtual void SetFillProperty()
     {
@@ -265,7 +262,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
     /// </summary>
     public eFillStyle Style
     {
-        get { return this._style ?? eFillStyle.NoFill; }
+        get => this._style ?? eFillStyle.NoFill;
         set
         {
             if (this._style == value)
@@ -354,10 +351,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
     /// Reference gradient fill properties
     /// This property is only accessable when Type is set to GradientFill
     /// </summary>
-    public ExcelDrawingGradientFill GradientFill
-    {
-        get { return this._gradientFill; }
-    }
+    public ExcelDrawingGradientFill GradientFill => this._gradientFill;
 
     /// <summary>
     /// Transparancy in percent from a solid fill. 

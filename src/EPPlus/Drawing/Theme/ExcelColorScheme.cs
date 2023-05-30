@@ -28,11 +28,9 @@ namespace OfficeOpenXml.Drawing.Theme;
 public class ExcelColorScheme : XmlHelper
 {
     internal ExcelColorScheme(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this.SchemaNodeOrder =
             new string[] { "dk1", "lt1", "dk2", "lt3", "accent1", "accent2", "accent3", "accent4", "accent5", "accent6", "hlink", "folHlink" };
-    }
 
     const string Dk1Path = "a:dk1";
     ExcelDrawingThemeColorManager _dk1;
@@ -40,10 +38,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Dark 1 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Dark1
-    {
-        get { return this._dk1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk1Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Dark1 => this._dk1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk1Path, this.SchemaNodeOrder);
 
     internal ExcelDrawingThemeColorManager GetColorByEnum(eThemeSchemeColor color)
     {
@@ -95,10 +90,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Dark 2 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Dark2
-    {
-        get { return this._dk2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk2Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Dark2 => this._dk2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Dk2Path, this.SchemaNodeOrder);
 
     const string lt1Path = "a:lt1";
     ExcelDrawingThemeColorManager _lt1;
@@ -106,10 +98,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Light 1 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Light1
-    {
-        get { return this._lt1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt1Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Light1 => this._lt1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt1Path, this.SchemaNodeOrder);
 
     const string lt2Path = "a:lt2";
     ExcelDrawingThemeColorManager _lt2;
@@ -117,10 +106,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Light 2 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Light2
-    {
-        get { return this._lt2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt2Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Light2 => this._lt2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, lt2Path, this.SchemaNodeOrder);
 
     const string Accent1Path = "a:accent1";
     ExcelDrawingThemeColorManager _accent1;
@@ -128,10 +114,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 1 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent1
-    {
-        get { return this._accent1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent1Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent1 => this._accent1 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent1Path, this.SchemaNodeOrder);
 
     const string Accent2Path = "a:accent2";
     ExcelDrawingThemeColorManager _accent2;
@@ -139,10 +122,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 2 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent2
-    {
-        get { return this._accent2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent2Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent2 => this._accent2 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent2Path, this.SchemaNodeOrder);
 
     const string Accent3Path = "a:accent3";
     ExcelDrawingThemeColorManager _accent3;
@@ -150,10 +130,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 3 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent3
-    {
-        get { return this._accent3 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent3Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent3 => this._accent3 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent3Path, this.SchemaNodeOrder);
 
     const string Accent4Path = "a:accent4";
     ExcelDrawingThemeColorManager _accent4;
@@ -161,10 +138,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 4 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent4
-    {
-        get { return this._accent4 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent4Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent4 => this._accent4 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent4Path, this.SchemaNodeOrder);
 
     const string Accent5Path = "a:accent5";
     ExcelDrawingThemeColorManager _accent5;
@@ -172,10 +146,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 5 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent5
-    {
-        get { return this._accent5 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent5Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent5 => this._accent5 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent5Path, this.SchemaNodeOrder);
 
     const string Accent6Path = "a:accent6";
     ExcelDrawingThemeColorManager _accent6;
@@ -183,10 +154,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Accent 6 theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Accent6
-    {
-        get { return this._accent6 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent6Path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Accent6 => this._accent6 ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, Accent6Path, this.SchemaNodeOrder);
 
     const string HlinkPath = "a:hlink";
     ExcelDrawingThemeColorManager _hlink;
@@ -194,10 +162,7 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Hyperlink theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager Hyperlink
-    {
-        get { return this._hlink ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, HlinkPath, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager Hyperlink => this._hlink ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, HlinkPath, this.SchemaNodeOrder);
 
     const string FolHlinkPath = "a:folHlink";
     ExcelDrawingThemeColorManager _folHlink;
@@ -205,8 +170,5 @@ public class ExcelColorScheme : XmlHelper
     /// <summary>
     /// Followed hyperlink theme color
     /// </summary>
-    public ExcelDrawingThemeColorManager FollowedHyperlink
-    {
-        get { return this._folHlink ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, FolHlinkPath, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingThemeColorManager FollowedHyperlink => this._folHlink ??= new ExcelDrawingThemeColorManager(this.NameSpaceManager, this.TopNode, FolHlinkPath, this.SchemaNodeOrder);
 }

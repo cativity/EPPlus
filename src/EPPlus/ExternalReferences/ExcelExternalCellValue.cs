@@ -21,10 +21,7 @@ public class ExcelExternalCellValue
     /// <summary>
     /// The address of the cell
     /// </summary>
-    public string Address
-    {
-        get { return ExcelCellBase.GetAddress(this.Row, this.Column); }
-    }
+    public string Address => ExcelCellBase.GetAddress(this.Row, this.Column);
 
     /// <summary>
     /// The row of the cell

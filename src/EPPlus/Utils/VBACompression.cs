@@ -155,10 +155,7 @@ internal static class VBACompression
         return ret;
     }
 
-    internal static byte[] DecompressPart(byte[] part)
-    {
-        return DecompressPart(part, 0);
-    }
+    internal static byte[] DecompressPart(byte[] part) => DecompressPart(part, 0);
 
     /// <summary>
     /// Decompression using a run length encoding algorithm.

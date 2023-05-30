@@ -42,8 +42,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public eTextCapsType Capitalization
     {
-        get { return this.GetXmlNodeString($"{this._path}/@cap").ToEnum(eTextCapsType.None); }
-        set { this.SetXmlNodeString($"{this._path}/@kern", value.ToEnumString()); }
+        get => this.GetXmlNodeString($"{this._path}/@cap").ToEnum(eTextCapsType.None);
+        set => this.SetXmlNodeString($"{this._path}/@kern", value.ToEnumString());
     }
 
     /// <summary>
@@ -51,8 +51,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public double Kerning
     {
-        get { return this.GetXmlNodeFontSize($"{this._path}/@kern"); }
-        set { this.SetXmlNodeFontSize($"{this._path}/@kern", value, "Kerning"); }
+        get => this.GetXmlNodeFontSize($"{this._path}/@kern");
+        set => this.SetXmlNodeFontSize($"{this._path}/@kern", value, "Kerning");
     }
 
     /// <summary>
@@ -61,8 +61,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public double FontSize
     {
-        get { return this.GetXmlNodeFontSize($"{this._path}/@sz"); }
-        set { this.SetXmlNodeFontSize($"{this._path}/@sz", value, "FontSize"); }
+        get => this.GetXmlNodeFontSize($"{this._path}/@sz");
+        set => this.SetXmlNodeFontSize($"{this._path}/@sz", value, "FontSize");
     }
 
     /// <summary>
@@ -70,8 +70,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public double Spacing
     {
-        get { return this.GetXmlNodeFontSize($"{this._path}/@spc"); }
-        set { this.SetXmlNodeFontSize($"{this._path}/@spc", value, "Spacing", true); }
+        get => this.GetXmlNodeFontSize($"{this._path}/@spc");
+        set => this.SetXmlNodeFontSize($"{this._path}/@spc", value, "Spacing", true);
     }
 
     /// <summary>
@@ -79,8 +79,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public double Baseline
     {
-        get { return this.GetXmlNodePercentage($"{this._path}/@baseline") ?? 0; }
-        set { this.SetXmlNodePercentage($"{this._path}/@baseline", value); }
+        get => this.GetXmlNodePercentage($"{this._path}/@baseline") ?? 0;
+        set => this.SetXmlNodePercentage($"{this._path}/@baseline", value);
     }
 
     /// <summary>
@@ -88,8 +88,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public bool Bold
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@b"); }
-        set { this.SetXmlNodeBool($"{this._path}/@b", value, false); }
+        get => this.GetXmlNodeBool($"{this._path}/@b");
+        set => this.SetXmlNodeBool($"{this._path}/@b", value, false);
     }
 
     /// <summary>
@@ -97,8 +97,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public bool Italic
     {
-        get { return this.GetXmlNodeBool($"{this._path}/@i"); }
-        set { this.SetXmlNodeBool($"{this._path}/@i", value, false); }
+        get => this.GetXmlNodeBool($"{this._path}/@i");
+        set => this.SetXmlNodeBool($"{this._path}/@i", value, false);
     }
 
     /// <summary>
@@ -106,8 +106,8 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public eStrikeType Strike
     {
-        get { return this.GetXmlNodeString($"{this._path}/@strike").TranslateStrikeType(); }
-        set { this.SetXmlNodeString($"{this._path}/@strike", value.TranslateStrikeTypeText()); }
+        get => this.GetXmlNodeString($"{this._path}/@strike").TranslateStrikeType();
+        set => this.SetXmlNodeString($"{this._path}/@strike", value.TranslateStrikeTypeText());
     }
 
     /// <summary>
@@ -115,7 +115,7 @@ public class ExcelTextRun : XmlHelper
     /// </summary>
     public eUnderLineType UnderLine
     {
-        get { return this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline(); }
+        get => this.GetXmlNodeString($"{this._path}/@u").TranslateUnderline();
         set
         {
             if (value == eUnderLineType.None)

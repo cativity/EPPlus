@@ -83,7 +83,7 @@ public abstract class ExcelControlList : ExcelControl
     /// </summary>
     public int SelectedIndex
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@sel", 0) - 1; }
+        get => this._ctrlProp.GetXmlNodeInt("@sel", 0) - 1;
         set
         {
             if (value <= 0)
@@ -101,7 +101,7 @@ public abstract class ExcelControlList : ExcelControl
 
     internal int Page
     {
-        get { return this._vmlProp.GetXmlNodeInt("x:Page"); }
+        get => this._vmlProp.GetXmlNodeInt("x:Page");
         set
         {
             this._ctrlProp.SetXmlNodeInt("@page", value);

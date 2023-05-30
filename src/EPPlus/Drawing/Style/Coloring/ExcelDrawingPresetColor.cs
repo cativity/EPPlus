@@ -28,18 +28,15 @@ public class ExcelDrawingPresetColor : XmlHelper
     {
     }
 
-    internal static ePresetColor GetPresetColor(drawing.Color presetColor)
-    {
-        return (ePresetColor)Enum.Parse(typeof(ePresetColor), TranslateFromColor(presetColor), true);
-    }
+    internal static ePresetColor GetPresetColor(drawing.Color presetColor) => (ePresetColor)Enum.Parse(typeof(ePresetColor), TranslateFromColor(presetColor), true);
 
     /// <summary>
     /// The preset color
     /// </summary>
     public ePresetColor Color
     {
-        get { return this.GetXmlNodeString("@val").TranslatePresetColor(); }
-        set { this.SetXmlNodeString("@val", value.TranslateString()); }
+        get => this.GetXmlNodeString("@val").TranslatePresetColor();
+        set => this.SetXmlNodeString("@val", value.TranslateString());
     }
 
     private static string TranslateFromColor(drawing.Color c)

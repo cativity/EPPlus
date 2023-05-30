@@ -75,7 +75,7 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public int BubbleScale
     {
-        get { return this._chartXmlHelper.GetXmlNodeInt(this.BUBBLESCALE_PATH); }
+        get => this._chartXmlHelper.GetXmlNodeInt(this.BUBBLESCALE_PATH);
         set
         {
             if (value < 0 && value > 300)
@@ -94,8 +94,8 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public bool ShowNegativeBubbles
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(this.SHOWNEGBUBBLES_PATH); }
-        set { this._chartXmlHelper.SetXmlNodeBool(this.BUBBLESCALE_PATH, value, true); }
+        get => this._chartXmlHelper.GetXmlNodeBool(this.SHOWNEGBUBBLES_PATH);
+        set => this._chartXmlHelper.SetXmlNodeBool(this.BUBBLESCALE_PATH, value, true);
     }
 
     string BUBBLE3D_PATH = "c:bubble3D/@val";
@@ -105,7 +105,7 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public bool Bubble3D
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(this.BUBBLE3D_PATH); }
+        get => this._chartXmlHelper.GetXmlNodeBool(this.BUBBLE3D_PATH);
         set
         {
             this._chartXmlHelper.SetXmlNodeBool(this.BUBBLE3D_PATH, value);
@@ -133,7 +133,7 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
                 return eSizeRepresents.Area;
             }
         }
-        set { this._chartXmlHelper.SetXmlNodeString(this.SIZEREPRESENTS_PATH, value == eSizeRepresents.Width ? "w" : "area"); }
+        set => this._chartXmlHelper.SetXmlNodeString(this.SIZEREPRESENTS_PATH, value == eSizeRepresents.Width ? "w" : "area");
     }
 
     ExcelChartDataLabel _dataLabel;
@@ -141,25 +141,17 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
-    public ExcelChartDataLabel DataLabel
-    {
-        get
-        {
-            return this._dataLabel ??= new ExcelChartDataLabelStandard(this.Series._chart,
-                                                                       this.NameSpaceManager,
-                                                                       this.ChartNode,
-                                                                       "dLbls",
-                                                                       this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartDataLabel DataLabel =>
+        this._dataLabel ??= new ExcelChartDataLabelStandard(this.Series._chart,
+                                                            this.NameSpaceManager,
+                                                            this.ChartNode,
+                                                            "dLbls",
+                                                            this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     /// <summary>
     /// The series for a bubble charts

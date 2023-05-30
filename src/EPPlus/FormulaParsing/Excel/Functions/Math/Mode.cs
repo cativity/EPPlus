@@ -25,10 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
                   Description = "Returns the Mode (the most frequently occurring value) of a list of supplied numbers ")]
 internal class Mode : HiddenValuesHandlingFunction
 {
-    public Mode()
-    {
-        this.IgnoreErrors = false;
-    }
+    public Mode() => this.IgnoreErrors = false;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

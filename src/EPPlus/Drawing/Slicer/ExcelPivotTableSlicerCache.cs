@@ -33,10 +33,8 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
     internal ExcelPivotTableField _field;
 
     internal ExcelPivotTableSlicerCache(XmlNamespaceManager nameSpaceManager)
-        : base(nameSpaceManager)
-    {
+        : base(nameSpaceManager) =>
         this.PivotTables = new ExcelSlicerPivotTableCollection(this);
-    }
 
     internal void Init(ExcelWorkbook wb, string name, ExcelPivotTableField field)
     {
@@ -92,10 +90,7 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
     /// <summary>
     /// The source type of the slicer
     /// </summary>
-    public override eSlicerSourceType SourceType
-    {
-        get { return eSlicerSourceType.PivotTable; }
-    }
+    public override eSlicerSourceType SourceType => eSlicerSourceType.PivotTable;
 
     /// <summary>
     /// A collection of pivot tables attached to the slicer cache.
@@ -107,10 +102,7 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
     /// <summary>
     /// Tabular data for a pivot table slicer cache.
     /// </summary>
-    public ExcelPivotTableSlicerCacheTabularData Data
-    {
-        get { return this._data ??= new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this); }
-    }
+    public ExcelPivotTableSlicerCacheTabularData Data => this._data ??= new ExcelPivotTableSlicerCacheTabularData(this.NameSpaceManager, this.TopNode, this);
 
     internal void UpdateItemsXml()
     {

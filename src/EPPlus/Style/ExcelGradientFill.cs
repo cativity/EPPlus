@@ -26,11 +26,8 @@ namespace OfficeOpenXml.Style;
 public class ExcelGradientFill : StyleBase
 {
     internal ExcelGradientFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
-        : base(styles, ChangedEvent, PositionID, address)
-
-    {
+        : base(styles, ChangedEvent, PositionID, address) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// Angle of the linear gradient
@@ -46,10 +43,7 @@ public class ExcelGradientFill : StyleBase
 
             return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Degree;
         }
-        set
-        {
-            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
-        }
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientDegree, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -66,10 +60,7 @@ public class ExcelGradientFill : StyleBase
 
             return ((ExcelGradientFillXml)this._styles.Fills[this.Index]).Type;
         }
-        set
-        {
-            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
-        }
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.GradientFill, eStyleProperty.GradientType, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -181,49 +172,34 @@ public class ExcelGradientFill : StyleBase
     /// <summary>
     /// Gradient Color 1
     /// </summary>
-    public ExcelColor Color1
-    {
-        get
-        {
-            return this._gradientColor1 ??= new ExcelColor(this._styles,
-                                                           this._ChangedEvent,
-                                                           this._positionID,
-                                                           this._address,
-                                                           eStyleClass.FillGradientColor1,
-                                                           this);
-        }
-    }
+    public ExcelColor Color1 =>
+        this._gradientColor1 ??= new ExcelColor(this._styles,
+                                                this._ChangedEvent,
+                                                this._positionID,
+                                                this._address,
+                                                eStyleClass.FillGradientColor1,
+                                                this);
 
     ExcelColor _gradientColor2;
 
     /// <summary>
     /// Gradient Color 2
     /// </summary>
-    public ExcelColor Color2
-    {
-        get
-        {
-            return this._gradientColor2 ??= new ExcelColor(this._styles,
-                                                           this._ChangedEvent,
-                                                           this._positionID,
-                                                           this._address,
-                                                           eStyleClass.FillGradientColor2,
-                                                           this);
-        }
-    }
+    public ExcelColor Color2 =>
+        this._gradientColor2 ??= new ExcelColor(this._styles,
+                                                this._ChangedEvent,
+                                                this._positionID,
+                                                this._address,
+                                                eStyleClass.FillGradientColor2,
+                                                this);
 
-    internal override string Id
-    {
-        get
-        {
-            return this.Degree.ToString()
-                   + this.Type
-                   + this.Color1.Id
-                   + this.Color2.Id
-                   + this.Top.ToString()
-                   + this.Bottom.ToString()
-                   + this.Left.ToString()
-                   + this.Right.ToString();
-        }
-    }
+    internal override string Id =>
+        this.Degree.ToString()
+        + this.Type
+        + this.Color1.Id
+        + this.Color2.Id
+        + this.Top.ToString()
+        + this.Bottom.ToString()
+        + this.Left.ToString()
+        + this.Right.ToString();
 }

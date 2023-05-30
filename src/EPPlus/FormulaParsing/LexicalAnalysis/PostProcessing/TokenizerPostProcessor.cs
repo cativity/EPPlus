@@ -101,20 +101,11 @@ internal class TokenizerPostProcessor
         }
     }
 
-    private void ChangeTokenTypeOnCurrentToken(TokenType tokenType)
-    {
-        this._context.ChangeTokenType(tokenType, this._navigator.Index);
-    }
+    private void ChangeTokenTypeOnCurrentToken(TokenType tokenType) => this._context.ChangeTokenType(tokenType, this._navigator.Index);
 
-    private void ChangeValueOnCurrentToken(string value)
-    {
-        this._context.ChangeValue(value, this._navigator.Index);
-    }
+    private void ChangeValueOnCurrentToken(string value) => this._context.ChangeValue(value, this._navigator.Index);
 
-    private static bool IsOffsetFunctionToken(Token token)
-    {
-        return token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset";
-    }
+    private static bool IsOffsetFunctionToken(Token token) => token.TokenTypeIsSet(TokenType.Function) && token.Value.ToLower() == "offset";
 
     private void HandleColon()
     {
@@ -301,19 +292,14 @@ internal class TokenizerPostProcessor
         }
     }
 
-    private static bool TokenIsNegator(TokenizerContext context)
-    {
-        return TokenIsNegator(context.LastToken.Value);
-    }
+    private static bool TokenIsNegator(TokenizerContext context) => TokenIsNegator(context.LastToken.Value);
 
-    private static bool TokenIsNegator(Token t)
-    {
-        return t.TokenTypeIsSet(TokenType.Operator)
-               || t.TokenTypeIsSet(TokenType.OpeningParenthesis)
-               || t.TokenTypeIsSet(TokenType.Comma)
-               || t.TokenTypeIsSet(TokenType.SemiColon)
-               || t.TokenTypeIsSet(TokenType.OpeningEnumerable);
-    }
+    private static bool TokenIsNegator(Token t) =>
+        t.TokenTypeIsSet(TokenType.Operator)
+        || t.TokenTypeIsSet(TokenType.OpeningParenthesis)
+        || t.TokenTypeIsSet(TokenType.Comma)
+        || t.TokenTypeIsSet(TokenType.SemiColon)
+        || t.TokenTypeIsSet(TokenType.OpeningEnumerable);
 
     private void RemoveTokenAndSetNegatorOperator(int offset = 0)
     {

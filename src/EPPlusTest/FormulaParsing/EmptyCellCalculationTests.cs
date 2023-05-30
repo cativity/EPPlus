@@ -27,12 +27,9 @@ public class EmptyCellCalculationTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-        //this._parser = null;
-    }
+    public void Cleanup() => this._package.Dispose();
 
+    //this._parser = null;
     [TestMethod]
     public void EmptyCellReferenceShouldReturnZero()
     {

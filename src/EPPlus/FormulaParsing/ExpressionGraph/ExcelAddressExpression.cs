@@ -61,10 +61,7 @@ internal class ExcelAddressExpression : AtomicExpression
         this._negate = negate;
     }
 
-    public override bool IsGroupedExpression
-    {
-        get { return false; }
-    }
+    public override bool IsGroupedExpression => false;
 
     /// <summary>
     /// Returns true if this address has a circular reference from the cell it is in.

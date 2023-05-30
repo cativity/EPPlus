@@ -48,10 +48,7 @@ public class InformationFunctionsTests
     private ParsingContext _context;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._context = ParsingContext.Create();
-    }
+    public void Setup() => this._context = ParsingContext.Create();
 
     [TestMethod]
     public void IsBlankShouldReturnTrueIfFirstArgIsNull()

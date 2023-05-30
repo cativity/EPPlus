@@ -66,15 +66,9 @@ internal class TokenizerContext
     /// <summary>
     /// The tokens created
     /// </summary>
-    public IList<Token> Result
-    {
-        get { return this._result; }
-    }
+    public IList<Token> Result => this._result;
 
-    internal string Worksheet
-    {
-        get { return this._worksheet; }
-    }
+    internal string Worksheet => this._worksheet;
 
     /// <summary>
     /// Returns the token before the requested index
@@ -119,10 +113,7 @@ internal class TokenizerContext
         return this._tokenFactory.Create(this.Result, this.CurrentToken, worksheet);
     }
 
-    internal void OverwriteCurrentToken(string token)
-    {
-        this._currentToken = new StringBuilder(token);
-    }
+    internal void OverwriteCurrentToken(string token) => this._currentToken = new StringBuilder(token);
 
     public void PostProcess()
     {
@@ -140,19 +131,13 @@ internal class TokenizerContext
     /// </summary>
     /// <param name="index">0-based index of the requested position</param>
     /// <param name="newValue">The new <see cref="Token"/></param>
-    public void Replace(int index, Token newValue)
-    {
-        this._result[index] = newValue;
-    }
+    public void Replace(int index, Token newValue) => this._result[index] = newValue;
 
     /// <summary>
     /// Removes the token at the requested <see cref="Token"/>
     /// </summary>
     /// <param name="index">0-based index of the requested position</param>
-    public void RemoveAt(int index)
-    {
-        this._result.RemoveAt(index);
-    }
+    public void RemoveAt(int index) => this._result.RemoveAt(index);
 
     /// <summary>
     /// Returns true if the current position is inside a string, otherwise false.
@@ -167,18 +152,12 @@ internal class TokenizerContext
     /// <summary>
     /// Toggles the IsInString state.
     /// </summary>
-    public void ToggleIsInString()
-    {
-        this.IsInString = !this.IsInString;
-    }
+    public void ToggleIsInString() => this.IsInString = !this.IsInString;
 
     /// <summary>
     /// Toggles the IsInSheetName state
     /// </summary>
-    public void ToggleIsInSheetName()
-    {
-        this.IsInSheetName = !this.IsInSheetName;
-    }
+    public void ToggleIsInSheetName() => this.IsInSheetName = !this.IsInSheetName;
 
     internal int BracketCount { get; set; }
 
@@ -187,30 +166,15 @@ internal class TokenizerContext
     /// <summary>
     /// Returns the current
     /// </summary>
-    public string CurrentToken
-    {
-        get { return this._currentToken.ToString(); }
-    }
+    public string CurrentToken => this._currentToken.ToString();
 
-    public bool CurrentTokenHasValue
-    {
-        get { return !string.IsNullOrEmpty(this.IsInString ? this.CurrentToken : this.CurrentToken.Trim()); }
-    }
+    public bool CurrentTokenHasValue => !string.IsNullOrEmpty(this.IsInString ? this.CurrentToken : this.CurrentToken.Trim());
 
-    public void NewToken()
-    {
-        this._currentToken = new StringBuilder();
-    }
+    public void NewToken() => this._currentToken = new StringBuilder();
 
-    public void AddToken(Token token)
-    {
-        this._result.Add(token);
-    }
+    public void AddToken(Token token) => this._result.Add(token);
 
-    public void AppendToCurrentToken(char c)
-    {
-        _ = this._currentToken.Append(c.ToString());
-    }
+    public void AppendToCurrentToken(char c) => _ = this._currentToken.Append(c.ToString());
 
     public void AppendToLastToken(string stringToAppend)
     {
@@ -225,20 +189,14 @@ internal class TokenizerContext
     /// </summary>
     /// <param name="tokenType">The new <see cref="TokenType"/></param>
     /// <param name="index">Index of the token to change</param>
-    public void ChangeTokenType(TokenType tokenType, int index)
-    {
-        this._result[index] = this._result[index].CloneWithNewTokenType(tokenType);
-    }
+    public void ChangeTokenType(TokenType tokenType, int index) => this._result[index] = this._result[index].CloneWithNewTokenType(tokenType);
 
     /// <summary>
     /// Changes the value of the current token
     /// </summary>
     /// <param name="val"></param>
     /// <param name="index">Index of the token to change</param>
-    public void ChangeValue(string val, int index)
-    {
-        this._result[index] = this._result[index].CloneWithNewValue(val);
-    }
+    public void ChangeValue(string val, int index) => this._result[index] = this._result[index].CloneWithNewValue(val);
 
     /// <summary>
     /// Changes the <see cref="TokenType"/> of the last token in the result.
@@ -269,8 +227,5 @@ internal class TokenizerContext
     /// <summary>
     /// Returns the last token of the result, if empty null/default(Token?) will be returned.
     /// </summary>
-    public Token? LastToken
-    {
-        get { return this._result.Count > 0 ? this._result.Last() : default(Token?); }
-    }
+    public Token? LastToken => this._result.Count > 0 ? this._result.Last() : default(Token?);
 }

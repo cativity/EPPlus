@@ -50,10 +50,7 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
     /// <summary>
     /// The id of the data
     /// </summary>
-    public int Id
-    {
-        get { return this.GetXmlNodeInt("@id"); }
-    }
+    public int Id => this.GetXmlNodeInt("@id");
 
     /// <summary>
     /// Adds a numeric dimension
@@ -138,36 +135,24 @@ public class ExcelChartExDataCollection : XmlHelper, IEnumerable<ExcelChartExDat
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns></returns>
-    public ExcelChartExData this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelChartExData this[int index] => this._list[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Get the enumerator
     /// </summary>
     /// <returns></returns>
-    public IEnumerator<ExcelChartExData> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelChartExData> GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Get the enumerator
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     internal ExcelChartExData GetValueDimension()
     {

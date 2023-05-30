@@ -246,10 +246,7 @@ public abstract class ExcelControl : ExcelDrawing
         }
     }
 
-    private XmlNode GetVmlNode(ExcelVmlDrawingCollection vmlDrawings)
-    {
-        return vmlDrawings.FirstOrDefault(x => x.Id == this.LegacySpId)?.TopNode;
-    }
+    private XmlNode GetVmlNode(ExcelVmlDrawingCollection vmlDrawings) => vmlDrawings.FirstOrDefault(x => x.Id == this.LegacySpId)?.TopNode;
 
     /// <summary>
     /// The control property xml associated with the control
@@ -300,7 +297,7 @@ public abstract class ExcelControl : ExcelDrawing
 
     internal string LegacySpId
     {
-        get { return this.GetXmlNodeString($"{this.GetlegacySpIdPath()}/a:extLst/a:ext[@uri='{ExtLstUris.LegacyObjectWrapperUri}']/a14:compatExt/@spid"); }
+        get => this.GetXmlNodeString($"{this.GetlegacySpIdPath()}/a:extLst/a:ext[@uri='{ExtLstUris.LegacyObjectWrapperUri}']/a14:compatExt/@spid");
         set
         {
             XmlNode? node = this.GetNode(this.GetlegacySpIdPath());
@@ -316,17 +313,14 @@ public abstract class ExcelControl : ExcelDrawing
         }
     }
 
-    internal string GetlegacySpIdPath()
-    {
-        return $"{(this._topPath == "" ? "" : this._topPath + "/")}xdr:nvSpPr/xdr:cNvPr";
-    }
+    internal string GetlegacySpIdPath() => $"{(this._topPath == "" ? "" : this._topPath + "/")}xdr:nvSpPr/xdr:cNvPr";
 
     /// <summary>
     /// The name of the control
     /// </summary>
     public override string Name
     {
-        get { return this._control.Name; }
+        get => this._control.Name;
         set
         {
             this._control.Name = value;
@@ -380,8 +374,8 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public string AlternativeText
     {
-        get { return this._control.AlternativeText; }
-        set { this._control.AlternativeText = value; }
+        get => this._control.AlternativeText;
+        set => this._control.AlternativeText = value;
     }
 
     /// <summary>
@@ -389,7 +383,7 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public string Macro
     {
-        get { return this._control.Macro; }
+        get => this._control.Macro;
         set
         {
             this._control.Macro = value;
@@ -418,7 +412,7 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public override bool Print
     {
-        get { return this._control.Print; }
+        get => this._control.Print;
         set
         {
             this._control.Print = value;
@@ -431,7 +425,7 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public override bool Locked
     {
-        get { return this._control.Locked; }
+        get => this._control.Locked;
         set
         {
             this._control.Locked = value;
@@ -444,8 +438,8 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public bool AutoFill
     {
-        get { return this._control.AutoFill; }
-        set { this._control.AutoFill = value; }
+        get => this._control.AutoFill;
+        set => this._control.AutoFill = value;
     }
 
     /// <summary>
@@ -453,8 +447,8 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public bool AutoPict
     {
-        get { return this._control.AutoPict; }
-        set { this._control.AutoPict = value; }
+        get => this._control.AutoPict;
+        set => this._control.AutoPict = value;
     }
 
     /// <summary>
@@ -462,8 +456,8 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public bool DefaultSize
     {
-        get { return this._control.DefaultSize; }
-        set { this._control.DefaultSize = value; }
+        get => this._control.DefaultSize;
+        set => this._control.DefaultSize = value;
     }
 
     /// <summary>
@@ -471,8 +465,8 @@ public abstract class ExcelControl : ExcelDrawing
     /// </summary>
     public bool Disabled
     {
-        get { return this._control.Disabled; }
-        set { this._control.Disabled = value; }
+        get => this._control.Disabled;
+        set => this._control.Disabled = value;
     }
 
     /// <summary>
@@ -677,10 +671,7 @@ public abstract class ExcelControl : ExcelDrawing
     /// <summary>
     /// The type of drawing. Always set to <see cref="eDrawingType.Control"/>
     /// </summary>
-    public override eDrawingType DrawingType
-    {
-        get { return eDrawingType.Control; }
-    }
+    public override eDrawingType DrawingType => eDrawingType.Control;
 
     internal virtual void UpdateXml()
     {

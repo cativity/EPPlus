@@ -20,15 +20,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 internal static class CashFlowHelper
 {
-    private static double GetAnnuityFactor(double rate, double nper, PmtDue type)
-    {
-        return rate == 0.0 ? nper : (1 + (rate * (int)type)) * (1 - (1d / System.Math.Pow(1.0 + rate, nper))) / rate;
-    }
+    private static double GetAnnuityFactor(double rate, double nper, PmtDue type) => rate == 0.0 ? nper : (1 + (rate * (int)type)) * (1 - (1d / System.Math.Pow(1.0 + rate, nper))) / rate;
 
-    private static double FvCalc(double rate, double nper, double pmt, double pv, PmtDue type)
-    {
-        return -1 * ((pv * System.Math.Pow(1.0 + rate, nper)) + (pmt * (GetAnnuityFactor(rate, nper, type) * System.Math.Pow(1.0 + rate, nper))));
-    }
+    private static double FvCalc(double rate, double nper, double pmt, double pv, PmtDue type) => -1 * ((pv * System.Math.Pow(1.0 + rate, nper)) + (pmt * (GetAnnuityFactor(rate, nper, type) * System.Math.Pow(1.0 + rate, nper))));
 
     /// <summary>
     /// The Excel FV function calculates the Future Value of an investment with periodic constant payments and a constant interest rate.
@@ -63,10 +57,7 @@ internal static class CashFlowHelper
     /// <param name="fv">An optional argument that specifies the future value of the annuity, at the end of nper payments.If the[fv] argument is omitted, it takes on the default value 0.</param>
     /// <param name="type">An optional argument that defines whether the payment is made at the start or the end of the period. See <see cref="PmtDue"></see></param>
     /// <returns></returns>
-    public static double Pv(double rate, double nper, double pmt = 0d, double fv = 0d, PmtDue type = 0)
-    {
-        return -1 * ((fv * (1d / System.Math.Pow(1.0 + rate, nper))) + (pmt * GetAnnuityFactor(rate, nper, type)));
-    }
+    public static double Pv(double rate, double nper, double pmt = 0d, double fv = 0d, PmtDue type = 0) => -1 * ((fv * (1d / System.Math.Pow(1.0 + rate, nper))) + (pmt * GetAnnuityFactor(rate, nper, type)));
 
     /// <summary>
     /// The Excel NPV function calculates the Net Present Value of an investment, based on a supplied discount rate, and a series of future payments and income.

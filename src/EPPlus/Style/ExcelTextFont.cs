@@ -68,7 +68,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public string LatinFont
     {
-        get { return this.GetXmlNodeString(this._fontLatinPath); }
+        get => this.GetXmlNodeString(this._fontLatinPath);
         set
         {
             this.CreateTopNode();
@@ -83,7 +83,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public string EastAsianFont
     {
-        get { return this.GetXmlNodeString(this._fontEaPath); }
+        get => this.GetXmlNodeString(this._fontEaPath);
         set
         {
             this.CreateTopNode();
@@ -98,7 +98,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public string ComplexFont
     {
-        get { return this.GetXmlNodeString(this._fontCsPath); }
+        get => this.GetXmlNodeString(this._fontCsPath);
         set
         {
             this.CreateTopNode();
@@ -133,7 +133,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public bool Bold
     {
-        get { return this.GetXmlNodeBool(this._boldPath); }
+        get => this.GetXmlNodeBool(this._boldPath);
         set
         {
             this.CreateTopNode();
@@ -148,7 +148,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public eUnderLineType UnderLine
     {
-        get { return this.GetXmlNodeString(this._underLinePath).TranslateUnderline(); }
+        get => this.GetXmlNodeString(this._underLinePath).TranslateUnderline();
         set
         {
             this.CreateTopNode();
@@ -205,7 +205,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public bool Italic
     {
-        get { return this.GetXmlNodeBool(this._italicPath); }
+        get => this.GetXmlNodeBool(this._italicPath);
         set
         {
             this.CreateTopNode();
@@ -220,7 +220,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public eStrikeType Strike
     {
-        get { return this.GetXmlNodeString(this._strikePath).TranslateStrikeType(); }
+        get => this.GetXmlNodeString(this._strikePath).TranslateStrikeType();
         set
         {
             this.CreateTopNode();
@@ -235,7 +235,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public float Size
     {
-        get { return this.GetXmlNodeInt(this._sizePath) / 100; }
+        get => this.GetXmlNodeInt(this._sizePath) / 100;
         set
         {
             this.CreateTopNode();
@@ -248,18 +248,13 @@ public class ExcelTextFont : XmlHelper
     /// <summary>
     /// A reference to the fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
-                                                       this.NameSpaceManager,
-                                                       this._rootNode,
-                                                       this._path,
-                                                       this.SchemaNodeOrder,
-                                                       this.CreateTopNode);
-        }
-    }
+    public ExcelDrawingFill Fill =>
+        this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
+                                            this.NameSpaceManager,
+                                            this._rootNode,
+                                            this._path,
+                                            this.SchemaNodeOrder,
+                                            this.CreateTopNode);
 
     string _colorPath = "a:solidFill/a:srgbClr/@val";
 
@@ -300,7 +295,7 @@ public class ExcelTextFont : XmlHelper
     /// </summary>
     public double Kerning
     {
-        get { return this.GetXmlNodeFontSize(this._kernPath); }
+        get => this.GetXmlNodeFontSize(this._kernPath);
         set
         {
             this.CreateTopNode();

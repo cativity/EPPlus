@@ -53,10 +53,7 @@ public class RangeAddressFactoryTests
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
-    public void CreateShouldThrowIfSuppliedAddressIsNull()
-    {
-        _ = this._factory.Create(null);
-    }
+    public void CreateShouldThrowIfSuppliedAddressIsNull() => _ = this._factory.Create(null);
 
     [TestMethod]
     public void CreateShouldReturnAndInstanceWithColPropertiesSet()

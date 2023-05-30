@@ -9,10 +9,7 @@ internal class TableAdjustFormula
 {
     ExcelTable _tbl;
 
-    public TableAdjustFormula(ExcelTable tbl)
-    {
-        this._tbl = tbl;
-    }
+    public TableAdjustFormula(ExcelTable tbl) => this._tbl = tbl;
 
     internal void AdjustFormulas(string prevName, string name)
     {

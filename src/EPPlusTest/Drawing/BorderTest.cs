@@ -42,10 +42,7 @@ public class BorderTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingBorder.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingBorder.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

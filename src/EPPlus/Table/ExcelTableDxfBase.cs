@@ -36,14 +36,14 @@ public class ExcelTableDxfBase : XmlHelper
 
     internal int? HeaderRowDxfId
     {
-        get { return this.GetXmlNodeIntNull("@headerRowDxfId"); }
-        set { this.SetXmlNodeInt("@headerRowDxfId", value); }
+        get => this.GetXmlNodeIntNull("@headerRowDxfId");
+        set => this.SetXmlNodeInt("@headerRowDxfId", value);
     }
 
     internal string HeaderRowStyleName
     {
-        get { return this.GetXmlNodeString("@headerRowCellStyle"); }
-        set { this.SetXmlNodeString("@headerRowCellStyle", value); }
+        get => this.GetXmlNodeString("@headerRowCellStyle");
+        set => this.SetXmlNodeString("@headerRowCellStyle", value);
     }
 
     /// <summary>
@@ -53,8 +53,8 @@ public class ExcelTableDxfBase : XmlHelper
 
     internal int? DataDxfId
     {
-        get { return this.GetXmlNodeIntNull("@dataDxfId"); }
-        set { this.SetXmlNodeInt("@dataDxfId", value); }
+        get => this.GetXmlNodeIntNull("@dataDxfId");
+        set => this.SetXmlNodeInt("@dataDxfId", value);
     }
 
     /// <summary>
@@ -72,8 +72,8 @@ public class ExcelTableDxfBase : XmlHelper
 
     internal int? TotalsRowDxfId
     {
-        get { return this.GetXmlNodeIntNull("@totalsRowDxfId"); }
-        set { this.SetXmlNodeInt("@totalsRowDxfId", value); }
+        get => this.GetXmlNodeIntNull("@totalsRowDxfId");
+        set => this.SetXmlNodeInt("@totalsRowDxfId", value);
     }
 
     internal void SetHeaderStyle(eStyleClass styleClass, eStyleProperty styleProperty, object value)

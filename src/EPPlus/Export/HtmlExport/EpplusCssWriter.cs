@@ -655,8 +655,5 @@ internal partial class EpplusCssWriter : HtmlWriterBase
         return "#" + ret.ToArgb().ToString("x8").Substring(2);
     }
 
-    public void FlushStream()
-    {
-        this._writer.Flush();
-    }
+    public void FlushStream() => this._writer.Flush();
 }

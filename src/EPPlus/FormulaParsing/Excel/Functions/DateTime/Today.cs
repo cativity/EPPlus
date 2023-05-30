@@ -23,8 +23,5 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 [FunctionMetadata(Category = ExcelFunctionCategory.DateAndTime, EPPlusVersion = "4", Description = "Returns today's date")]
 internal class Today : ExcelFunction
 {
-    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this.CreateResult(System.DateTime.Today.ToOADate(), DataType.Date);
-    }
+    public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => this.CreateResult(System.DateTime.Today.ToOADate(), DataType.Date);
 }

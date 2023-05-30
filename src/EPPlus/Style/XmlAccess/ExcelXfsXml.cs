@@ -133,7 +133,7 @@ public sealed class ExcelXfs : StyleXmlHelper
 
     internal int NumberFormatId
     {
-        get { return this._numFmtId; }
+        get => this._numFmtId;
         set
         {
             this._numFmtId = value;
@@ -168,34 +168,22 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// <summary>
     /// Numberformat properties
     /// </summary>
-    public ExcelNumberFormatXml Numberformat
-    {
-        get { return this._styles.NumberFormats[this._numFmtId < 0 ? 0 : this._numFmtId]; }
-    }
+    public ExcelNumberFormatXml Numberformat => this._styles.NumberFormats[this._numFmtId < 0 ? 0 : this._numFmtId];
 
     /// <summary>
     /// Font properties
     /// </summary>
-    public ExcelFontXml Font
-    {
-        get { return this._styles.Fonts[this.FontId < 0 ? 0 : this.FontId]; }
-    }
+    public ExcelFontXml Font => this._styles.Fonts[this.FontId < 0 ? 0 : this.FontId];
 
     /// <summary>
     /// Fill properties
     /// </summary>
-    public ExcelFillXml Fill
-    {
-        get { return this._styles.Fills[this.FillId < 0 ? 0 : this.FillId]; }
-    }
+    public ExcelFillXml Fill => this._styles.Fills[this.FillId < 0 ? 0 : this.FillId];
 
     /// <summary>
     /// Border style properties
     /// </summary>
-    public ExcelBorderXml Border
-    {
-        get { return this._styles.Borders[this.BorderId < 0 ? 0 : this.BorderId]; }
-    }
+    public ExcelBorderXml Border => this._styles.Borders[this.BorderId < 0 ? 0 : this.BorderId];
 
     const string horizontalAlignPath = "d:alignment/@horizontal";
 
@@ -233,8 +221,8 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// </summary>
     public int TextRotation
     {
-        get { return this._textRotation == int.MinValue ? 0 : this._textRotation; }
-        set { this._textRotation = value; }
+        get => this._textRotation == int.MinValue ? 0 : this._textRotation;
+        set => this._textRotation = value;
     }
 
     const string lockedPath = "d:protection/@locked";
@@ -266,8 +254,8 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// </summary>
     public ExcelReadingOrder ReadingOrder
     {
-        get { return this._readingOrder; }
-        set { this._readingOrder = value; }
+        get => this._readingOrder;
+        set => this._readingOrder = value;
     }
 
     const string shrinkToFitPath = "d:alignment/@shrinkToFit";
@@ -285,8 +273,8 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// </summary>
     public int Indent
     {
-        get { return this._indent == int.MinValue ? 0 : this._indent; }
-        set { this._indent = value; }
+        get => this._indent == int.MinValue ? 0 : this._indent;
+        set => this._indent = value;
     }
 
     #endregion
@@ -296,44 +284,35 @@ public sealed class ExcelXfs : StyleXmlHelper
         //                RegisterEvent(xf, xf.Xf_ChangedEvent);
     }
 
-    internal override string Id
-    {
-        get
-        {
-            return this.XfId
-                   + "|"
-                   + this.NumberFormatId.ToString()
-                   + "|"
-                   + this.FontId.ToString()
-                   + "|"
-                   + this.FillId.ToString()
-                   + "|"
-                   + this.BorderId.ToString()
-                   + this.VerticalAlignment.ToString()
-                   + "|"
-                   + this.HorizontalAlignment.ToString()
-                   + "|"
-                   + this.WrapText.ToString()
-                   + "|"
-                   + this.ReadingOrder.ToString()
-                   + "|"
-                   + this.isBuildIn.ToString()
-                   + this.TextRotation.ToString()
-                   + this.Locked.ToString()
-                   + this.Hidden.ToString()
-                   + this.ShrinkToFit.ToString()
-                   + this.Indent.ToString()
-                   + this.QuotePrefix.ToString()
-                   + this.JustifyLastLine.ToString();
+    internal override string Id =>
+        this.XfId
+        + "|"
+        + this.NumberFormatId.ToString()
+        + "|"
+        + this.FontId.ToString()
+        + "|"
+        + this.FillId.ToString()
+        + "|"
+        + this.BorderId.ToString()
+        + this.VerticalAlignment.ToString()
+        + "|"
+        + this.HorizontalAlignment.ToString()
+        + "|"
+        + this.WrapText.ToString()
+        + "|"
+        + this.ReadingOrder.ToString()
+        + "|"
+        + this.isBuildIn.ToString()
+        + this.TextRotation.ToString()
+        + this.Locked.ToString()
+        + this.Hidden.ToString()
+        + this.ShrinkToFit.ToString()
+        + this.Indent.ToString()
+        + this.QuotePrefix.ToString()
+        + this.JustifyLastLine.ToString();
 
-            //return Numberformat.Id + "|" + Font.Id + "|" + Fill.Id + "|" + Border.Id + VerticalAlignment.ToString() + "|" + HorizontalAlignment.ToString() + "|" + WrapText.ToString() + "|" + ReadingOrder.ToString(); 
-        }
-    }
-
-    internal ExcelXfs Copy()
-    {
-        return this.Copy(this._styles);
-    }
+    //return Numberformat.Id + "|" + Font.Id + "|" + Fill.Id + "|" + Border.Id + VerticalAlignment.ToString() + "|" + HorizontalAlignment.ToString() + "|" + WrapText.ToString() + "|" + ReadingOrder.ToString(); 
+    internal ExcelXfs Copy() => this.Copy(this._styles);
 
     internal ExcelXfs Copy(ExcelStyles styles)
     {
@@ -898,10 +877,7 @@ public sealed class ExcelXfs : StyleXmlHelper
         return subId;
     }
 
-    internal override XmlNode CreateXmlNode(XmlNode topNode)
-    {
-        return this.CreateXmlNode(topNode, false);
-    }
+    internal override XmlNode CreateXmlNode(XmlNode topNode) => this.CreateXmlNode(topNode, false);
 
     internal XmlNode CreateXmlNode(XmlNode topNode, bool isCellStyleXsf)
     {

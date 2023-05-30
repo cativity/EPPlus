@@ -117,30 +117,18 @@ public class ExcelChartDataLabelCollection : XmlHelper, IEnumerable<ExcelChartDa
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns></returns>
-    public ExcelChartDataLabelItem this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelChartDataLabelItem this[int index] => this._list[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelChartDataLabelItem> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelChartDataLabelItem> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 }

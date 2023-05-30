@@ -49,13 +49,7 @@ public class ExcelDrawingScene3D : XmlHelper
     /// <summary>
     /// The placement and properties of the camera in the 3D scene
     /// </summary>
-    public ExcelDrawingScene3DCamera Camera
-    {
-        get
-        {
-            return this._camera ??= new ExcelDrawingScene3DCamera(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._cameraPath, this.InitXml);
-        }
-    }
+    public ExcelDrawingScene3DCamera Camera => this._camera ??= new ExcelDrawingScene3DCamera(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._cameraPath, this.InitXml);
 
     ExcelDrawingScene3DLightRig _lightRig;
 
@@ -63,28 +57,18 @@ public class ExcelDrawingScene3D : XmlHelper
     /// The light rig.
     /// When 3D is used, the light rig defines the lighting properties for the scene
     /// </summary>
-    public ExcelDrawingScene3DLightRig LightRig
-    {
-        get
-        {
-            return this._lightRig ??=
-                       new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
-        }
-    }
+    public ExcelDrawingScene3DLightRig LightRig =>
+        this._lightRig ??=
+            new ExcelDrawingScene3DLightRig(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._lightRigPath, this.InitXml);
 
     ExcelDrawingScene3DBackDrop _backDropPlane;
 
     /// <summary>
     /// The points and vectors contained within the backdrop define a plane in 3D space
     /// </summary>
-    public ExcelDrawingScene3DBackDrop BackDropPlane
-    {
-        get
-        {
-            return this._backDropPlane ??=
-                       new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
-        }
-    }
+    public ExcelDrawingScene3DBackDrop BackDropPlane =>
+        this._backDropPlane ??=
+            new ExcelDrawingScene3DBackDrop(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._backDropPath, this.InitXml);
 
     bool hasInit;
 

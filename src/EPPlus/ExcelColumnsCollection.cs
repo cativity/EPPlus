@@ -37,10 +37,7 @@ public class ExcelColumnCollection : ExcelRangeColumn
     /// </summary>
     /// <param name="column">The column index</param>
     /// <returns>The column</returns>
-    public ExcelRangeColumn this[int column]
-    {
-        get { return new ExcelRangeColumn(this._worksheet, column, column); }
-    }
+    public ExcelRangeColumn this[int column] => new(this._worksheet, column, column);
 
     /// <summary>
     /// Indexer referenced by from and to column index
@@ -48,8 +45,5 @@ public class ExcelColumnCollection : ExcelRangeColumn
     /// <param name="fromColumn">Column from index</param>
     /// <param name="toColumn">Column to index</param>
     /// <returns></returns>
-    public ExcelRangeColumn this[int fromColumn, int toColumn]
-    {
-        get { return new ExcelRangeColumn(this._worksheet, fromColumn, toColumn); }
-    }
+    public ExcelRangeColumn this[int fromColumn, int toColumn] => new(this._worksheet, fromColumn, toColumn);
 }

@@ -19,15 +19,9 @@ public class RangeDictionaryTests : TestBase
     {
     }
 
-    private static int GetFromRow(long address)
-    {
-        return (int)(address >> 20) + 1;
-    }
+    private static int GetFromRow(long address) => (int)(address >> 20) + 1;
 
-    private static int GetToRow(long address)
-    {
-        return (int)(address & 0xFFFFF) + 1;
-    }
+    private static int GetToRow(long address) => (int)(address & 0xFFFFF) + 1;
 
     [TestMethod]
     public void RangeDictionaryTestForG()

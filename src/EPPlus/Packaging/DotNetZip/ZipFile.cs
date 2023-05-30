@@ -303,8 +303,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
     public int BufferSize
     {
-        get { return this._BufferSize; }
-        set { this._BufferSize = value; }
+        get => this._BufferSize;
+        set => this._BufferSize = value;
     }
 
     /// <summary>
@@ -378,8 +378,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     public CompressionStrategy Strategy
     {
-        get { return this._Strategy; }
-        set { this._Strategy = value; }
+        get => this._Strategy;
+        set => this._Strategy = value;
     }
 
     /// <summary>
@@ -408,8 +408,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     public string Name
     {
-        get { return this._name; }
-        set { this._name = value; }
+        get => this._name;
+        set => this._name = value;
     }
 
     /// <summary>
@@ -458,8 +458,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="Ionic.Zip.CompressionMethod" />
     internal CompressionMethod CompressionMethod
     {
-        get { return this._compressionMethod; }
-        set { this._compressionMethod = value; }
+        get => this._compressionMethod;
+        set => this._compressionMethod = value;
     }
 
     /// <summary>
@@ -514,7 +514,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     public string Comment
     {
-        get { return this._Comment; }
+        get => this._Comment;
         set
         {
             this._Comment = value;
@@ -632,8 +632,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="EmitTimesInUnixFormatWhenSaving" />
     public bool EmitTimesInWindowsFormatWhenSaving
     {
-        get { return this._emitNtfsTimes; }
-        set { this._emitNtfsTimes = value; }
+        get => this._emitNtfsTimes;
+        set => this._emitNtfsTimes = value;
     }
 
     /// <summary>
@@ -716,8 +716,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="EmitTimesInWindowsFormatWhenSaving" />
     public bool EmitTimesInUnixFormatWhenSaving
     {
-        get { return this._emitUnixTimes; }
-        set { this._emitUnixTimes = value; }
+        get => this._emitUnixTimes;
+        set => this._emitUnixTimes = value;
     }
 
     /// <summary>
@@ -730,10 +730,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   This is a <em>synthetic</em> property.  It returns true if the <see
     ///   cref="StatusMessageTextWriter"/> is non-null.
     /// </remarks>
-    internal bool Verbose
-    {
-        get { return this._StatusMessageTextWriter != null; }
-    }
+    internal bool Verbose => this._StatusMessageTextWriter != null;
 
     /// <summary>
     ///   Returns true if an entry by the given name exists in the ZipFile.
@@ -742,11 +739,10 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <param name='name'>the name of the entry to find</param>
     /// <returns>true if an entry with the given name exists; otherwise false.
     /// </returns>
-    public bool ContainsEntry(string name)
-    {
+    public bool ContainsEntry(string name) =>
+
         // workitem 12534
-        return this._entries.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
-    }
+        this._entries.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
 
     /// <summary>
     ///   Indicates whether to perform case-sensitive matching on the filename when
@@ -763,7 +759,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     public bool CaseSensitiveRetrieval
     {
-        get { return this._CaseSensitiveRetrieval; }
+        get => this._CaseSensitiveRetrieval;
 
         set
         {
@@ -894,7 +890,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete.  It will be removed in a future version of the library. Your applications should  use AlternateEncoding and AlternateEncodingUsage instead.")]
     public bool UseUnicodeAsNecessary
     {
-        get { return this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") && this._alternateEncodingUsage == ZipOption.AsNecessary; }
+        get => this._alternateEncoding == System.Text.Encoding.GetEncoding("UTF-8") && this._alternateEncodingUsage == ZipOption.AsNecessary;
         set
         {
             if (value)
@@ -952,8 +948,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="RequiresZip64"/>
     internal Zip64Option UseZip64WhenSaving
     {
-        get { return this._zip64; }
-        set { this._zip64 = value; }
+        get => this._zip64;
+        set => this._zip64 = value;
     }
 
     /// <summary>
@@ -1066,10 +1062,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     /// <seealso cref="UseZip64WhenSaving"/>
     /// <seealso cref="RequiresZip64"/>
-    public Nullable<bool> OutputUsedZip64
-    {
-        get { return this._OutputUsesZip64; }
-    }
+    public Nullable<bool> OutputUsedZip64 => this._OutputUsesZip64;
 
     /// <summary>
     ///   Indicates whether the most recent <c>Read()</c> operation read a zip file that uses
@@ -1282,8 +1275,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     public System.Text.Encoding AlternateEncoding
     {
-        get { return this._alternateEncoding; }
-        set { this._alternateEncoding = value; }
+        get => this._alternateEncoding;
+        set => this._alternateEncoding = value;
     }
 
     /// <summary>
@@ -1293,8 +1286,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </summary>
     internal ZipOption AlternateEncodingUsage
     {
-        get { return this._alternateEncodingUsage; }
-        set { this._alternateEncodingUsage = value; }
+        get => this._alternateEncodingUsage;
+        set => this._alternateEncodingUsage = value;
     }
 
     /// <summary>
@@ -1302,10 +1295,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// known as IBM437.
     /// </summary>
     /// <seealso cref="Ionic.Zip.ZipFile.ProvisionalAlternateEncoding"/>
-    public static System.Text.Encoding DefaultEncoding
-    {
-        get { return _defaultEncoding; }
-    }
+    public static System.Text.Encoding DefaultEncoding => _defaultEncoding;
 
     /// <summary>
     /// Gets or sets the <c>TextWriter</c> to which status messages are delivered
@@ -1375,8 +1365,8 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </example>
     public TextWriter StatusMessageTextWriter
     {
-        get { return this._StatusMessageTextWriter; }
-        set { this._StatusMessageTextWriter = value; }
+        get => this._StatusMessageTextWriter;
+        set => this._StatusMessageTextWriter = value;
     }
 
     /// <summary>
@@ -1431,7 +1421,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///
     public string TempFileFolder
     {
-        get { return this._TempFileFolder; }
+        get => this._TempFileFolder;
 
         set
         {
@@ -1604,7 +1594,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
                 this.Encryption = EncryptionAlgorithm.PkzipWeak;
             }
         }
-        private get { return this._Password; }
+        private get => this._Password;
     }
 
     /// <summary>
@@ -1862,7 +1852,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="ZipEntry.Encryption">ZipEntry.Encryption</seealso>
     internal EncryptionAlgorithm Encryption
     {
-        get { return this._Encryption; }
+        get => this._Encryption;
         set
         {
             if (value == EncryptionAlgorithm.Unsupported)
@@ -1999,7 +1989,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <seealso cref="NumberOfSegmentsForMostRecentSave"/>
     public int MaxOutputSegmentSize
     {
-        get { return this._maxOutputSegmentSize; }
+        get => this._maxOutputSegmentSize;
         set
         {
             if (value < 65536 && value != 0)
@@ -2029,10 +2019,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   </para>
     /// </remarks>
     /// <seealso cref="MaxOutputSegmentSize"/>
-    public int NumberOfSegmentsForMostRecentSave
-    {
-        get { return unchecked((int)this._numberOfSegmentsForMostRecentSave + 1); }
-    }
+    public int NumberOfSegmentsForMostRecentSave => unchecked((int)this._numberOfSegmentsForMostRecentSave + 1);
 
 #if !NETCF
     /// <summary>
@@ -2103,7 +2090,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
             this._ParallelDeflateThreshold = value;
         }
-        get { return this._ParallelDeflateThreshold; }
+        get => this._ParallelDeflateThreshold;
     }
 
     /// <summary>
@@ -2184,7 +2171,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///
     public int ParallelDeflateMaxBufferPairs
     {
-        get { return this._maxBufferPairs; }
+        get => this._maxBufferPairs;
         set
         {
             if (value < 4)
@@ -2199,10 +2186,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
     /// <summary>Provides a string representation of the instance.</summary>
     /// <returns>a string representation of the instance.</returns>
-    public override string ToString()
-    {
-        return string.Format("ZipFile::{0}", this.Name);
-    }
+    public override string ToString() => string.Format("ZipFile::{0}", this.Name);
 
     /// <summary>
     /// Returns the version number on the DotNetZip assembly.
@@ -2220,15 +2204,9 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///     This static property is primarily useful for diagnostic purposes.
     ///   </para>
     /// </remarks>
-    public static Version LibraryVersion
-    {
-        get { return Assembly.GetExecutingAssembly().GetName().Version; }
-    }
+    public static Version LibraryVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
-    internal void NotifyEntryChanged()
-    {
-        this._contentsChanged = true;
-    }
+    internal void NotifyEntryChanged() => this._contentsChanged = true;
 
     internal Stream StreamForDiskNumber(uint diskNumber)
     {
@@ -2487,10 +2465,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// End Using
     /// </code>
     /// </example>
-    public ZipFile()
-    {
-        this._InitInstance(null, null);
-    }
+    public ZipFile() => this._InitInstance(null, null);
 
     /// <summary>
     ///   Create a zip file, specifying a text Encoding, but without specifying a
@@ -2747,10 +2722,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
     #region Indexers and Collections
 
-    private List<ZipEntry> ZipEntriesAsList
-    {
-        get { return this._zipEntriesAsList ??= new List<ZipEntry>(this._entries.Values); }
-    }
+    private List<ZipEntry> ZipEntriesAsList => this._zipEntriesAsList ??= new List<ZipEntry>(this._entries.Values);
 
     /// <summary>
     ///   This is an integer indexer into the Zip archive.
@@ -2788,11 +2760,10 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   entry does not exist in the archive, this indexer throws.
     /// </returns>
     ///
-    public ZipEntry this[int ix]
-    {
+    public ZipEntry this[int ix] =>
+
         // workitem 6402
-        get { return this.ZipEntriesAsList[ix]; }
-    }
+        this.ZipEntriesAsList[ix];
 
     /// <summary>
     ///   This is a name-based indexer into the Zip archive.
@@ -3000,10 +2971,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   The list of strings for the filenames contained within the Zip archive.
     /// </returns>
     ///
-    public ICollection<string> EntryFileNames
-    {
-        get { return this._entries.Keys; }
-    }
+    public ICollection<string> EntryFileNames => this._entries.Keys;
 
     /// <summary>
     ///   Returns the readonly collection of entries in the Zip archive.
@@ -3023,10 +2991,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </para>
     /// </remarks>
     /// <seealso cref="EntriesSorted"/>
-    public ICollection<ZipEntry> Entries
-    {
-        get { return this._entries.Values; }
-    }
+    public ICollection<ZipEntry> Entries => this._entries.Values;
 
     /// <summary>
     ///   Returns a readonly collection of entries in the Zip archive, sorted by FileName.
@@ -3085,7 +3050,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
             StringComparison sc = this.CaseSensitiveRetrieval ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-            coll.Sort((x, y) => { return string.Compare(x.FileName, y.FileName, sc); });
+            coll.Sort((x, y) => string.Compare(x.FileName, y.FileName, sc));
 
             return coll.AsReadOnly();
         }
@@ -3094,10 +3059,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// <summary>
     /// Returns the number of entries in the Zip archive.
     /// </summary>
-    public int Count
-    {
-        get { return this._entries.Count; }
-    }
+    public int Count => this._entries.Count;
 
     /// <summary>
     ///   Removes the given <c>ZipEntry</c> from the zip archive.

@@ -29,10 +29,7 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     /// <summary>
     /// Refresh the items from the shared items or the group items.
     /// </summary>
-    public void Refresh()
-    {
-        this._cache._field.Cache.Refresh();
-    }
+    public void Refresh() => this._cache._field.Cache.Refresh();
 
     internal void RefreshMe()
     {
@@ -84,20 +81,14 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     /// <summary>
     /// Number of items in the collection.
     /// </summary>
-    public int Count
-    {
-        get { return this._items.Count; }
-    }
+    public int Count => this._items.Count;
 
     /// <summary>
     /// Get the value at the specific position in the collection
     /// </summary>
     /// <param name="index">The position</param>
     /// <returns></returns>
-    public ExcelPivotTableSlicerItem this[int index]
-    {
-        get { return this._items[index]; }
-    }
+    public ExcelPivotTableSlicerItem this[int index] => this._items[index];
 
     /// <summary>
     /// Get the item with supplied value.
@@ -134,8 +125,5 @@ public class ExcelPivotTableSlicerItemCollection : IEnumerable<ExcelPivotTableSl
     /// </summary>
     /// <param name="value">The object to check for existance</param>
     /// <returns></returns>
-    public bool Contains(object value)
-    {
-        return this._cache._field.Cache._cacheLookup.ContainsKey(value);
-    }
+    public bool Contains(object value) => this._cache._field.Cache._cacheLookup.ContainsKey(value);
 }

@@ -64,10 +64,7 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// <summary>
     /// The source type for the slicer cache
     /// </summary>
-    public override eSlicerSourceType SourceType
-    {
-        get { return eSlicerSourceType.Table; }
-    }
+    public override eSlicerSourceType SourceType => eSlicerSourceType.Table;
 
     /// <summary>
     /// The table column that is the source for the slicer
@@ -81,8 +78,8 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// </summary>
     public eSortOrder SortOrder
     {
-        get { return this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending); }
-        set { this.SetXmlNodeString(_sortOrderPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(_sortOrderPath).ToEnum(eSortOrder.Ascending);
+        set => this.SetXmlNodeString(_sortOrderPath, value.ToEnumString());
     }
 
     const string _crossFilterPath = _topPath + "/@crossFilter";
@@ -92,8 +89,8 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// </summary>
     public eCrossFilter CrossFilter
     {
-        get { return this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None); }
-        set { this.SetXmlNodeString(_crossFilterPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(_crossFilterPath).ToEnum(eCrossFilter.None);
+        set => this.SetXmlNodeString(_crossFilterPath, value.ToEnumString());
     }
 
     const string _customListSortPath = _topPath + "/@customListSort";
@@ -103,8 +100,8 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// </summary>
     public bool CustomListSort
     {
-        get { return this.GetXmlNodeBool(_customListSortPath, true); }
-        set { this.SetXmlNodeBool(_customListSortPath, value, true); }
+        get => this.GetXmlNodeBool(_customListSortPath, true);
+        set => this.SetXmlNodeBool(_customListSortPath, value, true);
     }
 
     const string _hideItemsWithNoDataPath = "x15:slicerCacheHideItemsWithNoData";
@@ -114,7 +111,7 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
     /// </summary>
     public bool HideItemsWithNoData
     {
-        get { return this.ExistsNode(_extPath + "/" + _hideItemsWithNoDataPath); }
+        get => this.ExistsNode(_extPath + "/" + _hideItemsWithNoDataPath);
         set
         {
             if (value)
@@ -140,15 +137,15 @@ public class ExcelTableSlicerCache : ExcelSlicerCache
 
     internal int ColumnId
     {
-        get { return this.GetXmlNodeInt(_columnIndexPath); }
-        set { this.SetXmlNodeInt(_columnIndexPath, value); }
+        get => this.GetXmlNodeInt(_columnIndexPath);
+        set => this.SetXmlNodeInt(_columnIndexPath, value);
     }
 
     const string _tableIdPath = _topPath + "/@tableId";
 
     internal int TableId
     {
-        get { return this.GetXmlNodeInt(_tableIdPath); }
-        set { this.SetXmlNodeInt(_tableIdPath, value); }
+        get => this.GetXmlNodeInt(_tableIdPath);
+        set => this.SetXmlNodeInt(_tableIdPath, value);
     }
 }

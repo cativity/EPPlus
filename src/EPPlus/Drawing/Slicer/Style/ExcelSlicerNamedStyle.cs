@@ -100,7 +100,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
+        get => this.GetXmlNodeString("@name");
         set
         {
             if (this._styles.SlicerStyles.ExistsKey(value) || this._styles.TableStyles.ExistsKey(value))
@@ -115,82 +115,52 @@ public class ExcelSlicerNamedStyle : XmlHelper
     /// <summary>
     /// Applies to the entire content of a table or pivot table
     /// </summary>
-    public ExcelSlicerTableStyleElement WholeTable
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.WholeTable); }
-    }
+    public ExcelSlicerTableStyleElement WholeTable => this.GetTableStyleElement(eTableStyleElement.WholeTable);
 
     /// <summary>
     /// Applies to the header row of a table or pivot table
     /// </summary>
-    public ExcelSlicerTableStyleElement HeaderRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.HeaderRow); }
-    }
+    public ExcelSlicerTableStyleElement HeaderRow => this.GetTableStyleElement(eTableStyleElement.HeaderRow);
 
     /// <summary>
     /// Applies to slicer item that is selected
     /// </summary>
-    public ExcelSlicerStyleElement SelectedItemWithData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData); }
-    }
+    public ExcelSlicerStyleElement SelectedItemWithData => this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithData);
 
     /// <summary>
     /// Applies to a select slicer item with no data.
     /// </summary>
-    public ExcelSlicerStyleElement SelectedItemWithNoData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData); }
-    }
+    public ExcelSlicerStyleElement SelectedItemWithNoData => this.GetSlicerStyleElement(eSlicerStyleElement.SelectedItemWithNoData);
 
     /// <summary>
     /// Applies to a slicer item with data that is not selected
     /// </summary>
-    public ExcelSlicerStyleElement UnselectedItemWithData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData); }
-    }
+    public ExcelSlicerStyleElement UnselectedItemWithData => this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithData);
 
     /// <summary>
     /// Applies to a slicer item with no data that is not selected
     /// </summary>
-    public ExcelSlicerStyleElement UnselectedItemWithNoData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData); }
-    }
+    public ExcelSlicerStyleElement UnselectedItemWithNoData => this.GetSlicerStyleElement(eSlicerStyleElement.UnselectedItemWithNoData);
 
     /// <summary>
     /// Applies to a selected slicer item with data and over which the mouse is paused on
     /// </summary>
-    public ExcelSlicerStyleElement HoveredSelectedItemWithData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData); }
-    }
+    public ExcelSlicerStyleElement HoveredSelectedItemWithData => this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithData);
 
     /// <summary>
     /// Applies to a selected slicer item with no data and over which the mouse is paused on
     /// </summary>
-    public ExcelSlicerStyleElement HoveredSelectedItemWithNoData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData); }
-    }
+    public ExcelSlicerStyleElement HoveredSelectedItemWithNoData => this.GetSlicerStyleElement(eSlicerStyleElement.HoveredSelectedItemWithNoData);
 
     /// <summary>
     /// Applies to a slicer item with data that is not selected and over which the mouse is paused on
     /// </summary>
-    public ExcelSlicerStyleElement HoveredUnselectedItemWithData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData); }
-    }
+    public ExcelSlicerStyleElement HoveredUnselectedItemWithData => this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithData);
 
     /// <summary>
     /// Applies to a selected slicer item with no data and over which the mouse is paused on
     /// </summary>
-    public ExcelSlicerStyleElement HoveredUnselectedItemWithNoData
-    {
-        get { return this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData); }
-    }
+    public ExcelSlicerStyleElement HoveredUnselectedItemWithNoData => this.GetSlicerStyleElement(eSlicerStyleElement.HoveredUnselectedItemWithNoData);
 
     internal void SetFromTemplate(ExcelSlicerNamedStyle templateStyle)
     {
@@ -207,10 +177,7 @@ public class ExcelSlicerNamedStyle : XmlHelper
         }
     }
 
-    internal void SetFromTemplate(eSlicerStyle templateStyle)
-    {
-        this.LoadTableTemplate("SlicerStyles", templateStyle.ToString());
-    }
+    internal void SetFromTemplate(eSlicerStyle templateStyle) => this.LoadTableTemplate("SlicerStyles", templateStyle.ToString());
 
     private void LoadTableTemplate(string folder, string styleName)
     {

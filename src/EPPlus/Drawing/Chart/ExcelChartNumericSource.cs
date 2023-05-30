@@ -175,7 +175,7 @@ public class ExcelChartNumericSource : XmlHelper
     /// </summary>
     public string FormatCode
     {
-        get { return this._formatCode; }
+        get => this._formatCode;
         set
         {
             if (this._sourceElement != null)

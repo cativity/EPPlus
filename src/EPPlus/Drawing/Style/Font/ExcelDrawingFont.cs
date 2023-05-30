@@ -30,7 +30,7 @@ public class ExcelDrawingFont : ExcelDrawingFontBase
     /// </summary>
     public string Script
     {
-        get { return this.GetXmlNodeString("@script"); }
-        internal set { this.SetXmlNodeString("@script", value); }
+        get => this.GetXmlNodeString("@script");
+        internal set => this.SetXmlNodeString("@script", value);
     }
 }

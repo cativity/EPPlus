@@ -24,10 +24,8 @@ namespace OfficeOpenXml.Sorting;
 public class RangeSortLayer : SortLayerBase
 {
     internal RangeSortLayer(RangeSortOptions options)
-        : base(options)
-    {
+        : base(options) =>
         this._options = options;
-    }
 
     private readonly RangeSortOptions _options;
 

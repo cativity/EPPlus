@@ -30,16 +30,12 @@ public class IntegerExpression : AtomicExpression
     }
 
     public IntegerExpression(string expression, bool negate)
-        : base(expression)
-    {
+        : base(expression) =>
         this._negate = negate;
-    }
 
     public IntegerExpression(double val)
-        : base(val.ToString(CultureInfo.InvariantCulture))
-    {
+        : base(val.ToString(CultureInfo.InvariantCulture)) =>
         this._compiledValue = Math.Floor(val);
-    }
 
     public override CompileResult Compile()
     {

@@ -76,8 +76,8 @@ public class ExcelPivotTableCacheField : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        internal set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        internal set => this.SetXmlNodeString("@name", value);
     }
 
     /// <summary>
@@ -110,8 +110,8 @@ public class ExcelPivotTableCacheField : XmlHelper
 
     internal int? NumFmtId
     {
-        get { return this.GetXmlNodeIntNull("@numFmtId"); }
-        set { this.SetXmlNodeInt("@numFmtId", value); }
+        get => this.GetXmlNodeIntNull("@numFmtId");
+        set => this.SetXmlNodeInt("@numFmtId", value);
     }
 
     internal void WriteSharedItems(XmlElement fieldNode, XmlNamespaceManager nsm)
@@ -198,7 +198,7 @@ public class ExcelPivotTableCacheField : XmlHelper
     /// </summary>
     public string Formula
     {
-        get { return this.GetXmlNodeString("@formula"); }
+        get => this.GetXmlNodeString("@formula");
         set
         {
             if (this.DatabaseField)
@@ -217,8 +217,8 @@ public class ExcelPivotTableCacheField : XmlHelper
 
     internal bool DatabaseField
     {
-        get { return this.GetXmlNodeBool("@databaseField", true); }
-        set { this.SetXmlNodeBool("@databaseField", value, true); }
+        get => this.GetXmlNodeBool("@databaseField", true);
+        set => this.SetXmlNodeBool("@databaseField", value, true);
     }
 
     internal bool HasSlicer
@@ -1021,8 +1021,5 @@ internal class CacheComparer : IEqualityComparer<object>
         return x;
     }
 
-    public int GetHashCode(object obj)
-    {
-        return GetCaseInsensitiveValue(obj).GetHashCode();
-    }
+    public int GetHashCode(object obj) => GetCaseInsensitiveValue(obj).GetHashCode();
 }

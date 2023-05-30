@@ -39,16 +39,11 @@ public class ExcelChartExValueColor : XmlHelper
     /// <summary>
     /// The color
     /// </summary>
-    public ExcelDrawingColorManager Color
-    {
-        get
-        {
-            return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                $"cx:valueColors/cx:{this._prefix}Color",
-                                                                this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingColorManager Color =>
+        this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager,
+                                                     this.TopNode,
+                                                     $"cx:valueColors/cx:{this._prefix}Color",
+                                                     this.SchemaNodeOrder);
 
     /// <summary>
     /// The color variation type.

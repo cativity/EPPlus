@@ -41,10 +41,7 @@ public class View3DTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("Drawing3D.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("Drawing3D.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

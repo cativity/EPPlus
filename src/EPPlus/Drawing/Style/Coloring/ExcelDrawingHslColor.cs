@@ -34,8 +34,8 @@ public class ExcelDrawingHslColor : XmlHelper
     /// </summary>
     public double Hue
     {
-        get { return this.GetXmlNodeAngel("@hue"); }
-        set { this.SetXmlNodeAngel("@hue", value, "Hue"); }
+        get => this.GetXmlNodeAngel("@hue");
+        set => this.SetXmlNodeAngel("@hue", value, "Hue");
     }
 
     /// <summary>
@@ -43,8 +43,8 @@ public class ExcelDrawingHslColor : XmlHelper
     /// </summary>
     public double Saturation
     {
-        get { return this.GetXmlNodePercentage("@sat") ?? 0; }
-        set { this.SetXmlNodePercentage("@sat", value, false); }
+        get => this.GetXmlNodePercentage("@sat") ?? 0;
+        set => this.SetXmlNodePercentage("@sat", value, false);
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ public class ExcelDrawingHslColor : XmlHelper
     /// </summary>
     public double Luminance
     {
-        get { return this.GetXmlNodePercentage("@lum") ?? 0; }
-        set { this.SetXmlNodePercentage("@lum", value, false); }
+        get => this.GetXmlNodePercentage("@lum") ?? 0;
+        set => this.SetXmlNodePercentage("@lum", value, false);
     }
 
     internal const string NodeName = "a:hslClr";

@@ -83,10 +83,7 @@ public class ExcelExternalOleLink : ExcelExternalLink
     /// <summary>
     /// The type of external link.
     /// </summary>
-    public override eExternalLinkType ExternalLinkType
-    {
-        get { return eExternalLinkType.OleLink; }
-    }
+    public override eExternalLinkType ExternalLinkType => eExternalLinkType.OleLink;
 
     internal ZipPackageRelationship Relation { get; set; }
 

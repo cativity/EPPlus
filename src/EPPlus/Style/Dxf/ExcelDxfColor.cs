@@ -30,10 +30,8 @@ public class ExcelDxfColor : DxfStyleBase
     eStyleClass _styleClass;
 
     internal ExcelDxfColor(ExcelStyles styles, eStyleClass styleClass, Action<eStyleClass, eStyleProperty, object> callback)
-        : base(styles, callback)
-    {
+        : base(styles, callback) =>
         this._styleClass = styleClass;
-    }
 
     eThemeSchemeColor? _theme;
 
@@ -42,7 +40,7 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     public eThemeSchemeColor? Theme
     {
-        get { return this._theme; }
+        get => this._theme;
         set
         {
             this._theme = value;
@@ -57,7 +55,7 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     public int? Index
     {
-        get { return this._index; }
+        get => this._index;
         set
         {
             this._index = value;
@@ -72,7 +70,7 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     public bool? Auto
     {
-        get { return this._auto; }
+        get => this._auto;
         set
         {
             this._auto = value;
@@ -87,7 +85,7 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     public double? Tint
     {
-        get { return this._tint; }
+        get => this._tint;
         set
         {
             this._tint = value;
@@ -102,7 +100,7 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     public Color? Color
     {
-        get { return this._color; }
+        get => this._color;
         set
         {
             this._color = value;
@@ -113,21 +111,16 @@ public class ExcelDxfColor : DxfStyleBase
     /// <summary>
     /// The Id
     /// </summary>
-    internal override string Id
-    {
-        get
-        {
-            return GetAsString(this.Theme)
-                   + "|"
-                   + GetAsString(this.Index)
-                   + "|"
-                   + GetAsString(this.Auto)
-                   + "|"
-                   + GetAsString(this.Tint)
-                   + "|"
-                   + GetAsString(this.Color == null ? "" : this.Color.Value.ToArgb().ToString("x"));
-        }
-    }
+    internal override string Id =>
+        GetAsString(this.Theme)
+        + "|"
+        + GetAsString(this.Index)
+        + "|"
+        + GetAsString(this.Auto)
+        + "|"
+        + GetAsString(this.Tint)
+        + "|"
+        + GetAsString(this.Color == null ? "" : this.Color.Value.ToArgb().ToString("x"));
 
     /// <summary>
     /// Set the color of the drawing
@@ -192,21 +185,16 @@ public class ExcelDxfColor : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfColor(this._styles, this._styleClass, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfColor(this._styles, this._styleClass, this._callback)
         {
             Theme = this.Theme, Index = this.Index, Color = this.Color, Auto = this.Auto, Tint = this.Tint
         };
-    }
 
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null; }
-    }
+    public override bool HasValue => this.Theme != null || this.Index != null || this.Auto != null || this.Tint != null || this.Color != null;
 
     /// <summary>
     /// Clears all properties
@@ -225,8 +213,5 @@ public class ExcelDxfColor : DxfStyleBase
     /// </summary>
     /// <param name="helper">The xml helper</param>
     /// <param name="path">The X Path</param>
-    internal override void CreateNodes(XmlHelper helper, string path)
-    {
-        throw new NotImplementedException();
-    }
+    internal override void CreateNodes(XmlHelper helper, string path) => throw new NotImplementedException();
 }

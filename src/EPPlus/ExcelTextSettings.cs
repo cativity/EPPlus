@@ -82,10 +82,7 @@ public class ExcelTextSettings
     /// <summary>
     /// Returns an instance of the internal generic text measurer
     /// </summary>
-    public static ITextMeasurer GenericTextMeasurer
-    {
-        get { return new GenericFontMetricsTextMeasurer(); }
-    }
+    public static ITextMeasurer GenericTextMeasurer => new GenericFontMetricsTextMeasurer();
 
     /// <summary>
     /// Measures a text with default settings when there is no other option left...

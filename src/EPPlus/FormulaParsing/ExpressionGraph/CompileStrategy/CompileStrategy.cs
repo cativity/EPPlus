@@ -22,10 +22,7 @@ public abstract class CompileStrategy
 {
     protected readonly Expression _expression;
 
-    public CompileStrategy(Expression expression)
-    {
-        this._expression = expression;
-    }
+    public CompileStrategy(Expression expression) => this._expression = expression;
 
     public abstract Expression Compile();
 }

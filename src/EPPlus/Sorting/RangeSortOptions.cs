@@ -35,24 +35,15 @@ public class RangeSortOptions : SortOptionsBase
     /// Creates a new instance.
     /// </summary>
     /// <returns></returns>
-    public static RangeSortOptions Create()
-    {
-        return new RangeSortOptions();
-    }
+    public static RangeSortOptions Create() => new();
 
     /// <summary>
     /// Creates the first sort layer (i.e. the first sort condition) for a row based/top to bottom sort.
     /// </summary>
-    public RangeSortLayer SortBy
-    {
-        get { return this._sortLayer ??= new RangeSortLayer(this); }
-    }
+    public RangeSortLayer SortBy => this._sortLayer ??= new RangeSortLayer(this);
 
     /// <summary>
     /// Creates the first sort layer (i.e. the first sort condition) for a column based/left to right sort.
     /// </summary>
-    public RangeLeftToRightSortLayer SortLeftToRightBy
-    {
-        get { return this._sortLayerLeftToRight ??= new RangeLeftToRightSortLayer(this); }
-    }
+    public RangeLeftToRightSortLayer SortLeftToRightBy => this._sortLayerLeftToRight ??= new RangeLeftToRightSortLayer(this);
 }

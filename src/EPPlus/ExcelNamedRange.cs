@@ -96,10 +96,7 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// Returns a string representation of the object
     /// </summary>
     /// <returns>The name of the range</returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 
     /// <summary>
     /// Returns true if the name is equal to the obj
@@ -129,8 +126,5 @@ public sealed class ExcelNamedRange : ExcelRangeBase
     /// Serves as the default hash function.
     /// </summary>
     /// <returns>A hash code for the current object.</returns>
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public override int GetHashCode() => base.GetHashCode();
 }

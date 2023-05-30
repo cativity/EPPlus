@@ -67,10 +67,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         }
     }
 
-    internal int Count
-    {
-        get { return this._count; }
-    }
+    internal int Count => this._count;
 
     public void Add(int key, T value)
     {
@@ -135,20 +132,11 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         this._items = new List<T>();
     }
 
-    public bool ContainsKey(int key)
-    {
-        return Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
-    }
+    public bool ContainsKey(int key) => Array.BinarySearch(this._index[0], 0, this._count, key) >= 0;
 
-    public IEnumerator<T> GetEnumerator()
-    {
-        return new ChangeableDictionaryEnumerator<T>(this);
-    }
+    public IEnumerator<T> GetEnumerator() => new ChangeableDictionaryEnumerator<T>(this);
 
-    public bool RemoveAndShift(int key)
-    {
-        return this.RemoveAndShift(key, true);
-    }
+    public bool RemoveAndShift(int key) => this.RemoveAndShift(key, true);
 
     private bool RemoveAndShift(int key, bool dispose)
     {
@@ -199,10 +187,7 @@ internal class ChangeableDictionary<T> : IEnumerable<T>
         }
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return new ChangeableDictionaryEnumerator<T>(this);
-    }
+    IEnumerator IEnumerable.GetEnumerator() => new ChangeableDictionaryEnumerator<T>(this);
 }
 
 internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
@@ -210,10 +195,7 @@ internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
     int _index = -1;
     ChangeableDictionary<T> _ts;
 
-    public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts)
-    {
-        this._ts = ts;
-    }
+    public ChangeableDictionaryEnumerator(ChangeableDictionary<T> ts) => this._ts = ts;
 
     public T Current
     {
@@ -232,10 +214,7 @@ internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
 
     object IEnumerator.Current => this.Current;
 
-    public void Dispose()
-    {
-        this._ts = null;
-    }
+    public void Dispose() => this._ts = null;
 
     public bool MoveNext()
     {
@@ -249,8 +228,5 @@ internal class ChangeableDictionaryEnumerator<T> : IEnumerator<T>
         return true;
     }
 
-    public void Reset()
-    {
-        throw new NotImplementedException();
-    }
+    public void Reset() => throw new NotImplementedException();
 }

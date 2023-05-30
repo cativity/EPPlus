@@ -35,13 +35,7 @@ internal class XmlHelperInstance : XmlHelper
 
 internal static class XmlHelperFactory
 {
-    internal static XmlHelper Create(XmlNamespaceManager namespaceManager)
-    {
-        return new XmlHelperInstance(namespaceManager);
-    }
+    internal static XmlHelper Create(XmlNamespaceManager namespaceManager) => new XmlHelperInstance(namespaceManager);
 
-    internal static XmlHelper Create(XmlNamespaceManager namespaceManager, XmlNode topNode)
-    {
-        return new XmlHelperInstance(namespaceManager, topNode);
-    }
+    internal static XmlHelper Create(XmlNamespaceManager namespaceManager, XmlNode topNode) => new XmlHelperInstance(namespaceManager, topNode);
 }

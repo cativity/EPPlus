@@ -414,7 +414,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal LeftMargin
     {
-        get { return this.GetXmlNodeDecimal(_leftMarginPath); }
+        get => this.GetXmlNodeDecimal(_leftMarginPath);
         set
         {
             this.CreateMargins();
@@ -429,7 +429,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal RightMargin
     {
-        get { return this.GetXmlNodeDecimal(_rightMarginPath); }
+        get => this.GetXmlNodeDecimal(_rightMarginPath);
         set
         {
             this.CreateMargins();
@@ -444,7 +444,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal TopMargin
     {
-        get { return this.GetXmlNodeDecimal(_topMarginPath); }
+        get => this.GetXmlNodeDecimal(_topMarginPath);
         set
         {
             this.CreateMargins();
@@ -459,7 +459,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal BottomMargin
     {
-        get { return this.GetXmlNodeDecimal(_bottomMarginPath); }
+        get => this.GetXmlNodeDecimal(_bottomMarginPath);
         set
         {
             this.CreateMargins();
@@ -474,7 +474,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal HeaderMargin
     {
-        get { return this.GetXmlNodeDecimal(_headerMarginPath); }
+        get => this.GetXmlNodeDecimal(_headerMarginPath);
         set
         {
             this.CreateMargins();
@@ -489,7 +489,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public decimal FooterMargin
     {
-        get { return this.GetXmlNodeDecimal(_footerMarginPath); }
+        get => this.GetXmlNodeDecimal(_footerMarginPath);
         set
         {
             this.CreateMargins();
@@ -505,8 +505,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public eOrientation Orientation
     {
-        get { return (eOrientation)Enum.Parse(typeof(eOrientation), this.GetXmlNodeString(_orientationPath), true); }
-        set { this.SetXmlNodeString(_orientationPath, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
+        get => (eOrientation)Enum.Parse(typeof(eOrientation), this.GetXmlNodeString(_orientationPath), true);
+        set => this.SetXmlNodeString(_orientationPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
     }
 
     const string _fitToWidthPath = "d:pageSetup/@fitToWidth";
@@ -518,8 +518,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public int FitToWidth
     {
-        get { return this.GetXmlNodeInt(_fitToWidthPath); }
-        set { this.SetXmlNodeString(_fitToWidthPath, value.ToString()); }
+        get => this.GetXmlNodeInt(_fitToWidthPath);
+        set => this.SetXmlNodeString(_fitToWidthPath, value.ToString());
     }
 
     const string _fitToHeightPath = "d:pageSetup/@fitToHeight";
@@ -531,8 +531,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public int FitToHeight
     {
-        get { return this.GetXmlNodeInt(_fitToHeightPath); }
-        set { this.SetXmlNodeString(_fitToHeightPath, value.ToString()); }
+        get => this.GetXmlNodeInt(_fitToHeightPath);
+        set => this.SetXmlNodeString(_fitToHeightPath, value.ToString());
     }
 
     const string _scalePath = "d:pageSetup/@scale";
@@ -542,8 +542,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public int Scale
     {
-        get { return this.GetXmlNodeInt(_scalePath); }
-        set { this.SetXmlNodeString(_scalePath, value.ToString()); }
+        get => this.GetXmlNodeInt(_scalePath);
+        set => this.SetXmlNodeString(_scalePath, value.ToString());
     }
 
     const string _fitToPagePath = "d:sheetPr/d:pageSetUpPr/@fitToPage";
@@ -553,8 +553,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool FitToPage
     {
-        get { return this.GetXmlNodeBool(_fitToPagePath); }
-        set { this.SetXmlNodeString(_fitToPagePath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(_fitToPagePath);
+        set => this.SetXmlNodeString(_fitToPagePath, value ? "1" : "0");
     }
 
     const string _headersPath = "d:printOptions/@headings";
@@ -564,8 +564,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool ShowHeaders
     {
-        get { return this.GetXmlNodeBool(_headersPath, false); }
-        set { this.SetXmlNodeBool(_headersPath, value, false); }
+        get => this.GetXmlNodeBool(_headersPath, false);
+        set => this.SetXmlNodeBool(_headersPath, value, false);
     }
 
     /// <summary>
@@ -734,8 +734,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool ShowGridLines
     {
-        get { return this.GetXmlNodeBool(_gridLinesPath, false); }
-        set { this.SetXmlNodeBool(_gridLinesPath, value, false); }
+        get => this.GetXmlNodeBool(_gridLinesPath, false);
+        set => this.SetXmlNodeBool(_gridLinesPath, value, false);
     }
 
     const string _horizontalCenteredPath = "d:printOptions/@horizontalCentered";
@@ -745,8 +745,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>w
     public bool HorizontalCentered
     {
-        get { return this.GetXmlNodeBool(_horizontalCenteredPath, false); }
-        set { this.SetXmlNodeBool(_horizontalCenteredPath, value, false); }
+        get => this.GetXmlNodeBool(_horizontalCenteredPath, false);
+        set => this.SetXmlNodeBool(_horizontalCenteredPath, value, false);
     }
 
     const string _verticalCenteredPath = "d:printOptions/@verticalCentered";
@@ -756,8 +756,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool VerticalCentered
     {
-        get { return this.GetXmlNodeBool(_verticalCenteredPath, false); }
-        set { this.SetXmlNodeBool(_verticalCenteredPath, value, false); }
+        get => this.GetXmlNodeBool(_verticalCenteredPath, false);
+        set => this.SetXmlNodeBool(_verticalCenteredPath, value, false);
     }
 
     const string _pageOrderPath = "d:pageSetup/@pageOrder";
@@ -798,8 +798,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool BlackAndWhite
     {
-        get { return this.GetXmlNodeBool(_blackAndWhitePath, false); }
-        set { this.SetXmlNodeBool(_blackAndWhitePath, value, false); }
+        get => this.GetXmlNodeBool(_blackAndWhitePath, false);
+        set => this.SetXmlNodeBool(_blackAndWhitePath, value, false);
     }
 
     const string _draftPath = "d:pageSetup/@draft";
@@ -809,8 +809,8 @@ public sealed class ExcelPrinterSettings : XmlHelper
     /// </summary>
     public bool Draft
     {
-        get { return this.GetXmlNodeBool(_draftPath, false); }
-        set { this.SetXmlNodeBool(_draftPath, value, false); }
+        get => this.GetXmlNodeBool(_draftPath, false);
+        set => this.SetXmlNodeBool(_draftPath, value, false);
     }
 
     const string _paperSizePath = "d:pageSetup/@paperSize";
@@ -833,7 +833,7 @@ public sealed class ExcelPrinterSettings : XmlHelper
                 return ePaperSize.Letter;
             }
         }
-        set { this.SetXmlNodeString(_paperSizePath, ((int)value).ToString()); }
+        set => this.SetXmlNodeString(_paperSizePath, ((int)value).ToString());
     }
 
     /// <summary>

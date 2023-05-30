@@ -25,10 +25,8 @@ namespace OfficeOpenXml;
 public class ExcelWriteProtection : XmlHelper
 {
     internal ExcelWriteProtection(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this.SchemaNodeOrder = schemaNodeOrder;
-    }
 
     /// <summary>
     /// Writes protectes the workbook with a password. 
@@ -69,15 +67,12 @@ public class ExcelWriteProtection : XmlHelper
     /// <summary>
     /// Remove any write protection set on the workbook
     /// </summary>
-    public void RemoveReadOnly()
-    {
-        this.DeleteNode("d:fileSharing");
-    }
+    public void RemoveReadOnly() => this.DeleteNode("d:fileSharing");
 
     internal eHashAlgorithm HashAlgorithm
     {
-        get { return GetHashAlogorithm(this.GetXmlNodeString("d:fileSharing/@algorithmName")); }
-        private set { this.SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value)); }
+        get => GetHashAlogorithm(this.GetXmlNodeString("d:fileSharing/@algorithmName"));
+        private set => this.SetXmlNodeString("d:fileSharing/@algorithmName", SetHashAlogorithm(value));
     }
 
     private static string SetHashAlogorithm(eHashAlgorithm value)
@@ -121,8 +116,8 @@ public class ExcelWriteProtection : XmlHelper
 
     internal int SpinCount
     {
-        get { return this.GetXmlNodeInt("d:fileSharing/@spinCount"); }
-        set { this.SetXmlNodeInt("d:fileSharing/@spinCount", value); }
+        get => this.GetXmlNodeInt("d:fileSharing/@spinCount");
+        set => this.SetXmlNodeInt("d:fileSharing/@spinCount", value);
     }
 
     internal byte[] SaltValue
@@ -138,7 +133,7 @@ public class ExcelWriteProtection : XmlHelper
 
             return null;
         }
-        set { this.SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value)); }
+        set => this.SetXmlNodeString("d:fileSharing/@saltValue", Convert.ToBase64String(value));
     }
 
     internal byte[] HashValue
@@ -154,24 +149,21 @@ public class ExcelWriteProtection : XmlHelper
 
             return null;
         }
-        set { this.SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value)); }
+        set => this.SetXmlNodeString("d:fileSharing/@hashValue", Convert.ToBase64String(value));
     }
 
     /// <summary>
     /// If the workbook is set to readonly and has a password set.
     /// </summary>
-    public bool IsReadOnly
-    {
-        get { return this.ExistsNode("d:fileSharing/@hashValue"); }
-    }
+    public bool IsReadOnly => this.ExistsNode("d:fileSharing/@hashValue");
 
     /// <summary>
     /// The name of the person enforcing the write protection.
     /// </summary>
     public string UserName
     {
-        get { return this.GetXmlNodeString("d:fileSharing/@userName"); }
-        set { this.SetXmlNodeString("d:fileSharing/@userName", value); }
+        get => this.GetXmlNodeString("d:fileSharing/@userName");
+        set => this.SetXmlNodeString("d:fileSharing/@userName", value);
     }
 
     /// <summary>
@@ -179,7 +171,7 @@ public class ExcelWriteProtection : XmlHelper
     /// </summary>
     public bool ReadOnlyRecommended
     {
-        get { return this.GetXmlNodeBool("d:fileSharing/@readOnlyRecommended"); }
-        set { this.SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value); }
+        get => this.GetXmlNodeBool("d:fileSharing/@readOnlyRecommended");
+        set => this.SetXmlNodeBool("d:fileSharing/@readOnlyRecommended", value);
     }
 }

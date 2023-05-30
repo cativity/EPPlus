@@ -335,10 +335,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// <summary>
     /// The type of drawing
     /// </summary>
-    public virtual eDrawingType DrawingType
-    {
-        get { return eDrawingType.Drawing; }
-    }
+    public virtual eDrawingType DrawingType => eDrawingType.Drawing;
 
     /// <summary>
     /// The name of the drawing object
@@ -498,8 +495,8 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// </summary>
     public virtual bool Locked
     {
-        get { return this.GetXmlNodeBool(lockedPath, true); }
-        set { this.SetXmlNodeBool(lockedPath, value); }
+        get => this.GetXmlNodeBool(lockedPath, true);
+        set => this.SetXmlNodeBool(lockedPath, value);
     }
 
     const string printPath = "xdr:clientData/@fPrintsWithSheet";
@@ -509,8 +506,8 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// </summary>
     public virtual bool Print
     {
-        get { return this.GetXmlNodeBool(printPath, true); }
-        set { this.SetXmlNodeBool(printPath, value); }
+        get => this.GetXmlNodeBool(printPath, true);
+        set => this.SetXmlNodeBool(printPath, value);
     }
 
     /// <summary>
@@ -542,7 +539,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// </summary>
     public Uri Hyperlink
     {
-        get { return this._hyperLink; }
+        get => this._hyperLink;
         set
         {
             if (this._hyperLink != null)
@@ -585,10 +582,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// <summary>
     /// Provides access to type conversion for all top-level drawing classes.
     /// </summary>
-    public ExcelDrawingAsType As
-    {
-        get { return this._as ??= new ExcelDrawingAsType(this); }
-    }
+    public ExcelDrawingAsType As => this._as ??= new ExcelDrawingAsType(this);
 
     internal ZipPackageRelationship HypRel { get; set; }
 
@@ -704,10 +698,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
         return -1;
     }
 
-    internal int Id
-    {
-        get { return this._id; }
-    }
+    internal int Id => this._id;
 
     #region "Internal sizing functions"
 
@@ -1053,10 +1044,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// </summary>
     /// <param name="PixelTop">Top pixel</param>
     /// <param name="PixelLeft">Left pixel</param>
-    public void SetPosition(int PixelTop, int PixelLeft)
-    {
-        this.SetPosition(PixelTop, PixelLeft, true);
-    }
+    public void SetPosition(int PixelTop, int PixelLeft) => this.SetPosition(PixelTop, PixelLeft, true);
 
     internal void SetPosition(int PixelTop, int PixelLeft, bool adjustChildren)
     {
@@ -1268,18 +1256,12 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// <summary>
     /// Sends the drawing to the back of any overlapping drawings.
     /// </summary>
-    public void SendToBack()
-    {
-        this._drawings.SendToBack(this);
-    }
+    public void SendToBack() => this._drawings.SendToBack(this);
 
     /// <summary>
     /// Brings the drawing to the front of any overlapping drawings.
     /// </summary>
-    public void BringToFront()
-    {
-        this._drawings.BringToFront(this);
-    }
+    public void BringToFront() => this._drawings.BringToFront(this);
 
     /// <summary>
     /// Group the drawing together with a list of other drawings. 
@@ -1363,15 +1345,9 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// If the drawing is grouped this property contains the Group drawing containing the group.
     /// Otherwise this property is null
     /// </summary>
-    public ExcelGroupShape ParentGroup
-    {
-        get { return this._parent; }
-    }
+    public ExcelGroupShape ParentGroup => this._parent;
 
-    internal virtual void DeleteMe()
-    {
-        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
-    }
+    internal virtual void DeleteMe() => _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
 
     /// <summary>
     /// Dispose the object

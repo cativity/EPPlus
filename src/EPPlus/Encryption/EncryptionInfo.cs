@@ -196,13 +196,13 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@saltValue", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@saltValue", Convert.ToBase64String(value));
         }
 
         internal eHashAlgorithm HashAlgorithm
         {
-            get { return GetHashAlgorithm(this.GetXmlNodeString("@hashAlgorithm")); }
-            set { this.SetXmlNodeString("@hashAlgorithm", GetHashAlgorithmString(value)); }
+            get => GetHashAlgorithm(this.GetXmlNodeString("@hashAlgorithm"));
+            set => this.SetXmlNodeString("@hashAlgorithm", GetHashAlgorithmString(value));
         }
 
         private static eHashAlgorithm GetHashAlgorithm(string v)
@@ -263,13 +263,13 @@ internal class EncryptionInfoAgile : EncryptionInfo
                     throw new InvalidDataException("Invalid chaining mode");
                 }
             }
-            set { this.SetXmlNodeString("@cipherChaining", value.ToString()); }
+            set => this.SetXmlNodeString("@cipherChaining", value.ToString());
         }
 
         internal eCipherAlgorithm CipherAlgorithm
         {
-            get { return GetCipherAlgorithm(this.GetXmlNodeString("@cipherAlgorithm")); }
-            set { this.SetXmlNodeString("@cipherAlgorithm", GetCipherAlgorithmString(value)); }
+            get => GetCipherAlgorithm(this.GetXmlNodeString("@cipherAlgorithm"));
+            set => this.SetXmlNodeString("@cipherAlgorithm", GetCipherAlgorithmString(value));
         }
 
         private static eCipherAlgorithm GetCipherAlgorithm(string v)
@@ -311,26 +311,26 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
         internal int HashSize
         {
-            get { return this.GetXmlNodeInt("@hashSize"); }
-            set { this.SetXmlNodeString("@hashSize", value.ToString()); }
+            get => this.GetXmlNodeInt("@hashSize");
+            set => this.SetXmlNodeString("@hashSize", value.ToString());
         }
 
         internal int KeyBits
         {
-            get { return this.GetXmlNodeInt("@keyBits"); }
-            set { this.SetXmlNodeString("@keyBits", value.ToString()); }
+            get => this.GetXmlNodeInt("@keyBits");
+            set => this.SetXmlNodeString("@keyBits", value.ToString());
         }
 
         internal int BlockSize
         {
-            get { return this.GetXmlNodeInt("@blockSize"); }
-            set { this.SetXmlNodeString("@blockSize", value.ToString()); }
+            get => this.GetXmlNodeInt("@blockSize");
+            set => this.SetXmlNodeString("@blockSize", value.ToString());
         }
 
         internal int SaltSize
         {
-            get { return this.GetXmlNodeInt("@saltSize"); }
-            set { this.SetXmlNodeString("@saltSize", value.ToString()); }
+            get => this.GetXmlNodeInt("@saltSize");
+            set => this.SetXmlNodeString("@saltSize", value.ToString());
         }
     }
 
@@ -354,7 +354,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@encryptedHmacValue", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@encryptedHmacValue", Convert.ToBase64String(value));
         }
 
         internal byte[] EncryptedHmacKey
@@ -370,7 +370,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@encryptedHmacKey", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@encryptedHmacKey", Convert.ToBase64String(value));
         }
     }
 
@@ -394,7 +394,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@encryptedKeyValue", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@encryptedKeyValue", Convert.ToBase64String(value));
         }
 
         internal byte[] EncryptedVerifierHash
@@ -410,7 +410,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@encryptedVerifierHashValue", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@encryptedVerifierHashValue", Convert.ToBase64String(value));
         }
 
         internal byte[] EncryptedVerifierHashInput
@@ -426,7 +426,7 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
                 return null;
             }
-            set { this.SetXmlNodeString("@encryptedVerifierHashInput", Convert.ToBase64String(value)); }
+            set => this.SetXmlNodeString("@encryptedVerifierHashInput", Convert.ToBase64String(value));
         }
 
         internal byte[] VerifierHashInput { get; set; }
@@ -437,8 +437,8 @@ internal class EncryptionInfoAgile : EncryptionInfo
 
         internal int SpinCount
         {
-            get { return this.GetXmlNodeInt("@spinCount"); }
-            set { this.SetXmlNodeString("@spinCount", value.ToString()); }
+            get => this.GetXmlNodeInt("@spinCount");
+            set => this.SetXmlNodeString("@spinCount", value.ToString());
         }
     }
     /*

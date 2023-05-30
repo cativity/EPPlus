@@ -56,7 +56,7 @@ public class ExcelPivotTableAreaStyle : ExcelPivotArea
 
     internal int? DxfId
     {
-        get { return this.GetXmlNodeIntNull("../@dxfId"); }
-        set { this.SetXmlNodeInt("../@dxfId", value); }
+        get => this.GetXmlNodeIntNull("../@dxfId");
+        set => this.SetXmlNodeInt("../@dxfId", value);
     }
 }

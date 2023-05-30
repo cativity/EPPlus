@@ -24,27 +24,19 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public sealed class ExcelChartExPlotarea : ExcelChartPlotArea
 {
     internal ExcelChartExPlotarea(XmlNamespaceManager ns, XmlNode node, ExcelChart chart)
-        : base(ns, node, chart, "cx")
-    {
+        : base(ns, node, chart, "cx") =>
         this.SchemaNodeOrder = new string[] { "plotAreaRegion", "axis", "spPr" };
-    }
 
     /// <summary>
     /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
     /// </summary>
     /// <exception cref="InvalidOperationException">Will always be thrown</exception>
     /// <returns></returns>
-    public override ExcelChartDataTable CreateDataTable()
-    {
-        throw new InvalidOperationException("Extensions charts cannot have a data tables");
-    }
+    public override ExcelChartDataTable CreateDataTable() => throw new InvalidOperationException("Extensions charts cannot have a data tables");
 
     /// <summary>
     /// Not applicable on extended charts. Will throw <see cref="InvalidOperationException"/>
     /// </summary>
     /// <exception cref="InvalidOperationException">Will always be thrown</exception>
-    public override void RemoveDataTable()
-    {
-        throw new InvalidOperationException("Extensions charts cannot have a data tables");
-    }
+    public override void RemoveDataTable() => throw new InvalidOperationException("Extensions charts cannot have a data tables");
 }

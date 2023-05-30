@@ -71,8 +71,5 @@ public class FunctionCompilerFactory
         return new DefaultCompiler(function, this._context);
     }
 
-    public virtual FunctionCompiler Create(ExcelFunction function)
-    {
-        return this.GetCompilerByType(function);
-    }
+    public virtual FunctionCompiler Create(ExcelFunction function) => this.GetCompilerByType(function);
 }

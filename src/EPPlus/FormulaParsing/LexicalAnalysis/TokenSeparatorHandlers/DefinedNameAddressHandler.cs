@@ -23,10 +23,7 @@ internal class DefinedNameAddressHandler : SeparatorHandler
 {
     INameValueProvider _nameValueProvider;
 
-    public DefinedNameAddressHandler(INameValueProvider nameValueProvider)
-    {
-        this._nameValueProvider = nameValueProvider;
-    }
+    public DefinedNameAddressHandler(INameValueProvider nameValueProvider) => this._nameValueProvider = nameValueProvider;
 
     public override bool Handle(char c, Token tokenSeparator, TokenizerContext context, ITokenIndexProvider tokenIndexProvider)
     {

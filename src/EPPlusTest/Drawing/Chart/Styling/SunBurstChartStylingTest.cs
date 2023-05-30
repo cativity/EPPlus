@@ -47,16 +47,10 @@ public class SunBurstChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("SunburstChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("SunburstChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void SunburstChart_Styles()
@@ -95,22 +89,22 @@ public class SunBurstChartStylingTest : TestBase
                    });
 
         //Sunburst Chart Style 3
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle3, "SunburstChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle3, "SunburstChartStyle3", 0, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Sunburst Chart Style 4
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle4, "SunburstChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle4, "SunburstChartStyle4", 20, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Sunburst Chart Style 5
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle5, "SunburstChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle5, "SunburstChartStyle5", 20, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Sunburst Chart Style 6
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle6, "SunburstChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle6, "SunburstChartStyle6", 20, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Sunburst Chart Style 7
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle7, "SunburstChartStyle7", 40, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle7, "SunburstChartStyle7", 40, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Sunburst Chart Style 8
-        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle8, "SunburstChartStyle8", 40, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.SunburstChartStyle8, "SunburstChartStyle8", 40, 18, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelSunburstChart AddChartEx(ExcelWorksheet ws,

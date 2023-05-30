@@ -40,8 +40,5 @@ internal class GenericFontMetricsTextMeasurer : GenericFontMetricsTextMeasurerBa
         return this.MeasureTextInternal(text, fontKey, font.Style, font.Size);
     }
 
-    public bool ValidForEnvironment()
-    {
-        return true;
-    }
+    public bool ValidForEnvironment() => true;
 }

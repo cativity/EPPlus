@@ -44,10 +44,7 @@ namespace OfficeOpenXml
         /// Returns the range as a <see cref="DataTable"/> with the <see cref="ToDataTableOptions.Default"/> settings.
         /// </summary>
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
-        public DataTable ToDataTable()
-        {
-            return this.ToDataTable(ToDataTableOptions.Default);
-        }
+        public DataTable ToDataTable() => this.ToDataTable(ToDataTableOptions.Default);
 
         /// <summary>
         /// Returns the range as a <see cref="DataTable"/> with the option supplied.
@@ -93,10 +90,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="dataTable">The data table to add the range data to.</param>
         /// <returns>A <see cref="DataTable"/> representing the range.</returns>
-        public DataTable ToDataTable(DataTable dataTable)
-        {
-            return this.ToDataTable(ToDataTableOptions.Default, dataTable);
-        }
+        public DataTable ToDataTable(DataTable dataTable) => this.ToDataTable(ToDataTableOptions.Default, dataTable);
 
         /// <summary>
         /// Returns the range as a <see cref="DataTable"/> with the option supplied.
@@ -119,10 +113,7 @@ namespace OfficeOpenXml
         /// Converts a range to text in CSV format.
         /// </summary>
         /// <returns>A string containing the text</returns>
-        public string ToText()
-        {
-            return this.ToText(null);
-        }
+        public string ToText() => this.ToText(null);
 
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -234,10 +225,7 @@ namespace OfficeOpenXml
         /// Converts a range to text in CSV format.
         /// </summary>
         /// <returns>A string containing the text</returns>
-        public async Task<string> ToTextAsync()
-        {
-            return await this.ToTextAsync(null).ConfigureAwait(false);
-        }
+        public async Task<string> ToTextAsync() => await this.ToTextAsync(null).ConfigureAwait(false);
 
         /// <summary>
         /// Converts a range to text in CSV format.
@@ -452,10 +440,7 @@ namespace OfficeOpenXml
             return ci;
         }
 
-        private bool SkipLines(ExcelOutputTextFormat Format, int row, int skipLinesBegining)
-        {
-            return skipLinesBegining > row - this._fromRow || Format.SkipLinesEnd > this._toRow - row;
-        }
+        private bool SkipLines(ExcelOutputTextFormat Format, int row, int skipLinesBegining) => skipLinesBegining > row - this._fromRow || Format.SkipLinesEnd > this._toRow - row;
 
         private string GetText(ExcelOutputTextFormat Format, int maxFormats, CultureInfo ci, int row, int col, out bool isText)
         {
@@ -614,10 +599,7 @@ namespace OfficeOpenXml
         /// <typeparam name="T">The type to map to</typeparam>
         /// <param name="setRow">The call back function to map each row to the item of type T.</param>
         /// <returns>A list of T</returns>
-        public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow)
-        {
-            return this.ToCollectionWithMappings(setRow, new ToCollectionRangeOptions());
-        }
+        public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow) => this.ToCollectionWithMappings(setRow, new ToCollectionRangeOptions());
 
         /// <summary>
         /// Returns a collection of T for the range. 
@@ -645,10 +627,7 @@ namespace OfficeOpenXml
         /// <param name="setRow">The call back function to map each row to the item of type T.</param>
         /// <param name="options">Parameters to the function</param>
         /// <returns>A list of T</returns>
-        public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow, ToCollectionRangeOptions options)
-        {
-            return ToCollectionRange.ToCollection(this, setRow, options);
-        }
+        public List<T> ToCollectionWithMappings<T>(Func<ToCollectionRow, T> setRow, ToCollectionRangeOptions options) => ToCollectionRange.ToCollection(this, setRow, options);
 
         /// <summary>
         /// Returns a collection of T for the range. 
@@ -659,10 +638,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <typeparam name="T">The type to map to</typeparam>
         /// <returns>A list of T</returns>
-        public List<T> ToCollection<T>()
-        {
-            return this.ToCollection<T>(new ToCollectionRangeOptions() { HeaderRow = 0 });
-        }
+        public List<T> ToCollection<T>() => this.ToCollection<T>(new ToCollectionRangeOptions() { HeaderRow = 0 });
 
         /// <summary>
         /// Automatically maps the range to the properties <see cref="T"/> using the headers.
@@ -690,9 +666,6 @@ namespace OfficeOpenXml
         /// <typeparam name="T">The type to use</typeparam>
         /// <param name="options">Settings for the method</param>
         /// <returns>A list of <see cref="T"/></returns>
-        public List<T> ToCollection<T>(ToCollectionRangeOptions options)
-        {
-            return ToCollectionRange.ToCollection<T>(this, options);
-        }
+        public List<T> ToCollection<T>(ToCollectionRangeOptions options) => ToCollectionRange.ToCollection<T>(this, options);
     }
 }

@@ -452,9 +452,9 @@ public class RangeExporterTests : TestBase
 
         IExcelHtmlRangeExporter? exporter = package.Workbook.CreateHtmlExporter(sheet1.Cells["B1:E115"], sheet2.Cells["B1:E147"], sheet3.Cells["B1:E105"]);
         exporter.Settings.HyperlinkTarget = "_blank";
-        string? html1 = exporter.GetHtmlString(0, x => { x.TableId = "americas-toll-free"; });
-        _ = exporter.GetHtmlString(1, x => { x.TableId = "emea-toll-free"; });
-        _ = exporter.GetHtmlString(2, x => { x.TableId = "asia-toll-free"; });
+        string? html1 = exporter.GetHtmlString(0, x => x.TableId = "americas-toll-free");
+        _ = exporter.GetHtmlString(1, x => x.TableId = "emea-toll-free");
+        _ = exporter.GetHtmlString(2, x => x.TableId = "asia-toll-free");
         string? css = exporter.GetCssString();
         File.WriteAllText("c:\\temp\\html.html", $"<html><head><style type=\"text/css\">{css}</style></head><body>{html1}</body></html>");
     }

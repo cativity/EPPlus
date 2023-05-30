@@ -12,10 +12,8 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     ExcelVmlDrawingFill _fill;
 
     internal ExcelVmlDrawingGradientFill(ExcelVmlDrawingFill fill, XmlNamespaceManager nsm, XmlNode topNode)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._fill = fill;
-    }
 
     /// <summary>
     /// A semicolon separated list of colors used for gradient fill. 
@@ -24,8 +22,8 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     /// </summary>
     public string ColorsString
     {
-        get { return this.GetXmlNodeString("v:fill/@colors"); }
-        set { this.SetXmlNodeString("v:fill/@colors", value); }
+        get => this.GetXmlNodeString("v:fill/@colors");
+        set => this.SetXmlNodeString("v:fill/@colors", value);
     }
 
     /// <summary>
@@ -95,8 +93,8 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     /// </summary>
     public double? Angle
     {
-        get { return this.GetXmlNodeDoubleNull("v:fill/@angle"); }
-        set { this.SetXmlNodeDouble("v:fill/@angle", value); }
+        get => this.GetXmlNodeDoubleNull("v:fill/@angle");
+        set => this.SetXmlNodeDouble("v:fill/@angle", value);
     }
 
     /// <summary>
@@ -104,8 +102,8 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     /// </summary>
     public double? Focus
     {
-        get { return this.GetXmlNodeDoubleNull("v:fill/@focus"); }
-        set { this.SetXmlNodeDouble("v:fill/@focus", value); }
+        get => this.GetXmlNodeDoubleNull("v:fill/@focus");
+        set => this.SetXmlNodeDouble("v:fill/@focus", value);
     }
 
     /// <summary>
@@ -113,7 +111,7 @@ public class ExcelVmlDrawingGradientFill : XmlHelper
     /// </summary>
     public eVmlGradientMethod Method
     {
-        get { return this.GetXmlNodeString("v:fill/@method").ToGradientMethodEnum(eVmlGradientMethod.None); }
-        set { this.SetXmlNodeString("v:fill/@focus", value.ToEnumString()); }
+        get => this.GetXmlNodeString("v:fill/@method").ToGradientMethodEnum(eVmlGradientMethod.None);
+        set => this.SetXmlNodeString("v:fill/@focus", value.ToEnumString());
     }
 }

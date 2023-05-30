@@ -38,10 +38,7 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
     /// <summary>
     /// The fillstyle, always PatternFill
     /// </summary>
-    public override eFillStyle Style
-    {
-        get { return eFillStyle.PatternFill; }
-    }
+    public override eFillStyle Style => eFillStyle.PatternFill;
 
     private eFillPatternStyle _pattern;
 
@@ -50,8 +47,8 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
     /// </summary>
     public eFillPatternStyle PatternType
     {
-        get { return this._pattern; }
-        set { this._pattern = value; }
+        get => this._pattern;
+        set => this._pattern = value;
     }
 
     ExcelDrawingColorManager _fgColor;
@@ -59,25 +56,16 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
     /// <summary>
     /// Foreground color
     /// </summary>
-    public ExcelDrawingColorManager ForegroundColor
-    {
-        get { return this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml); }
-    }
+    public ExcelDrawingColorManager ForegroundColor => this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml);
 
     ExcelDrawingColorManager _bgColor;
 
     /// <summary>
     /// Background color
     /// </summary>
-    public ExcelDrawingColorManager BackgroundColor
-    {
-        get { return this._bgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml); }
-    }
+    public ExcelDrawingColorManager BackgroundColor => this._bgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:bgClr", this._schemaNodeOrder, this._initXml);
 
-    internal override string NodeName
-    {
-        get { return "a:patternFill"; }
-    }
+    internal override string NodeName => "a:patternFill";
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {
@@ -103,10 +91,7 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
         ExcelDrawingThemeColorManager.SetXml(nsm, bgNode);
     }
 
-    internal override void GetXml()
-    {
-        this.PatternType = this._xml.GetXmlNodeString("@prst").ToEnum(eFillPatternStyle.Pct5);
-    }
+    internal override void GetXml() => this.PatternType = this._xml.GetXmlNodeString("@prst").ToEnum(eFillPatternStyle.Pct5);
 
     internal override void UpdateXml()
     {

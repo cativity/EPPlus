@@ -31,10 +31,7 @@ internal class Xor : ExcelFunction
     {
     }
 
-    public Xor(DoubleEnumerableArgConverter converter)
-    {
-        this._converter = converter;
-    }
+    public Xor(DoubleEnumerableArgConverter converter) => this._converter = converter;
 
     private readonly DoubleEnumerableArgConverter _converter;
 

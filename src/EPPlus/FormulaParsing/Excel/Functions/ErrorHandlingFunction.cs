@@ -31,10 +31,7 @@ public abstract class ErrorHandlingFunction : ExcelFunction
     /// <summary>
     /// Indicates that the function is an ErrorHandlingFunction.
     /// </summary>
-    public override bool IsErrorHandlingFunction
-    {
-        get { return true; }
-    }
+    public override bool IsErrorHandlingFunction => true;
 
     /// <summary>
     /// Method that should be implemented to handle the error.

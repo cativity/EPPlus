@@ -337,10 +337,7 @@ internal class ZipOutputStream : Stream
     ///   true if the application would like the stream
     ///   to remain open after the <c>ZipOutputStream</c> has been closed.
     /// </param>
-    public ZipOutputStream(Stream stream, bool leaveOpen)
-    {
-        this._Init(stream, leaveOpen, null);
-    }
+    public ZipOutputStream(Stream stream, bool leaveOpen) => this._Init(stream, leaveOpen, null);
 
     private void _Init(Stream stream, bool leaveOpen, string name)
     {
@@ -366,10 +363,7 @@ internal class ZipOutputStream : Stream
     ///   </para>
     /// </remarks>
     /// <returns>a string representation of the instance.</returns>
-    public override string ToString()
-    {
-        return string.Format("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
-    }
+    public override string ToString() => string.Format("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
 
     /// <summary>
     ///   Sets the password to be used on the <c>ZipOutputStream</c> instance.
@@ -466,7 +460,7 @@ internal class ZipOutputStream : Stream
     /// <seealso cref="ZipEntry.Encryption">ZipEntry.Encryption</seealso>
     public EncryptionAlgorithm Encryption
     {
-        get { return this._encryption; }
+        get => this._encryption;
         set
         {
             if (this._disposed)
@@ -523,7 +517,7 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public ZipEntryTimestamp Timestamp
     {
-        get { return this._timestamp; }
+        get => this._timestamp;
         set
         {
             if (this._disposed)
@@ -615,7 +609,7 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public string Comment
     {
-        get { return this._comment; }
+        get => this._comment;
         set
         {
             if (this._disposed)
@@ -648,7 +642,7 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public Zip64Option EnableZip64
     {
-        get { return this._zip64; }
+        get => this._zip64;
         set
         {
             if (this._disposed)
@@ -669,10 +663,7 @@ internal class ZipOutputStream : Stream
     /// <remarks>
     ///   The value is defined only after the <c>ZipOutputStream</c> has been closed.
     /// </remarks>
-    public bool OutputUsedZip64
-    {
-        get { return this._anyEntriesUsedZip64 || this._directoryNeededZip64; }
-    }
+    public bool OutputUsedZip64 => this._anyEntriesUsedZip64 || this._directoryNeededZip64;
 
     /// <summary>
     ///   Whether the ZipOutputStream should use case-insensitive comparisons when
@@ -695,9 +686,9 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public bool IgnoreCase
     {
-        get { return !this._DontIgnoreCase; }
+        get => !this._DontIgnoreCase;
 
-        set { this._DontIgnoreCase = !value; }
+        set => this._DontIgnoreCase = !value;
     }
 
     /// <summary>
@@ -819,7 +810,7 @@ internal class ZipOutputStream : Stream
     [Obsolete("Beginning with v1.9.1.6 of DotNetZip, this property is obsolete. It will be removed in a future version of the library. Use AlternateEncoding and AlternateEncodingUsage instead.")]
     public bool UseUnicodeAsNecessary
     {
-        get { return this._alternateEncoding == System.Text.Encoding.UTF8 && this.AlternateEncodingUsage == ZipOption.AsNecessary; }
+        get => this._alternateEncoding == System.Text.Encoding.UTF8 && this.AlternateEncodingUsage == ZipOption.AsNecessary;
         set
         {
             if (value)
@@ -947,8 +938,8 @@ internal class ZipOutputStream : Stream
     /// </remarks>
     public System.Text.Encoding AlternateEncoding
     {
-        get { return this._alternateEncoding; }
-        set { this._alternateEncoding = value; }
+        get => this._alternateEncoding;
+        set => this._alternateEncoding = value;
     }
 
     /// <summary>
@@ -958,8 +949,8 @@ internal class ZipOutputStream : Stream
     /// </summary>
     public ZipOption AlternateEncodingUsage
     {
-        get { return this._alternateEncodingUsage; }
-        set { this._alternateEncodingUsage = value; }
+        get => this._alternateEncodingUsage;
+        set => this._alternateEncodingUsage = value;
     }
 
     /// <summary>
@@ -1049,7 +1040,7 @@ internal class ZipOutputStream : Stream
 
             this._ParallelDeflateThreshold = value;
         }
-        get { return this._ParallelDeflateThreshold; }
+        get => this._ParallelDeflateThreshold;
     }
 
     /// <summary>
@@ -1131,7 +1122,7 @@ internal class ZipOutputStream : Stream
     ///
     public int ParallelDeflateMaxBufferPairs
     {
-        get { return this._maxBufferPairs; }
+        get => this._maxBufferPairs;
         set
         {
             if (value < 4)
@@ -1154,15 +1145,9 @@ internal class ZipOutputStream : Stream
         }
     }
 
-    internal Stream OutputStream
-    {
-        get { return this._outputStream; }
-    }
+    internal Stream OutputStream => this._outputStream;
 
-    internal string Name
-    {
-        get { return this._name; }
-    }
+    internal string Name => this._name;
 
     /// <summary>
     ///   Returns true if an entry by the given name has already been written
@@ -1176,10 +1161,7 @@ internal class ZipOutputStream : Stream
     /// <returns>
     /// true if an entry by the given name has already been written.
     /// </returns>
-    public bool ContainsEntry(string name)
-    {
-        return this._entriesWritten.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
-    }
+    public bool ContainsEntry(string name) => this._entriesWritten.ContainsKey(SharedUtilities.NormalizePathForUseInZipFile(name));
 
     /// <summary>
     ///   Write the data from the buffer to the stream.
@@ -1506,34 +1488,22 @@ internal class ZipOutputStream : Stream
     /// <summary>
     /// Always returns false.
     /// </summary>
-    public override bool CanRead
-    {
-        get { return false; }
-    }
+    public override bool CanRead => false;
 
     /// <summary>
     /// Always returns false.
     /// </summary>
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
     /// <summary>
     /// Always returns true.
     /// </summary>
-    public override bool CanWrite
-    {
-        get { return true; }
-    }
+    public override bool CanWrite => true;
 
     /// <summary>
     /// Always returns a NotSupportedException.
     /// </summary>
-    public override long Length
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public override long Length => throw new NotSupportedException();
 
     /// <summary>
     /// Setting this property always returns a NotSupportedException. Getting it
@@ -1541,8 +1511,8 @@ internal class ZipOutputStream : Stream
     /// </summary>
     public override long Position
     {
-        get { return this._outputStream.Position; }
-        set { throw new NotSupportedException(); }
+        get => this._outputStream.Position;
+        set => throw new NotSupportedException();
     }
 
     /// <summary>
@@ -1559,10 +1529,7 @@ internal class ZipOutputStream : Stream
     /// <param name="offset">ignored</param>
     /// <param name="count">ignored</param>
     /// <returns>nothing</returns>
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-        throw new NotSupportedException("Read");
-    }
+    public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException("Read");
 
     /// <summary>
     /// This method always throws a NotSupportedException.
@@ -1570,19 +1537,13 @@ internal class ZipOutputStream : Stream
     /// <param name="offset">ignored</param>
     /// <param name="origin">ignored</param>
     /// <returns>nothing</returns>
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        throw new NotSupportedException("Seek");
-    }
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException("Seek");
 
     /// <summary>
     /// This method always throws a NotSupportedException.
     /// </summary>
     /// <param name="value">ignored</param>
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 
     private EncryptionAlgorithm _encryption;
     private ZipEntryTimestamp _timestamp;
@@ -1648,15 +1609,9 @@ internal class ZipContainer
         this._zis = o as ZipInputStream;
     }
 
-    public ZipFile ZipFile
-    {
-        get { return this._zf; }
-    }
+    public ZipFile ZipFile => this._zf;
 
-    public ZipOutputStream ZipOutputStream
-    {
-        get { return this._zos; }
-    }
+    public ZipOutputStream ZipOutputStream => this._zos;
 
     public string Name
     {

@@ -61,13 +61,12 @@ internal static class SharedUtilities
     }
 
     [System.Diagnostics.Conditional("NETCF")]
-    public static void Workaround_Ladybug318918(Stream s)
-    {
+    public static void Workaround_Ladybug318918(Stream s) =>
+
         // This is a workaround for this issue:
         // https://connect.microsoft.com/VisualStudio/feedback/details/318918
         // It's required only on NETCF.
         s.Flush();
-    }
 
 #if LEGACY
         /// <summary>
@@ -185,10 +184,7 @@ internal static class SharedUtilities
         return a;
     }
 
-    internal static byte[] StringToByteArray(string value)
-    {
-        return StringToByteArray(value, ibm437);
-    }
+    internal static byte[] StringToByteArray(string value) => StringToByteArray(value, ibm437);
 
     //internal static byte[] Utf8StringToByteArray(string value)
     //{
@@ -200,10 +196,7 @@ internal static class SharedUtilities
     //    return StringFromBuffer(buf, maxlength, ibm437);
     //}
 
-    internal static string Utf8StringFromBuffer(byte[] buf)
-    {
-        return StringFromBuffer(buf, utf8);
-    }
+    internal static string Utf8StringFromBuffer(byte[] buf) => StringFromBuffer(buf, utf8);
 
     internal static string StringFromBuffer(byte[] buf, System.Text.Encoding encoding)
     {
@@ -276,10 +269,7 @@ internal static class SharedUtilities
         return x;
     }
 
-    internal static int ReadInt(Stream s)
-    {
-        return _ReadFourBytes(s, "Could not read block - no data!  (position 0x{0:X8})");
-    }
+    internal static int ReadInt(Stream s) => _ReadFourBytes(s, "Could not read block - no data!  (position 0x{0:X8})");
 
     private static int _ReadFourBytes(Stream s, string message)
     {
@@ -693,10 +683,7 @@ internal static class SharedUtilities
             return result;
         }
 #else
-    public static string InternalGetTempFileName()
-    {
-        return "DotNetZip-" + Path.GetRandomFileName().Substring(0, 8) + ".tmp";
-    }
+    public static string InternalGetTempFileName() => "DotNetZip-" + Path.GetRandomFileName().Substring(0, 8) + ".tmp";
 
 #endif
 
@@ -857,26 +844,17 @@ internal class CountingStream : Stream
     /// <summary>
     ///   Gets the wrapped stream.
     /// </summary>
-    public Stream WrappedStream
-    {
-        get { return this._s; }
-    }
+    public Stream WrappedStream => this._s;
 
     /// <summary>
     ///   The count of bytes written out to the stream.
     /// </summary>
-    public long BytesWritten
-    {
-        get { return this._bytesWritten; }
-    }
+    public long BytesWritten => this._bytesWritten;
 
     /// <summary>
     ///   the count of bytes that have been read from the stream.
     /// </summary>
-    public long BytesRead
-    {
-        get { return this._bytesRead; }
-    }
+    public long BytesRead => this._bytesRead;
 
     /// <summary>
     ///    Adjust the byte count on the stream.
@@ -943,58 +921,40 @@ internal class CountingStream : Stream
     /// <summary>
     ///   Whether the stream can be read.
     /// </summary>
-    public override bool CanRead
-    {
-        get { return this._s.CanRead; }
-    }
+    public override bool CanRead => this._s.CanRead;
 
     /// <summary>
     ///   Whether it is possible to call Seek() on the stream.
     /// </summary>
-    public override bool CanSeek
-    {
-        get { return this._s.CanSeek; }
-    }
+    public override bool CanSeek => this._s.CanSeek;
 
     /// <summary>
     ///   Whether it is possible to call Write() on the stream.
     /// </summary>
-    public override bool CanWrite
-    {
-        get { return this._s.CanWrite; }
-    }
+    public override bool CanWrite => this._s.CanWrite;
 
     /// <summary>
     ///   Flushes the underlying stream.
     /// </summary>
-    public override void Flush()
-    {
-        this._s.Flush();
-    }
+    public override void Flush() => this._s.Flush();
 
     /// <summary>
     ///   The length of the underlying stream.
     /// </summary>
-    public override long Length
-    {
-        get { return this._s.Length; } // bytesWritten??
-    }
+    public override long Length => this._s.Length; // bytesWritten??
 
     /// <summary>
     ///   Returns the sum of number of bytes written, plus the initial
     ///   offset before writing.
     /// </summary>
-    public long ComputedPosition
-    {
-        get { return this._initialOffset + this._bytesWritten; }
-    }
+    public long ComputedPosition => this._initialOffset + this._bytesWritten;
 
     /// <summary>
     ///   The Position of the stream.
     /// </summary>
     public override long Position
     {
-        get { return this._s.Position; }
+        get => this._s.Position;
         set
         {
             _ = this._s.Seek(value, SeekOrigin.Begin);
@@ -1010,18 +970,12 @@ internal class CountingStream : Stream
     /// <param name="offset">the offset point to seek to</param>
     /// <param name="origin">the reference point from which to seek</param>
     /// <returns>The new position</returns>
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        return this._s.Seek(offset, origin);
-    }
+    public override long Seek(long offset, SeekOrigin origin) => this._s.Seek(offset, origin);
 
     /// <summary>
     ///   Set the length of the underlying stream.  Be careful with this!
     /// </summary>
     ///
     /// <param name='value'>the length to set on the underlying stream.</param>
-    public override void SetLength(long value)
-    {
-        this._s.SetLength(value);
-    }
+    public override void SetLength(long value) => this._s.SetLength(value);
 }

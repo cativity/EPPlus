@@ -222,8 +222,8 @@ public class ExcelConditionalFormattingIconDataBarValue : XmlHelper
     /// </summary>
     internal eExcelConditionalFormattingRuleType RuleType
     {
-        get { return this._ruleType; }
-        set { this._ruleType = value; }
+        get => this._ruleType;
+        set => this._ruleType = value;
     }
 
     /// <summary>
@@ -256,9 +256,9 @@ public class ExcelConditionalFormattingIconDataBarValue : XmlHelper
     /// </summary>
     public bool GreaterThanOrEqualTo
     {
-        get { return this.GetXmlNodeBool(ExcelConditionalFormattingConstants.Paths.GteAttribute); }
+        get => this.GetXmlNodeBool(ExcelConditionalFormattingConstants.Paths.GteAttribute);
 
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.GteAttribute, value == false ? "0" : string.Empty, true); }
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.GteAttribute, value == false ? "0" : string.Empty, true);
     }
 
     /// <summary>

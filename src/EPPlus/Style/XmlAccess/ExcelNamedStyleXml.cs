@@ -44,10 +44,7 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
         this._style = new ExcelStyle(styles, styles.NamedStylePropertyChange, -1, this.Name, this._styleXfId);
     }
 
-    internal override string Id
-    {
-        get { return this.Name; }
-    }
+    internal override string Id => this.Name;
 
     int _styleXfId;
     const string idPath = "@xfId";
@@ -57,8 +54,8 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
     /// </summary>
     public int StyleXfId
     {
-        get { return this._styleXfId; }
-        set { this._styleXfId = value; }
+        get => this._styleXfId;
+        set => this._styleXfId = value;
     }
 
     int _xfId = int.MinValue;
@@ -68,8 +65,8 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
     /// </summary>
     internal int XfId
     {
-        get { return this._xfId; }
-        set { this._xfId = value; }
+        get => this._xfId;
+        set => this._xfId = value;
     }
 
     const string buildInIdPath = "@builtinId";
@@ -94,8 +91,8 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
     /// </summary>
     public string Name
     {
-        get { return this._name; }
-        internal set { this._name = value; }
+        get => this._name;
+        internal set => this._name = value;
     }
 
     ExcelStyle _style;
@@ -105,8 +102,8 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
     /// </summary>
     public ExcelStyle Style
     {
-        get { return this._style; }
-        internal set { this._style = value; }
+        get => this._style;
+        internal set => this._style = value;
     }
 
     const string uidPath = "@xr:uid";

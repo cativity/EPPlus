@@ -93,7 +93,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// </summary>
     public string Format
     {
-        get { return this.GetXmlNodeString(this._formatPath); }
+        get => this.GetXmlNodeString(this._formatPath);
         set
         {
             this.SetXmlNodeString(this._formatPath, value);
@@ -114,8 +114,8 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// </summary>
     public bool SourceLinked
     {
-        get { return this.GetXmlNodeBool(this._sourceLinkedPath); }
-        set { this.SetXmlNodeBool(this._sourceLinkedPath, value); }
+        get => this.GetXmlNodeBool(this._sourceLinkedPath);
+        set => this.SetXmlNodeBool(this._sourceLinkedPath, value);
     }
 
     /// <summary>
@@ -128,86 +128,59 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// <summary>
     /// Access to fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
 
     ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this._chart,
-                                                           this.NameSpaceManager,
-                                                           this.TopNode,
-                                                           $"{this._nsPrefix}:spPr/a:ln",
-                                                           this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingBorder Border =>
+        this._border ??= new ExcelDrawingBorder(this._chart,
+                                                this.NameSpaceManager,
+                                                this.TopNode,
+                                                $"{this._nsPrefix}:spPr/a:ln",
+                                                this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                $"{this._nsPrefix}:spPr/a:effectLst",
-                                                                this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect =>
+        this._effect ??= new ExcelDrawingEffectStyle(this._chart,
+                                                     this.NameSpaceManager,
+                                                     this.TopNode,
+                                                     $"{this._nsPrefix}:spPr/a:effectLst",
+                                                     this.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
 
     ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
     /// </summary>
-    public ExcelTextFont Font
-    {
-        get
-        {
-            return this._font ??= new ExcelTextFont(this._chart,
-                                                    this.NameSpaceManager,
-                                                    this.TopNode,
-                                                    $"{this._nsPrefix}:txPr/a:p/a:pPr/a:defRPr",
-                                                    this.SchemaNodeOrder);
-        }
-    }
+    public ExcelTextFont Font =>
+        this._font ??= new ExcelTextFont(this._chart,
+                                         this.NameSpaceManager,
+                                         this.TopNode,
+                                         $"{this._nsPrefix}:txPr/a:p/a:pPr/a:defRPr",
+                                         this.SchemaNodeOrder);
 
     ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
     /// </summary>
-    public ExcelTextBody TextBody
-    {
-        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder); }
-    }
+    public ExcelTextBody TextBody => this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder);
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode($"{this._nsPrefix}:spPr");
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode($"{this._nsPrefix}:spPr");
 
     /// <summary>
     /// If the axis is deleted
@@ -232,10 +205,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// <summary>
     /// Gives access to the charts title properties.
     /// </summary>
-    public virtual ExcelChartTitle Title
-    {
-        get { return this.GetTitle(); }
-    }
+    public virtual ExcelChartTitle Title => this.GetTitle();
 
     internal abstract ExcelChartTitle GetTitle();
 
@@ -297,92 +267,63 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// <summary> 
     /// Major gridlines for the axis 
     /// </summary> 
-    public ExcelDrawingBorder MajorGridlines
-    {
-        get
-        {
-            return this._majorGridlines ??= new ExcelDrawingBorder(this._chart,
-                                                                   this.NameSpaceManager,
-                                                                   this.TopNode,
-                                                                   $"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:ln",
-                                                                   this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingBorder MajorGridlines =>
+        this._majorGridlines ??= new ExcelDrawingBorder(this._chart,
+                                                        this.NameSpaceManager,
+                                                        this.TopNode,
+                                                        $"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:ln",
+                                                        this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _majorGridlineEffects;
 
     /// <summary> 
     /// Effects for major gridlines for the axis 
     /// </summary> 
-    public ExcelDrawingEffectStyle MajorGridlineEffects
-    {
-        get
-        {
-            return this._majorGridlineEffects ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                              this.NameSpaceManager,
-                                                                              this.TopNode,
-                                                                              $"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst",
-                                                                              this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle MajorGridlineEffects =>
+        this._majorGridlineEffects ??= new ExcelDrawingEffectStyle(this._chart,
+                                                                   this.NameSpaceManager,
+                                                                   this.TopNode,
+                                                                   $"{this._majorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst",
+                                                                   this.SchemaNodeOrder);
 
     ExcelDrawingBorder _minorGridlines;
 
     /// <summary> 
     /// Minor gridlines for the axis 
     /// </summary> 
-    public ExcelDrawingBorder MinorGridlines
-    {
-        get
-        {
-            return this._minorGridlines ??= new ExcelDrawingBorder(this._chart,
-                                                                   this.NameSpaceManager,
-                                                                   this.TopNode,
-                                                                   $"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:ln",
-                                                                   this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingBorder MinorGridlines =>
+        this._minorGridlines ??= new ExcelDrawingBorder(this._chart,
+                                                        this.NameSpaceManager,
+                                                        this.TopNode,
+                                                        $"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:ln",
+                                                        this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _minorGridlineEffects;
 
     /// <summary> 
     /// Effects for minor gridlines for the axis 
     /// </summary> 
-    public ExcelDrawingEffectStyle MinorGridlineEffects
-    {
-        get
-        {
-            return this._minorGridlineEffects ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                              this.NameSpaceManager,
-                                                                              this.TopNode,
-                                                                              $"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst",
-                                                                              this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle MinorGridlineEffects =>
+        this._minorGridlineEffects ??= new ExcelDrawingEffectStyle(this._chart,
+                                                                   this.NameSpaceManager,
+                                                                   this.TopNode,
+                                                                   $"{this._minorGridlinesPath}/{this._nsPrefix}:spPr/a:effectLst",
+                                                                   this.SchemaNodeOrder);
 
     /// <summary>
     /// True if the axis has major Gridlines
     /// </summary>
-    public bool HasMajorGridlines
-    {
-        get { return this.ExistsNode(this._majorGridlinesPath); }
-    }
+    public bool HasMajorGridlines => this.ExistsNode(this._majorGridlinesPath);
 
     /// <summary>
     /// True if the axis has minor Gridlines
     /// </summary>
-    public bool HasMinorGridlines
-    {
-        get { return this.ExistsNode(this._minorGridlinesPath); }
-    }
+    public bool HasMinorGridlines => this.ExistsNode(this._minorGridlinesPath);
 
     /// <summary> 
     /// Removes Major and Minor gridlines from the Axis 
     /// </summary> 
-    public void RemoveGridlines()
-    {
-        this.RemoveGridlines(true, true);
-    }
+    public void RemoveGridlines() => this.RemoveGridlines(true, true);
 
     /// <summary>
     ///  Removes gridlines from the Axis
@@ -437,10 +378,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// <summary>
     /// Removes the axis title
     /// </summary>
-    public void RemoveTitle()
-    {
-        this.DeleteNode($"{this._nsPrefix}:title");
-    }
+    public void RemoveTitle() => this.DeleteNode($"{this._nsPrefix}:title");
 
     /// <summary>
     /// 

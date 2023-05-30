@@ -25,18 +25,13 @@ namespace OfficeOpenXml.Style;
 public sealed class ExcelNumberFormat : StyleBase
 {
     internal ExcelNumberFormat(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string Address, int index)
-        : base(styles, ChangedEvent, PositionID, Address)
-    {
+        : base(styles, ChangedEvent, PositionID, Address) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// The numeric index fror the format
     /// </summary>
-    public int NumFmtID
-    {
-        get { return this.Index; }
-    }
+    public int NumFmtID => this.Index;
 
     /// <summary>
     /// The numberformat 
@@ -55,21 +50,16 @@ public sealed class ExcelNumberFormat : StyleBase
 
             return "general";
         }
-        set
-        {
+        set =>
             _ = this._ChangedEvent(this,
-                               new StyleChangeEventArgs(eStyleClass.Numberformat,
-                                                        eStyleProperty.Format,
-                                                        string.IsNullOrEmpty(value) ? "General" : value,
-                                                        this._positionID,
-                                                        this._address));
-        }
+                                   new StyleChangeEventArgs(eStyleClass.Numberformat,
+                                                            eStyleProperty.Format,
+                                                            string.IsNullOrEmpty(value) ? "General" : value,
+                                                            this._positionID,
+                                                            this._address));
     }
 
-    internal override string Id
-    {
-        get { return this.Format; }
-    }
+    internal override string Id => this.Format;
 
     /// <summary>
     /// If the numeric format is a build-in from.

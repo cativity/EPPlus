@@ -32,10 +32,7 @@ internal class Switch : ExcelFunction
     {
     }
 
-    public Switch(CompileResultFactory compileResultFactory)
-    {
-        this._compileResultFactory = compileResultFactory;
-    }
+    public Switch(CompileResultFactory compileResultFactory) => this._compileResultFactory = compileResultFactory;
 
     private readonly CompileResultFactory _compileResultFactory;
 

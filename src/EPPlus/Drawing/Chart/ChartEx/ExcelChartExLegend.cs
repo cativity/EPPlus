@@ -12,17 +12,15 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public class ExcelChartExLegend : ExcelChartLegend
 {
     internal ExcelChartExLegend(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node)
-        : base(nsm, node, chart, "cx")
-    {
+        : base(nsm, node, chart, "cx") =>
         this.SchemaNodeOrder = new string[] { "spPr", "txPr" };
-    }
 
     /// <summary>
     /// The side position alignment of the legend
     /// </summary>
     public ePositionAlign PositionAlignment
     {
-        get { return this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center); }
+        get => this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
         set
         {
             if (this.TopNode == null)

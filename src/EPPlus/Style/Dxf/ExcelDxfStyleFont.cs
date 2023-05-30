@@ -38,18 +38,12 @@ public class ExcelDxfStyleFont : ExcelDxfStyleBase
     /// </summary>
     public ExcelDxfFont Font { get; internal set; }
 
-    internal override string Id
-    {
-        get { return base.Id + this.Font.Id; }
-    }
+    internal override string Id => base.Id + this.Font.Id;
 
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return base.HasValue || this.Font.HasValue; }
-    }
+    public override bool HasValue => base.HasValue || this.Font.HasValue;
 
     internal override DxfStyleBase Clone()
     {

@@ -45,16 +45,10 @@ public class BubbleChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("BubbleChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("BubbleChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void Bubble_Styles()
@@ -77,25 +71,25 @@ public class BubbleChartStylingTest : TestBase
     private static void BubbleStyle(ExcelWorksheet ws, eBubbleChartType chartType)
     {
         //Style 1
-        _ = AddBubble(ws, chartType, "BubbleChartStyle1", 0, 5, ePresetChartStyle.BubbleChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle1", 0, 5, ePresetChartStyle.BubbleChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddBubble(ws, chartType, "BubbleChartStyle2", 0, 18, ePresetChartStyle.BubbleChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle2", 0, 18, ePresetChartStyle.BubbleChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
-        _ = AddBubble(ws, chartType, "BubbleChartStyle3", 0, 31, ePresetChartStyle.BubbleChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle3", 0, 31, ePresetChartStyle.BubbleChartStyle3, c => c.DataLabel.ShowPercent = true);
 
         //Style 4
-        _ = AddBubble(ws, chartType, "BubbleChartStyle4", 22, 5, ePresetChartStyle.BubbleChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle4", 22, 5, ePresetChartStyle.BubbleChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddBubble(ws, chartType, "BubbleChartStyle5", 22, 18, ePresetChartStyle.BubbleChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle5", 22, 18, ePresetChartStyle.BubbleChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddBubble(ws, chartType, "BubbleChartStyle6", 22, 31, ePresetChartStyle.BubbleChartStyle6, c => { });
 
         //Style 7
-        _ = AddBubble(ws, chartType, "BubbleChartStyle7", 44, 5, ePresetChartStyle.BubbleChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle7", 44, 5, ePresetChartStyle.BubbleChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddBubble(ws,
@@ -145,25 +139,25 @@ public class BubbleChartStylingTest : TestBase
     private static void Bubble3DStyle(ExcelWorksheet ws, eBubbleChartType chartType)
     {
         //Style 1
-        _ = AddBubble(ws, chartType, "BubbleChartStyle1", 0, 5, ePresetChartStyle.Bubble3dChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle1", 0, 5, ePresetChartStyle.Bubble3dChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddBubble(ws, chartType, "BubbleChartStyle2", 0, 18, ePresetChartStyle.Bubble3dChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle2", 0, 18, ePresetChartStyle.Bubble3dChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
-        _ = AddBubble(ws, chartType, "BubbleChartStyle3", 0, 31, ePresetChartStyle.Bubble3dChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle3", 0, 31, ePresetChartStyle.Bubble3dChartStyle3, c => c.DataLabel.ShowPercent = true);
 
         //Style 4
-        _ = AddBubble(ws, chartType, "BubbleChartStyle4", 22, 5, ePresetChartStyle.Bubble3dChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle4", 22, 5, ePresetChartStyle.Bubble3dChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddBubble(ws, chartType, "BubbleChartStyle5", 22, 18, ePresetChartStyle.Bubble3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle5", 22, 18, ePresetChartStyle.Bubble3dChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddBubble(ws, chartType, "BubbleChartStyle6", 22, 31, ePresetChartStyle.Bubble3dChartStyle6, c => { });
 
         //Style 7
-        _ = AddBubble(ws, chartType, "BubbleChartStyle7", 44, 5, ePresetChartStyle.Bubble3dChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBubble(ws, chartType, "BubbleChartStyle7", 44, 5, ePresetChartStyle.Bubble3dChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddBubble(ws,

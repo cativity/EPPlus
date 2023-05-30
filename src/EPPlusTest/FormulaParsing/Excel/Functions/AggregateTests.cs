@@ -22,10 +22,7 @@ public class AggregateTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     private void LoadData1()
     {

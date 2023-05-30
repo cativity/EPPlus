@@ -42,10 +42,7 @@ public class FillReadTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingFillRead.xlsx");
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingFillRead.xlsx");
 
     #region SolidFill
 

@@ -15,14 +15,12 @@ namespace EPPlusTest.LoadFunctions;
 public class LoadFromDictionariesTests
 {
     [TestInitialize]
-    public void Initialize()
-    {
+    public void Initialize() =>
         this._items = new List<IDictionary<string, object>>()
         {
             new Dictionary<string, object>() { { "Id", 1 }, { "Name", "TestName 1" } },
             new Dictionary<string, object>() { { "Id", 2 }, { "Name", "TestName 2" } }
         };
-    }
 
     private IEnumerable<IDictionary<string, object>> _items;
 

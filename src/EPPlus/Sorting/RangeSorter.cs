@@ -25,10 +25,7 @@ namespace OfficeOpenXml.Sorting;
 
 internal class RangeSorter
 {
-    public RangeSorter(ExcelWorksheet worksheet)
-    {
-        this._worksheet = worksheet;
-    }
+    public RangeSorter(ExcelWorksheet worksheet) => this._worksheet = worksheet;
 
     private readonly ExcelWorksheet _worksheet;
 

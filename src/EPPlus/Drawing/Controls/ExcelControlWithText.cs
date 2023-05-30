@@ -48,7 +48,7 @@ public abstract class ExcelControlWithText : ExcelControl
     /// </summary>
     public string Text
     {
-        get { return this.RichText.Text; }
+        get => this.RichText.Text;
         set
         {
             if (this.RichText.Count == 1)
@@ -70,17 +70,14 @@ public abstract class ExcelControlWithText : ExcelControl
     /// <summary>
     /// Richtext collection. Used to format specific parts of the text
     /// </summary>
-    public ExcelParagraphCollection RichText
-    {
-        get { return this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder); }
-    }
+    public ExcelParagraphCollection RichText => this._richText ??= new ExcelParagraphCollection(this, this.NameSpaceManager, this.TopNode, this._paragraphPath, this.SchemaNodeOrder);
 
     /// <summary>
     /// Gets or sets whether a controls text is locked when the worksheet is protected.
     /// </summary>
     public bool LockedText
     {
-        get { return this._ctrlProp.GetXmlNodeBool("@lockText"); }
+        get => this._ctrlProp.GetXmlNodeBool("@lockText");
         set
         {
             this._ctrlProp.SetXmlNodeBool("@lockText", value);
@@ -93,8 +90,5 @@ public abstract class ExcelControlWithText : ExcelControl
     /// <summary>
     /// Access to text body properties.
     /// </summary>
-    public ExcelTextBody TextBody
-    {
-        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder); }
-    }
+    public ExcelTextBody TextBody => this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "xdr:sp/xdr:txBody/a:bodyPr", this.SchemaNodeOrder);
 }

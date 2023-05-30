@@ -208,20 +208,14 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._groupDrawings.Count; }
-    }
+    public int Count => this._groupDrawings.Count;
 
     /// <summary>
     /// Returns the drawing at the specified position.  
     /// </summary>
     /// <param name="PositionID">The position of the drawing. 0-base</param>
     /// <returns></returns>
-    public ExcelDrawing this[int PositionID]
-    {
-        get { return this._groupDrawings[PositionID]; }
-    }
+    public ExcelDrawing this[int PositionID] => this._groupDrawings[PositionID];
 
     /// <summary>
     /// Returns the drawing matching the specified name
@@ -247,15 +241,9 @@ public class ExcelDrawingsGroup : IEnumerable<ExcelDrawing>, IDisposable
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelDrawing> GetEnumerator()
-    {
-        return this._groupDrawings.GetEnumerator();
-    }
+    public IEnumerator<ExcelDrawing> GetEnumerator() => this._groupDrawings.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._groupDrawings.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._groupDrawings.GetEnumerator();
 
     /// <summary>
     /// Removes the <see cref="ExcelDrawing"/> from the group
@@ -440,37 +428,22 @@ public class ExcelGroupShape : ExcelDrawing
 
     ExcelDrawingCoordinate _xFrmPosition;
 
-    internal ExcelDrawingCoordinate xFrmPosition
-    {
-        get { return this._xFrmPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:off")); }
-    }
+    internal ExcelDrawingCoordinate xFrmPosition => this._xFrmPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:off"));
 
     ExcelDrawingSize _xFrmSize;
 
-    internal ExcelDrawingSize xFrmSize
-    {
-        get { return this._xFrmSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:ext")); }
-    }
+    internal ExcelDrawingSize xFrmSize => this._xFrmSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:ext"));
 
     ExcelDrawingCoordinate _xFrmChildPosition;
 
-    internal ExcelDrawingCoordinate xFrmChildPosition
-    {
-        get { return this._xFrmChildPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chOff")); }
-    }
+    internal ExcelDrawingCoordinate xFrmChildPosition => this._xFrmChildPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chOff"));
 
     ExcelDrawingSize _xFrmChildSize;
 
-    internal ExcelDrawingSize xFrmChildSize
-    {
-        get { return this._xFrmChildSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chExt")); }
-    }
+    internal ExcelDrawingSize xFrmChildSize => this._xFrmChildSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chExt"));
 
     /// <summary>
     /// The type of drawing
     /// </summary>
-    public override eDrawingType DrawingType
-    {
-        get { return eDrawingType.GroupShape; }
-    }
+    public override eDrawingType DrawingType => eDrawingType.GroupShape;
 }

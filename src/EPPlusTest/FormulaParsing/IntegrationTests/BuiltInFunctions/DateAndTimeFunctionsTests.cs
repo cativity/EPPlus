@@ -53,10 +53,7 @@ public class DateAndTimeFunctionsTests : FormulaParserTestBase
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._excelPackage.Dispose();
-    }
+    public void Cleanup() => this._excelPackage.Dispose();
 
     [TestMethod]
     public void DateShouldReturnCorrectResult()

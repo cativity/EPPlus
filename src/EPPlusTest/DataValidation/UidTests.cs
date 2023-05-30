@@ -7,10 +7,7 @@ namespace EPPlusTest.DataValidation;
 public class UidTests : ValidationTestBase
 {
     [TestInitialize]
-    public void Setup()
-    {
-        this.SetupTestData();
-    }
+    public void Setup() => this.SetupTestData();
 
     [TestCleanup]
     public void Cleanup()

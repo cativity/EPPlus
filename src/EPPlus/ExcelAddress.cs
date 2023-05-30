@@ -37,10 +37,8 @@ public class ExcelAddress : ExcelAddressBase
     /// <param name="toRow">To row</param>
     /// <param name="toColumn">To column</param>
     public ExcelAddress(int fromRow, int fromCol, int toRow, int toColumn)
-        : base(fromRow, fromCol, toRow, toColumn)
-    {
+        : base(fromRow, fromCol, toRow, toColumn) =>
         this._ws = "";
-    }
 
     /// <summary>
     /// Constructor

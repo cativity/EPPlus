@@ -21,10 +21,7 @@ internal class ValueWrapper
 {
     private readonly object _object;
 
-    public ValueWrapper(object obj)
-    {
-        this._object = obj;
-    }
+    public ValueWrapper(object obj) => this._object = obj;
 
     public bool IsString
     {
@@ -65,38 +62,17 @@ internal class ValueWrapper
         }
     }
 
-    public bool IsDateTime
-    {
-        get { return this._object is DateTime; }
-    }
+    public bool IsDateTime => this._object is DateTime;
 
-    public bool IsTimeSpan
-    {
-        get { return this._object is TimeSpan; }
-    }
+    public bool IsTimeSpan => this._object is TimeSpan;
 
-    public DateTime ToDateTime()
-    {
-        return (DateTime)this._object;
-    }
+    public DateTime ToDateTime() => (DateTime)this._object;
 
-    public TimeSpan ToTimeSpan()
-    {
-        return (TimeSpan)this._object;
-    }
+    public TimeSpan ToTimeSpan() => (TimeSpan)this._object;
 
-    public double ToDouble()
-    {
-        return Convert.ToDouble(this._object);
-    }
+    public double ToDouble() => Convert.ToDouble(this._object);
 
-    public override string ToString()
-    {
-        return this._object.ToString();
-    }
+    public override string ToString() => this._object.ToString();
 
-    public object Object
-    {
-        get { return this._object; }
-    }
+    public object Object => this._object;
 }

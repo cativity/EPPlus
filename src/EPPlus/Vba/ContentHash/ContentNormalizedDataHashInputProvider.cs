@@ -28,10 +28,7 @@ internal class ContentNormalizedDataHashInputProvider : ContentHashInputProvider
     {
     }
 
-    protected override void CreateHashInputInternal(MemoryStream ms)
-    {
-        this.GetContentHash(ms);
-    }
+    protected override void CreateHashInputInternal(MemoryStream ms) => this.GetContentHash(ms);
 
     private void GetContentHash(MemoryStream ms)
     {

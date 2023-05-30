@@ -69,8 +69,8 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
     /// </summary>
     public bool Bubble3D
     {
-        get { return this.GetXmlNodeBool("c:bubble3D/@val"); }
-        set { this.SetXmlNodeString("c:bubble3D/@val", value.GetStringValueForXml()); }
+        get => this.GetXmlNodeBool("c:bubble3D/@val");
+        set => this.SetXmlNodeString("c:bubble3D/@val", value.GetStringValueForXml());
     }
 
     /// <summary>
@@ -78,8 +78,8 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
     /// </summary>
     public bool InvertIfNegative
     {
-        get { return this.GetXmlNodeBool("c:invertIfNegative"); }
-        set { this.SetXmlNodeString("c:invertIfNegative", value.GetStringValueForXml()); }
+        get => this.GetXmlNodeBool("c:invertIfNegative");
+        set => this.SetXmlNodeString("c:invertIfNegative", value.GetStringValueForXml());
     }
 
     ExcelChartMarker _chartMarker;
@@ -87,67 +87,43 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
     /// <summary>
     /// A reference to marker properties
     /// </summary>
-    public ExcelChartMarker Marker
-    {
-        get { return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartMarker Marker => this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
     ExcelDrawingBorder _line;
 
     /// <summary>
     /// A reference to line properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get { return this._line ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingBorder Border => this._line ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
 
     private ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// A reference to line properties
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect => this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode();
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode();
 
     /// <summary>
     /// Returns true if the datapoint has a marker
     /// </summary>
     /// <returns></returns>
-    public bool HasMarker()
-    {
-        return this.ExistsNode("c:marker");
-    }
+    public bool HasMarker() => this.ExistsNode("c:marker");
 
     /// <summary>
     /// Dispose the object

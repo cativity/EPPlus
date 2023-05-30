@@ -104,10 +104,7 @@ internal class ExcelSlicerXmlSources : XmlHelper
         return null;
     }
 
-    private IEnumerable<ExcelSlicerXmlSource> GetSources(eSlicerSourceType sourceType)
-    {
-        return this._list.Where(x => x.Type == sourceType);
-    }
+    private IEnumerable<ExcelSlicerXmlSource> GetSources(eSlicerSourceType sourceType) => this._list.Where(x => x.Type == sourceType);
 
     internal void Save()
     {
@@ -128,10 +125,8 @@ internal class ExcelSlicerXmlSources : XmlHelper
 internal class ExcelSlicerXmlSource : ExcelXmlSource
 {
     internal ExcelSlicerXmlSource(eSlicerSourceType type, ZipPackagePart relPart, string relId)
-        : base(relPart, relId)
-    {
+        : base(relPart, relId) =>
         this.Type = type;
-    }
 
     public eSlicerSourceType Type { get; }
 }

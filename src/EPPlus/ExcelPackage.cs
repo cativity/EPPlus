@@ -634,38 +634,28 @@ namespace OfficeOpenXml
             }
         }
 
-        private void CreateBlankWb()
-        {
+        private void CreateBlankWb() =>
+
             // create the relationship to the main part
             _ = this._zipPackage.CreateRelationship(UriHelper.GetRelativeUri(new Uri("/xl", UriKind.Relative), this.Workbook.WorkbookUri),
-                                                TargetMode.Internal,
-                                                schemaRelationships + "/officeDocument");
-        }
+                                                    TargetMode.Internal,
+                                                    schemaRelationships + "/officeDocument");
 
         PictureStore _pictureStore;
 
-        internal PictureStore PictureStore
-        {
-            get { return this._pictureStore ??= new PictureStore(this); }
-        }
+        internal PictureStore PictureStore => this._pictureStore ??= new PictureStore(this);
 
         /// <summary>
         /// Returns a reference to the package
         /// </summary>
-        internal ZipPackage ZipPackage
-        {
-            get { return this._zipPackage; }
-        }
+        internal ZipPackage ZipPackage => this._zipPackage;
 
         ExcelEncryption _encryption;
 
         /// <summary>
         /// Information how and if the package is encrypted
         /// </summary>
-        public ExcelEncryption Encryption
-        {
-            get { return this._encryption ??= new ExcelEncryption(); }
-        }
+        public ExcelEncryption Encryption => this._encryption ??= new ExcelEncryption();
 
         private static LicenseContext? _licenseType;
         internal static bool _licenseSet;
@@ -678,7 +668,7 @@ namespace OfficeOpenXml
         /// </summary>
         public static LicenseContext? LicenseContext
         {
-            get { return _licenseType; }
+            get => _licenseType;
             set
             {
                 _licenseType = value;
@@ -800,18 +790,12 @@ namespace OfficeOpenXml
         /// Global configuration for the ExcelPackage class
         /// </summary>
         /// <param name="configHandler"></param>
-        public static void Configure(Action<ExcelPackageConfiguration> configHandler)
-        {
-            configHandler(_configuration);
-        }
+        public static void Configure(Action<ExcelPackageConfiguration> configHandler) => configHandler(_configuration);
 
         /// <summary>
         /// Errors that has been logged during initialization of the ExcelPackage class.
         /// </summary>
-        public IEnumerable<ExcelInitializationError> InitializationErrors
-        {
-            get { return this._initErrors; }
-        }
+        public IEnumerable<ExcelInitializationError> InitializationErrors => this._initErrors;
 
         /// <summary>
         /// Automaticlly adjust drawing size when column width/row height are adjusted, depending on the drawings editBy property.
@@ -1092,10 +1076,7 @@ namespace OfficeOpenXml
         /// The package is closed after it has been saved        
         /// </summary>
         /// <param name="filePath">The file location</param>
-        public void SaveAs(string filePath)
-        {
-            this.SaveAs(new FileInfo(filePath));
-        }
+        public void SaveAs(string filePath) => this.SaveAs(new FileInfo(filePath));
 
         /// <summary>
         /// Saves the workbook to a new file
@@ -1118,10 +1099,7 @@ namespace OfficeOpenXml
         /// <param name="filePath">The file</param>
         /// <param name="password">The password to encrypt the workbook with. 
         /// This parameter overrides the Encryption.Password.</param>
-        public void SaveAs(string filePath, string password)
-        {
-            this.SaveAs(new FileInfo(filePath), password);
-        }
+        public void SaveAs(string filePath, string password) => this.SaveAs(new FileInfo(filePath), password);
 
         /// <summary>
         /// Copies the Package to the Outstream
@@ -1176,10 +1154,7 @@ namespace OfficeOpenXml
         /// The output stream. This stream is the not the encrypted package.
         /// To get the encrypted package use the SaveAs(stream) method.
         /// </summary>
-        public Stream Stream
-        {
-            get { return this._stream; }
-        }
+        public Stream Stream => this._stream;
 
         #endregion
 
@@ -1188,8 +1163,8 @@ namespace OfficeOpenXml
         /// </summary>        
         public CompressionLevel Compression
         {
-            get { return this.ZipPackage.Compression; }
-            set { this.ZipPackage.Compression = value; }
+            get => this.ZipPackage.Compression;
+            set => this.ZipPackage.Compression = value;
         }
 
         CompatibilitySettings _compatibility;
@@ -1197,10 +1172,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// Compatibility settings for older versions of EPPlus.
         /// </summary>
-        public CompatibilitySettings Compatibility
-        {
-            get { return this._compatibility ??= new CompatibilitySettings(this); }
-        }
+        public CompatibilitySettings Compatibility => this._compatibility ??= new CompatibilitySettings(this);
 
         /// <summary>
         /// Package generic settings
@@ -1243,10 +1215,7 @@ namespace OfficeOpenXml
         /// </code>
         /// </example>
         /// <returns></returns>
-        public byte[] GetAsByteArray()
-        {
-            return this.GetAsByteArray(true);
-        }
+        public byte[] GetAsByteArray() => this.GetAsByteArray(true);
 
         /// <summary>
         /// Saves and returns the Excel files as a bytearray
@@ -1326,20 +1295,14 @@ namespace OfficeOpenXml
         /// Loads the specified package data from a stream.
         /// </summary>
         /// <param name="input">The input.</param>
-        public void Load(Stream input)
-        {
-            this.Load(input, RecyclableMemory.GetStream(), null);
-        }
+        public void Load(Stream input) => this.Load(input, RecyclableMemory.GetStream(), null);
 
         /// <summary>
         /// Loads the specified package data from a stream.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="Password">The password to decrypt the document</param>
-        public void Load(Stream input, string Password)
-        {
-            this.Load(input, RecyclableMemory.GetStream(), Password);
-        }
+        public void Load(Stream input, string Password) => this.Load(input, RecyclableMemory.GetStream(), Password);
 
         /// <summary>
         /// 

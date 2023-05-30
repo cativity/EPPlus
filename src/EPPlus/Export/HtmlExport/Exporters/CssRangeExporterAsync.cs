@@ -29,16 +29,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     internal class CssRangeExporterAsync : CssRangeExporterBase
     {
         public CssRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
-            : base(settings, ranges)
-        {
+            : base(settings, ranges) =>
             this._settings = settings;
-        }
 
         public CssRangeExporterAsync(HtmlRangeExportSettings settings, ExcelRangeBase range)
-            : base(settings, range)
-        {
+            : base(settings, range) =>
             this._settings = settings;
-        }
 
         private readonly HtmlRangeExportSettings _settings;
 

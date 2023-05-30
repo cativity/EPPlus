@@ -22,20 +22,14 @@ public class LoadFromTextTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     private ExcelPackage _package;
     private ExcelWorksheet _worksheet;
     private StringBuilder _lines;
     private ExcelTextFormat _format;
 
-    private void AddLine(string s)
-    {
-        _ = this._lines.AppendLine(s);
-    }
+    private void AddLine(string s) => _ = this._lines.AppendLine(s);
 
     [TestMethod]
     public void ShouldLoadCsvFormat()

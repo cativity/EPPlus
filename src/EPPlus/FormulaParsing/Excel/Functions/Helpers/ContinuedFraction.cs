@@ -46,15 +46,9 @@ internal class ContinuedFraction
     /// </summary>
     /// <param name="x"></param>
     /// <returns></returns>
-    public double Evaluate(double x)
-    {
-        return this.Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
-    }
+    public double Evaluate(double x) => this.Evaluate(x, DEFAULT_EPSILON, int.MaxValue);
 
-    public double Evaluate(double x, int maxIterations)
-    {
-        return this.Evaluate(x, DEFAULT_EPSILON, maxIterations);
-    }
+    public double Evaluate(double x, int maxIterations) => this.Evaluate(x, DEFAULT_EPSILON, maxIterations);
 
     public double Evaluate(double x, double epsilon, int maxIterations)
     {

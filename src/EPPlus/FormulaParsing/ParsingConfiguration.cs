@@ -67,19 +67,13 @@ public class ParsingConfiguration
     /// <summary>
     /// Constructor
     /// </summary>
-    private ParsingConfiguration()
-    {
-        this.FunctionRepository = FunctionRepository.Create();
-    }
+    private ParsingConfiguration() => this.FunctionRepository = FunctionRepository.Create();
 
     /// <summary>
     /// Factory method that creates an instance of this class
     /// </summary>
     /// <returns></returns>
-    internal static ParsingConfiguration Create()
-    {
-        return new ParsingConfiguration();
-    }
+    internal static ParsingConfiguration Create() => new();
 
     /// <summary>
     /// Replaces the lexer with any instance implementing the <see cref="ILexer"/> interface.

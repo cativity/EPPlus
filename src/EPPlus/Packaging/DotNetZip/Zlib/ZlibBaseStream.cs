@@ -96,10 +96,7 @@ internal class ZlibBaseStream : Stream
         }
     }
 
-    protected internal bool _wantCompress
-    {
-        get { return this._compressionMode == CompressionMode.Compress; }
-    }
+    protected internal bool _wantCompress => this._compressionMode == CompressionMode.Compress;
 
     private ZlibCodec z
     {
@@ -125,10 +122,7 @@ internal class ZlibBaseStream : Stream
         }
     }
 
-    private byte[] workingBuffer
-    {
-        get { return this._workingBuffer ??= new byte[this._bufferSize]; }
-    }
+    private byte[] workingBuffer => this._workingBuffer ??= new byte[this._bufferSize];
 
     public override void Write(byte[] buffer, int offset, int count)
     {
@@ -350,22 +344,12 @@ internal class ZlibBaseStream : Stream
         }
     }
 
-    public override void Flush()
-    {
-        this._stream.Flush();
-    }
+    public override void Flush() => this._stream.Flush();
 
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        throw new NotImplementedException();
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotImplementedException();
 
-        //_outStream.Seek(offset, origin);
-    }
-
-    public override void SetLength(long value)
-    {
-        this._stream.SetLength(value);
-    }
+    //_outStream.Seek(offset, origin);
+    public override void SetLength(long value) => this._stream.SetLength(value);
 
 #if NOT
         public int Read()
@@ -634,30 +618,18 @@ internal class ZlibBaseStream : Stream
         return rc;
     }
 
-    public override bool CanRead
-    {
-        get { return this._stream.CanRead; }
-    }
+    public override bool CanRead => this._stream.CanRead;
 
-    public override bool CanSeek
-    {
-        get { return this._stream.CanSeek; }
-    }
+    public override bool CanSeek => this._stream.CanSeek;
 
-    public override bool CanWrite
-    {
-        get { return this._stream.CanWrite; }
-    }
+    public override bool CanWrite => this._stream.CanWrite;
 
-    public override long Length
-    {
-        get { return this._stream.Length; }
-    }
+    public override long Length => this._stream.Length;
 
     public override long Position
     {
-        get { throw new NotImplementedException(); }
-        set { throw new NotImplementedException(); }
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
     }
 
     internal enum StreamMode

@@ -113,10 +113,7 @@ internal partial class ZipFile
     ///
     /// <returns>The instance read from the zip archive.</returns>
     ///
-    public static ZipFile Read(string fileName)
-    {
-        return Read(fileName, null, null, null);
-    }
+    public static ZipFile Read(string fileName) => Read(fileName, null, null, null);
 
     /// <summary>
     ///   Reads a zip file archive from the named filesystem file using the
@@ -411,10 +408,7 @@ internal partial class ZipFile
     ///
     /// <returns>The ZipFile instance read from the stream</returns>
     ///
-    public static ZipFile Read(Stream zipStream)
-    {
-        return Read(zipStream, null, null, null);
-    }
+    public static ZipFile Read(Stream zipStream) => Read(zipStream, null, null, null);
 
     /// <summary>
     ///   Reads a zip file archive from the given stream using the
@@ -1042,10 +1036,7 @@ internal partial class ZipFile
     ///
     /// <param name="fileName">The file to check.</param>
     /// <returns>true if the file appears to be a zip file.</returns>
-    public static bool IsZipFile(string fileName)
-    {
-        return IsZipFile(fileName, false);
-    }
+    public static bool IsZipFile(string fileName) => IsZipFile(fileName, false);
 
     /// <summary>
     /// Checks a file to see if it is a valid zip file.

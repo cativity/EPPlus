@@ -97,10 +97,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public bool Contains(ExcelProtectedRange item)
-    {
-        return this._list.Contains(item);
-    }
+    public bool Contains(ExcelProtectedRange item) => this._list.Contains(item);
 
     /// <summary>
     /// Copies the entire collection to a compatible one-dimensional
@@ -108,18 +105,12 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// </summary>
     /// <param name="array">The array</param>
     /// <param name="arrayIndex">The index</param>
-    public void CopyTo(ExcelProtectedRange[] array, int arrayIndex)
-    {
-        this._list.CopyTo(array, arrayIndex);
-    }
+    public void CopyTo(ExcelProtectedRange[] array, int arrayIndex) => this._list.CopyTo(array, arrayIndex);
 
     /// <summary>
     /// Numner of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Remove the specified item from the collection
@@ -144,10 +135,7 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// </summary>
     /// <param name="item">The item</param>
     /// <returns></returns>
-    public int IndexOf(ExcelProtectedRange item)
-    {
-        return this._list.IndexOf(item);
-    }
+    public int IndexOf(ExcelProtectedRange item) => this._list.IndexOf(item);
 
     /// <summary>
     /// Remove the item at the specified indexx
@@ -168,26 +156,17 @@ public class ExcelProtectedRangeCollection : XmlHelper, IEnumerable<ExcelProtect
     /// </summary>
     /// <param name="index">The index to return</param>
     /// <returns></returns>
-    public ExcelProtectedRange this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelProtectedRange this[int index] => this._list[index];
 
     /// <summary>
     /// Get the enumerator
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator<ExcelProtectedRange> IEnumerable<ExcelProtectedRange>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<ExcelProtectedRange> IEnumerable<ExcelProtectedRange>.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Get the enumerator
     /// </summary>
     /// <returns>The enumerator</returns>
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 }

@@ -21,10 +21,7 @@ namespace OfficeOpenXml.Drawing.Interfaces;
 
 internal class HashInfo
 {
-    public HashInfo(string relId)
-    {
-        this.RelId = relId;
-    }
+    public HashInfo(string relId) => this.RelId = relId;
 
     public string RelId { get; set; }
 

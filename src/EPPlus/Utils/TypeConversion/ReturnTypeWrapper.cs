@@ -38,40 +38,25 @@ public class ReturnTypeWrapper<T>
     /// <summary>
     /// The type to analyze
     /// </summary>
-    public Type Type
-    {
-        get { return this.IsNullable ? this._underlyingType : this._returnType; }
-    }
+    public Type Type => this.IsNullable ? this._underlyingType : this._returnType;
 
     /// <summary>
     /// Returns true if the type to analyze is numeric.
     /// </summary>
-    public bool IsNumeric
-    {
-        get { return NumericTypeConversions.IsNumeric(this.Type); }
-    }
+    public bool IsNumeric => NumericTypeConversions.IsNumeric(this.Type);
 
     /// <summary>
     /// Returns true if the type to analyze is nullable.
     /// </summary>
-    public bool IsNullable
-    {
-        get { return this._underlyingType != null; }
-    }
+    public bool IsNullable => this._underlyingType != null;
 
     /// <summary>
     /// Returns true if the type to analyze equalse the <see cref="DateTime"/> type.
     /// </summary>
-    public bool IsDateTime
-    {
-        get { return this.Type == typeof(DateTime); }
-    }
+    public bool IsDateTime => this.Type == typeof(DateTime);
 
     /// <summary>
     /// Returns true if the type to analyze equalse the <see cref="TimeSpan"/> type.
     /// </summary>
-    public bool IsTimeSpan
-    {
-        get { return this.Type == typeof(TimeSpan); }
-    }
+    public bool IsTimeSpan => this.Type == typeof(TimeSpan);
 }

@@ -28,128 +28,80 @@ public class ExcelPivotTableNamedStyle : ExcelTableNamedStyleBase
     /// <summary>
     /// If the style applies to tables, pivot table or both
     /// </summary>
-    public override eTableNamedStyleAppliesTo AppliesTo
-    {
-        get { return eTableNamedStyleAppliesTo.PivotTables; }
-    }
+    public override eTableNamedStyleAppliesTo AppliesTo => eTableNamedStyleAppliesTo.PivotTables;
 
     /// <summary>
     /// Applies to the page field labels of a pivot table
     /// </summary>
-    public ExcelTableStyleElement PageFieldLabels
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.PageFieldLabels); }
-    }
+    public ExcelTableStyleElement PageFieldLabels => this.GetTableStyleElement(eTableStyleElement.PageFieldLabels);
 
     /// <summary>
     /// Applies to the page field values of a pivot table
     /// </summary>
-    public ExcelTableStyleElement PageFieldValues
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.PageFieldValues); }
-    }
+    public ExcelTableStyleElement PageFieldValues => this.GetTableStyleElement(eTableStyleElement.PageFieldValues);
 
     /// <summary>
     /// Applies to the first subtotal column of a pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstSubtotalColumn
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalColumn); }
-    }
+    public ExcelTableStyleElement FirstSubtotalColumn => this.GetTableStyleElement(eTableStyleElement.FirstSubtotalColumn);
 
     /// <summary>
     /// Applies to the second subtotal column of a pivot table
     /// </summary>
-    public ExcelTableStyleElement SecondSubtotalColumn
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalColumn); }
-    }
+    public ExcelTableStyleElement SecondSubtotalColumn => this.GetTableStyleElement(eTableStyleElement.SecondSubtotalColumn);
 
     /// <summary>
     /// Applies to the third subtotal column of a pivot table
     /// </summary>
-    public ExcelTableStyleElement ThirdSubtotalColumn
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalColumn); }
-    }
+    public ExcelTableStyleElement ThirdSubtotalColumn => this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalColumn);
 
     /// <summary>
     /// Applies to blank rows of a pivot table
     /// </summary>
-    public ExcelTableStyleElement BlankRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.BlankRow); }
-    }
+    public ExcelTableStyleElement BlankRow => this.GetTableStyleElement(eTableStyleElement.BlankRow);
 
     /// <summary>
     /// Applies to the first subtotal row of a pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstSubtotalRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstSubtotalRow); }
-    }
+    public ExcelTableStyleElement FirstSubtotalRow => this.GetTableStyleElement(eTableStyleElement.FirstSubtotalRow);
 
     /// <summary>
     /// Applies to the second subtotal row of a pivot table
     /// </summary>
-    public ExcelTableStyleElement SecondSubtotalRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.SecondSubtotalRow); }
-    }
+    public ExcelTableStyleElement SecondSubtotalRow => this.GetTableStyleElement(eTableStyleElement.SecondSubtotalRow);
 
     /// <summary>
     /// Applies to the third subtotal row of a pivot table
     /// </summary>
-    public ExcelTableStyleElement ThirdSubtotalRow
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalRow); }
-    }
+    public ExcelTableStyleElement ThirdSubtotalRow => this.GetTableStyleElement(eTableStyleElement.ThirdSubtotalRow);
 
     /// <summary>
     /// Applies to the first column subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstColumnSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstColumnSubheading); }
-    }
+    public ExcelTableStyleElement FirstColumnSubheading => this.GetTableStyleElement(eTableStyleElement.FirstColumnSubheading);
 
     /// <summary>
     /// Applies to the second column subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement SecondColumnSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.SecondColumnSubheading); }
-    }
+    public ExcelTableStyleElement SecondColumnSubheading => this.GetTableStyleElement(eTableStyleElement.SecondColumnSubheading);
 
     /// <summary>
     /// Applies to the third column subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement ThirdColumnSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.ThirdColumnSubheading); }
-    }
+    public ExcelTableStyleElement ThirdColumnSubheading => this.GetTableStyleElement(eTableStyleElement.ThirdColumnSubheading);
 
     /// <summary>
     /// Applies to the first row subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement FirstRowSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstRowSubheading); }
-    }
+    public ExcelTableStyleElement FirstRowSubheading => this.GetTableStyleElement(eTableStyleElement.FirstRowSubheading);
 
     /// <summary>
     /// Applies to the second row subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement SecondRowSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.SecondRowSubheading); }
-    }
+    public ExcelTableStyleElement SecondRowSubheading => this.GetTableStyleElement(eTableStyleElement.SecondRowSubheading);
 
     /// <summary>
     /// Applies to the third row subheading of a pivot table
     /// </summary>
-    public ExcelTableStyleElement ThirdRowSubheading
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.ThirdRowSubheading); }
-    }
+    public ExcelTableStyleElement ThirdRowSubheading => this.GetTableStyleElement(eTableStyleElement.ThirdRowSubheading);
 }

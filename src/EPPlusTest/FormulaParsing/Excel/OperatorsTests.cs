@@ -101,10 +101,7 @@ public class OperatorsTests
     }
 
     [TestMethod]
-    public void OperatorMultiplyShouldThrowExceptionIfNonNumericOperand()
-    {
-        _ = Operator.Multiply.Apply(new CompileResult(1, DataType.Integer), new CompileResult("a", DataType.String));
-    }
+    public void OperatorMultiplyShouldThrowExceptionIfNonNumericOperand() => _ = Operator.Multiply.Apply(new CompileResult(1, DataType.Integer), new CompileResult("a", DataType.String));
 
     [TestMethod]
     public void OperatoMultiplyShouldMultiplyNumericStringAndNumber()

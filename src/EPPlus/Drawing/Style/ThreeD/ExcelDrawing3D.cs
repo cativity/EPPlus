@@ -71,18 +71,15 @@ public class ExcelDrawing3D : XmlHelper
     /// <summary>
     /// Defines scene-level 3D properties to apply to an object
     /// </summary>
-    public ExcelDrawingScene3D Scene
-    {
-        get { return this._scene3D ??= new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath); }
-    }
+    public ExcelDrawingScene3D Scene => this._scene3D ??= new ExcelDrawingScene3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._scene3dPath);
 
     /// <summary>
     /// The height of the extrusion
     /// </summary>
     public double ExtrusionHeight
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._extrusionHeightPath) ?? 0; }
-        set { this.SetXmlNodeEmuToPt(this._extrusionHeightPath, value); }
+        get => this.GetXmlNodeEmuToPtNull(this._extrusionHeightPath) ?? 0;
+        set => this.SetXmlNodeEmuToPt(this._extrusionHeightPath, value);
     }
 
     /// <summary>
@@ -90,8 +87,8 @@ public class ExcelDrawing3D : XmlHelper
     /// </summary>
     public double ContourWidth
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._contourWidthPath) ?? 0; }
-        set { this.SetXmlNodeEmuToPt(this._contourWidthPath, value); }
+        get => this.GetXmlNodeEmuToPtNull(this._contourWidthPath) ?? 0;
+        set => this.SetXmlNodeEmuToPt(this._contourWidthPath, value);
     }
 
     ExcelDrawing3DBevel _topBevel;
@@ -99,47 +96,35 @@ public class ExcelDrawing3D : XmlHelper
     /// <summary>
     /// The bevel on the top or front face of a shape
     /// </summary>
-    public ExcelDrawing3DBevel TopBevel
-    {
-        get { return this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml); }
-    }
+    public ExcelDrawing3DBevel TopBevel => this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml);
 
     ExcelDrawing3DBevel _bottomBevel;
 
     /// <summary>
     /// The bevel on the top or front face of a shape
     /// </summary>
-    public ExcelDrawing3DBevel BottomBevel
-    {
-        get { return this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml); }
-    }
+    public ExcelDrawing3DBevel BottomBevel => this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml);
 
     ExcelDrawingColorManager _extrusionColor;
 
     /// <summary>
     /// The color of the extrusion applied to a shape
     /// </summary>
-    public ExcelDrawingColorManager ExtrusionColor
-    {
-        get { return this._extrusionColor; }
-    }
+    public ExcelDrawingColorManager ExtrusionColor => this._extrusionColor;
 
     ExcelDrawingColorManager _contourColor;
 
     /// <summary>
     /// The color for the contour on a shape
     /// </summary>
-    public ExcelDrawingColorManager ContourColor
-    {
-        get { return this._contourColor; }
-    }
+    public ExcelDrawingColorManager ContourColor => this._contourColor;
 
     /// <summary>
     /// The surface appearance of a shape
     /// </summary>
     public ePresetMaterialType MaterialType
     {
-        get { return this.GetXmlNodeString(this._materialTypePath).ToEnum(ePresetMaterialType.WarmMatte); }
+        get => this.GetXmlNodeString(this._materialTypePath).ToEnum(ePresetMaterialType.WarmMatte);
         set
         {
             this.InitXml(false);
@@ -152,19 +137,13 @@ public class ExcelDrawing3D : XmlHelper
     /// </summary>
     public double? ShapeDepthZCoordinate
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._shapeDepthPath) ?? 0; }
-        set { this.SetXmlNodeEmuToPt(this._shapeDepthPath, value); }
+        get => this.GetXmlNodeEmuToPtNull(this._shapeDepthPath) ?? 0;
+        set => this.SetXmlNodeEmuToPt(this._shapeDepthPath, value);
     }
 
-    internal XmlElement Scene3DElement
-    {
-        get { return this.GetNode(this._scene3dPath) as XmlElement; }
-    }
+    internal XmlElement Scene3DElement => this.GetNode(this._scene3dPath) as XmlElement;
 
-    internal XmlElement Sp3DElement
-    {
-        get { return this.GetNode(this._sp3dPath) as XmlElement; }
-    }
+    internal XmlElement Sp3DElement => this.GetNode(this._sp3dPath) as XmlElement;
 
     bool isInit = false;
 

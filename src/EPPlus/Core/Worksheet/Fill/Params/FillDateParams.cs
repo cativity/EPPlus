@@ -51,10 +51,7 @@ public class FillDateParams : FillParams
     /// Excludes the week days supplied
     /// </summary>
     /// <param name="weekdays">The excluded week days</param>
-    public void SetExcludedWeekdays(params DayOfWeek[] weekdays)
-    {
-        this._excludedWeekdays.UnionWith(weekdays);
-    }
+    public void SetExcludedWeekdays(params DayOfWeek[] weekdays) => this._excludedWeekdays.UnionWith(weekdays);
 
     /// <summary>
     /// A list with week days treated as holidays.
@@ -65,17 +62,11 @@ public class FillDateParams : FillParams
     /// Excludes the dates supplied
     /// </summary>
     /// <param name="holidayDates">The dates treated as week days</param>
-    public void SetExcludedDates(params DateTime[] holidayDates)
-    {
-        this._holidayCalendar.UnionWith(holidayDates);
-    }
+    public void SetExcludedDates(params DateTime[] holidayDates) => this._holidayCalendar.UnionWith(holidayDates);
 
     /// <summary>
     /// Excludes the dates supplied
     /// </summary>
     /// <param name="holidayDates">The dates treated as week days</param>
-    public void SetExcludedDates(IEnumerable<DateTime> holidayDates)
-    {
-        this._holidayCalendar.UnionWith(holidayDates);
-    }
+    public void SetExcludedDates(IEnumerable<DateTime> holidayDates) => this._holidayCalendar.UnionWith(holidayDates);
 }

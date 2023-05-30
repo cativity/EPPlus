@@ -44,10 +44,7 @@ public class FormulaParserManager
     /// implementing a <see cref="IFunctionModule"/>.
     /// </summary>
     /// <param name="module">A <see cref="IFunctionModule"/> containing <see cref="ExcelFunction"/>s.</param>
-    public void LoadFunctionModule(IFunctionModule module)
-    {
-        this._parser.Configure(x => x.FunctionRepository.LoadModule(module));
-    }
+    public void LoadFunctionModule(IFunctionModule module) => this._parser.Configure(x => x.FunctionRepository.LoadModule(module));
 
     /// <summary>
     /// If the supplied <paramref name="functionName"/> does not exist, the supplied
@@ -56,10 +53,7 @@ public class FormulaParserManager
     /// </summary>
     /// <param name="functionName"></param>
     /// <param name="functionImpl"></param>
-    public void AddOrReplaceFunction(string functionName, ExcelFunction functionImpl)
-    {
-        this._parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
-    }
+    public void AddOrReplaceFunction(string functionName, ExcelFunction functionImpl) => this._parser.Configure(x => x.FunctionRepository.AddOrReplaceFunction(functionName, functionImpl));
 
     /// <summary>
     /// Copies existing <see cref="ExcelFunction"/>´s from one workbook to another.
@@ -112,10 +106,7 @@ public class FormulaParserManager
     /// </summary>
     /// <param name="formula">The formula to parse</param>
     /// <returns>The result of the parsed formula</returns>
-    public object Parse(string formula)
-    {
-        return this._parser.Parse(formula);
-    }
+    public object Parse(string formula) => this._parser.Parse(formula);
 
     /// <summary>
     /// Parses the supplied <paramref name="formula"/> and returns the result.
@@ -123,37 +114,25 @@ public class FormulaParserManager
     /// <param name="formula">The formula to parse</param>
     /// <param name="address">The full address in the workbook where the <paramref name="formula"/> should be parsed. Example: you might want to parse the formula of a conditional format, then this should be the address of the cell where the conditional format resides.</param>
     /// <returns>The result of the parsed formula</returns>
-    public object Parse(string formula, string address)
-    {
-        return this._parser.Parse(formula, address);
-    }
+    public object Parse(string formula, string address) => this._parser.Parse(formula, address);
 
     /// <summary>
     /// Attaches a logger to the <see cref="FormulaParser"/>.
     /// </summary>
     /// <param name="logger">An instance of <see cref="IFormulaParserLogger"/></param>
     /// <see cref="OfficeOpenXml.FormulaParsing.Logging.LoggerFactory"/>
-    public void AttachLogger(IFormulaParserLogger logger)
-    {
-        this._parser.Configure(c => c.AttachLogger(logger));
-    }
+    public void AttachLogger(IFormulaParserLogger logger) => this._parser.Configure(c => c.AttachLogger(logger));
 
     /// <summary>
     /// Attaches a logger to the formula parser that produces output to the supplied logfile.
     /// </summary>
     /// <param name="logfile"></param>
-    public void AttachLogger(FileInfo logfile)
-    {
-        this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
-    }
+    public void AttachLogger(FileInfo logfile) => this._parser.Configure(c => c.AttachLogger(LoggerFactory.CreateTextFileLogger(logfile)));
 
     /// <summary>
     /// Detaches any attached logger from the formula parser.
     /// </summary>
-    public void DetachLogger()
-    {
-        this._parser.Configure(c => c.DetachLogger());
-    }
+    public void DetachLogger() => this._parser.Configure(c => c.DetachLogger());
 
     public IEnumerable<IFormulaCellInfo> GetCalculationChain(ExcelRangeBase range)
     {

@@ -50,10 +50,7 @@ internal partial class CompoundDocumentFile : IDisposable
         this.LoadFromMemoryStream(ms);
     }
 
-    internal CompoundDocumentFile(MemoryStream ms)
-    {
-        this.LoadFromMemoryStream(ms);
-    }
+    internal CompoundDocumentFile(MemoryStream ms) => this.LoadFromMemoryStream(ms);
 
     private struct DocWriteInfo
     {
@@ -110,10 +107,7 @@ internal partial class CompoundDocumentFile : IDisposable
 
     List<CompoundDocumentItem> _directories;
 
-    internal List<CompoundDocumentItem> Directories
-    {
-        get { return this._directories ??= this.FlattenDirs(); }
-    }
+    internal List<CompoundDocumentItem> Directories => this._directories ??= this.FlattenDirs();
 
     /// <summary>
     /// Verifies that the header is correct.

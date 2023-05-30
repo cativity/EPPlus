@@ -122,7 +122,7 @@ public class ExcelComment : ExcelVmlDrawingComment
 
             return this._text;
         }
-        set { this.RichText.Text = value; }
+        set => this.RichText.Text = value;
     }
 
     /// <summary>
@@ -151,7 +151,7 @@ public class ExcelComment : ExcelVmlDrawingComment
     /// </summary>
     internal string Reference
     {
-        get { return this._commentHelper.GetXmlNodeString("@ref"); }
+        get => this._commentHelper.GetXmlNodeString("@ref");
         set
         {
             ExcelAddressBase? a = new ExcelAddressBase(value);

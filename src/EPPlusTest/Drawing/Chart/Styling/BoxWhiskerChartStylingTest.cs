@@ -47,16 +47,10 @@ public class BoxWhiskerChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("BoxWhiskerChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("BoxWhiskerChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void BoxWhiskerChart_Styles()
@@ -113,13 +107,13 @@ public class BoxWhiskerChartStylingTest : TestBase
                    });
 
         //Box & Whisker chart Style 4
-        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle4, "BoxWhiskerChartStyle4", 20, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Box & Whisker chart Style 5
-        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle5, "BoxWhiskerChartStyle5", 20, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Box & Whisker chart Style 6
-        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.BoxWhiskerChartStyle6, "BoxWhiskerChartStyle6", 20, 31, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelBoxWhiskerChart AddChartEx(ExcelWorksheet ws,

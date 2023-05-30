@@ -44,17 +44,11 @@ public class ExcelFunctionTests
 {
     private class ExcelFunctionTester : ExcelFunction
     {
-        public IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerableImpl(IEnumerable<FunctionArgument> args)
-        {
-            return this.ArgsToDoubleEnumerable(args, ParsingContext.Create());
-        }
+        public IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerableImpl(IEnumerable<FunctionArgument> args) => this.ArgsToDoubleEnumerable(args, ParsingContext.Create());
 
         #region Other members
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => throw new NotImplementedException();
 
         #endregion
     }

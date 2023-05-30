@@ -42,28 +42,16 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this.Color.HasValue; }
-    }
+    public override bool HasValue => this.Color.HasValue;
 
-    internal override string Id
-    {
-        get { return this.Position.ToString() + "|" + this.Color.Id; }
-    }
+    internal override string Id => this.Position.ToString() + "|" + this.Color.Id;
 
     /// <summary>
     /// Clears all colors
     /// </summary>
-    public override void Clear()
-    {
-        this.Color.Clear();
-    }
+    public override void Clear() => this.Color.Clear();
 
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback) { Color = (ExcelDxfColor)this.Color.Clone() };
-    }
+    internal override DxfStyleBase Clone() => new ExcelDxfGradientFillColor(this._styles, this.Position, this._callback) { Color = (ExcelDxfColor)this.Color.Clone() };
 
     internal override void CreateNodes(XmlHelper helper, string path)
     {
@@ -73,8 +61,5 @@ public class ExcelDxfGradientFillColor : DxfStyleBase
         SetValueColor(stopHelper, "d:color", this.Color);
     }
 
-    internal override void SetStyle()
-    {
-        this.Color.SetStyle();
-    }
+    internal override void SetStyle() => this.Color.SetStyle();
 }

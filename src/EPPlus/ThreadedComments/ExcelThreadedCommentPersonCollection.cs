@@ -65,60 +65,42 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// <summary>
     /// Number of <see cref="ExcelThreadedCommentPerson"/>s in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._personList.Count; }
-    }
+    public int Count => this._personList.Count;
 
     /// <summary>
     /// Returns the <see cref="ExcelThreadedCommentPerson"/> by its index
     /// </summary>
     /// <param name="index">The requested index</param>
     /// <returns>The <see cref="ExcelThreadedCommentPerson"/> at the requested index</returns>
-    public ExcelThreadedCommentPerson this[int index]
-    {
-        get { return this._personList[index]; }
-    }
+    public ExcelThreadedCommentPerson this[int index] => this._personList[index];
 
     /// <summary>
     /// Returns a <see cref="ExcelThreadedCommentPerson"/> by its id
     /// </summary>
     /// <param name="id">The Id of the Person</param>
     /// <returns>A <see cref="ExcelThreadedCommentPerson"/> with the requested <paramref name="id"/> or null</returns>
-    public ExcelThreadedCommentPerson this[string id]
-    {
-        get { return this._personList.FirstOrDefault(x => x.Id == id); }
-    }
+    public ExcelThreadedCommentPerson this[string id] => this._personList.FirstOrDefault(x => x.Id == id);
 
     /// <summary>
     /// Finds a <see cref="ExcelThreadedCommentPerson"/> that <paramref name="match"/> a certain criteria
     /// </summary>
     /// <param name="match">The criterias</param>
     /// <returns>A matching <see cref="ExcelThreadedCommentPerson"/></returns>
-    public ExcelThreadedCommentPerson Find(Predicate<ExcelThreadedCommentPerson> match)
-    {
-        return this._personList.Find(match);
-    }
+    public ExcelThreadedCommentPerson Find(Predicate<ExcelThreadedCommentPerson> match) => this._personList.Find(match);
 
     /// <summary>
     /// Finds a number of <see cref="ExcelThreadedCommentPerson"/>'s that matches a certain criteria.
     /// </summary>
     /// <param name="match">The criterias</param>
     /// <returns>An enumerable of matching <see cref="ExcelThreadedCommentPerson"/>'s</returns>
-    public IEnumerable<ExcelThreadedCommentPerson> FindAll(Predicate<ExcelThreadedCommentPerson> match)
-    {
-        return this._personList.FindAll(match);
-    }
+    public IEnumerable<ExcelThreadedCommentPerson> FindAll(Predicate<ExcelThreadedCommentPerson> match) => this._personList.FindAll(match);
 
     /// <summary>
     /// Creates and adds a new <see cref="ExcelThreadedCommentPerson"/> to the workbooks list of persons. A unique Id for the person will be generated and set.
     /// The userId will be the same as the <paramref name="displayName"/> and identityProvider will be set to <see cref="IdentityProvider.NoProvider"/>
     /// </summary>
     /// <param name="displayName">The display name of the added <see cref="ExcelThreadedCommentPerson"/></param>
-    public ExcelThreadedCommentPerson Add(string displayName)
-    {
-        return this.Add(displayName, displayName, IdentityProvider.NoProvider);
-    }
+    public ExcelThreadedCommentPerson Add(string displayName) => this.Add(displayName, displayName, IdentityProvider.NoProvider);
 
     /// <summary>
     /// Creates and adds a new <see cref="ExcelThreadedCommentPerson"/> to the workbooks list of persons. A unique Id for the person will be generated and set.
@@ -127,10 +109,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// <param name="userId">A string representing the userId of the <paramref name="identityProvider"/></param>
     /// <param name="identityProvider">The <see cref="IdentityProvider"/> from which the <see cref="ExcelThreadedCommentPerson"/> originates</param>
     /// <returns>The added <see cref="ExcelThreadedCommentPerson"/></returns>
-    public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider)
-    {
-        return this.Add(displayName, userId, identityProvider, ExcelThreadedCommentPerson.NewId());
-    }
+    public ExcelThreadedCommentPerson Add(string displayName, string userId, IdentityProvider identityProvider) => this.Add(displayName, userId, identityProvider, ExcelThreadedCommentPerson.NewId());
 
     /// <summary>
     /// Creates and adds a new <see cref="ExcelThreadedCommentPerson"/> to the workbooks list of persons
@@ -158,24 +137,15 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ExcelThreadedCommentPerson> GetEnumerator()
-    {
-        return this._personList.GetEnumerator();
-    }
+    public IEnumerator<ExcelThreadedCommentPerson> GetEnumerator() => this._personList.GetEnumerator();
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._personList.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._personList.GetEnumerator();
 
-    internal void Add(ExcelThreadedCommentPerson person)
-    {
-        this._personList.Add(person);
-    }
+    internal void Add(ExcelThreadedCommentPerson person) => this._personList.Add(person);
 
     /// <summary>
     /// Removes a <see cref="ExcelThreadedCommentPerson"/> from the collection
@@ -206,10 +176,7 @@ public class ExcelThreadedCommentPersonCollection : IEnumerable<ExcelThreadedCom
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return "Count = " + this._personList.Count;
-    }
+    public override string ToString() => "Count = " + this._personList.Count;
 
     internal void Save(ExcelPackage package, ZipPackagePart WorkbookPart, Uri personsUri)
     {

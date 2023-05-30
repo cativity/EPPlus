@@ -39,7 +39,7 @@ public class ExcelChartDataLabelItem : ExcelChartDataLabelStandard
     /// </summary>
     public int Index
     {
-        get { return this.GetXmlNodeInt("c:idx/@val"); }
-        set { this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt("c:idx/@val");
+        set => this.SetXmlNodeString("c:idx/@val", value.ToString(CultureInfo.InvariantCulture));
     }
 }

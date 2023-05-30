@@ -30,10 +30,7 @@ internal class WorkdayCalculator
     {
     }
 
-    public WorkdayCalculator(HolidayWeekdays holidayWeekdays)
-    {
-        this._holidayWeekdays = holidayWeekdays;
-    }
+    public WorkdayCalculator(HolidayWeekdays holidayWeekdays) => this._holidayWeekdays = holidayWeekdays;
 
     public WorkdayCalculatorResult CalculateNumberOfWorkdays(System.DateTime startDate, System.DateTime endDate)
     {

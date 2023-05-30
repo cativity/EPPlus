@@ -21,10 +21,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 internal abstract class TimeBaseFunction : ExcelFunction
 {
-    public TimeBaseFunction()
-    {
-        this.TimeStringParser = new TimeStringParser();
-    }
+    public TimeBaseFunction() => this.TimeStringParser = new TimeStringParser();
 
     protected TimeStringParser TimeStringParser { get; private set; }
 
@@ -36,20 +33,11 @@ internal abstract class TimeBaseFunction : ExcelFunction
         this.SerialNumber = (double)this.ArgToDecimal(arguments, 0);
     }
 
-    protected static double SecondsInADay
-    {
-        get { return 24 * 60 * 60; }
-    }
+    protected static double SecondsInADay => 24 * 60 * 60;
 
-    protected static double GetTimeSerialNumber(double seconds)
-    {
-        return seconds / SecondsInADay;
-    }
+    protected static double GetTimeSerialNumber(double seconds) => seconds / SecondsInADay;
 
-    protected static double GetSeconds(double serialNumber)
-    {
-        return serialNumber * SecondsInADay;
-    }
+    protected static double GetSeconds(double serialNumber) => serialNumber * SecondsInADay;
 
     protected static double GetHour(double serialNumber)
     {
@@ -66,8 +54,5 @@ internal abstract class TimeBaseFunction : ExcelFunction
         return (seconds - (seconds % 60)) / 60;
     }
 
-    protected static double GetSecond(double serialNumber)
-    {
-        return GetSeconds(serialNumber) % 60;
-    }
+    protected static double GetSecond(double serialNumber) => GetSeconds(serialNumber) % 60;
 }

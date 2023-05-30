@@ -120,7 +120,7 @@ public class ExcelSparklineColor : XmlHelper, IColor
     /// </summary>
     public bool Auto
     {
-        get { return this.GetXmlNodeBool("@auto"); }
+        get => this.GetXmlNodeBool("@auto");
         internal set
         {
             this.ClearValues();
@@ -132,34 +132,22 @@ public class ExcelSparklineColor : XmlHelper, IColor
     /// Sets a color
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(Color color)
-    {
-        this.Rgb = color.ToArgb().ToString("X");
-    }
+    public void SetColor(Color color) => this.Rgb = color.ToArgb().ToString("X");
 
     /// <summary>
     /// Sets a theme color
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(eThemeSchemeColor color)
-    {
-        this.Theme = color;
-    }
+    public void SetColor(eThemeSchemeColor color) => this.Theme = color;
 
     /// <summary>
     /// Sets an indexed color
     /// </summary>
     /// <param name="color">The color</param>
-    public void SetColor(ExcelIndexedColor color)
-    {
-        this.Indexed = (int)color;
-    }
+    public void SetColor(ExcelIndexedColor color) => this.Indexed = (int)color;
 
     /// <summary>
     /// Sets the color to auto
     /// </summary>
-    public void SetAuto()
-    {
-        this.Auto = true;
-    }
+    public void SetAuto() => this.Auto = true;
 }

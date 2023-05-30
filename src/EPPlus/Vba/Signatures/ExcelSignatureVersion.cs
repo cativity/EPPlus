@@ -54,8 +54,8 @@ public class ExcelSignatureVersion
 
     internal X509Certificate2 Certificate
     {
-        get { return this.SignatureHandler.Certificate; }
-        set { this.SignatureHandler.Certificate = value; }
+        get => this.SignatureHandler.Certificate;
+        set => this.SignatureHandler.Certificate = value;
     }
 
     internal void CreateSignature(ExcelVbaProject project)

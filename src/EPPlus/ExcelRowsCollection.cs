@@ -24,20 +24,15 @@ public class ExcelRowsCollection : ExcelRangeRow
     ExcelWorksheet _worksheet;
 
     internal ExcelRowsCollection(ExcelWorksheet worksheet)
-        : base(worksheet, 1, ExcelPackage.MaxRows)
-    {
+        : base(worksheet, 1, ExcelPackage.MaxRows) =>
         this._worksheet = worksheet;
-    }
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="row">The row index</param>
     /// <returns>The <see cref="ExcelRangeRow"/></returns>
-    public ExcelRangeRow this[int row]
-    {
-        get { return new ExcelRangeRow(this._worksheet, row, row); }
-    }
+    public ExcelRangeRow this[int row] => new(this._worksheet, row, row);
 
     /// <summary>
     /// Indexer for the collection
@@ -45,8 +40,5 @@ public class ExcelRowsCollection : ExcelRangeRow
     /// <param name="fromRow">The row index from which collection should start</param>
     /// <param name="toRow">index from which collection should end</param>
     /// <returns>The <see cref="ExcelRangeRow"/></returns>
-    public ExcelRangeRow this[int fromRow, int toRow]
-    {
-        get { return new ExcelRangeRow(this._worksheet, fromRow, toRow); }
-    }
+    public ExcelRangeRow this[int fromRow, int toRow] => new(this._worksheet, fromRow, toRow);
 }

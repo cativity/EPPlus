@@ -131,10 +131,7 @@ public class ExcelPivotTableSlicer : ExcelSlicer<ExcelPivotTableSlicerCache>
         this.GetPositionSize();
     }
 
-    internal override bool CheckSlicerNameIsUnique(string name)
-    {
-        return this._drawings.Worksheet.Workbook.CheckSlicerNameIsUnique(name);
-    }
+    internal override bool CheckSlicerNameIsUnique(string name) => this._drawings.Worksheet.Workbook.CheckSlicerNameIsUnique(name);
 
     internal override void DeleteMe()
     {

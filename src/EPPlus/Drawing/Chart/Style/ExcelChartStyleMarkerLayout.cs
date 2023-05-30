@@ -33,8 +33,8 @@ public class ExcelChartStyleMarkerLayout : XmlHelper
     /// </summary>
     public eMarkerStyle Style
     {
-        get { return this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None); }
-        set { this.SetXmlNodeString("@symbol", value.ToEnumString()); }
+        get => this.GetXmlNodeString("@symbol").ToEnum(eMarkerStyle.None);
+        set => this.SetXmlNodeString("@symbol", value.ToEnumString());
     }
 
     /// <summary>

@@ -349,7 +349,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         internal string AttributeString
         {
-            get { return this.ObjectType.ToString(); }
+            get => this.ObjectType.ToString();
             set
             {
                 if (value.Length != 1 || (value[0] != 'D' && value[0] != 'F'))
@@ -594,7 +594,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         internal SelectionCriterion Right
         {
-            get { return this._Right; }
+            get => this._Right;
             set
             {
                 this._Right = value;
@@ -1428,10 +1428,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         /// </summary>
         /// <returns>The string representation of the boolean logic statement of the file
         /// selection criteria for this instance. </returns>
-        public override string ToString()
-        {
-            return "FileSelector(" + this._Criterion.ToString() + ")";
-        }
+        public override string ToString() => "FileSelector(" + this._Criterion.ToString() + ")";
 
         private bool Evaluate(string filename)
         {
@@ -1470,10 +1467,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         ///   A collection of strings containing fully-qualified pathnames of files
         ///   that match the criteria specified in the FileSelector instance.
         /// </returns>
-        public ICollection<string> SelectFiles(string directory)
-        {
-            return this.SelectFiles(directory, false);
-        }
+        public ICollection<string> SelectFiles(string directory) => this.SelectFiles(directory, false);
 
         /// <summary>
         ///   Returns the names of the files in the specified directory that fit the
@@ -1604,10 +1598,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         ///   A string containing the name or value to convert.
         /// </param>
         /// <returns></returns>
-        internal static object Parse(Type enumType, string stringRepresentation)
-        {
-            return Parse(enumType, stringRepresentation, false);
-        }
+        internal static object Parse(Type enumType, string stringRepresentation) => Parse(enumType, stringRepresentation, false);
 
 #if SILVERLIGHT
        public static System.Enum[] GetEnumValues(Type type)

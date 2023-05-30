@@ -64,10 +64,7 @@ public abstract class ExcelDxfStyleBase : DxfStyleBase
     /// <summary>
     /// Id
     /// </summary>
-    internal override string Id
-    {
-        get { return this.Border.Id + this.Fill.Id + (this.AllowChange ? "" : this.DxfId.ToString()); }
-    }
+    internal override string Id => this.Border.Id + this.Fill.Id + (this.AllowChange ? "" : this.DxfId.ToString());
 
     /// <summary>
     /// Creates the node
@@ -99,10 +96,7 @@ public abstract class ExcelDxfStyleBase : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this.Fill.HasValue || this.Border.HasValue; }
-    }
+    public override bool HasValue => this.Fill.HasValue || this.Border.HasValue;
 
     /// <summary>
     /// Clears all properties

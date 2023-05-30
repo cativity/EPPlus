@@ -65,18 +65,12 @@ public class ExcelAddressInfo
     /// <summary>
     /// Returns true if the <see cref="Worksheet"/> is set
     /// </summary>
-    public bool WorksheetIsSpecified
-    {
-        get { return !string.IsNullOrEmpty(this.Worksheet); }
-    }
+    public bool WorksheetIsSpecified => !string.IsNullOrEmpty(this.Worksheet);
 
     /// <summary>
     /// If the address reference multiple cells.
     /// </summary>
-    public bool IsMultipleCells
-    {
-        get { return !string.IsNullOrEmpty(this.EndCell); }
-    }
+    public bool IsMultipleCells => !string.IsNullOrEmpty(this.EndCell);
 
     /// <summary>
     /// The start cell address

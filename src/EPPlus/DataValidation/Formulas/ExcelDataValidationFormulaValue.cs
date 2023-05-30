@@ -40,7 +40,7 @@ internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidation
     /// </summary>
     public T Value
     {
-        get { return this._value; }
+        get => this._value;
         set
         {
             this.State = FormulaState.Value;
@@ -48,8 +48,5 @@ internal abstract class ExcelDataValidationFormulaValue<T> : ExcelDataValidation
         }
     }
 
-    internal override void ResetValue()
-    {
-        this.Value = default(T);
-    }
+    internal override void ResetValue() => this.Value = default(T);
 }

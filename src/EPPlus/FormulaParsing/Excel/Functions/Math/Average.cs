@@ -25,10 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 [FunctionMetadata(Category = ExcelFunctionCategory.Statistical, EPPlusVersion = "4", Description = "Returns the Average of a list of supplied numbers")]
 internal class Average : HiddenValuesHandlingFunction
 {
-    public Average()
-    {
-        this.IgnoreErrors = false;
-    }
+    public Average() => this.IgnoreErrors = false;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

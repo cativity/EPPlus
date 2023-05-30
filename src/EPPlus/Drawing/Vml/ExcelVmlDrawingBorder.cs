@@ -24,17 +24,15 @@ namespace OfficeOpenXml.Drawing.Vml;
 public class ExcelVmlDrawingBorder : XmlHelper
 {
     internal ExcelVmlDrawingBorder(ExcelDrawings drawings, XmlNamespaceManager ns, XmlNode topNode, string[] schemaNodeOrder)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this.SchemaNodeOrder = schemaNodeOrder;
-    }
 
     /// <summary>
     /// The style of the border
     /// </summary>
     public eVmlLineStyle LineStyle
     {
-        get { return this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine); }
+        get => this.GetXmlNodeString("v:stroke/@linestyle").ToEnum(eVmlLineStyle.NoLine);
         set
         {
             if (value == eVmlLineStyle.NoLine)
@@ -56,8 +54,8 @@ public class ExcelVmlDrawingBorder : XmlHelper
     /// </summary>
     public eVmlDashStyle DashStyle
     {
-        get { return this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom); }
-        set { this.CustomDashStyle = value.ToEnumString(); }
+        get => this.CustomDashStyle.ToEnum(eVmlDashStyle.Custom);
+        set => this.CustomDashStyle = value.ToEnumString();
     }
 
     /// <summary>
@@ -68,8 +66,8 @@ public class ExcelVmlDrawingBorder : XmlHelper
     /// </summary>
     public string CustomDashStyle
     {
-        get { return this.GetXmlNodeString("v:stroke/@dashstyle"); }
-        set { this.SetXmlNodeString("v:stroke/@dashstyle", value); }
+        get => this.GetXmlNodeString("v:stroke/@dashstyle");
+        set => this.SetXmlNodeString("v:stroke/@dashstyle", value);
     }
 
     ExcelVmlMeasurementUnit _width;
@@ -77,10 +75,7 @@ public class ExcelVmlDrawingBorder : XmlHelper
     /// <summary>
     /// The width of the border
     /// </summary>
-    public ExcelVmlMeasurementUnit Width
-    {
-        get { return this._width ??= new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight")); }
-    }
+    public ExcelVmlMeasurementUnit Width => this._width ??= new ExcelVmlMeasurementUnit(this.GetXmlNodeString("@strokeweight"));
 
     internal void UpdateXml()
     {

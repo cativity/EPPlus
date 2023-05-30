@@ -47,16 +47,10 @@ public class RegionMapChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("RegionMapChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("RegionMapChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void RegionMapChart_Styles()
@@ -85,13 +79,13 @@ public class RegionMapChartStylingTest : TestBase
                  });
 
         //RegionMap chart Style 2
-        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle2, "RegionMapChartStyle2", 0, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //RegionMap chart Style 3
-        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle3, "RegionMapChartStyle3", 0, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //RegionMap chart Style 4
-        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.RegionMapChartStyle4, "RegionMapChartStyle4", 20, 5, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelRegionMapChart AddChart(ExcelWorksheet ws,

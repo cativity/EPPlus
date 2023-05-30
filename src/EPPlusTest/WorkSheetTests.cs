@@ -1977,10 +1977,7 @@ public class WorkSheetTest : TestBase
     /// <returns>
     ///     null if none is thrown
     /// </returns>
-    private static Exception GetValueException<T>(ExcelRangeBase range)
-    {
-        return GetException(() => range.GetValue<T>());
-    }
+    private static Exception GetValueException<T>(ExcelRangeBase range) => GetException(() => range.GetValue<T>());
 
     /// <summary>
     ///     Get exception thrown by <paramref name="action"/> when invoked.

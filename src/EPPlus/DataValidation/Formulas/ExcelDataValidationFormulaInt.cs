@@ -36,8 +36,5 @@ internal class ExcelDataValidationFormulaInt : ExcelDataValidationFormulaValue<i
         }
     }
 
-    protected override string GetValueAsString()
-    {
-        return this.Value.HasValue ? this.Value.Value.ToString() : string.Empty;
-    }
+    protected override string GetValueAsString() => this.Value.HasValue ? this.Value.Value.ToString() : string.Empty;
 }

@@ -26,10 +26,8 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
     private readonly ExcelPivotTable _table;
 
     internal ExcelPivotTableFieldCollection(ExcelPivotTable table)
-        : base()
-    {
+        : base() =>
         this._table = table;
-    }
 
     /// <summary>
     /// Indexer by name
@@ -158,10 +156,7 @@ public class ExcelPivotTableFieldCollection : ExcelPivotTableFieldCollectionBase
         return this._table.Fields[cacheField.Index];
     }
 
-    internal void RemoveAt(int index)
-    {
-        this.Remove(this._list[index]);
-    }
+    internal void RemoveAt(int index) => this.Remove(this._list[index]);
 
     internal void Remove(ExcelPivotTableField item)
     {

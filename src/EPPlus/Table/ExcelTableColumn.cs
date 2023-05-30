@@ -41,8 +41,8 @@ public class ExcelTableColumn : ExcelTableDxfBase
     /// </summary>
     public int Id
     {
-        get { return this.GetXmlNodeInt("@id"); }
-        set { this.SetXmlNodeString("@id", value.ToString()); }
+        get => this.GetXmlNodeInt("@id");
+        set => this.SetXmlNodeString("@id", value.ToString());
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
     /// </summary>
     public string TotalsRowLabel
     {
-        get { return this.GetXmlNodeString("@totalsRowLabel"); }
+        get => this.GetXmlNodeString("@totalsRowLabel");
         set
         {
             this.SetXmlNodeString("@totalsRowLabel", value);
@@ -149,7 +149,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
     /// </summary>
     public string TotalsRowFormula
     {
-        get { return this.GetXmlNodeString(TOTALSROWFORMULA_PATH); }
+        get => this.GetXmlNodeString(TOTALSROWFORMULA_PATH);
         set
         {
             if (!string.IsNullOrEmpty(value))
@@ -173,7 +173,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
     /// </summary>
     public string DataCellStyleName
     {
-        get { return this.GetXmlNodeString(DATACELLSTYLE_PATH); }
+        get => this.GetXmlNodeString(DATACELLSTYLE_PATH);
         set
         {
             if (this._tbl.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -229,17 +229,14 @@ public class ExcelTableColumn : ExcelTableDxfBase
 
             return this._slicer;
         }
-        internal set { this._slicer = value; }
+        internal set => this._slicer = value;
     }
 
     /// <summary>
     /// Adds a slicer drawing connected to the column
     /// </summary>
     /// <returns>The table slicer drawing object</returns>
-    public ExcelTableSlicer AddSlicer()
-    {
-        return this._tbl.WorkSheet.Drawings.AddTableSlicer(this);
-    }
+    public ExcelTableSlicer AddSlicer() => this._tbl.WorkSheet.Drawings.AddTableSlicer(this);
 
     /// <summary>
     /// Sets a calculated column Formula.
@@ -252,7 +249,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
     /// </summary>
     public string CalculatedColumnFormula
     {
-        get { return this.GetXmlNodeString(CALCULATEDCOLUMNFORMULA_PATH); }
+        get => this.GetXmlNodeString(CALCULATEDCOLUMNFORMULA_PATH);
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -273,23 +270,14 @@ public class ExcelTableColumn : ExcelTableDxfBase
         }
     }
 
-    internal void SetFormula(string formula)
-    {
-        this.SetXmlNodeString(CALCULATEDCOLUMNFORMULA_PATH, formula);
-    }
+    internal void SetFormula(string formula) => this.SetXmlNodeString(CALCULATEDCOLUMNFORMULA_PATH, formula);
 
-    internal void RemoveFormulaNode()
-    {
-        this.DeleteNode(CALCULATEDCOLUMNFORMULA_PATH);
-    }
+    internal void RemoveFormulaNode() => this.DeleteNode(CALCULATEDCOLUMNFORMULA_PATH);
 
     /// <summary>
     /// The <see cref="ExcelTable"/> containing the table column
     /// </summary>
-    public ExcelTable Table
-    {
-        get { return this._tbl; }
-    }
+    public ExcelTable Table => this._tbl;
 
     internal void SetTableFormula(bool clear)
     {

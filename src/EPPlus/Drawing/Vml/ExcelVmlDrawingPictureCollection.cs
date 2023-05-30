@@ -109,18 +109,12 @@ public class ExcelVmlDrawingPictureCollection : ExcelVmlDrawingBaseCollection, I
     /// </summary>
     /// <param name="Index">Index</param>
     /// <returns>The VML Drawing Picture object</returns>
-    public ExcelVmlDrawingPicture this[int Index]
-    {
-        get { return this._images[Index] as ExcelVmlDrawingPicture; }
-    }
+    public ExcelVmlDrawingPicture this[int Index] => this._images[Index] as ExcelVmlDrawingPicture;
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._images.Count; }
-    }
+    public int Count => this._images.Count;
 
     int _nextID;
 
@@ -154,10 +148,7 @@ public class ExcelVmlDrawingPictureCollection : ExcelVmlDrawingBaseCollection, I
 
     #region IEnumerable Members
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._images.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._images.GetEnumerator();
 
     #endregion
 }

@@ -16,10 +16,7 @@ internal class YieldImpl
     private readonly ICouponProvider _couponProvider;
     private readonly IPriceProvider _priceProvider;
 
-    private static bool AreEqual(double x, double y)
-    {
-        return System.Math.Abs(x - y) < 0.000000001;
-    }
+    private static bool AreEqual(double x, double y) => System.Math.Abs(x - y) < 0.000000001;
 
     public double GetYield(System.DateTime settlement,
                            System.DateTime maturity,

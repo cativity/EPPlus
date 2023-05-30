@@ -33,8 +33,5 @@ internal static class ChiSquareHelper
         return GammaHelper.regularizedGammaP(degreeOfFreedom / 2, n / 2, 1.0e-15, 10000);
     }
 
-    public static double Inverse(double n, double degreeOfFreedom)
-    {
-        return 2 * GammaPinvHelper.gammapinv(n, 0.5 * degreeOfFreedom);
-    }
+    public static double Inverse(double n, double degreeOfFreedom) => 2 * GammaPinvHelper.gammapinv(n, 0.5 * degreeOfFreedom);
 }

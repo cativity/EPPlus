@@ -42,25 +42,16 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
     /// Get the enumerator for the Theme
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelDrawingFill> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelDrawingFill> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns>The fill</returns>
-    public ExcelDrawingFill this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelDrawingFill this[int index] => this._list[index];
 
     /// <summary>
     /// Adds a new fill to the collection
@@ -110,8 +101,5 @@ public class ExcelThemeFillStyles : XmlHelper, IEnumerable<ExcelDrawingFill>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }

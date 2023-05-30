@@ -34,18 +34,12 @@ public class ExcelDrawingDuotoneEffect : XmlHelper
     /// <summary>
     /// The first color
     /// </summary>
-    public ExcelDrawingColorManager Color1
-    {
-        get { return this._color1 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingColorManager Color1 => this._color1 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.FirstChild, "", this.SchemaNodeOrder);
 
     private ExcelDrawingColorManager _color2;
 
     /// <summary>
     /// The second color
     /// </summary>
-    public ExcelDrawingColorManager Color2
-    {
-        get { return this._color2 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingColorManager Color2 => this._color2 ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode.LastChild, "", this.SchemaNodeOrder);
 }

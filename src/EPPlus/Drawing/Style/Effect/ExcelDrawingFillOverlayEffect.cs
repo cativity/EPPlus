@@ -32,10 +32,8 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
                                            XmlNode topNode,
                                            string[] schemaNodeOrder,
                                            string path)
-        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
-    {
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path) =>
         this._pictureRelationDocument = pictureRelationDocument;
-    }
 
     /// <summary>
     /// The fill to blend with
@@ -48,7 +46,7 @@ public class ExcelDrawingFillOverlayEffect : ExcelDrawingEffectBase
     /// </summary>
     public eBlendMode Blend
     {
-        get { return this.GetXmlNodeString(this._path + "/@blend").ToEnum(eBlendMode.Over); }
+        get => this.GetXmlNodeString(this._path + "/@blend").ToEnum(eBlendMode.Over);
         set
         {
             if (this.Fill == null)

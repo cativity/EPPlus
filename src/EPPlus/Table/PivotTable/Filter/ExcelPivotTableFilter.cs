@@ -47,8 +47,8 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     public int Id
     {
-        get { return this.GetXmlNodeInt("@id"); }
-        internal set { this.SetXmlNodeInt("@id", value); }
+        get => this.GetXmlNodeInt("@id");
+        internal set => this.SetXmlNodeInt("@id", value);
     }
 
     /// <summary>
@@ -56,8 +56,8 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value, true); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value, true);
     }
 
     /// <summary>
@@ -65,8 +65,8 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     public string Description
     {
-        get { return this.GetXmlNodeString("@description"); }
-        set { this.SetXmlNodeString("@description", value, true); }
+        get => this.GetXmlNodeString("@description");
+        set => this.SetXmlNodeString("@description", value, true);
     }
 
     internal void CreateDateCustomFilter(ePivotTableDateValueFilterType type)
@@ -485,7 +485,7 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     public ePivotTableFilterType Type
     {
-        get { return this.GetXmlNodeString("@type").ToEnum(ePivotTableFilterType.Unknown); }
+        get => this.GetXmlNodeString("@type").ToEnum(ePivotTableFilterType.Unknown);
         internal set
         {
             string? s = value.ToEnumString();
@@ -504,32 +504,32 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     public int EvalOrder
     {
-        get { return this.GetXmlNodeInt("@evalOrder"); }
-        internal set { this.SetXmlNodeInt("@evalOrder", value); }
+        get => this.GetXmlNodeInt("@evalOrder");
+        internal set => this.SetXmlNodeInt("@evalOrder", value);
     }
 
     internal int Fld
     {
-        get { return this.GetXmlNodeInt("@fld"); }
-        set { this.SetXmlNodeInt("@fld", value); }
+        get => this.GetXmlNodeInt("@fld");
+        set => this.SetXmlNodeInt("@fld", value);
     }
 
     internal int MeasureFldIndex
     {
-        get { return this.GetXmlNodeInt("@iMeasureFld"); }
-        set { this.SetXmlNodeInt("@iMeasureFld", value); }
+        get => this.GetXmlNodeInt("@iMeasureFld");
+        set => this.SetXmlNodeInt("@iMeasureFld", value);
     }
 
     internal int MeasureHierIndex
     {
-        get { return this.GetXmlNodeInt("@iMeasureHier"); }
-        set { this.SetXmlNodeInt("@iMeasureHier", value); }
+        get => this.GetXmlNodeInt("@iMeasureHier");
+        set => this.SetXmlNodeInt("@iMeasureHier", value);
     }
 
     internal int MemberPropertyFldIndex
     {
-        get { return this.GetXmlNodeInt("@mpFld"); }
-        set { this.SetXmlNodeInt("@mpFld", value); }
+        get => this.GetXmlNodeInt("@mpFld");
+        set => this.SetXmlNodeInt("@mpFld", value);
     }
 
     /// <summary>
@@ -547,8 +547,8 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     internal string StringValue1
     {
-        get { return this.GetXmlNodeString("@stringValue1"); }
-        set { this.SetXmlNodeString("@stringValue1", value, true); }
+        get => this.GetXmlNodeString("@stringValue1");
+        set => this.SetXmlNodeString("@stringValue1", value, true);
     }
 
     /// <summary>
@@ -556,8 +556,8 @@ public class ExcelPivotTableFilter : XmlHelper
     /// </summary>
     internal string StringValue2
     {
-        get { return this.GetXmlNodeString("@stringValue2"); }
-        set { this.SetXmlNodeString("@stringValue2", value, true); }
+        get => this.GetXmlNodeString("@stringValue2");
+        set => this.SetXmlNodeString("@stringValue2", value, true);
     }
 
     ExcelFilterColumn _filter;
@@ -618,6 +618,6 @@ public class ExcelPivotTableFilter : XmlHelper
 
             return this._filter;
         }
-        set { this._filter = value; }
+        set => this._filter = value;
     }
 }

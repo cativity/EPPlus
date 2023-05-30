@@ -25,10 +25,7 @@ public class CompatibilitySettings
 {
     private ExcelPackage excelPackage;
 
-    internal CompatibilitySettings(ExcelPackage excelPackage)
-    {
-        this.excelPackage = excelPackage;
-    }
+    internal CompatibilitySettings(ExcelPackage excelPackage) => this.excelPackage = excelPackage;
 #if Core
     /// <summary>
     /// If the worksheets collection of the ExcelWorkbook class is 1 based.

@@ -36,10 +36,7 @@ public class ExcelPivotAreaReferenceCollection : EPPlusReadOnlyList<ExcelPivotAr
     /// </summary>
     /// <param name="field">The column or row field</param>
     /// <returns>The pivot area reference</returns>
-    public ExcelPivotAreaReference Add(ExcelPivotTableField field)
-    {
-        return this.Add(field._pivotTable, field.Index);
-    }
+    public ExcelPivotAreaReference Add(ExcelPivotTableField field) => this.Add(field._pivotTable, field.Index);
 
     /// <summary>
     /// Adds a pivot table field to the collection. The field is usually a column or row field

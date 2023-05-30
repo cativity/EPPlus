@@ -72,8 +72,5 @@ public class HtmlTableExportSettings : HtmlExportSettings
     /// Configure the settings.
     /// </summary>
     /// <param name="settings"></param>
-    public void Configure(Action<HtmlTableExportSettings> settings)
-    {
-        settings.Invoke(this);
-    }
+    public void Configure(Action<HtmlTableExportSettings> settings) => settings.Invoke(this);
 }

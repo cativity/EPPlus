@@ -32,26 +32,17 @@ public class CompileResult
     /// <summary>
     /// Returns a CompileResult with a null value and data type set to DataType.Empty
     /// </summary>
-    public static CompileResult Empty
-    {
-        get { return _empty; }
-    }
+    public static CompileResult Empty => _empty;
 
     /// <summary>
     /// Returns a CompileResult instance with a decimal value of 0.
     /// </summary>
-    public static CompileResult ZeroDecimal
-    {
-        get { return _zeroDecimal; }
-    }
+    public static CompileResult ZeroDecimal => _zeroDecimal;
 
     /// <summary>
     /// Returns a CompileResult instance with a integer value of 0.
     /// </summary>
-    public static CompileResult ZeroInt
-    {
-        get { return _zeroInt; }
-    }
+    public static CompileResult ZeroInt => _zeroInt;
 
     private double? _resultNumeric;
 
@@ -158,18 +149,13 @@ public class CompileResult
 
     public DataType DataType { get; private set; }
 
-    public bool IsNumeric
-    {
-        get
-        {
-            return this.DataType == DataType.Decimal
-                   || this.DataType == DataType.Integer
-                   || this.DataType == DataType.Empty
-                   || this.DataType == DataType.Boolean
-                   || this.DataType == DataType.Date
-                   || this.DataType == DataType.Time;
-        }
-    }
+    public bool IsNumeric =>
+        this.DataType == DataType.Decimal
+        || this.DataType == DataType.Integer
+        || this.DataType == DataType.Empty
+        || this.DataType == DataType.Boolean
+        || this.DataType == DataType.Date
+        || this.DataType == DataType.Time;
 
     public bool IsNumericString
     {
@@ -222,8 +208,5 @@ public class CompileResult
 
     public int ExcelAddressReferenceId { get; set; }
 
-    public bool IsResultOfResolvedExcelRange
-    {
-        get { return this.ExcelAddressReferenceId > 0; }
-    }
+    public bool IsResultOfResolvedExcelRange => this.ExcelAddressReferenceId > 0;
 }

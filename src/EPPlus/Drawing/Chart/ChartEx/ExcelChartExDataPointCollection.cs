@@ -61,10 +61,7 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     /// </summary>
     /// <param name="index">The zero based index</param>
     /// <returns>The datapoint</returns>
-    public ExcelChartExDataPoint Add(int index)
-    {
-        return this.AddDp(index);
-    }
+    public ExcelChartExDataPoint Add(int index) => this.AddDp(index);
 
     internal ExcelChartExDataPoint AddDp(int idx)
     {
@@ -85,40 +82,25 @@ public class ExcelChartExDataPointCollection : XmlHelper, IEnumerable<ExcelChart
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns>true if exists</returns>
-    public bool ContainsKey(int index)
-    {
-        return this._dic.ContainsKey(index);
-    }
+    public bool ContainsKey(int index) => this._dic.ContainsKey(index);
 
     /// <summary>
     /// Indexer
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns></returns>
-    public ExcelChartExDataPoint this[int index]
-    {
-        get { return this._dic[index]; }
-    }
+    public ExcelChartExDataPoint this[int index] => this._dic[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._dic.Count; }
-    }
+    public int Count => this._dic.Count;
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelChartExDataPoint> GetEnumerator()
-    {
-        return this._dic.Values.GetEnumerator();
-    }
+    public IEnumerator<ExcelChartExDataPoint> GetEnumerator() => this._dic.Values.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._dic.Values.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._dic.Values.GetEnumerator();
 }

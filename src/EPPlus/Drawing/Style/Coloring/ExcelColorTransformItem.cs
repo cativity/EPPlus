@@ -136,8 +136,5 @@ public class ExcelColorTransformItem : XmlHelper, IColorTransformItem, ISource
     /// Converts the object to a string
     /// </summary>
     /// <returns>The type</returns>
-    public override string ToString()
-    {
-        return this.Type.ToString();
-    }
+    public override string ToString() => this.Type.ToString();
 }

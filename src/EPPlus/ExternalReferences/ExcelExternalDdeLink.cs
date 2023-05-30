@@ -86,10 +86,7 @@ public class ExcelExternalDdeLink : ExcelExternalLink
     /// <summary>
     /// The type of external link
     /// </summary>
-    public override eExternalLinkType ExternalLinkType
-    {
-        get { return eExternalLinkType.DdeLink; }
-    }
+    public override eExternalLinkType ExternalLinkType => eExternalLinkType.DdeLink;
 
     /// <summary>
     /// Service name for the DDE connection

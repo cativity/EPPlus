@@ -39,8 +39,8 @@ public class ExcelTableStyleElement : XmlHelper
     /// </summary>
     public ExcelDxfStyleLimitedFont Style
     {
-        get { return this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId")); }
-        internal set { this._style = value; }
+        get => this._style ??= this._styles.GetDxfLimitedFont(this.GetXmlNodeIntNull("@dxfId"));
+        internal set => this._style = value;
     }
 
     /// <summary>

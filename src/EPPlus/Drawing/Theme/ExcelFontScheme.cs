@@ -23,18 +23,16 @@ public class ExcelFontScheme : XmlHelper
     private ExcelPackage _pck;
 
     internal ExcelFontScheme(ExcelPackage pck, XmlNamespaceManager nameSpaceManager, XmlNode topNode)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this._pck = pck;
-    }
 
     /// <summary>
     /// The name of the font scheme
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value);
     }
 
     ExcelThemeFontCollection _majorFont;
@@ -42,28 +40,18 @@ public class ExcelFontScheme : XmlHelper
     /// <summary>
     /// A collection of major fonts
     /// </summary>
-    public ExcelThemeFontCollection MajorFont
-    {
-        get
-        {
-            return this._majorFont ??= new ExcelThemeFontCollection(this._pck,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
-        }
-    }
+    public ExcelThemeFontCollection MajorFont =>
+        this._majorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                         this.NameSpaceManager,
+                                                         this.TopNode.SelectSingleNode("a:majorFont", this.NameSpaceManager));
 
     ExcelThemeFontCollection _minorFont;
 
     /// <summary>
     /// A collection of minor fonts
     /// </summary>
-    public ExcelThemeFontCollection MinorFont
-    {
-        get
-        {
-            return this._minorFont ??= new ExcelThemeFontCollection(this._pck,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
-        }
-    }
+    public ExcelThemeFontCollection MinorFont =>
+        this._minorFont ??= new ExcelThemeFontCollection(this._pck,
+                                                         this.NameSpaceManager,
+                                                         this.TopNode.SelectSingleNode("a:minorFont", this.NameSpaceManager));
 }

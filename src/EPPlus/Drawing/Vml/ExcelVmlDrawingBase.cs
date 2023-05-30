@@ -21,22 +21,20 @@ namespace OfficeOpenXml.Drawing.Vml;
 public class ExcelVmlDrawingBase : XmlHelper
 {
     internal ExcelVmlDrawingBase(XmlNode topNode, XmlNamespaceManager ns)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this.SchemaNodeOrder = new string[]
         {
             "fill", "stroke", "shadow", "path", "textbox", "ClientData", "MoveWithCells", "SizeWithCells", "Anchor", "Locked", "AutoFill", "LockText",
             "TextHAlign", "TextVAlign", "Row", "Column", "Visible"
         };
-    }
 
     /// <summary>
     /// The Id of the vml drawing
     /// </summary>
     public string Id
     {
-        get { return this.GetXmlNodeString("@id"); }
-        set { this.SetXmlNodeString("@id", value); }
+        get => this.GetXmlNodeString("@id");
+        set => this.SetXmlNodeString("@id", value);
     }
 
     /// <summary>
@@ -44,8 +42,8 @@ public class ExcelVmlDrawingBase : XmlHelper
     /// </summary>
     internal string SpId
     {
-        get { return this.GetXmlNodeString("@o:spid"); }
-        set { this.SetXmlNodeString("@o:spid", value); }
+        get => this.GetXmlNodeString("@o:spid");
+        set => this.SetXmlNodeString("@o:spid", value);
     }
 
     /// <summary>
@@ -53,8 +51,8 @@ public class ExcelVmlDrawingBase : XmlHelper
     /// </summary>
     public string AlternativeText
     {
-        get { return this.GetXmlNodeString("@alt"); }
-        set { this.SetXmlNodeString("@alt", value); }
+        get => this.GetXmlNodeString("@alt");
+        set => this.SetXmlNodeString("@alt", value);
     }
 
     /// <summary>
@@ -62,8 +60,8 @@ public class ExcelVmlDrawingBase : XmlHelper
     /// </summary>
     internal string Anchor
     {
-        get { return this.GetXmlNodeString("x:ClientData/x:Anchor"); }
-        set { this.SetXmlNodeString("x:ClientData/x:Anchor", value); }
+        get => this.GetXmlNodeString("x:ClientData/x:Anchor");
+        set => this.SetXmlNodeString("x:ClientData/x:Anchor", value);
     }
 
     #region "Style Handling methods"

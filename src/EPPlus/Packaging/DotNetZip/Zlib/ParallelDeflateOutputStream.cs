@@ -379,7 +379,7 @@ public class ParallelDeflateOutputStream : Stream
     /// </remarks>
     public int MaxBufferPairs
     {
-        get { return this._maxBufferPairs; }
+        get => this._maxBufferPairs;
         set
         {
             if (value < 4)
@@ -433,7 +433,7 @@ public class ParallelDeflateOutputStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get { return this._bufferSize; }
+        get => this._bufferSize;
         set
         {
             if (value < 1024)
@@ -451,10 +451,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// This value is meaningful only after a call to Close().
     /// </remarks>
-    public int Crc32
-    {
-        get { return this._Crc32; }
-    }
+    public int Crc32 => this._Crc32;
 
     /// <summary>
     /// The total number of uncompressed bytes processed by the ParallelDeflateOutputStream.
@@ -462,10 +459,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// This value is meaningful only after a call to Close().
     /// </remarks>
-    public long BytesProcessed
-    {
-        get { return this._totalBytesProcessed; }
-    }
+    public long BytesProcessed => this._totalBytesProcessed;
 
     private void _InitializePoolOfWorkItems()
     {
@@ -791,10 +785,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <param name="disposing">
     ///   indicates whether the Dispose method was invoked by user code.
     /// </param>
-    protected override void Dispose(bool disposing)
-    {
-        base.Dispose(disposing);
-    }
+    protected override void Dispose(bool disposing) => base.Dispose(disposing);
 
     /// <summary>
     ///   Resets the stream for use with another stream.
@@ -1292,10 +1283,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// Always returns false.
     /// </remarks>
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
     /// <summary>
     /// Indicates whether the stream supports Read operations.
@@ -1303,10 +1291,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// Always returns false.
     /// </remarks>
-    public override bool CanRead
-    {
-        get { return false; }
-    }
+    public override bool CanRead => false;
 
     /// <summary>
     /// Indicates whether the stream supports Write operations.
@@ -1314,18 +1299,12 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// Returns true if the provided stream is writable.
     /// </remarks>
-    public override bool CanWrite
-    {
-        get { return this._outStream.CanWrite; }
-    }
+    public override bool CanWrite => this._outStream.CanWrite;
 
     /// <summary>
     /// Reading this property always throws a NotSupportedException.
     /// </summary>
-    public override long Length
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public override long Length => throw new NotSupportedException();
 
     /// <summary>
     /// Returns the current position of the output stream.
@@ -1339,8 +1318,8 @@ public class ParallelDeflateOutputStream : Stream
     /// </remarks>
     public override long Position
     {
-        get { return this._outStream.Position; }
-        set { throw new NotSupportedException(); }
+        get => this._outStream.Position;
+        set => throw new NotSupportedException();
     }
 
     /// <summary>
@@ -1360,10 +1339,7 @@ public class ParallelDeflateOutputStream : Stream
     ///   ANYTHING.
     /// </param>
     /// <returns>nothing.</returns>
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-        throw new NotSupportedException();
-    }
+    public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
     /// <summary>
     /// This method always throws a NotSupportedException.
@@ -1377,10 +1353,7 @@ public class ParallelDeflateOutputStream : Stream
     ///   THIS METHOD ACTUALLY DID ANYTHING.
     /// </param>
     /// <returns>nothing. It always throws.</returns>
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        throw new NotSupportedException();
-    }
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
     /// <summary>
     /// This method always throws a NotSupportedException.
@@ -1389,8 +1362,5 @@ public class ParallelDeflateOutputStream : Stream
     ///   The new value for the stream length....  IF
     ///   THIS METHOD ACTUALLY DID ANYTHING.
     /// </param>
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 }

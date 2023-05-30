@@ -44,37 +44,25 @@ public class ExcelFilterCollectionBase<T> : IEnumerable<T>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<T> GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// The indexer for the collection
     /// </summary>
     /// <param name="index">The index of the item</param>
     /// <returns>The item at the index.</returns>
-    public T this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public T this[int index] => this._list[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }
 
 /// <summary>

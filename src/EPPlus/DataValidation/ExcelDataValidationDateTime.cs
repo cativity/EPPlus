@@ -62,23 +62,11 @@ public class ExcelDataValidationDateTime : ExcelDataValidationWithFormula2<IExce
     /// </summary>
     public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.DateTime);
 
-    internal override IExcelDataValidationFormulaDateTime DefineFormulaClassType(string formulaValue, string sheetName)
-    {
-        return new ExcelDataValidationFormulaDateTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-    }
+    internal override IExcelDataValidationFormulaDateTime DefineFormulaClassType(string formulaValue, string sheetName) => new ExcelDataValidationFormulaDateTime(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
 
-    internal override ExcelDataValidation GetClone()
-    {
-        return new ExcelDataValidationDateTime(this, this._ws);
-    }
+    internal override ExcelDataValidation GetClone() => new ExcelDataValidationDateTime(this, this._ws);
 
-    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-    {
-        return new ExcelDataValidationDateTime(this, copy);
-    }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy) => new ExcelDataValidationDateTime(this, copy);
 
-    ExcelDataValidationDateTime Clone()
-    {
-        return (ExcelDataValidationDateTime)this.GetClone();
-    }
+    ExcelDataValidationDateTime Clone() => (ExcelDataValidationDateTime)this.GetClone();
 }

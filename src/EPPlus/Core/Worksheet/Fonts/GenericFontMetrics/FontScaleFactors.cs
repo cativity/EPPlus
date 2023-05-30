@@ -31,28 +31,16 @@ internal class FontScaleFactors
 {
     private Dictionary<uint, FontScaleFactor> _fonts = new Dictionary<uint, FontScaleFactor>();
 
-    public FontScaleFactors()
-    {
-        this.Initialize();
-    }
+    public FontScaleFactors() => this.Initialize();
 
     public static readonly float JapaneseKanjiDefaultScalingFactor = 1.13f;
     public static readonly float DigitsScalingFactor = 1.08f;
 
-    private static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
-    {
-        return GenericFontMetricsTextMeasurerBase.GetKey(family, subFamily);
-    }
+    private static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily) => GenericFontMetricsTextMeasurerBase.GetKey(family, subFamily);
 
-    private static FontScaleFactor CSF(float s, float m, float l)
-    {
-        return new FontScaleFactor(s, m, l);
-    }
+    private static FontScaleFactor CSF(float s, float m, float l) => new(s, m, l);
 
-    private static FontScaleFactor CSF(float s, float m, float l, float sf)
-    {
-        return new FontScaleFactor(s, m, l, sf);
-    }
+    private static FontScaleFactor CSF(float s, float m, float l, float sf) => new(s, m, l, sf);
 
     private void Initialize()
     {

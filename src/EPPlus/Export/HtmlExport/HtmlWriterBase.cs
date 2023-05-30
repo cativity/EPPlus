@@ -26,10 +26,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             await this._writer.WriteLineAsync();
         }
 
-        public async Task WriteAsync(string text)
-        {
-            await this._writer.WriteAsync(text);
-        }
+        public async Task WriteAsync(string text) => await this._writer.WriteAsync(text);
 
         internal protected async Task WriteIndentAsync()
         {

@@ -67,10 +67,8 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
                         ExcelGroupShape parent = null,
                         string drawingPath = "xdr:graphicFrame",
                         string nvPrPath = "xdr:nvGraphicFramePr/xdr:cNvPr")
-        : base(drawings, drawingsNode, drawingPath, nvPrPath, parent)
-    {
+        : base(drawings, drawingsNode, drawingPath, nvPrPath, parent) =>
         this.Init(drawings, chartXml);
-    }
 
     internal ExcelChart(ExcelChart topChart,
                         XmlNode chartNode,
@@ -99,10 +97,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// <summary>
     /// Manage style settings for the chart
     /// </summary>
-    public ExcelChartStyleManager StyleManager
-    {
-        get { return this._styleManager ??= new ExcelChartStyleManager(this.NameSpaceManager, this); }
-    }
+    public ExcelChartStyleManager StyleManager => this._styleManager ??= new ExcelChartStyleManager(this.NameSpaceManager, this);
 
     private bool HasPrimaryAxis()
     {
@@ -135,7 +130,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     public bool UseSecondaryAxis
     {
-        get { return this._secondaryAxis; }
+        get => this._secondaryAxis;
         set
         {
             if (this._secondaryAxis != value)
@@ -195,10 +190,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// <summary>
     /// The type of drawing
     /// </summary>
-    public override eDrawingType DrawingType
-    {
-        get { return eDrawingType.Chart; }
-    }
+    public override eDrawingType DrawingType => eDrawingType.Chart;
 
     /// <summary>
     /// Type of chart
@@ -210,20 +202,14 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     internal protected XmlNode _chartNode = null;
 
-    internal XmlNode ChartNode
-    {
-        get { return this._chartNode; }
-    }
+    internal XmlNode ChartNode => this._chartNode;
 
     internal ExcelChartTitle _title;
 
     /// <summary>
     /// The titel of the chart
     /// </summary>
-    public virtual ExcelChartTitle Title
-    {
-        get { return this._title ??= this.GetTitle(); }
-    }
+    public virtual ExcelChartTitle Title => this._title ??= this.GetTitle();
 
     internal abstract ExcelChartTitle GetTitle();
 
@@ -250,10 +236,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// <summary>
     /// An array containg all axis of all Charttypes
     /// </summary>
-    public virtual ExcelChartAxis[] Axis
-    {
-        get { return this._axis; }
-    }
+    public virtual ExcelChartAxis[] Axis => this._axis;
 
     /// <summary>
     /// The X Axis
@@ -343,10 +326,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     public ExcelPivotTable PivotTableSource { get; protected set; }
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this._chartXmlHelper.CreatespPrNode("../../../c:spPr");
-    }
+    void IDrawingStyleBase.CreatespPr() => this._chartXmlHelper.CreatespPrNode("../../../c:spPr");
 
     internal ZipPackagePart Part { get; set; }
 
@@ -355,10 +335,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     internal Uri UriChart { get; set; }
 
-    internal new static string Id
-    {
-        get { return ""; }
-    }
+    internal new static string Id => "";
 
     #endregion
 
@@ -369,47 +346,45 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     /// <param name="chartType">The charttype to tests</param>
     /// <returns>True if the chart is a 3D chart</returns>
-    internal static bool IsType3D(eChartType chartType)
-    {
-        return chartType == eChartType.Area3D
-               || chartType == eChartType.AreaStacked3D
-               || chartType == eChartType.AreaStacked1003D
-               || chartType == eChartType.BarClustered3D
-               || chartType == eChartType.BarStacked3D
-               || chartType == eChartType.BarStacked1003D
-               || chartType == eChartType.Column3D
-               || chartType == eChartType.ColumnClustered3D
-               || chartType == eChartType.ColumnStacked3D
-               || chartType == eChartType.ColumnStacked1003D
-               || chartType == eChartType.Line3D
-               || chartType == eChartType.Pie3D
-               || chartType == eChartType.PieExploded3D
-               || chartType == eChartType.ConeBarClustered
-               || chartType == eChartType.ConeBarStacked
-               || chartType == eChartType.ConeBarStacked100
-               || chartType == eChartType.ConeCol
-               || chartType == eChartType.ConeColClustered
-               || chartType == eChartType.ConeColStacked
-               || chartType == eChartType.ConeColStacked100
-               || chartType == eChartType.CylinderBarClustered
-               || chartType == eChartType.CylinderBarStacked
-               || chartType == eChartType.CylinderBarStacked100
-               || chartType == eChartType.CylinderCol
-               || chartType == eChartType.CylinderColClustered
-               || chartType == eChartType.CylinderColStacked
-               || chartType == eChartType.CylinderColStacked100
-               || chartType == eChartType.PyramidBarClustered
-               || chartType == eChartType.PyramidBarStacked
-               || chartType == eChartType.PyramidBarStacked100
-               || chartType == eChartType.PyramidCol
-               || chartType == eChartType.PyramidColClustered
-               || chartType == eChartType.PyramidColStacked
-               || chartType == eChartType.PyramidColStacked100
-               || chartType == eChartType.Surface
-               || chartType == eChartType.SurfaceTopView
-               || chartType == eChartType.SurfaceTopViewWireframe
-               || chartType == eChartType.SurfaceWireframe;
-    }
+    internal static bool IsType3D(eChartType chartType) =>
+        chartType == eChartType.Area3D
+        || chartType == eChartType.AreaStacked3D
+        || chartType == eChartType.AreaStacked1003D
+        || chartType == eChartType.BarClustered3D
+        || chartType == eChartType.BarStacked3D
+        || chartType == eChartType.BarStacked1003D
+        || chartType == eChartType.Column3D
+        || chartType == eChartType.ColumnClustered3D
+        || chartType == eChartType.ColumnStacked3D
+        || chartType == eChartType.ColumnStacked1003D
+        || chartType == eChartType.Line3D
+        || chartType == eChartType.Pie3D
+        || chartType == eChartType.PieExploded3D
+        || chartType == eChartType.ConeBarClustered
+        || chartType == eChartType.ConeBarStacked
+        || chartType == eChartType.ConeBarStacked100
+        || chartType == eChartType.ConeCol
+        || chartType == eChartType.ConeColClustered
+        || chartType == eChartType.ConeColStacked
+        || chartType == eChartType.ConeColStacked100
+        || chartType == eChartType.CylinderBarClustered
+        || chartType == eChartType.CylinderBarStacked
+        || chartType == eChartType.CylinderBarStacked100
+        || chartType == eChartType.CylinderCol
+        || chartType == eChartType.CylinderColClustered
+        || chartType == eChartType.CylinderColStacked
+        || chartType == eChartType.CylinderColStacked100
+        || chartType == eChartType.PyramidBarClustered
+        || chartType == eChartType.PyramidBarStacked
+        || chartType == eChartType.PyramidBarStacked100
+        || chartType == eChartType.PyramidCol
+        || chartType == eChartType.PyramidColClustered
+        || chartType == eChartType.PyramidColStacked
+        || chartType == eChartType.PyramidColStacked100
+        || chartType == eChartType.Surface
+        || chartType == eChartType.SurfaceTopView
+        || chartType == eChartType.SurfaceTopViewWireframe
+        || chartType == eChartType.SurfaceWireframe;
 
     internal void ApplyStyleOnPart(IDrawingStyleBase chartPart, ExcelChartStyleEntry section, bool applyChartEx = false)
     {
@@ -425,243 +400,200 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// Returns true if the chart is a 3D chart
     /// </summary>
     /// <returns>True if the chart is a 3D chart</returns>
-    internal protected bool IsType3D()
-    {
-        return IsType3D(this.ChartType);
-    }
+    internal protected bool IsType3D() => IsType3D(this.ChartType);
 
     /// <summary>
     /// Returns true if the chart is a line chart
     /// </summary>
     /// <returns>True if the chart is a line chart</returns>
-    protected internal bool IsTypeLine()
-    {
-        return this.ChartType == eChartType.Line
-               || this.ChartType == eChartType.LineMarkers
-               || this.ChartType == eChartType.LineMarkersStacked100
-               || this.ChartType == eChartType.LineStacked
-               || this.ChartType == eChartType.LineStacked100
-               || this.ChartType == eChartType.Line3D;
-    }
+    protected internal bool IsTypeLine() =>
+        this.ChartType == eChartType.Line
+        || this.ChartType == eChartType.LineMarkers
+        || this.ChartType == eChartType.LineMarkersStacked100
+        || this.ChartType == eChartType.LineStacked
+        || this.ChartType == eChartType.LineStacked100
+        || this.ChartType == eChartType.Line3D;
 
     /// <summary>
     /// Returns true if the chart is a radar chart
     /// </summary>
     /// <returns>True if the chart is a radar chart</returns>
-    protected internal bool IsTypeRadar()
-    {
-        return this.ChartType == eChartType.Radar || this.ChartType == eChartType.RadarFilled || this.ChartType == eChartType.RadarMarkers;
-    }
+    protected internal bool IsTypeRadar() => this.ChartType == eChartType.Radar || this.ChartType == eChartType.RadarFilled || this.ChartType == eChartType.RadarMarkers;
 
     /// <summary>
     /// Returns true if the chart is a scatter chart
     /// </summary>
     /// <returns>True if the chart is a scatter chart</returns>
-    protected internal bool IsTypeScatter()
-    {
-        return this.ChartType == eChartType.XYScatter
-               || this.ChartType == eChartType.XYScatterLines
-               || this.ChartType == eChartType.XYScatterLinesNoMarkers
-               || this.ChartType == eChartType.XYScatterSmooth
-               || this.ChartType == eChartType.XYScatterSmoothNoMarkers;
-    }
+    protected internal bool IsTypeScatter() =>
+        this.ChartType == eChartType.XYScatter
+        || this.ChartType == eChartType.XYScatterLines
+        || this.ChartType == eChartType.XYScatterLinesNoMarkers
+        || this.ChartType == eChartType.XYScatterSmooth
+        || this.ChartType == eChartType.XYScatterSmoothNoMarkers;
 
     /// <summary>
     /// Returns true if the chart is a bubble chart
     /// </summary>
     /// <returns>True if the chart is a bubble chart</returns>
-    protected internal bool IsTypeBubble()
-    {
-        return this.ChartType == eChartType.Bubble || this.ChartType == eChartType.Bubble3DEffect;
-    }
+    protected internal bool IsTypeBubble() => this.ChartType == eChartType.Bubble || this.ChartType == eChartType.Bubble3DEffect;
 
     /// <summary>
     /// Returns true if the chart is a scatter chart
     /// </summary>
     /// <returns>True if the chart is a scatter chart</returns>
-    protected internal bool IsTypeArea()
-    {
-        return this.ChartType == eChartType.Area
-               || this.ChartType == eChartType.AreaStacked
-               || this.ChartType == eChartType.AreaStacked100
-               || this.ChartType == eChartType.AreaStacked1003D
-               || this.ChartType == eChartType.AreaStacked3D;
-    }
+    protected internal bool IsTypeArea() =>
+        this.ChartType == eChartType.Area
+        || this.ChartType == eChartType.AreaStacked
+        || this.ChartType == eChartType.AreaStacked100
+        || this.ChartType == eChartType.AreaStacked1003D
+        || this.ChartType == eChartType.AreaStacked3D;
 
     /// <summary>
     /// Returns true if the chart is a sureface chart
     /// </summary>
     /// <returns>True if the chart is a sureface chart</returns>
-    protected bool IsTypeSurface()
-    {
-        return this.ChartType == eChartType.Surface
-               || this.ChartType == eChartType.SurfaceTopView
-               || this.ChartType == eChartType.SurfaceTopViewWireframe
-               || this.ChartType == eChartType.SurfaceWireframe;
-    }
+    protected bool IsTypeSurface() =>
+        this.ChartType == eChartType.Surface
+        || this.ChartType == eChartType.SurfaceTopView
+        || this.ChartType == eChartType.SurfaceTopViewWireframe
+        || this.ChartType == eChartType.SurfaceWireframe;
 
     /// <summary>
     /// Returns true if the chart is a sureface chart
     /// </summary>
     /// <returns>True if the chart is a sureface chart</returns>
-    internal protected bool HasThirdAxis()
-    {
-        return this.IsTypeSurface() || this.ChartType == eChartType.Line3D || this.ChartType == eChartType.StockVHLC || this.ChartType == eChartType.StockVOHLC;
-    }
+    internal protected bool HasThirdAxis() => this.IsTypeSurface() || this.ChartType == eChartType.Line3D || this.ChartType == eChartType.StockVHLC || this.ChartType == eChartType.StockVOHLC;
 
     /// <summary>
     /// Returns true if the chart has shapes, like bars and columns
     /// </summary>
     /// <returns>True if the chart has shapes</returns>
-    protected internal bool IsTypeShape()
-    {
-        return this.ChartType == eChartType.BarClustered3D
-               || this.ChartType == eChartType.BarStacked3D
-               || this.ChartType == eChartType.BarStacked1003D
-               || this.ChartType == eChartType.BarClustered3D
-               || this.ChartType == eChartType.BarStacked3D
-               || this.ChartType == eChartType.BarStacked1003D
-               || this.ChartType == eChartType.Column3D
-               || this.ChartType == eChartType.ColumnClustered3D
-               || this.ChartType == eChartType.ColumnStacked3D
-               || this.ChartType == eChartType.ColumnStacked1003D
-               ||
+    protected internal bool IsTypeShape() =>
+        this.ChartType == eChartType.BarClustered3D
+        || this.ChartType == eChartType.BarStacked3D
+        || this.ChartType == eChartType.BarStacked1003D
+        || this.ChartType == eChartType.BarClustered3D
+        || this.ChartType == eChartType.BarStacked3D
+        || this.ChartType == eChartType.BarStacked1003D
+        || this.ChartType == eChartType.Column3D
+        || this.ChartType == eChartType.ColumnClustered3D
+        || this.ChartType == eChartType.ColumnStacked3D
+        || this.ChartType == eChartType.ColumnStacked1003D
+        ||
 
-               //ChartType == eChartType.3DPie ||
-               //ChartType == eChartType.3DPieExploded ||
-               //ChartType == eChartType.Bubble3DEffect ||
-               this.ChartType == eChartType.ConeBarClustered
-               || this.ChartType == eChartType.ConeBarStacked
-               || this.ChartType == eChartType.ConeBarStacked100
-               || this.ChartType == eChartType.ConeCol
-               || this.ChartType == eChartType.ConeColClustered
-               || this.ChartType == eChartType.ConeColStacked
-               || this.ChartType == eChartType.ConeColStacked100
-               || this.ChartType == eChartType.CylinderBarClustered
-               || this.ChartType == eChartType.CylinderBarStacked
-               || this.ChartType == eChartType.CylinderBarStacked100
-               || this.ChartType == eChartType.CylinderCol
-               || this.ChartType == eChartType.CylinderColClustered
-               || this.ChartType == eChartType.CylinderColStacked
-               || this.ChartType == eChartType.CylinderColStacked100
-               || this.ChartType == eChartType.PyramidBarClustered
-               || this.ChartType == eChartType.PyramidBarStacked
-               || this.ChartType == eChartType.PyramidBarStacked100
-               || this.ChartType == eChartType.PyramidCol
-               || this.ChartType == eChartType.PyramidColClustered
-               || this.ChartType == eChartType.PyramidColStacked
-               || this.ChartType == eChartType.PyramidColStacked100; //||
+        //ChartType == eChartType.3DPie ||
+        //ChartType == eChartType.3DPieExploded ||
+        //ChartType == eChartType.Bubble3DEffect ||
+        this.ChartType == eChartType.ConeBarClustered
+        || this.ChartType == eChartType.ConeBarStacked
+        || this.ChartType == eChartType.ConeBarStacked100
+        || this.ChartType == eChartType.ConeCol
+        || this.ChartType == eChartType.ConeColClustered
+        || this.ChartType == eChartType.ConeColStacked
+        || this.ChartType == eChartType.ConeColStacked100
+        || this.ChartType == eChartType.CylinderBarClustered
+        || this.ChartType == eChartType.CylinderBarStacked
+        || this.ChartType == eChartType.CylinderBarStacked100
+        || this.ChartType == eChartType.CylinderCol
+        || this.ChartType == eChartType.CylinderColClustered
+        || this.ChartType == eChartType.CylinderColStacked
+        || this.ChartType == eChartType.CylinderColStacked100
+        || this.ChartType == eChartType.PyramidBarClustered
+        || this.ChartType == eChartType.PyramidBarStacked
+        || this.ChartType == eChartType.PyramidBarStacked100
+        || this.ChartType == eChartType.PyramidCol
+        || this.ChartType == eChartType.PyramidColClustered
+        || this.ChartType == eChartType.PyramidColStacked
+        || this.ChartType == eChartType.PyramidColStacked100; //||
 
-        //ChartType == eChartType.Doughnut ||
-        //ChartType == eChartType.DoughnutExploded;
-    }
-
+    //ChartType == eChartType.Doughnut ||
+    //ChartType == eChartType.DoughnutExploded;
     /// <summary>
     /// Returns true if the chart is of type stacked percentage
     /// </summary>
     /// <returns>True if the chart is of type stacked percentage</returns>
-    protected internal bool IsTypePercentStacked()
-    {
-        return this.ChartType == eChartType.AreaStacked100
-               || this.ChartType == eChartType.BarStacked100
-               || this.ChartType == eChartType.BarStacked1003D
-               || this.ChartType == eChartType.ColumnStacked100
-               || this.ChartType == eChartType.ColumnStacked1003D
-               || this.ChartType == eChartType.ConeBarStacked100
-               || this.ChartType == eChartType.ConeColStacked100
-               || this.ChartType == eChartType.CylinderBarStacked100
-               || this.ChartType == eChartType.CylinderColStacked
-               || this.ChartType == eChartType.LineMarkersStacked100
-               || this.ChartType == eChartType.LineStacked100
-               || this.ChartType == eChartType.PyramidBarStacked100
-               || this.ChartType == eChartType.PyramidColStacked100;
-    }
+    protected internal bool IsTypePercentStacked() =>
+        this.ChartType == eChartType.AreaStacked100
+        || this.ChartType == eChartType.BarStacked100
+        || this.ChartType == eChartType.BarStacked1003D
+        || this.ChartType == eChartType.ColumnStacked100
+        || this.ChartType == eChartType.ColumnStacked1003D
+        || this.ChartType == eChartType.ConeBarStacked100
+        || this.ChartType == eChartType.ConeColStacked100
+        || this.ChartType == eChartType.CylinderBarStacked100
+        || this.ChartType == eChartType.CylinderColStacked
+        || this.ChartType == eChartType.LineMarkersStacked100
+        || this.ChartType == eChartType.LineStacked100
+        || this.ChartType == eChartType.PyramidBarStacked100
+        || this.ChartType == eChartType.PyramidColStacked100;
 
     /// <summary>
     /// Returns true if the chart is of type stacked 
     /// </summary>
     /// <returns>True if the chart is of type stacked</returns>
-    protected internal bool IsTypeStacked()
-    {
-        return this.ChartType == eChartType.AreaStacked
-               || this.ChartType == eChartType.AreaStacked3D
-               || this.ChartType == eChartType.BarStacked
-               || this.ChartType == eChartType.BarStacked3D
-               || this.ChartType == eChartType.ColumnStacked3D
-               || this.ChartType == eChartType.ColumnStacked
-               || this.ChartType == eChartType.ConeBarStacked
-               || this.ChartType == eChartType.ConeColStacked
-               || this.ChartType == eChartType.CylinderBarStacked
-               || this.ChartType == eChartType.CylinderColStacked
-               || this.ChartType == eChartType.LineMarkersStacked
-               || this.ChartType == eChartType.LineStacked
-               || this.ChartType == eChartType.PyramidBarStacked
-               || this.ChartType == eChartType.PyramidColStacked;
-    }
+    protected internal bool IsTypeStacked() =>
+        this.ChartType == eChartType.AreaStacked
+        || this.ChartType == eChartType.AreaStacked3D
+        || this.ChartType == eChartType.BarStacked
+        || this.ChartType == eChartType.BarStacked3D
+        || this.ChartType == eChartType.ColumnStacked3D
+        || this.ChartType == eChartType.ColumnStacked
+        || this.ChartType == eChartType.ConeBarStacked
+        || this.ChartType == eChartType.ConeColStacked
+        || this.ChartType == eChartType.CylinderBarStacked
+        || this.ChartType == eChartType.CylinderColStacked
+        || this.ChartType == eChartType.LineMarkersStacked
+        || this.ChartType == eChartType.LineStacked
+        || this.ChartType == eChartType.PyramidBarStacked
+        || this.ChartType == eChartType.PyramidColStacked;
 
     /// <summary>
     /// Returns true if the chart is of type clustered
     /// </summary>
     /// <returns>True if the chart is of type clustered</returns>
-    protected bool IsTypeClustered()
-    {
-        return this.ChartType == eChartType.BarClustered
-               || this.ChartType == eChartType.BarClustered3D
-               || this.ChartType == eChartType.ColumnClustered3D
-               || this.ChartType == eChartType.ColumnClustered
-               || this.ChartType == eChartType.ConeBarClustered
-               || this.ChartType == eChartType.ConeColClustered
-               || this.ChartType == eChartType.CylinderBarClustered
-               || this.ChartType == eChartType.CylinderColClustered
-               || this.ChartType == eChartType.PyramidBarClustered
-               || this.ChartType == eChartType.PyramidColClustered;
-    }
+    protected bool IsTypeClustered() =>
+        this.ChartType == eChartType.BarClustered
+        || this.ChartType == eChartType.BarClustered3D
+        || this.ChartType == eChartType.ColumnClustered3D
+        || this.ChartType == eChartType.ColumnClustered
+        || this.ChartType == eChartType.ConeBarClustered
+        || this.ChartType == eChartType.ConeColClustered
+        || this.ChartType == eChartType.CylinderBarClustered
+        || this.ChartType == eChartType.CylinderColClustered
+        || this.ChartType == eChartType.PyramidBarClustered
+        || this.ChartType == eChartType.PyramidColClustered;
 
     /// <summary>
     /// Returns true if the chart is a pie or Doughnut chart
     /// </summary>
     /// <returns>True if the chart is a pie or Doughnut chart</returns>
-    protected internal bool IsTypePieDoughnut()
-    {
-        return this.IsTypePie() || this.IsTypeDoughnut();
-    }
+    protected internal bool IsTypePieDoughnut() => this.IsTypePie() || this.IsTypeDoughnut();
 
     /// <summary>
     /// Returns true if the chart is a Doughnut chart
     /// </summary>
     /// <returns>True if the chart is a Doughnut chart</returns>
-    protected internal bool IsTypeDoughnut()
-    {
-        return this.ChartType == eChartType.Doughnut || this.ChartType == eChartType.DoughnutExploded;
-    }
+    protected internal bool IsTypeDoughnut() => this.ChartType == eChartType.Doughnut || this.ChartType == eChartType.DoughnutExploded;
 
     /// <summary>
     /// Returns true if the chart is a pie chart
     /// </summary>
     /// <returns>true if the chart is a pie chart</returns>
-    protected internal bool IsTypePie()
-    {
-        return this.ChartType == eChartType.Pie
-               || this.ChartType == eChartType.PieExploded
-               || this.ChartType == eChartType.PieOfPie
-               || this.ChartType == eChartType.Pie3D
-               || this.ChartType == eChartType.PieExploded3D
-               || this.ChartType == eChartType.BarOfPie;
-    }
+    protected internal bool IsTypePie() =>
+        this.ChartType == eChartType.Pie
+        || this.ChartType == eChartType.PieExploded
+        || this.ChartType == eChartType.PieOfPie
+        || this.ChartType == eChartType.Pie3D
+        || this.ChartType == eChartType.PieExploded3D
+        || this.ChartType == eChartType.BarOfPie;
 
     /// <summary>
     /// Return true if the chart is a stock chart.
     /// </summary>
     /// <returns>true if the chart is a stock chart.</returns>
-    protected internal bool IsTypeStock()
-    {
-        return IsTypeStock(this.ChartType);
-    }
+    protected internal bool IsTypeStock() => IsTypeStock(this.ChartType);
 
-    internal static bool IsTypeStock(eChartType chartType)
-    {
-        return chartType == eChartType.StockHLC || chartType == eChartType.StockOHLC || chartType == eChartType.StockVHLC || chartType == eChartType.StockVOHLC;
-    }
+    internal static bool IsTypeStock(eChartType chartType) => chartType == eChartType.StockHLC || chartType == eChartType.StockOHLC || chartType == eChartType.StockVHLC || chartType == eChartType.StockVOHLC;
 
     #endregion
 
@@ -1194,10 +1126,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
         }
     }
 
-    void IStyleMandatoryProperties.SetMandatoryProperties()
-    {
-        this._chartXmlHelper.CreatespPrNode("../c:spPr");
-    }
+    void IStyleMandatoryProperties.SetMandatoryProperties() => this._chartXmlHelper.CreatespPrNode("../c:spPr");
 
     ExcelPackage IPictureRelationDocument.Package => this._drawings._package;
 

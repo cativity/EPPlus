@@ -28,7 +28,7 @@ public class ExcelChartExTitle : ExcelChartTitle
 
     public override string Text
     {
-        get { return this.RichText.Text; }
+        get => this.RichText.Text;
         set
         {
             bool applyStyle = this.RichText.Count == 0;
@@ -46,8 +46,8 @@ public class ExcelChartExTitle : ExcelChartTitle
     /// </summary>
     public ePositionAlign PositionAlignment
     {
-        get { return this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center); }
-        set { this.SetXmlNodeString("@align", value.ToEnumString().Replace("center", "ctr")); }
+        get => this.GetXmlNodeString("@align").Replace("ctr", "center").ToEnum(ePositionAlign.Center);
+        set => this.SetXmlNodeString("@align", value.ToEnumString().Replace("center", "ctr"));
     }
 
     /// <summary>
@@ -72,6 +72,6 @@ public class ExcelChartExTitle : ExcelChartTitle
                     return eSidePositions.Top;
             }
         }
-        set { this.SetXmlNodeString("@align", value.ToEnumString().Substring(0, 1).ToLowerInvariant()); }
+        set => this.SetXmlNodeString("@align", value.ToEnumString().Substring(0, 1).ToLowerInvariant());
     }
 }

@@ -201,14 +201,12 @@ public class ExcelPivotTable : XmlHelper
         r.Clear();
     }
 
-    private void Init()
-    {
+    private void Init() =>
         this.SchemaNodeOrder = new string[]
         {
             "location", "pivotFields", "rowFields", "rowItems", "colFields", "colItems", "pageFields", "dataFields", "formats", "conditionalFormats",
             "chartFormats", "pivotHierarchies", "pivotTableStyleInfo", "filters", "rowHierarchiesUsage", "colHierarchiesUsage", "extLst"
         };
-    }
 
     private void LoadFields()
     {
@@ -279,7 +277,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString(NAME_PATH); }
+        get => this.GetXmlNodeString(NAME_PATH);
         set
         {
             if (this.WorkSheet.Workbook.ExistsTableName(value))
@@ -306,10 +304,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public ExcelPivotCacheDefinition CacheDefinition { get; private set; }
 
-    private static string cleanDisplayName(string name)
-    {
-        return Regex.Replace(name, @"[^\w\.-_]", "_");
-    }
+    private static string cleanDisplayName(string name) => Regex.Replace(name, @"[^\w\.-_]", "_");
 
     #region "Public Properties"
 
@@ -328,8 +323,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool DataOnRows
     {
-        get { return this.GetXmlNodeBool("@dataOnRows"); }
-        set { this.SetXmlNodeBool("@dataOnRows", value); }
+        get => this.GetXmlNodeBool("@dataOnRows");
+        set => this.SetXmlNodeBool("@dataOnRows", value);
     }
 
     /// <summary>
@@ -345,8 +340,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ApplyNumberFormats
     {
-        get { return this.GetXmlNodeBool("@applyNumberFormats"); }
-        set { this.SetXmlNodeBool("@applyNumberFormats", value); }
+        get => this.GetXmlNodeBool("@applyNumberFormats");
+        set => this.SetXmlNodeBool("@applyNumberFormats", value);
     }
 
     /// <summary>
@@ -354,8 +349,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ApplyBorderFormats
     {
-        get { return this.GetXmlNodeBool("@applyBorderFormats"); }
-        set { this.SetXmlNodeBool("@applyBorderFormats", value); }
+        get => this.GetXmlNodeBool("@applyBorderFormats");
+        set => this.SetXmlNodeBool("@applyBorderFormats", value);
     }
 
     /// <summary>
@@ -363,8 +358,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ApplyFontFormats
     {
-        get { return this.GetXmlNodeBool("@applyFontFormats"); }
-        set { this.SetXmlNodeBool("@applyFontFormats", value); }
+        get => this.GetXmlNodeBool("@applyFontFormats");
+        set => this.SetXmlNodeBool("@applyFontFormats", value);
     }
 
     /// <summary>
@@ -372,8 +367,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ApplyPatternFormats
     {
-        get { return this.GetXmlNodeBool("@applyPatternFormats"); }
-        set { this.SetXmlNodeBool("@applyPatternFormats", value); }
+        get => this.GetXmlNodeBool("@applyPatternFormats");
+        set => this.SetXmlNodeBool("@applyPatternFormats", value);
     }
 
     /// <summary>
@@ -381,8 +376,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ApplyWidthHeightFormats
     {
-        get { return this.GetXmlNodeBool("@applyWidthHeightFormats"); }
-        set { this.SetXmlNodeBool("@applyWidthHeightFormats", value); }
+        get => this.GetXmlNodeBool("@applyWidthHeightFormats");
+        set => this.SetXmlNodeBool("@applyWidthHeightFormats", value);
     }
 
     /// <summary>
@@ -390,8 +385,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowMemberPropertyTips
     {
-        get { return this.GetXmlNodeBool("@showMemberPropertyTips"); }
-        set { this.SetXmlNodeBool("@showMemberPropertyTips", value); }
+        get => this.GetXmlNodeBool("@showMemberPropertyTips");
+        set => this.SetXmlNodeBool("@showMemberPropertyTips", value);
     }
 
     /// <summary>
@@ -399,8 +394,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowCalcMember
     {
-        get { return this.GetXmlNodeBool("@showCalcMbrs"); }
-        set { this.SetXmlNodeBool("@showCalcMbrs", value); }
+        get => this.GetXmlNodeBool("@showCalcMbrs");
+        set => this.SetXmlNodeBool("@showCalcMbrs", value);
     }
 
     /// <summary>
@@ -408,8 +403,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool EnableDrill
     {
-        get { return this.GetXmlNodeBool("@enableDrill", true); }
-        set { this.SetXmlNodeBool("@enableDrill", value); }
+        get => this.GetXmlNodeBool("@enableDrill", true);
+        set => this.SetXmlNodeBool("@enableDrill", value);
     }
 
     /// <summary>
@@ -417,8 +412,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowDrill
     {
-        get { return this.GetXmlNodeBool("@showDrill", true); }
-        set { this.SetXmlNodeBool("@showDrill", value); }
+        get => this.GetXmlNodeBool("@showDrill", true);
+        set => this.SetXmlNodeBool("@showDrill", value);
     }
 
     /// <summary>
@@ -426,8 +421,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowDataTips
     {
-        get { return this.GetXmlNodeBool("@showDataTips", true); }
-        set { this.SetXmlNodeBool("@showDataTips", value, true); }
+        get => this.GetXmlNodeBool("@showDataTips", true);
+        set => this.SetXmlNodeBool("@showDataTips", value, true);
     }
 
     /// <summary>
@@ -435,8 +430,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool FieldPrintTitles
     {
-        get { return this.GetXmlNodeBool("@fieldPrintTitles"); }
-        set { this.SetXmlNodeBool("@fieldPrintTitles", value); }
+        get => this.GetXmlNodeBool("@fieldPrintTitles");
+        set => this.SetXmlNodeBool("@fieldPrintTitles", value);
     }
 
     /// <summary>
@@ -444,8 +439,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ItemPrintTitles
     {
-        get { return this.GetXmlNodeBool("@itemPrintTitles"); }
-        set { this.SetXmlNodeBool("@itemPrintTitles", value); }
+        get => this.GetXmlNodeBool("@itemPrintTitles");
+        set => this.SetXmlNodeBool("@itemPrintTitles", value);
     }
 
     /// <summary>
@@ -453,8 +448,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ColumnGrandTotals
     {
-        get { return this.GetXmlNodeBool("@colGrandTotals"); }
-        set { this.SetXmlNodeBool("@colGrandTotals", value); }
+        get => this.GetXmlNodeBool("@colGrandTotals");
+        set => this.SetXmlNodeBool("@colGrandTotals", value);
     }
 
     /// <summary>
@@ -462,8 +457,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool RowGrandTotals
     {
-        get { return this.GetXmlNodeBool("@rowGrandTotals"); }
-        set { this.SetXmlNodeBool("@rowGrandTotals", value); }
+        get => this.GetXmlNodeBool("@rowGrandTotals");
+        set => this.SetXmlNodeBool("@rowGrandTotals", value);
     }
 
     /// <summary>
@@ -471,8 +466,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool PrintDrill
     {
-        get { return this.GetXmlNodeBool("@printDrill"); }
-        set { this.SetXmlNodeBool("@printDrill", value); }
+        get => this.GetXmlNodeBool("@printDrill");
+        set => this.SetXmlNodeBool("@printDrill", value);
     }
 
     /// <summary>
@@ -480,8 +475,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowError
     {
-        get { return this.GetXmlNodeBool("@showError"); }
-        set { this.SetXmlNodeBool("@showError", value); }
+        get => this.GetXmlNodeBool("@showError");
+        set => this.SetXmlNodeBool("@showError", value);
     }
 
     /// <summary>
@@ -489,8 +484,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string ErrorCaption
     {
-        get { return this.GetXmlNodeString("@errorCaption"); }
-        set { this.SetXmlNodeString("@errorCaption", value); }
+        get => this.GetXmlNodeString("@errorCaption");
+        set => this.SetXmlNodeString("@errorCaption", value);
     }
 
     /// <summary>
@@ -499,8 +494,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string DataCaption
     {
-        get { return this.GetXmlNodeString("@dataCaption"); }
-        set { this.SetXmlNodeString("@dataCaption", value); }
+        get => this.GetXmlNodeString("@dataCaption");
+        set => this.SetXmlNodeString("@dataCaption", value);
     }
 
     /// <summary>
@@ -508,8 +503,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowHeaders
     {
-        get { return this.GetXmlNodeBool("@showHeaders"); }
-        set { this.SetXmlNodeBool("@showHeaders", value); }
+        get => this.GetXmlNodeBool("@showHeaders");
+        set => this.SetXmlNodeBool("@showHeaders", value);
     }
 
     /// <summary>
@@ -517,7 +512,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public int PageWrap
     {
-        get { return this.GetXmlNodeInt("@pageWrap"); }
+        get => this.GetXmlNodeInt("@pageWrap");
         set
         {
             if (value < 0)
@@ -534,8 +529,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool UseAutoFormatting
     {
-        get { return this.GetXmlNodeBool("@useAutoFormatting"); }
-        set { this.SetXmlNodeBool("@useAutoFormatting", value); }
+        get => this.GetXmlNodeBool("@useAutoFormatting");
+        set => this.SetXmlNodeBool("@useAutoFormatting", value);
     }
 
     /// <summary>
@@ -543,8 +538,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool GridDropZones
     {
-        get { return this.GetXmlNodeBool("@gridDropZones"); }
-        set { this.SetXmlNodeBool("@gridDropZones", value); }
+        get => this.GetXmlNodeBool("@gridDropZones");
+        set => this.SetXmlNodeBool("@gridDropZones", value);
     }
 
     /// <summary>
@@ -552,8 +547,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public int Indent
     {
-        get { return this.GetXmlNodeInt("@indent"); }
-        set { this.SetXmlNodeString("@indent", value.ToString()); }
+        get => this.GetXmlNodeInt("@indent");
+        set => this.SetXmlNodeString("@indent", value.ToString());
     }
 
     /// <summary>
@@ -561,8 +556,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool OutlineData
     {
-        get { return this.GetXmlNodeBool("@outlineData"); }
-        set { this.SetXmlNodeBool("@outlineData", value); }
+        get => this.GetXmlNodeBool("@outlineData");
+        set => this.SetXmlNodeBool("@outlineData", value);
     }
 
     /// <summary>
@@ -570,8 +565,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool Outline
     {
-        get { return this.GetXmlNodeBool("@outline"); }
-        set { this.SetXmlNodeBool("@outline", value); }
+        get => this.GetXmlNodeBool("@outline");
+        set => this.SetXmlNodeBool("@outline", value);
     }
 
     /// <summary>
@@ -579,8 +574,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool MultipleFieldFilters
     {
-        get { return this.GetXmlNodeBool("@multipleFieldFilters"); }
-        set { this.SetXmlNodeBool("@multipleFieldFilters", value); }
+        get => this.GetXmlNodeBool("@multipleFieldFilters");
+        set => this.SetXmlNodeBool("@multipleFieldFilters", value);
     }
 
     /// <summary>
@@ -588,8 +583,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool Compact
     {
-        get { return this.GetXmlNodeBool("@compact"); }
-        set { this.SetXmlNodeBool("@compact", value); }
+        get => this.GetXmlNodeBool("@compact");
+        set => this.SetXmlNodeBool("@compact", value);
     }
 
     /// <summary>
@@ -611,8 +606,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool CompactData
     {
-        get { return this.GetXmlNodeBool("@compactData"); }
-        set { this.SetXmlNodeBool("@compactData", value); }
+        get => this.GetXmlNodeBool("@compactData");
+        set => this.SetXmlNodeBool("@compactData", value);
     }
 
     /// <summary>
@@ -620,8 +615,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string GrandTotalCaption
     {
-        get { return this.GetXmlNodeString("@grandTotalCaption"); }
-        set { this.SetXmlNodeString("@grandTotalCaption", value); }
+        get => this.GetXmlNodeString("@grandTotalCaption");
+        set => this.SetXmlNodeString("@grandTotalCaption", value);
     }
 
     /// <summary>
@@ -629,8 +624,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string RowHeaderCaption
     {
-        get { return this.GetXmlNodeString("@rowHeaderCaption"); }
-        set { this.SetXmlNodeString("@rowHeaderCaption", value); }
+        get => this.GetXmlNodeString("@rowHeaderCaption");
+        set => this.SetXmlNodeString("@rowHeaderCaption", value);
     }
 
     /// <summary>
@@ -638,8 +633,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string ColumnHeaderCaption
     {
-        get { return this.GetXmlNodeString("@colHeaderCaption"); }
-        set { this.SetXmlNodeString("@colHeaderCaption", value); }
+        get => this.GetXmlNodeString("@colHeaderCaption");
+        set => this.SetXmlNodeString("@colHeaderCaption", value);
     }
 
     /// <summary>
@@ -647,8 +642,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string MissingCaption
     {
-        get { return this.GetXmlNodeString("@missingCaption"); }
-        set { this.SetXmlNodeString("@missingCaption", value); }
+        get => this.GetXmlNodeString("@missingCaption");
+        set => this.SetXmlNodeString("@missingCaption", value);
     }
 
     ExcelPivotTableFilterCollection _filters;
@@ -656,10 +651,7 @@ public class ExcelPivotTable : XmlHelper
     /// <summary>
     /// Filters applied to the pivot table
     /// </summary>
-    public ExcelPivotTableFilterCollection Filters
-    {
-        get { return this._filters ??= new ExcelPivotTableFilterCollection(this); }
-    }
+    public ExcelPivotTableFilterCollection Filters => this._filters ??= new ExcelPivotTableFilterCollection(this);
 
     const string FIRSTHEADERROW_PATH = "d:location/@firstHeaderRow";
 
@@ -668,8 +660,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public int FirstHeaderRow
     {
-        get { return this.GetXmlNodeInt(FIRSTHEADERROW_PATH); }
-        set { this.SetXmlNodeString(FIRSTHEADERROW_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(FIRSTHEADERROW_PATH);
+        set => this.SetXmlNodeString(FIRSTHEADERROW_PATH, value.ToString());
     }
 
     const string FIRSTDATAROW_PATH = "d:location/@firstDataRow";
@@ -679,8 +671,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public int FirstDataRow
     {
-        get { return this.GetXmlNodeInt(FIRSTDATAROW_PATH); }
-        set { this.SetXmlNodeString(FIRSTDATAROW_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(FIRSTDATAROW_PATH);
+        set => this.SetXmlNodeString(FIRSTDATAROW_PATH, value.ToString());
     }
 
     const string FIRSTDATACOL_PATH = "d:location/@firstDataCol";
@@ -690,8 +682,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public int FirstDataCol
     {
-        get { return this.GetXmlNodeInt(FIRSTDATACOL_PATH); }
-        set { this.SetXmlNodeString(FIRSTDATACOL_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(FIRSTDATACOL_PATH);
+        set => this.SetXmlNodeString(FIRSTDATACOL_PATH, value.ToString());
     }
 
     ExcelPivotTableFieldCollection _fields;
@@ -699,50 +691,35 @@ public class ExcelPivotTable : XmlHelper
     /// <summary>
     /// The fields in the table 
     /// </summary>
-    public ExcelPivotTableFieldCollection Fields
-    {
-        get { return this._fields ??= new ExcelPivotTableFieldCollection(this); }
-    }
+    public ExcelPivotTableFieldCollection Fields => this._fields ??= new ExcelPivotTableFieldCollection(this);
 
     ExcelPivotTableRowColumnFieldCollection _rowFields;
 
     /// <summary>
     /// Row label fields 
     /// </summary>
-    public ExcelPivotTableRowColumnFieldCollection RowFields
-    {
-        get { return this._rowFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "rowFields"); }
-    }
+    public ExcelPivotTableRowColumnFieldCollection RowFields => this._rowFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "rowFields");
 
     ExcelPivotTableRowColumnFieldCollection _columnFields;
 
     /// <summary>
     /// Column label fields 
     /// </summary>
-    public ExcelPivotTableRowColumnFieldCollection ColumnFields
-    {
-        get { return this._columnFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "colFields"); }
-    }
+    public ExcelPivotTableRowColumnFieldCollection ColumnFields => this._columnFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "colFields");
 
     ExcelPivotTableDataFieldCollection _dataFields;
 
     /// <summary>
     /// Value fields 
     /// </summary>
-    public ExcelPivotTableDataFieldCollection DataFields
-    {
-        get { return this._dataFields ??= new ExcelPivotTableDataFieldCollection(this); }
-    }
+    public ExcelPivotTableDataFieldCollection DataFields => this._dataFields ??= new ExcelPivotTableDataFieldCollection(this);
 
     ExcelPivotTableRowColumnFieldCollection _pageFields;
 
     /// <summary>
     /// Report filter fields
     /// </summary>
-    public ExcelPivotTableRowColumnFieldCollection PageFields
-    {
-        get { return this._pageFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "pageFields"); }
-    }
+    public ExcelPivotTableRowColumnFieldCollection PageFields => this._pageFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "pageFields");
 
     const string STYLENAME_PATH = "d:pivotTableStyleInfo/@name";
 
@@ -751,7 +728,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public string StyleName
     {
-        get { return this.GetXmlNodeString(STYLENAME_PATH); }
+        get => this.GetXmlNodeString(STYLENAME_PATH);
         set
         {
             if (value.StartsWith("PivotStyle"))
@@ -804,8 +781,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowColumnHeaders
     {
-        get { return this.GetXmlNodeBool(SHOWCOLHEADERS_PATH); }
-        set { this.SetXmlNodeBool(SHOWCOLHEADERS_PATH, value); }
+        get => this.GetXmlNodeBool(SHOWCOLHEADERS_PATH);
+        set => this.SetXmlNodeBool(SHOWCOLHEADERS_PATH, value);
     }
 
     const string SHOWCOLSTRIPES_PATH = "d:pivotTableStyleInfo/@showColStripes";
@@ -815,8 +792,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowColumnStripes
     {
-        get { return this.GetXmlNodeBool(SHOWCOLSTRIPES_PATH); }
-        set { this.SetXmlNodeBool(SHOWCOLSTRIPES_PATH, value); }
+        get => this.GetXmlNodeBool(SHOWCOLSTRIPES_PATH);
+        set => this.SetXmlNodeBool(SHOWCOLSTRIPES_PATH, value);
     }
 
     const string SHOWLASTCOLUMN_PATH = "d:pivotTableStyleInfo/@showLastColumn";
@@ -826,8 +803,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowLastColumn
     {
-        get { return this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH); }
-        set { this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value); }
+        get => this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH);
+        set => this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value);
     }
 
     const string SHOWROWHEADERS_PATH = "d:pivotTableStyleInfo/@showRowHeaders";
@@ -837,8 +814,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowRowHeaders
     {
-        get { return this.GetXmlNodeBool(SHOWROWHEADERS_PATH); }
-        set { this.SetXmlNodeBool(SHOWROWHEADERS_PATH, value); }
+        get => this.GetXmlNodeBool(SHOWROWHEADERS_PATH);
+        set => this.SetXmlNodeBool(SHOWROWHEADERS_PATH, value);
     }
 
     const string SHOWROWSTRIPES_PATH = "d:pivotTableStyleInfo/@showRowStripes";
@@ -848,8 +825,8 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowRowStripes
     {
-        get { return this.GetXmlNodeBool(SHOWROWSTRIPES_PATH); }
-        set { this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value); }
+        get => this.GetXmlNodeBool(SHOWROWSTRIPES_PATH);
+        set => this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value);
     }
 
     TableStyles _tableStyle = TableStyles.Medium6;
@@ -860,7 +837,7 @@ public class ExcelPivotTable : XmlHelper
     [Obsolete("Use the PivotTableStyle property for more options")]
     public TableStyles TableStyle
     {
-        get { return this._tableStyle; }
+        get => this._tableStyle;
         set
         {
             this._tableStyle = value;
@@ -879,7 +856,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public PivotTableStyles PivotTableStyle
     {
-        get { return this._pivotTableStyle; }
+        get => this._pivotTableStyle;
         set
         {
             this._pivotTableStyle = value;
@@ -900,7 +877,7 @@ public class ExcelPivotTable : XmlHelper
     /// </summary>
     public bool ShowValuesRow
     {
-        get { return !this.GetXmlNodeBool(_showValuesRowPath); }
+        get => !this.GetXmlNodeBool(_showValuesRowPath);
         set
         {
             XmlNode? node = this.GetOrCreateExtLstSubNode(ExtLstUris.PivotTableDefinitionUri, "x14");
@@ -915,8 +892,8 @@ public class ExcelPivotTable : XmlHelper
 
     internal int CacheId
     {
-        get { return this.GetXmlNodeInt("@cacheId", 0); }
-        set { this.SetXmlNodeInt("@cacheId", value); }
+        get => this.GetXmlNodeInt("@cacheId", 0);
+        set => this.SetXmlNodeInt("@cacheId", value);
     }
 
     internal int ChangeCacheId(int oldCacheId)
@@ -933,10 +910,7 @@ public class ExcelPivotTable : XmlHelper
 
     int _newFilterId;
 
-    internal int GetNewFilterId()
-    {
-        return this._newFilterId++;
-    }
+    internal int GetNewFilterId() => this._newFilterId++;
 
     internal void SetNewFilterId(int value)
     {

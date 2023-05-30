@@ -80,10 +80,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    internal void SetDirection(eErrorBarDirection value)
-    {
-        this.SetXmlNodeString(this._directionPath, value.ToEnumString());
-    }
+    internal void SetDirection(eErrorBarDirection value) => this.SetXmlNodeString(this._directionPath, value.ToEnumString());
 
     string _barTypePath = "c:errBarType/@val";
 
@@ -277,10 +274,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode();
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode();
 
     /// <summary>
     /// Remove the error bars

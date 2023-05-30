@@ -71,10 +71,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// <summary>
     /// The Id
     /// </summary>
-    internal override string Id
-    {
-        get { return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Vertical.Id + this.Horizontal.Id; }
-    }
+    internal override string Id => this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Vertical.Id + this.Horizontal.Id;
 
     /// <summary>
     /// Creates the the xml node
@@ -105,13 +102,7 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get
-        {
-            return this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue || this.Vertical.HasValue || this.Horizontal.HasValue;
-        }
-    }
+    public override bool HasValue => this.Left.HasValue || this.Right.HasValue || this.Top.HasValue || this.Bottom.HasValue || this.Vertical.HasValue || this.Horizontal.HasValue;
 
     /// <summary>
     /// Clears all properties
@@ -164,9 +155,8 @@ public class ExcelDxfBorderBase : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfBorderBase(this._styles, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfBorderBase(this._styles, this._callback)
         {
             Bottom = (ExcelDxfBorderItem)this.Bottom.Clone(),
             Top = (ExcelDxfBorderItem)this.Top.Clone(),
@@ -175,7 +165,6 @@ public class ExcelDxfBorderBase : DxfStyleBase
             Vertical = (ExcelDxfBorderItem)this.Vertical.Clone(),
             Horizontal = (ExcelDxfBorderItem)this.Horizontal.Clone(),
         };
-    }
 
     internal override void SetValuesFromXml(XmlHelper helper)
     {

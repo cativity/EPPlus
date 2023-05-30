@@ -11,10 +11,7 @@ internal class WorksheetOutlineHelper
 {
     ExcelWorksheet _worksheet;
 
-    internal WorksheetOutlineHelper(ExcelWorksheet worksheet)
-    {
-        this._worksheet = worksheet;
-    }
+    internal WorksheetOutlineHelper(ExcelWorksheet worksheet) => this._worksheet = worksheet;
 
     #region Row
 

@@ -52,10 +52,7 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns></returns>
-    public ExcelDrawingFontBase this[int index]
-    {
-        get { return this._lst[index]; }
-    }
+    public ExcelDrawingFontBase this[int index] => this._lst[index];
 
     /// <summary>
     /// Adds a normal font to the collection
@@ -123,19 +120,13 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// Set the complex font of the collection
     /// </summary>
     /// <param name="typeface">The typeface, or name of the font</param>
-    public void SetComplexFont(string typeface)
-    {
-        this.SetSpecialFont(typeface, eFontType.Complex);
-    }
+    public void SetComplexFont(string typeface) => this.SetSpecialFont(typeface, eFontType.Complex);
 
     /// <summary>
     /// Set the East Asian font of the collection
     /// </summary>
     /// <param name="typeface">The typeface, or name of the font</param>
-    public void SetEastAsianFont(string typeface)
-    {
-        this.SetSpecialFont(typeface, eFontType.EastAsian);
-    }
+    public void SetEastAsianFont(string typeface) => this.SetSpecialFont(typeface, eFontType.EastAsian);
 
     private void SetSpecialFont(string typeface, eFontType fontType)
     {
@@ -192,22 +183,13 @@ public class ExcelThemeFontCollection : XmlHelper, IEnumerable<ExcelDrawingFontB
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._lst.Count; }
-    }
+    public int Count => this._lst.Count;
 
     /// <summary>
     /// Gets an enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelDrawingFontBase> GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    public IEnumerator<ExcelDrawingFontBase> GetEnumerator() => this._lst.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._lst.GetEnumerator();
 }

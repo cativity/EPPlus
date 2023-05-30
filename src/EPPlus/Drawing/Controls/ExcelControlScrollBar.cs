@@ -23,10 +23,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlScrollBar : ExcelControl
 {
     internal ExcelControlScrollBar(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(30, 150); //Default size
-    }
 
     internal ExcelControlScrollBar(ExcelDrawings drawings,
                                    XmlNode drawNode,
@@ -48,7 +46,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public bool Horizontal
     {
-        get { return this._ctrlProp.GetXmlNodeBool("@horiz"); }
+        get => this._ctrlProp.GetXmlNodeBool("@horiz");
         set
         {
             this._ctrlProp.SetXmlNodeBool("@horiz", value);
@@ -69,7 +67,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public int Increment
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@inc", 1); }
+        get => this._ctrlProp.GetXmlNodeInt("@inc", 1);
         set
         {
             if (value < 0 || value > 3000)
@@ -87,7 +85,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public int? Page
     {
-        get { return this._ctrlProp.GetXmlNodeIntNull("@page"); }
+        get => this._ctrlProp.GetXmlNodeIntNull("@page");
         set
         {
             if (value.HasValue && (value < 0 || value > 3000))
@@ -105,7 +103,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public int MinValue
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@min", 0); }
+        get => this._ctrlProp.GetXmlNodeInt("@min", 0);
         set
         {
             if (value < 0 || value > 30000)
@@ -122,7 +120,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public int MaxValue
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@max", 30000); }
+        get => this._ctrlProp.GetXmlNodeInt("@max", 30000);
         set
         {
             if (value < 0 || value > 30000)
@@ -139,7 +137,7 @@ public class ExcelControlScrollBar : ExcelControl
     /// </summary>
     public int Value
     {
-        get { return this._ctrlProp.GetXmlNodeInt("@val", 0); }
+        get => this._ctrlProp.GetXmlNodeInt("@val", 0);
         set
         {
             if (value < 0 || value > 30000)

@@ -52,16 +52,12 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
                            XmlDocument chartXml,
                            XmlNode chartNode,
                            ExcelGroupShape parent = null)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.SetChartNodeText(chartNode.Name);
-    }
 
     internal ExcelBarChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
-        : base(topChart, chartNode, parent)
-    {
+        : base(topChart, chartNode, parent) =>
         this.SetChartNodeText(chartNode.Name);
-    }
 
     #endregion
 
@@ -191,8 +187,8 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public eDirection Direction
     {
-        get { return GetDirectionEnum(this._chartXmlHelper.GetXmlNodeString(this._directionPath)); }
-        internal set { this._chartXmlHelper.SetXmlNodeString(this._directionPath, GetDirectionText(value)); }
+        get => GetDirectionEnum(this._chartXmlHelper.GetXmlNodeString(this._directionPath));
+        internal set => this._chartXmlHelper.SetXmlNodeString(this._directionPath, GetDirectionText(value));
     }
 
     string _shapePath = "c:shape/@val";
@@ -202,8 +198,8 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public eShape Shape
     {
-        get { return GetShapeEnum(this._chartXmlHelper.GetXmlNodeString(this._shapePath)); }
-        internal set { this._chartXmlHelper.SetXmlNodeString(this._shapePath, GetShapeText(value)); }
+        get => GetShapeEnum(this._chartXmlHelper.GetXmlNodeString(this._shapePath));
+        internal set => this._chartXmlHelper.SetXmlNodeString(this._shapePath, GetShapeText(value));
     }
 
     ExcelChartDataLabel _DataLabel;
@@ -211,22 +207,14 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     /// <summary>
     /// Access to datalabel properties
     /// </summary>
-    public ExcelChartDataLabel DataLabel
-    {
-        get
-        {
-            return this._DataLabel ??=
-                       new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartDataLabel DataLabel =>
+        this._DataLabel ??=
+            new ExcelChartDataLabelStandard(this, this.NameSpaceManager, this.ChartNode, "dLbls", this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.ChartNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     string _gapWidthPath = "c:gapWidth/@val";
 
@@ -235,8 +223,8 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public int GapWidth
     {
-        get { return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath); }
-        set { this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath);
+        set => this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     string _overlapPath = "c:overlap/@val";
@@ -246,8 +234,8 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     /// </summary>
     public int Overlap
     {
-        get { return this._chartXmlHelper.GetXmlNodeInt(this._overlapPath); }
-        set { this._chartXmlHelper.SetXmlNodeString(this._overlapPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this._chartXmlHelper.GetXmlNodeInt(this._overlapPath);
+        set => this._chartXmlHelper.SetXmlNodeString(this._overlapPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     #endregion

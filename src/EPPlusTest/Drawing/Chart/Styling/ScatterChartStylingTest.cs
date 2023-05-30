@@ -45,16 +45,10 @@ public class ScatterChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ScatterChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ScatterChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void ScatterLinesSmooth_Styles()
@@ -104,25 +98,25 @@ public class ScatterChartStylingTest : TestBase
     private static void ScatterLineStyle(ExcelWorksheet ws, eScatterChartType chartType)
     {
         //Style 1
-        _ = AddScatter(ws, chartType, "ScatterChartStyle1", 0, 5, ePresetChartStyle.ScatterChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle1", 0, 5, ePresetChartStyle.ScatterChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddScatter(ws, chartType, "ScatterChartStyle2", 0, 18, ePresetChartStyle.ScatterChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle2", 0, 18, ePresetChartStyle.ScatterChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
-        _ = AddScatter(ws, chartType, "ScatterChartStyle3", 0, 31, ePresetChartStyle.ScatterChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle3", 0, 31, ePresetChartStyle.ScatterChartStyle3, c => c.DataLabel.ShowPercent = true);
 
         //Style 4
-        _ = AddScatter(ws, chartType, "ScatterChartStyle4", 22, 5, ePresetChartStyle.ScatterChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle4", 22, 5, ePresetChartStyle.ScatterChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddScatter(ws, chartType, "ScatterChartStyle5", 22, 18, ePresetChartStyle.ScatterChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle5", 22, 18, ePresetChartStyle.ScatterChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddScatter(ws, chartType, "ScatterChartStyle6", 22, 31, ePresetChartStyle.ScatterChartStyle6, c => { });
 
         //Style 7
-        _ = AddScatter(ws, chartType, "ScatterChartStyle7", 44, 5, ePresetChartStyle.ScatterChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddScatter(ws, chartType, "ScatterChartStyle7", 44, 5, ePresetChartStyle.ScatterChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddScatter(ws,

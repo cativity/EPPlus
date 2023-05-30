@@ -78,7 +78,7 @@ public class FormulaParserTests
         IExpressionGraphBuilder? graphBuilder = A.Fake<IExpressionGraphBuilder>();
         _ = A.CallTo(() => graphBuilder.Build(tokens)).Returns(new ExGraph());
 
-        this._parser.Configure(config => { _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder); });
+        this._parser.Configure(config => _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder));
 
         _ = this._parser.Parse("ABC");
 
@@ -98,7 +98,7 @@ public class FormulaParserTests
         IExpressionCompiler? compiler = A.Fake<IExpressionCompiler>();
         _ = A.CallTo(() => compiler.Compile(expectedGraph.Expressions)).Returns(new CompileResult(0, DataType.Integer));
 
-        this._parser.Configure(config => { _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder).SetExpresionCompiler(compiler); });
+        this._parser.Configure(config => _ = config.SetLexer(lexer).SetGraphBuilder(graphBuilder).SetExpresionCompiler(compiler));
 
         _ = this._parser.Parse("ABC");
 
@@ -116,8 +116,5 @@ public class FormulaParserTests
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
-    public void ParseAtShouldThrowIfAddressIsNull()
-    {
-        _ = this._parser.ParseAt(null);
-    }
+    public void ParseAtShouldThrowIfAddressIsNull() => _ = this._parser.ParseAt(null);
 }

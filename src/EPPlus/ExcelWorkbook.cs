@@ -294,10 +294,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     internal int _nextTableID = int.MinValue;
     internal int _nextPivotCacheId = 1;
 
-    internal int GetNewPivotCacheId()
-    {
-        return this._nextPivotCacheId++;
-    }
+    internal int GetNewPivotCacheId() => this._nextPivotCacheId++;
 
     internal void SetNewPivotCacheId(int value)
     {
@@ -670,10 +667,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// Provides access to named ranges
     /// </summary>
-    public ExcelNamedRangeCollection Names
-    {
-        get { return this._names; }
-    }
+    public ExcelNamedRangeCollection Names => this._names;
 
     internal ExcelExternalLinksCollection _externalLinks;
 
@@ -681,37 +675,25 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// A collection of links to external workbooks and it's cached data.
     /// This collection can also contain DDE and OLE links. DDE and OLE are readonly and cannot be added.
     /// </summary>
-    public ExcelExternalLinksCollection ExternalLinks
-    {
-        get { return this._externalLinks ??= new ExcelExternalLinksCollection(this); }
-    }
+    public ExcelExternalLinksCollection ExternalLinks => this._externalLinks ??= new ExcelExternalLinksCollection(this);
 
     #region Workbook Properties
 
     decimal _standardFontWidth = decimal.MinValue;
     string _fontID = "";
 
-    internal FormulaParser FormulaParser
-    {
-        get { return this._formulaParser ??= new FormulaParser(new EpplusExcelDataProvider(this._package)); }
-    }
+    internal FormulaParser FormulaParser => this._formulaParser ??= new FormulaParser(new EpplusExcelDataProvider(this._package));
 
     /// <summary>
     /// Manage the formula parser.
     /// Add your own functions or replace native ones, parse formulas or attach a logger.
     /// </summary>
-    public FormulaParserManager FormulaParserManager
-    {
-        get { return this._parserManager ??= new FormulaParserManager(this.FormulaParser); }
-    }
+    public FormulaParserManager FormulaParserManager => this._parserManager ??= new FormulaParserManager(this.FormulaParser);
 
     /// <summary>
     /// Represents a collection of <see cref="ExcelThreadedCommentPerson"/>s in the workbook.
     /// </summary>
-    public ExcelThreadedCommentPersonCollection ThreadedCommentPersons
-    {
-        get { return this._threadedCommentPersons ??= new ExcelThreadedCommentPersonCollection(this); }
-    }
+    public ExcelThreadedCommentPersonCollection ThreadedCommentPersons => this._threadedCommentPersons ??= new ExcelThreadedCommentPersonCollection(this);
 
     /// <summary>
     /// Max font width for the workbook
@@ -752,7 +734,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
             return this._standardFontWidth;
         }
-        set { this._standardFontWidth = value; }
+        set => this._standardFontWidth = value;
     }
 
     internal static decimal GetHeightPixels(string fontName, float fontSize)
@@ -815,10 +797,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// Access to workbook view properties
     /// </summary>
-    public ExcelWorkbookView View
-    {
-        get { return this._view ??= new ExcelWorkbookView(this.NameSpaceManager, this.TopNode, this); }
-    }
+    public ExcelWorkbookView View => this._view ??= new ExcelWorkbookView(this.NameSpaceManager, this.TopNode, this);
 
     ExcelVbaProject _vba;
 
@@ -898,10 +877,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// Returns a reference to the workbook's part within the package
     /// </summary>
-    internal ZipPackagePart Part
-    {
-        get { return this._package.ZipPackage.GetPart(this.WorkbookUri); }
-    }
+    internal ZipPackagePart Part => this._package.ZipPackage.GetPart(this.WorkbookUri);
 
     #region WorkbookXml
 
@@ -927,14 +903,11 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
     internal string CodeModuleName
     {
-        get { return this.GetXmlNodeString(codeModuleNamePath); }
-        set { this.SetXmlNodeString(codeModuleNamePath, value); }
+        get => this.GetXmlNodeString(codeModuleNamePath);
+        set => this.SetXmlNodeString(codeModuleNamePath, value);
     }
 
-    internal void CodeNameChange(string value)
-    {
-        this.CodeModuleName = value;
-    }
+    internal void CodeNameChange(string value) => this.CodeModuleName = value;
 
     /// <summary>
     /// The VBA code module if the package has a VBA project. Otherwise this propery is null.
@@ -1132,16 +1105,13 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
             return this._stylesXml;
         }
-        set { this._stylesXml = value; }
+        set => this._stylesXml = value;
     }
 
     /// <summary>
     /// Package styles collection. Used internally to access style data.
     /// </summary>
-    public ExcelStyles Styles
-    {
-        get { return this._styles ??= new ExcelStyles(this.NameSpaceManager, this.StylesXml, this); }
-    }
+    public ExcelStyles Styles => this._styles ??= new ExcelStyles(this.NameSpaceManager, this.StylesXml, this);
 
     #endregion
 
@@ -1150,12 +1120,11 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// The office document properties
     /// </summary>
-    public OfficeProperties Properties
-    {
+    public OfficeProperties Properties =>
+
         //  Create a NamespaceManager to handle the default namespace, 
         //  and create a prefix for the default namespace:                   
-        get { return this._properties ??= new OfficeProperties(this._package, this.NameSpaceManager); }
-    }
+        this._properties ??= new OfficeProperties(this._package, this.NameSpaceManager);
 
     #endregion
 
@@ -1216,8 +1185,8 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// </summary>
     public bool FullCalcOnLoad
     {
-        get { return this.GetXmlNodeBool(FULL_CALC_ON_LOAD_PATH); }
-        set { this.SetXmlNodeBool(FULL_CALC_ON_LOAD_PATH, value); }
+        get => this.GetXmlNodeBool(FULL_CALC_ON_LOAD_PATH);
+        set => this.SetXmlNodeBool(FULL_CALC_ON_LOAD_PATH, value);
     }
 
     ExcelThemeManager _theme;
@@ -1225,10 +1194,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// <summary>
     /// Create and manage the theme for the workbook.
     /// </summary>
-    public ExcelThemeManager ThemeManager
-    {
-        get { return this._theme ??= new ExcelThemeManager(this); }
-    }
+    public ExcelThemeManager ThemeManager => this._theme ??= new ExcelThemeManager(this);
 
     const string defaultThemeVersionPath = "d:workbookPr/@defaultThemeVersion";
 
@@ -1237,7 +1203,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     /// </summary>
     public int? DefaultThemeVersion
     {
-        get { return this.GetXmlNodeIntNull(defaultThemeVersionPath); }
+        get => this.GetXmlNodeIntNull(defaultThemeVersionPath);
         set
         {
             if (value is null)

@@ -23,10 +23,7 @@ namespace OfficeOpenXml.Sorting;
 /// </summary>
 public abstract class SortLayerBase
 {
-    internal SortLayerBase(SortOptionsBase options)
-    {
-        this._options = options;
-    }
+    internal SortLayerBase(SortOptionsBase options) => this._options = options;
 
     private readonly SortOptionsBase _options;
     private int _column = -1;

@@ -48,7 +48,7 @@ public class ExcelControlCheckBox : ExcelControlWithColorsAndLines
     /// </summary>
     public eCheckState Checked
     {
-        get { return this._ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked); }
+        get => this._ctrlProp.GetXmlNodeString("@checked").ToEnum(eCheckState.Unchecked);
         set
         {
             if (value == eCheckState.Unchecked)

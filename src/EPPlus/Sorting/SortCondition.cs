@@ -38,8 +38,8 @@ public class SortCondition : XmlHelper
     /// </summary>
     public bool Descending
     {
-        get { return this.GetXmlNodeBool(this._descendingPath); }
-        set { this.SetXmlNodeBool(this._descendingPath, value); }
+        get => this.GetXmlNodeBool(this._descendingPath);
+        set => this.SetXmlNodeBool(this._descendingPath, value);
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public class SortCondition : XmlHelper
     /// </summary>
     public string Ref
     {
-        get { return this.GetXmlNodeString(this._refPath); }
-        set { this.SetXmlNodeString(this._refPath, value); }
+        get => this.GetXmlNodeString(this._refPath);
+        set => this.SetXmlNodeString(this._refPath, value);
     }
 
     /// <summary>

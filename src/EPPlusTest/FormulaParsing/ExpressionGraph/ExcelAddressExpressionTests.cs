@@ -45,10 +45,7 @@ public class ExcelAddressExpressionTests
     private ParsingContext _parsingContext;
     private ParsingScope _scope;
 
-    private static ExcelCell CreateItem(object val)
-    {
-        return new ExcelCell(val, null, 0, 0);
-    }
+    private static ExcelCell CreateItem(object val) => new(val, null, 0, 0);
 
     [TestInitialize]
     public void Setup()
@@ -58,22 +55,13 @@ public class ExcelAddressExpressionTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._scope.Dispose();
-    }
+    public void Cleanup() => this._scope.Dispose();
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void ConstructorShouldThrowIfExcelDataProviderIsNull()
-    {
-        _ = new ExcelAddressExpression("A1", null, this._parsingContext);
-    }
+    public void ConstructorShouldThrowIfExcelDataProviderIsNull() => _ = new ExcelAddressExpression("A1", null, this._parsingContext);
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void ConstructorShouldThrowIfParsingContextIsNull()
-    {
-        _ = new ExcelAddressExpression("A1", A.Fake<ExcelDataProvider>(), null);
-    }
+    public void ConstructorShouldThrowIfParsingContextIsNull() => _ = new ExcelAddressExpression("A1", A.Fake<ExcelDataProvider>(), null);
 
     //TODO:Fix Test /Janne
     //[TestMethod]

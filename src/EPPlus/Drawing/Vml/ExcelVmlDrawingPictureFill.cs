@@ -14,20 +14,15 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     ExcelVmlDrawingFill _fill;
 
     internal ExcelVmlDrawingPictureFill(ExcelVmlDrawingFill fill, XmlNamespaceManager nsm, XmlNode topNode)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._fill = fill;
-    }
 
     ExcelVmlDrawingColor _secondColor;
 
     /// <summary>
     /// Fill color 2. 
     /// </summary>
-    public ExcelVmlDrawingColor SecondColor
-    {
-        get { return this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2"); }
-    }
+    public ExcelVmlDrawingColor SecondColor => this._secondColor ??= new ExcelVmlDrawingColor(this.NameSpaceManager, this.TopNode, "v:fill/@color2");
 
     /// <summary>
     /// Opacity for fill color 2. Spans 0-100%
@@ -35,7 +30,7 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public double SecondColorOpacity
     {
-        get { return VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2")); }
+        get => VmlConvertUtil.GetOpacityFromStringVml(this.GetXmlNodeString("v:fill/@o:opacity2"));
         set
         {
             if (value < 0 || value > 100)
@@ -52,8 +47,8 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public eVmlAspectRatio AspectRatio
     {
-        get { return this.GetXmlNodeString("v:fill/@aspect").ToEnum(eVmlAspectRatio.Ignore); }
-        set { this.SetXmlNodeString("v:fill/@aspect", value.ToString().ToLower()); }
+        get => this.GetXmlNodeString("v:fill/@aspect").ToEnum(eVmlAspectRatio.Ignore);
+        set => this.SetXmlNodeString("v:fill/@aspect", value.ToString().ToLower());
     }
 
     /// <summary>
@@ -62,8 +57,8 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public string Size
     {
-        get { return this.GetXmlNodeString("v:fill/@size"); }
-        set { this.SetXmlNodeString("v:fill/@size", value, true); }
+        get => this.GetXmlNodeString("v:fill/@size");
+        set => this.SetXmlNodeString("v:fill/@size", value, true);
     }
 
     /// <summary>
@@ -71,8 +66,8 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public string Origin
     {
-        get { return this.GetXmlNodeString("v:fill/@origin"); }
-        set { this.SetXmlNodeString("v:fill/@origin", value, true); }
+        get => this.GetXmlNodeString("v:fill/@origin");
+        set => this.SetXmlNodeString("v:fill/@origin", value, true);
     }
 
     /// <summary>
@@ -80,8 +75,8 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public string Position
     {
-        get { return this.GetXmlNodeString("v:fill/@position"); }
-        set { this.SetXmlNodeString("v:fill/@position", value, true); }
+        get => this.GetXmlNodeString("v:fill/@position");
+        set => this.SetXmlNodeString("v:fill/@position", value, true);
     }
 
     /// <summary>
@@ -89,8 +84,8 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
     /// </summary>
     public string Title
     {
-        get { return this.GetXmlNodeString("v:fill/@o:title"); }
-        set { this.SetXmlNodeString("v:fill/@o:title", value, true); }
+        get => this.GetXmlNodeString("v:fill/@o:title");
+        set => this.SetXmlNodeString("v:fill/@o:title", value, true);
     }
 
     ExcelImage _image;
@@ -143,8 +138,5 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
         _ = pictureRelationDocument.Hashes.Remove(container.ImageHash);
     }
 
-    internal string RelId
-    {
-        get { return this.GetXmlNodeString("v:fill/@o:relid"); }
-    }
+    internal string RelId => this.GetXmlNodeString("v:fill/@o:relid");
 }

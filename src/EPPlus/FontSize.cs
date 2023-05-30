@@ -2915,15 +2915,9 @@ public static class FontSize
         }
     };
 
-    internal static decimal GetWidthPixels(string fontName, float fontSize)
-    {
-        return GetWidthHeight(fontName, fontSize, true, 7);
-    }
+    internal static decimal GetWidthPixels(string fontName, float fontSize) => GetWidthHeight(fontName, fontSize, true, 7);
 
-    internal static decimal GetHeightPixels(string fontName, float fontSize)
-    {
-        return GetWidthHeight(fontName, fontSize, false, 20);
-    }
+    internal static decimal GetHeightPixels(string fontName, float fontSize) => GetWidthHeight(fontName, fontSize, false, 20);
 
     private static decimal GetWidthHeight(string fontName, float fontSize, bool width, decimal defaultValue)
     {
@@ -3000,10 +2994,7 @@ public static class FontSize
     /// <summary>
     /// Load the fonts default heights/widths from the internal resource file
     /// </summary>
-    public static void LoadAllFontsFromResource()
-    {
-        LoadFontsFromResource(null);
-    }
+    public static void LoadAllFontsFromResource() => LoadFontsFromResource(null);
 
     /// <summary>
     /// Load the specified fonts default heights/widths from the internal resource file

@@ -111,10 +111,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         }
     }
 
-    internal void AddToRangeDictionary(ExcelDataValidation validation)
-    {
-        this.AddItemToRangeDictionaryMultipleAddresses(validation.Address.Address, validation);
-    }
+    internal void AddToRangeDictionary(ExcelDataValidation validation) => this.AddItemToRangeDictionaryMultipleAddresses(validation.Address.Address, validation);
 
     internal void UpdateRangeDictionary(ExcelDataValidation validation)
     {
@@ -174,15 +171,9 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         return validationCount;
     }
 
-    internal int GetNonExtLstCount()
-    {
-        return this.GetCount(InternalValidationType.DataValidation);
-    }
+    internal int GetNonExtLstCount() => this.GetCount(InternalValidationType.DataValidation);
 
-    internal int GetExtLstCount()
-    {
-        return this.GetCount(InternalValidationType.ExtLst);
-    }
+    internal int GetExtLstCount() => this.GetCount(InternalValidationType.ExtLst);
 
     private static void OnValidationCountChanged()
     {
@@ -381,10 +372,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// <summary>
     /// Number of validations
     /// </summary>3
-    public int Count
-    {
-        get { return this._validations.Count; }
-    }
+    public int Count => this._validations.Count;
 
     /// <summary>
     /// Epplus validates that all data validations are consistend and valid
@@ -400,8 +388,8 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// <returns></returns>
     public ExcelDataValidation this[int index]
     {
-        get { return this._validations[index]; }
-        set { this._validations[index] = value; }
+        get => this._validations[index];
+        set => this._validations[index] = value;
     }
 
     /// <summary>
@@ -424,10 +412,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// </summary>
     /// <param name="match">predicate to filter out matching validations</param>
     /// <returns></returns>
-    public IEnumerable<ExcelDataValidation> FindAll(Predicate<ExcelDataValidation> match)
-    {
-        return this._validations.FindAll(match);
-    }
+    public IEnumerable<ExcelDataValidation> FindAll(Predicate<ExcelDataValidation> match) => this._validations.FindAll(match);
 
     /// <summary>
     /// Removes an <see cref="ExcelDataValidation"/> from the collection.
@@ -459,18 +444,12 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
     /// </summary>
     /// <param name="match"></param>
     /// <returns></returns>
-    public ExcelDataValidation Find(Predicate<ExcelDataValidation> match)
-    {
-        return this._validations.Find(match);
-    }
+    public ExcelDataValidation Find(Predicate<ExcelDataValidation> match) => this._validations.Find(match);
 
     /// <summary>
     /// Removes all validations from the collection.
     /// </summary>
-    public void Clear()
-    {
-        this._validations.Clear();
-    }
+    public void Clear() => this._validations.Clear();
 
     /// <summary>
     /// Removes the validations that matches the predicate
@@ -499,10 +478,7 @@ public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
         }
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._validations.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._validations.GetEnumerator();
 
     internal void InsertRangeDictionary(ExcelAddressBase address, bool shiftRight)
     {

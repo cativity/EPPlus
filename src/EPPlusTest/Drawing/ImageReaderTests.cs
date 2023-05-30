@@ -383,46 +383,25 @@ public class ImageReaderTests : TestBase
     }
 
     [TestMethod]
-    public void AddWepPImages()
-    {
-        AddFilesToWorksheet("webp", ePictureType.WebP);
-    }
+    public void AddWepPImages() => AddFilesToWorksheet("webp", ePictureType.WebP);
 
     [TestMethod]
-    public void AddWepPImagesNoPT()
-    {
-        AddFilesToWorksheet("webp", null, "webp-NoPT");
-    }
+    public void AddWepPImagesNoPT() => AddFilesToWorksheet("webp", null, "webp-NoPT");
 
     [TestMethod]
-    public void AddEmfImages()
-    {
-        AddFilesToWorksheet("Emf", ePictureType.Emf);
-    }
+    public void AddEmfImages() => AddFilesToWorksheet("Emf", ePictureType.Emf);
 
     [TestMethod]
-    public void AddGifImages()
-    {
-        AddFilesToWorksheet("Gif", ePictureType.Gif);
-    }
+    public void AddGifImages() => AddFilesToWorksheet("Gif", ePictureType.Gif);
 
     [TestMethod]
-    public void AddJpgImages()
-    {
-        AddFilesToWorksheet("Jpg", ePictureType.Jpg);
-    }
+    public void AddJpgImages() => AddFilesToWorksheet("Jpg", ePictureType.Jpg);
 
     [TestMethod]
-    public void AddSvgImages()
-    {
-        AddFilesToWorksheet("Svg", ePictureType.Svg);
-    }
+    public void AddSvgImages() => AddFilesToWorksheet("Svg", ePictureType.Svg);
 
     [TestMethod]
-    public void AddPngImages()
-    {
-        AddFilesToWorksheet("Png", ePictureType.Png);
-    }
+    public void AddPngImages() => AddFilesToWorksheet("Png", ePictureType.Png);
 
     [TestMethod]
     public void ReadImages()

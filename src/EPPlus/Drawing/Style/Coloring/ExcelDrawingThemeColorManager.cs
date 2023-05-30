@@ -128,10 +128,7 @@ public class ExcelDrawingThemeColorManager
         }
     }
 
-    private static bool IsTopNodeColorNode(XmlNode topNode)
-    {
-        return topNode.LocalName.EndsWith("Clr");
-    }
+    private static bool IsTopNodeColorNode(XmlNode topNode) => topNode.LocalName.EndsWith("Clr");
 
     /// <summary>
     /// The type of color.

@@ -32,10 +32,7 @@ public static class CalculationExtension
     /// Calculate all formulas in the current workbook
     /// </summary>
     /// <param name="workbook">The workbook</param>
-    public static void Calculate(this ExcelWorkbook workbook)
-    {
-        Calculate(workbook, new ExcelCalculationOption());
-    }
+    public static void Calculate(this ExcelWorkbook workbook) => Calculate(workbook, new ExcelCalculationOption());
 
     /// <summary>
     /// Calculate all formulas in the current workbook
@@ -80,10 +77,7 @@ public static class CalculationExtension
     /// Calculate all formulas in the current worksheet
     /// </summary>
     /// <param name="worksheet">The worksheet</param>
-    public static void Calculate(this ExcelWorksheet worksheet)
-    {
-        Calculate(worksheet, new ExcelCalculationOption());
-    }
+    public static void Calculate(this ExcelWorksheet worksheet) => Calculate(worksheet, new ExcelCalculationOption());
 
     /// <summary>
     /// Calculate all formulas in the current range
@@ -128,10 +122,7 @@ public static class CalculationExtension
     /// Calculate all formulas in the current range
     /// </summary>
     /// <param name="range">The range</param>
-    public static void Calculate(this ExcelRangeBase range)
-    {
-        Calculate(range, new ExcelCalculationOption());
-    }
+    public static void Calculate(this ExcelRangeBase range) => Calculate(range, new ExcelCalculationOption());
 
     /// <summary>
     /// Calculate all formulas in the current range
@@ -171,10 +162,7 @@ public static class CalculationExtension
     /// <param name="worksheet">The worksheet</param>
     /// <param name="Formula">The formula to be calculated</param>
     /// <returns>The result of the formula calculation</returns>
-    public static object Calculate(this ExcelWorksheet worksheet, string Formula)
-    {
-        return Calculate(worksheet, Formula, new ExcelCalculationOption());
-    }
+    public static object Calculate(this ExcelWorksheet worksheet, string Formula) => Calculate(worksheet, Formula, new ExcelCalculationOption());
 
     /// <summary>
     /// Calculate all formulas in the current range

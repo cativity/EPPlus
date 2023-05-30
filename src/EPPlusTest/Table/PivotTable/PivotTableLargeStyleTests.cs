@@ -16,10 +16,7 @@ namespace EPPlusTest.Table.PivotTable;
 public class PivotTableLargeStyleTests : TestBase
 {
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        InitBase();
-    }
+    public static void Init(TestContext context) => InitBase();
 
     [ClassCleanup]
     public static void Cleanup()

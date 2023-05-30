@@ -68,10 +68,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// </summary>
         /// <param name="ws"></param>
         /// <param name="address"></param>
-        public RangeInfo(ExcelWorksheet ws, ExcelAddressBase address)
-        {
-            this.SetAddress(ws, address);
-        }
+        public RangeInfo(ExcelWorksheet ws, ExcelAddressBase address) => this.SetAddress(ws, address);
 
         private void SetAddress(ExcelWorksheet ws, ExcelAddressBase address)
         {
@@ -93,18 +90,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// The total number of cells (including empty) of the range
         /// </summary>
         /// <returns></returns>
-        public int GetNCells()
-        {
-            return (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
-        }
+        public int GetNCells() => (this._toRow - this._fromRow + 1) * (this._toCol - this._fromCol + 1);
 
         /// <summary>
         /// Returns true if the range represents a reference
         /// </summary>
-        public bool IsRef
-        {
-            get { return this._ws == null || this._fromRow < 0 || this._toRow < 0; }
-        }
+        public bool IsRef => this._ws == null || this._fromRow < 0 || this._toRow < 0;
 
         /// <summary>
         /// Returns true if the range is empty
@@ -173,18 +164,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// <summary>
         /// Current cell
         /// </summary>
-        public ICellInfo Current
-        {
-            get { return this._cell; }
-        }
+        public ICellInfo Current => this._cell;
 
         /// <summary>
         /// The worksheet
         /// </summary>
-        public ExcelWorksheet Worksheet
-        {
-            get { return this._ws; }
-        }
+        public ExcelWorksheet Worksheet => this._ws;
 
         /// <summary>
         /// Runs at dispose of this instance
@@ -199,10 +184,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// <summary>
         /// IEnumerator.Current
         /// </summary>
-        object System.Collections.IEnumerator.Current
-        {
-            get { return this; }
-        }
+        object System.Collections.IEnumerator.Current => this;
 
         /// <summary>
         /// Moves to next cell
@@ -260,18 +242,12 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// Returns enumerator for cells
         /// </summary>
         /// <returns></returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this;
-        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this;
 
         /// <summary>
         /// Address of the range
         /// </summary>
-        public ExcelAddressBase Address
-        {
-            get { return this._address; }
-        }
+        public ExcelAddressBase Address => this._address;
 
         /// <summary>
         /// Returns the cell value 
@@ -279,10 +255,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
-        public object GetValue(int row, int col)
-        {
-            return this._ws?.GetValue(row, col);
-        }
+        public object GetValue(int row, int col) => this._ws?.GetValue(row, col);
 
         public object GetOffset(int rowOffset, int colOffset)
         {
@@ -313,25 +286,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             this._values = values;
         }
 
-        public string Address
-        {
-            get { return this._values.CellAddress; }
-        }
+        public string Address => this._values.CellAddress;
 
-        public int Row
-        {
-            get { return this._values.Row; }
-        }
+        public int Row => this._values.Row;
 
-        public int Column
-        {
-            get { return this._values.Column; }
-        }
+        public int Column => this._values.Column;
 
-        public string Formula
-        {
-            get { return this._ws.GetFormula(this._values.Row, this._values.Column); }
-        }
+        public string Formula => this._ws.GetFormula(this._values.Row, this._values.Column);
 
         public object Value
         {
@@ -348,15 +309,9 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             }
         }
 
-        public double ValueDouble
-        {
-            get { return ConvertUtil.GetValueDouble(this._values.Value._value, true); }
-        }
+        public double ValueDouble => ConvertUtil.GetValueDouble(this._values.Value._value, true);
 
-        public double ValueDoubleLogical
-        {
-            get { return ConvertUtil.GetValueDouble(this._values.Value._value, false); }
-        }
+        public double ValueDoubleLogical => ConvertUtil.GetValueDouble(this._values.Value._value, false);
 
         public bool IsHiddenRow
         {
@@ -375,25 +330,13 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
             }
         }
 
-        public bool IsExcelError
-        {
-            get { return ExcelErrorValue.Values.IsErrorValue(this._values.Value._value); }
-        }
+        public bool IsExcelError => ExcelErrorValue.Values.IsErrorValue(this._values.Value._value);
 
-        public IList<Token> Tokens
-        {
-            get { return this._ws._formulaTokens.GetValue(this._values.Row, this._values.Column); }
-        }
+        public IList<Token> Tokens => this._ws._formulaTokens.GetValue(this._values.Row, this._values.Column);
 
-        public ulong Id
-        {
-            get { return ExcelCellBase.GetCellId(this._ws.IndexInList, this._values.Row, this._values.Column); }
-        }
+        public ulong Id => ExcelCellBase.GetCellId(this._ws.IndexInList, this._values.Row, this._values.Column);
 
-        public string WorksheetName
-        {
-            get { return this._ws.Name; }
-        }
+        public string WorksheetName => this._ws.Name;
     }
 
     public class NameInfo : INameInfo
@@ -421,17 +364,10 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
     }
 
-    public EpplusExcelDataProvider(ExcelPackage package)
-    {
-        this._package = package;
+    public EpplusExcelDataProvider(ExcelPackage package) => this._package = package;
 
-        //this._rangeAddressFactory = new RangeAddressFactory(this);
-    }
-
-    public override IEnumerable<string> GetWorksheets()
-    {
-        return this._package.Workbook.Worksheets.Select(x => x.Name);
-    }
+    //this._rangeAddressFactory = new RangeAddressFactory(this);
+    public override IEnumerable<string> GetWorksheets() => this._package.Workbook.Worksheets.Select(x => x.Name);
 
     public override ExcelNamedRangeCollection GetWorksheetNames(string worksheet)
     {
@@ -480,10 +416,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         return null;
     }
 
-    public override ExcelNamedRangeCollection GetWorkbookNameValues()
-    {
-        return this._package.Workbook.Names;
-    }
+    public override ExcelNamedRangeCollection GetWorkbookNameValues() => this._package.Workbook.Names;
 
     public override IRangeInfo GetRange(string worksheet, int fromRow, int fromCol, int toRow, int toCol)
     {
@@ -798,24 +731,18 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         return (IEnumerable<object>)new CellStoreEnumerator<ExcelValue>(ws._values, addr._fromRow, addr._fromCol, addr._toRow, addr._toCol);
     }
 
-    public object GetValue(int row, int column)
-    {
-        return this._currentWorksheet.GetValueInner(row, column);
-    }
+    public object GetValue(int row, int column) => this._currentWorksheet.GetValueInner(row, column);
 
-    public bool IsMerged(int row, int column)
-    {
+    public bool IsMerged(int row, int column) =>
+
         //return _currentWorksheet._flags.GetFlagValue(row, column, CellFlags.Merged);
-        return this._currentWorksheet.MergedCells[row, column] != null;
-    }
+        this._currentWorksheet.MergedCells[row, column] != null;
 
-    public bool IsHidden(int row, int column)
-    {
-        return this._currentWorksheet.Column(column).Hidden
-               || this._currentWorksheet.Column(column).Width == 0
-               || this._currentWorksheet.Row(row).Hidden
-               || this._currentWorksheet.Row(column).Height == 0;
-    }
+    public bool IsHidden(int row, int column) =>
+        this._currentWorksheet.Column(column).Hidden
+        || this._currentWorksheet.Column(column).Width == 0
+        || this._currentWorksheet.Row(row).Hidden
+        || this._currentWorksheet.Row(column).Height == 0;
 
     public override object GetCellValue(string sheetName, int row, int col)
     {
@@ -883,20 +810,11 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     //    _currentWorksheet.Cells[ra.FromRow + 1, ra.FromCol + 1].Value = value;
     //}
 
-    public override void Dispose()
-    {
-        this._package.Dispose();
-    }
+    public override void Dispose() => this._package.Dispose();
 
-    public override int ExcelMaxColumns
-    {
-        get { return ExcelPackage.MaxColumns; }
-    }
+    public override int ExcelMaxColumns => ExcelPackage.MaxColumns;
 
-    public override int ExcelMaxRows
-    {
-        get { return ExcelPackage.MaxRows; }
-    }
+    public override int ExcelMaxRows => ExcelPackage.MaxRows;
 
     public override string GetRangeFormula(string worksheetName, int row, int column)
     {
@@ -932,10 +850,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         return ValueToTextHandler.FormatValue(value, false, ft, null);
     }
 
-    public override List<Token> GetRangeFormulaTokens(string worksheetName, int row, int column)
-    {
-        return this._package.Workbook.Worksheets[worksheetName]._formulaTokens.GetValue(row, column);
-    }
+    public override List<Token> GetRangeFormulaTokens(string worksheetName, int row, int column) => this._package.Workbook.Worksheets[worksheetName]._formulaTokens.GetValue(row, column);
 
     public override bool IsRowHidden(string worksheetName, int row)
     {
@@ -944,10 +859,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
         return b;
     }
 
-    public override void Reset()
-    {
-        this._names = new Dictionary<ulong, INameInfo>(); //Reset name cache.            
-    }
+    public override void Reset() => this._names = new Dictionary<ulong, INameInfo>(); //Reset name cache.            
 
     public override bool IsExternalName(string name)
     {

@@ -31,7 +31,7 @@ public class ExcelDrawingFontBase : XmlHelper
     /// </summary>
     public string Typeface
     {
-        get { return this.GetXmlNodeString("@typeface"); }
-        internal set { this.SetXmlNodeString("@typeface", value); }
+        get => this.GetXmlNodeString("@typeface");
+        internal set => this.SetXmlNodeString("@typeface", value);
     }
 }

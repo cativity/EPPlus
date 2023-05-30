@@ -49,10 +49,7 @@ internal class AddressTranslator
     /// <param name="address"></param>
     /// <param name="col"></param>
     /// <param name="row"></param>
-    public virtual void ToColAndRow(string address, out int col, out int row)
-    {
-        this.ToColAndRow(address, out col, out row, RangeCalculationBehaviour.FirstPart);
-    }
+    public virtual void ToColAndRow(string address, out int col, out int row) => this.ToColAndRow(address, out col, out row, RangeCalculationBehaviour.FirstPart);
 
     /// <summary>
     /// Translates an address in format "A1" to col- and rowindex.
@@ -95,15 +92,9 @@ internal class AddressTranslator
         return this._excelDataProvider.ExcelMaxRows;
     }
 
-    private static int GetNumericAlphaValue(char c)
-    {
-        return (int)c - 64;
-    }
+    private static int GetNumericAlphaValue(char c) => (int)c - 64;
 
-    private static string GetAlphaPart(string address)
-    {
-        return Regex.Match(address, "[A-Z]+").Value;
-    }
+    private static string GetAlphaPart(string address) => Regex.Match(address, "[A-Z]+").Value;
 
     private static int? GetIntPart(string address)
     {

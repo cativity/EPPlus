@@ -45,16 +45,10 @@ public class ChartColorSchemesStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ColorSchemesChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ColorSchemesChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void ColorSchemesArea3D()
@@ -84,7 +78,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle1,
                         ePresetChartColors.ColorfulPalette1,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
         _ = AddPieWithColor(ws,
@@ -94,7 +88,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         18,
                         ePresetChartStyle.Pie3dChartStyle2,
                         ePresetChartColors.ColorfulPalette2,
-                        c => { c.Legend.Position = eLegendPosition.Top; });
+                        c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddPieWithColor(ws, chartType, "ColorStyleColorfulPalette3", 0, 31, ePresetChartStyle.Pie3dChartStyle3, ePresetChartColors.ColorfulPalette3, c => { });
@@ -107,7 +101,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle4,
                         ePresetChartColors.ColorfulPalette4,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
         _ = AddPieWithColor(ws,
@@ -117,7 +111,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         18,
                         ePresetChartStyle.Pie3dChartStyle5,
                         ePresetChartColors.MonochromaticPalette1,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddPieWithColor(ws,
@@ -137,7 +131,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle7,
                         ePresetChartColors.MonochromaticPalette3,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddPieWithColor(ws,
@@ -167,7 +161,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle10,
                         ePresetChartColors.MonochromaticPalette6,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -177,7 +171,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         18,
                         ePresetChartStyle.Pie3dChartStyle9,
                         ePresetChartColors.MonochromaticPalette7,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -187,7 +181,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         31,
                         ePresetChartStyle.Pie3dChartStyle8,
                         ePresetChartColors.MonochromaticPalette8,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -197,7 +191,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle7,
                         ePresetChartColors.MonochromaticPalette9,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -207,7 +201,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         18,
                         ePresetChartStyle.Pie3dChartStyle6,
                         ePresetChartColors.MonochromaticPalette10,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -217,7 +211,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         31,
                         ePresetChartStyle.Pie3dChartStyle5,
                         ePresetChartColors.MonochromaticPalette11,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -227,7 +221,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         5,
                         ePresetChartStyle.Pie3dChartStyle4,
                         ePresetChartColors.MonochromaticPalette12,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddPieWithColor(ws,
@@ -237,7 +231,7 @@ public class ChartColorSchemesStylingTest : TestBase
                         18,
                         ePresetChartStyle.Pie3dChartStyle3,
                         ePresetChartColors.MonochromaticPalette13,
-                        c => { c.Legend.Position = eLegendPosition.Bottom; });
+                        c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static void Area3DStyle(ExcelWorksheet ws, eAreaChartType chartType)
@@ -250,7 +244,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle1,
                          ePresetChartColors.ColorfulPalette1,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
         _ = AddAreaWithColor(ws,
@@ -260,7 +254,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          18,
                          ePresetChartStyle.Area3dChartStyle2,
                          ePresetChartColors.ColorfulPalette2,
-                         c => { c.Legend.Position = eLegendPosition.Top; });
+                         c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddAreaWithColor(ws,
@@ -280,7 +274,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle4,
                          ePresetChartColors.ColorfulPalette4,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
         _ = AddAreaWithColor(ws,
@@ -290,7 +284,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          18,
                          ePresetChartStyle.Area3dChartStyle5,
                          ePresetChartColors.MonochromaticPalette1,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddAreaWithColor(ws,
@@ -310,7 +304,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle7,
                          ePresetChartColors.MonochromaticPalette3,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddAreaWithColor(ws,
@@ -340,7 +334,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette6,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -350,7 +344,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          18,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette7,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -360,7 +354,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          31,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette8,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -370,7 +364,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette9,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -380,7 +374,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          18,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette10,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -390,7 +384,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          31,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette11,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -400,7 +394,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          5,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette12,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 10
         _ = AddAreaWithColor(ws,
@@ -410,7 +404,7 @@ public class ChartColorSchemesStylingTest : TestBase
                          18,
                          ePresetChartStyle.Area3dChartStyle10,
                          ePresetChartColors.MonochromaticPalette13,
-                         c => { c.Legend.Position = eLegendPosition.Bottom; });
+                         c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelAreaChart AddAreaWithColor(ExcelWorksheet ws,

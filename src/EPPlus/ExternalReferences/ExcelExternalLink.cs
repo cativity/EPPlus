@@ -62,10 +62,7 @@ public abstract class ExcelExternalLink
     /// Returns the string representation of the object.
     /// </summary>
     /// <returns></returns>
-    public override string ToString()
-    {
-        return this.ExternalLinkType.ToString();
-    }
+    public override string ToString() => this.ExternalLinkType.ToString();
 
     /// <summary>
     /// The index of the external link. The index can be used in formulas between brackets to reference this link.
@@ -73,23 +70,14 @@ public abstract class ExcelExternalLink
     /// <example>
     /// <code>worksheet.Cells["A1"].Formula="'[1]Sheet1'!A1"</code>
     /// </example>
-    public int Index
-    {
-        get { return this._wb.ExternalLinks.GetIndex(this) + 1; }
-    }
+    public int Index => this._wb.ExternalLinks.GetIndex(this) + 1;
 
-    internal static bool HasWebProtocol(string uriPath)
-    {
-        return uriPath.StartsWith("http:") || uriPath.StartsWith("https:") || uriPath.StartsWith("ftp:") || uriPath.StartsWith("ftps:");
-    }
+    internal static bool HasWebProtocol(string uriPath) => uriPath.StartsWith("http:") || uriPath.StartsWith("https:") || uriPath.StartsWith("ftp:") || uriPath.StartsWith("ftps:");
 
     internal List<string> _errors = new List<string>();
 
     /// <summary>
     /// A list of errors that occured during load or update of the external workbook.
     /// </summary>
-    public List<string> ErrorLog
-    {
-        get { return this._errors; }
-    }
+    public List<string> ErrorLog => this._errors;
 }

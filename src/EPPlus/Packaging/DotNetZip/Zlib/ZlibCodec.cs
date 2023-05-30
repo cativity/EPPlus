@@ -178,10 +178,7 @@ sealed public class ZlibCodec
     /// <summary>
     /// The Adler32 checksum on the data transferred through the codec so far. You probably don't need to look at this.
     /// </summary>
-    public int Adler32
-    {
-        get { return (int)this._Adler32; }
-    }
+    public int Adler32 => (int)this._Adler32;
 
     /// <summary>
     /// Create a ZlibCodec.
@@ -235,10 +232,7 @@ sealed public class ZlibCodec
     /// It is implicitly called when you call the constructor.
     /// </remarks>
     /// <returns>Z_OK if everything goes well.</returns>
-    public int InitializeInflate()
-    {
-        return this.InitializeInflate(this.WindowBits);
-    }
+    public int InitializeInflate() => this.InitializeInflate(this.WindowBits);
 
     /// <summary>
     /// Initialize the inflation state with an explicit flag to
@@ -258,10 +252,7 @@ sealed public class ZlibCodec
     /// pair when reading the stream of data to be inflated.</param>
     ///
     /// <returns>Z_OK if everything goes well.</returns>
-    public int InitializeInflate(bool expectRfc1950Header)
-    {
-        return this.InitializeInflate(this.WindowBits, expectRfc1950Header);
-    }
+    public int InitializeInflate(bool expectRfc1950Header) => this.InitializeInflate(this.WindowBits, expectRfc1950Header);
 
     /// <summary>
     /// Initialize the ZlibCodec for inflation, with the specified number of window bits. 
@@ -458,10 +449,7 @@ sealed public class ZlibCodec
     /// </code>
     /// </example>
     /// <returns>Z_OK if all goes well. You generally don't need to check the return code.</returns>
-    public int InitializeDeflate()
-    {
-        return this._InternalInitializeDeflate(true);
-    }
+    public int InitializeDeflate() => this._InternalInitializeDeflate(true);
 
     /// <summary>
     /// Initialize the ZlibCodec for deflation operation, using the specified CompressionLevel.

@@ -24,21 +24,13 @@ public class ExcelChartExParetoLine : ExcelDrawingBorder
     private readonly ExcelChart _chart;
 
     internal ExcelChartExParetoLine(ExcelChart chart, XmlNamespaceManager nsm, XmlNode node)
-        : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" })
-    {
+        : base(chart, nsm, node, "cx:spPr/a:ln", new string[] { "spPr", "axisId" }) =>
         this._chart = chart;
-    }
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect => this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "cx:spPr/a:effectLst", this.SchemaNodeOrder);
 }

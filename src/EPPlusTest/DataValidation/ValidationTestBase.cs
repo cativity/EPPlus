@@ -98,10 +98,7 @@ public abstract class ValidationTestBase : TestBase
         return new ExcelPackage(xmlStream);
     }
 
-    protected static IExcelDataValidationInt ReadIntValidation(ExcelPackage package)
-    {
-        return (IExcelDataValidationInt)ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
-    }
+    protected static IExcelDataValidationInt ReadIntValidation(ExcelPackage package) => (IExcelDataValidationInt)ReadPackageAsNewPackage(package).Workbook.Worksheets[0].DataValidations[0];
 
     protected static T ReadTValidation<T>(ExcelPackage package)
     {

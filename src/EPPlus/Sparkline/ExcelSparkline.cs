@@ -25,10 +25,8 @@ namespace OfficeOpenXml.Sparkline;
 public class ExcelSparkline : XmlHelper
 {
     internal ExcelSparkline(XmlNamespaceManager nsm, XmlNode topNode)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this.SchemaNodeOrder = new string[] { "f", "sqref" };
-    }
 
     const string _fPath = "xm:f";
 
@@ -70,16 +68,13 @@ public class ExcelSparkline : XmlHelper
     /// </summary>
     public ExcelCellAddress Cell
     {
-        get { return new ExcelCellAddress(this.GetXmlNodeString(_sqrefPath)); }
-        internal set { this.SetXmlNodeString("xm:sqref", value.Address); }
+        get => new(this.GetXmlNodeString(_sqrefPath));
+        internal set => this.SetXmlNodeString("xm:sqref", value.Address);
     }
 
     /// <summary>
     /// Returns a string representation of the object
     /// </summary>
     /// <returns>The cell address and the range</returns>
-    public override string ToString()
-    {
-        return this.Cell.Address + ", " + this.RangeAddress.Address;
-    }
+    public override string ToString() => this.Cell.Address + ", " + this.RangeAddress.Address;
 }

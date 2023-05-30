@@ -94,15 +94,9 @@ public class FormulaParser : IDisposable
     private IExpressionGraphBuilder _graphBuilder;
     private IExpressionCompiler _compiler;
 
-    internal ILexer Lexer
-    {
-        get { return this._lexer; }
-    }
+    internal ILexer Lexer => this._lexer;
 
-    internal IEnumerable<string> FunctionNames
-    {
-        get { return this._parsingContext.Configuration.FunctionRepository.FunctionNames; }
-    }
+    internal IEnumerable<string> FunctionNames => this._parsingContext.Configuration.FunctionRepository.FunctionNames;
 
     /// <summary>
     /// Contains information about filters on a workbook's worksheets.
@@ -206,20 +200,14 @@ public class FormulaParser : IDisposable
     /// <param name="formula">A string containing the formula</param>
     /// <param name="address">Address of the formula</param>
     /// <returns></returns>
-    public virtual object Parse(string formula, string address)
-    {
-        return this.Parse(formula, this._parsingContext.RangeAddressFactory.Create(address));
-    }
+    public virtual object Parse(string formula, string address) => this.Parse(formula, this._parsingContext.RangeAddressFactory.Create(address));
 
     /// <summary>
     /// Parses a formula
     /// </summary>
     /// <param name="formula">A string containing the formula</param>
     /// <returns>The result of the calculation</returns>
-    public virtual object Parse(string formula)
-    {
-        return this.Parse(formula, RangeAddress.Empty);
-    }
+    public virtual object Parse(string formula) => this.Parse(formula, RangeAddress.Empty);
 
     /// <summary>
     /// Parses a formula in a specific location
@@ -276,10 +264,7 @@ public class FormulaParser : IDisposable
     /// <summary>
     /// An <see cref="IFormulaParserLogger"/> for logging during calculation
     /// </summary>
-    public IFormulaParserLogger Logger
-    {
-        get { return this._parsingContext.Configuration.Logger; }
-    }
+    public IFormulaParserLogger Logger => this._parsingContext.Configuration.Logger;
 
     /// <summary>
     /// Implementation of <see cref="IDisposable"></see>

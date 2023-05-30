@@ -48,10 +48,7 @@ internal static class NumericTypeConversions
         { typeof(short), (o) => Convert.ToInt16(o) }
     };
 
-    public static bool IsNumeric(Type type)
-    {
-        return _numericTypes.ContainsKey(type);
-    }
+    public static bool IsNumeric(Type type) => _numericTypes.ContainsKey(type);
 
     public static bool TryConvert(object obj, out object convertedObj, Type convertToType)
     {

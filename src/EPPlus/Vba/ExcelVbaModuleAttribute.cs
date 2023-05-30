@@ -41,8 +41,5 @@ public class ExcelVbaModuleAttribute
     /// Converts the object to a string
     /// </summary>
     /// <returns>The name of the VBA module attribute</returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 }

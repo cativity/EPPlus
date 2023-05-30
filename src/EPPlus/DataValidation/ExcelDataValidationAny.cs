@@ -52,28 +52,16 @@ public class ExcelDataValidationAny : ExcelDataValidation, IExcelDataValidationA
     /// <summary>
     /// True if the current validation type allows operator.
     /// </summary>
-    public override bool AllowsOperator
-    {
-        get { return false; }
-    }
+    public override bool AllowsOperator => false;
 
     /// <summary>
     /// Validation type
     /// </summary>
     public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Any);
 
-    internal override ExcelDataValidation GetClone()
-    {
-        return new ExcelDataValidationAny(this, this._ws);
-    }
+    internal override ExcelDataValidation GetClone() => new ExcelDataValidationAny(this, this._ws);
 
-    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-    {
-        return new ExcelDataValidationAny(this, copy);
-    }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy) => new ExcelDataValidationAny(this, copy);
 
-    internal ExcelDataValidationAny Clone()
-    {
-        return (ExcelDataValidationAny)this.GetClone();
-    }
+    internal ExcelDataValidationAny Clone() => (ExcelDataValidationAny)this.GetClone();
 }

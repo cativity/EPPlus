@@ -29,8 +29,5 @@ internal class FinancialPeriod
 
     internal FinancialDay End { get; }
 
-    public override string ToString()
-    {
-        return $"{this.Start.ToString()} - {this.End.ToString()}";
-    }
+    public override string ToString() => $"{this.Start.ToString()} - {this.End.ToString()}";
 }

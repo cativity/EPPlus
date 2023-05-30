@@ -27,10 +27,7 @@ public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
         //this._project = project;
     }
 
-    internal void Add(ExcelVBAModule Item)
-    {
-        this._list.Add(Item);
-    }
+    internal void Add(ExcelVBAModule Item) => this._list.Add(Item);
 
     /// <summary>
     /// Adds a new VBA Module

@@ -30,10 +30,7 @@ internal class UniCodeRange
 
     public int End { get; set; }
 
-    public bool IsInRange(int c)
-    {
-        return c >= this.Start && c <= this.End;
-    }
+    public bool IsInRange(int c) => c >= this.Start && c <= this.End;
 
     public IEnumerable<char> ToCharList()
     {
@@ -81,8 +78,5 @@ internal class UniCodeRange
     /// <summary>
     /// Unicode ranges to cover Japanese/Kanji characters
     /// </summary>
-    public static IEnumerable<UniCodeRange> JapaneseKanji
-    {
-        get { return _jk; }
-    }
+    public static IEnumerable<UniCodeRange> JapaneseKanji => _jk;
 }

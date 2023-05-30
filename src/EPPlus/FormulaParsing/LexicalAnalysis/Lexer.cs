@@ -37,10 +37,7 @@ public class Lexer : ILexer
     private readonly ISourceCodeTokenizer _tokenizer;
     private readonly ISyntacticAnalyzer _analyzer;
 
-    public IEnumerable<Token> Tokenize(string input)
-    {
-        return this.Tokenize(input, null);
-    }
+    public IEnumerable<Token> Tokenize(string input) => this.Tokenize(input, null);
 
     public IEnumerable<Token> Tokenize(string input, string worksheet)
     {

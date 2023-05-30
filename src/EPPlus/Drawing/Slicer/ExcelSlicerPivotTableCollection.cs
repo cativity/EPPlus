@@ -25,10 +25,7 @@ public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
 {
     ExcelPivotTableSlicerCache _slicerCache;
 
-    internal ExcelSlicerPivotTableCollection(ExcelPivotTableSlicerCache slicerCache)
-    {
-        this._slicerCache = slicerCache;
-    }
+    internal ExcelSlicerPivotTableCollection(ExcelPivotTableSlicerCache slicerCache) => this._slicerCache = slicerCache;
 
     internal List<ExcelPivotTable> _list = new List<ExcelPivotTable>();
 
@@ -36,19 +33,13 @@ public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// Get an Enumerator for the collection.
     /// </summary>
     /// <returns>The Enumerator</returns>
-    public IEnumerator<ExcelPivotTable> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelPivotTable> GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Get an Enumerator for the collection.
     /// </summary>
     /// <returns>The Enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// The indexer for the collection
@@ -86,8 +77,5 @@ public class ExcelSlicerPivotTableCollection : IEnumerable<ExcelPivotTable>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }

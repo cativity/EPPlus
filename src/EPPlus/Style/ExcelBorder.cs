@@ -25,50 +25,33 @@ namespace OfficeOpenXml.Style;
 public sealed class Border : StyleBase
 {
     internal Border(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
-        : base(styles, ChangedEvent, PositionID, address)
-    {
+        : base(styles, ChangedEvent, PositionID, address) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// Left border style
     /// </summary>
-    public ExcelBorderItem Left
-    {
-        get { return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderLeft, this); }
-    }
+    public ExcelBorderItem Left => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderLeft, this);
 
     /// <summary>
     /// Right border style
     /// </summary>
-    public ExcelBorderItem Right
-    {
-        get { return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderRight, this); }
-    }
+    public ExcelBorderItem Right => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderRight, this);
 
     /// <summary>
     /// Top border style
     /// </summary>
-    public ExcelBorderItem Top
-    {
-        get { return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderTop, this); }
-    }
+    public ExcelBorderItem Top => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderTop, this);
 
     /// <summary>
     /// Bottom border style
     /// </summary>
-    public ExcelBorderItem Bottom
-    {
-        get { return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderBottom, this); }
-    }
+    public ExcelBorderItem Bottom => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderBottom, this);
 
     /// <summary>
     /// 0Diagonal border style
     /// </summary>
-    public ExcelBorderItem Diagonal
-    {
-        get { return new ExcelBorderItem(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderDiagonal, this); }
-    }
+    public ExcelBorderItem Diagonal => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.BorderDiagonal, this);
 
     /// <summary>
     /// A diagonal from the bottom left to top right of the cell
@@ -86,7 +69,7 @@ public sealed class Border : StyleBase
                 return false;
             }
         }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, this._positionID, this._address)); }
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalUp, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -105,25 +88,16 @@ public sealed class Border : StyleBase
                 return false;
             }
         }
-        set
-        {
-            _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, this._positionID, this._address));
-        }
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Border, eStyleProperty.BorderDiagonalDown, value, this._positionID, this._address));
     }
 
-    internal override string Id
-    {
-        get { return this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Diagonal.Id + this.DiagonalUp + this.DiagonalDown; }
-    }
+    internal override string Id => this.Top.Id + this.Bottom.Id + this.Left.Id + this.Right.Id + this.Diagonal.Id + this.DiagonalUp + this.DiagonalDown;
 
     /// <summary>
     /// Set the border style around the range.
     /// </summary>
     /// <param name="Style">The border style</param>
-    public void BorderAround(ExcelBorderStyle Style)
-    {
-        this.BorderAround(Style, Color.Empty);
-    }
+    public void BorderAround(ExcelBorderStyle Style) => this.BorderAround(Style, Color.Empty);
 
     /// <summary>
     /// Set the border style around the range.

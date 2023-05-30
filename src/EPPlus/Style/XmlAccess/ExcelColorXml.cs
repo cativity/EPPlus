@@ -57,10 +57,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
         }
     }
 
-    internal override string Id
-    {
-        get { return this._auto.ToString() + "|" + this._theme?.ToString() + "|" + this._tint + "|" + this._rgb + "|" + this._indexed; }
-    }
+    internal override string Id => this._auto.ToString() + "|" + this._theme?.ToString() + "|" + this._tint + "|" + this._rgb + "|" + this._indexed;
 
     bool _auto;
 
@@ -69,7 +66,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
     /// </summary>
     public bool Auto
     {
-        get { return this._auto; }
+        get => this._auto;
         set
         {
             this.Clear();
@@ -85,7 +82,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
     /// </summary>
     public eThemeSchemeColor? Theme
     {
-        get { return this._theme; }
+        get => this._theme;
         set
         {
             this.Clear();
@@ -126,7 +123,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
     /// </summary>
     public string Rgb
     {
-        get { return this._rgb; }
+        get => this._rgb;
         set
         {
             this._rgb = value;
@@ -144,7 +141,7 @@ public sealed class ExcelColorXml : StyleXmlHelper
     /// </summary>
     public int Indexed
     {
-        get { return this._indexed; }
+        get => this._indexed;
         set
         {
             if (value < 0 || value > 65)
@@ -197,13 +194,11 @@ public sealed class ExcelColorXml : StyleXmlHelper
         this._indexed = (int)indexedColor;
     }
 
-    internal ExcelColorXml Copy()
-    {
-        return new ExcelColorXml(this.NameSpaceManager)
+    internal ExcelColorXml Copy() =>
+        new(this.NameSpaceManager)
         {
             _indexed = this._indexed, _tint = this._tint, _rgb = this._rgb, _theme = this._theme, _auto = this._auto, Exists = this.Exists
         };
-    }
 
     internal override XmlNode CreateXmlNode(XmlNode topNode)
     {

@@ -49,10 +49,7 @@ internal class PageIndex : IndexBase, IDisposable
         this.Offset = offset;
     }
 
-    ~PageIndex()
-    {
-        this.Rows = null;
-    }
+    ~PageIndex() => this.Rows = null;
 
     internal int Offset;
 
@@ -61,30 +58,18 @@ internal class PageIndex : IndexBase, IDisposable
     /// </summary>
     internal int RowCount;
 
-    internal int IndexOffset
-    {
-        get { return this.IndexExpanded + this.Offset; }
-    }
+    internal int IndexOffset => this.IndexExpanded + this.Offset;
 
-    internal int IndexExpanded
-    {
-        get { return this.Index << CellStoreSettings._pageBits; }
-    }
+    internal int IndexExpanded => this.Index << CellStoreSettings._pageBits;
 
     internal IndexItem[] Rows { get; set; }
 
     /// <summary>
     /// First row index minus last row index
     /// </summary>
-    internal int RowSpan
-    {
-        get { return this.MaxIndex - this.MinIndex + 1; }
-    }
+    internal int RowSpan => this.MaxIndex - this.MinIndex + 1;
 
-    internal int GetPosition(int offset)
-    {
-        return ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
-    }
+    internal int GetPosition(int offset) => ArrayUtil.OptimizedBinarySearch(this.Rows, offset, this.RowCount);
 
     internal int GetRowPosition(int row)
     {
@@ -144,33 +129,15 @@ internal class PageIndex : IndexBase, IDisposable
         }
     }
 
-    public int GetIndex(int pos)
-    {
-        return this.IndexOffset + this.Rows[pos].Index;
-    }
+    public int GetIndex(int pos) => this.IndexOffset + this.Rows[pos].Index;
 
-    public void Dispose()
-    {
-        this.Rows = null;
-    }
+    public void Dispose() => this.Rows = null;
 
-    internal bool IsWithin(int fromRow, int toRow)
-    {
-        return fromRow <= this.MinIndex && toRow >= this.MaxIndex;
-    }
+    internal bool IsWithin(int fromRow, int toRow) => fromRow <= this.MinIndex && toRow >= this.MaxIndex;
 
-    internal bool StartsWithin(int fromRow, int toRow)
-    {
-        return fromRow <= this.MaxIndex && toRow >= this.MinIndex;
-    }
+    internal bool StartsWithin(int fromRow, int toRow) => fromRow <= this.MaxIndex && toRow >= this.MinIndex;
 
-    internal bool StartsAfter(int row)
-    {
-        return row > this.MaxIndex;
-    }
+    internal bool StartsAfter(int row) => row > this.MaxIndex;
 
-    internal int GetRow(int rowIx)
-    {
-        return this.IndexOffset + this.Rows[rowIx].Index;
-    }
+    internal int GetRow(int rowIx) => this.IndexOffset + this.Rows[rowIx].Index;
 }

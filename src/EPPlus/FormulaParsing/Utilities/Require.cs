@@ -29,8 +29,5 @@ public static class Require
     /// <typeparam name="T"></typeparam>
     /// <param name="arg">The argument to validate</param>
     /// <returns></returns>
-    public static ArgumentInfo<T> That<T>(T arg)
-    {
-        return new ArgumentInfo<T>(arg);
-    }
+    public static ArgumentInfo<T> That<T>(T arg) => new(arg);
 }

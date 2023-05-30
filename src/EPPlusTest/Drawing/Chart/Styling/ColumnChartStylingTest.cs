@@ -42,16 +42,10 @@ public class ColumnChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ColumnChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ColumnChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void ColumnChart_Styles()
@@ -104,7 +98,7 @@ public class ColumnChartStylingTest : TestBase
                });
 
         //Style 2
-        _ = AddBar(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.ColumnChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.ColumnChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddBar(ws,
@@ -120,37 +114,37 @@ public class ColumnChartStylingTest : TestBase
                });
 
         //Style 4
-        _ = AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.ColumnChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.ColumnChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddBar(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.ColumnChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.ColumnChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddBar(ws, chartType, "ColumnChartStyle6", 22, 31, ePresetChartStyle.ColumnChartStyle6, c => { });
 
         //Style 7
-        _ = AddBar(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.ColumnChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.ColumnChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
-        _ = AddBar(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.ColumnChartStyle8, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.ColumnChartStyle8, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 9
         _ = AddBar(ws, chartType, "ColumnChartStyle9", 44, 31, ePresetChartStyle.ColumnChartStyle9, c => { });
 
         //Style 10
-        _ = AddBar(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.ColumnChartStyle10, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.ColumnChartStyle10, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 11
-        _ = AddBar(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.ColumnChartStyle11, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.ColumnChartStyle11, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 12
         _ = AddBar(ws, chartType, "ColumnChartStyle12", 66, 31, ePresetChartStyle.ColumnChartStyle12, c => { });
 
         //Style 13
-        _ = AddBar(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.ColumnChartStyle13, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.ColumnChartStyle13, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 14
-        _ = AddBar(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.ColumnChartStyle14, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.ColumnChartStyle14, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 15
         _ = AddBar(ws, chartType, "ColumnChartStyle15", 88, 31, ePresetChartStyle.ColumnChartStyle15, c => { });
@@ -180,7 +174,7 @@ public class ColumnChartStylingTest : TestBase
                });
 
         //Style 2
-        _ = AddBar(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.StackedBarChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle2", 0, 18, ePresetChartStyle.StackedBarChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddBar(ws,
@@ -196,28 +190,28 @@ public class ColumnChartStylingTest : TestBase
                });
 
         //Style 4
-        _ = AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.StackedBarChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.StackedBarChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddBar(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.StackedBarChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.StackedBarChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddBar(ws, chartType, "ColumnChartStyle6", 22, 31, ePresetChartStyle.StackedBarChartStyle6, c => { });
 
         //Style 7
-        _ = AddBar(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.StackedBarChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.StackedBarChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
-        _ = AddBar(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.StackedBarChartStyle8, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.StackedBarChartStyle8, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 9
         _ = AddBar(ws, chartType, "ColumnChartStyle9", 44, 31, ePresetChartStyle.StackedBarChartStyle9, c => { });
 
         //Style 10
-        _ = AddBar(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.StackedBarChartStyle10, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.StackedBarChartStyle10, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 11
-        _ = AddBar(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.StackedBarChartStyle11, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddBar(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.StackedBarChartStyle11, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelBarChart AddBar(ExcelWorksheet ws,

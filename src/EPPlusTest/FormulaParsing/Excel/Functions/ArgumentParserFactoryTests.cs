@@ -43,10 +43,7 @@ public class ArgumentParserFactoryTests
     private ArgumentParserFactory _parserFactory;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._parserFactory = new ArgumentParserFactory();
-    }
+    public void Setup() => this._parserFactory = new ArgumentParserFactory();
 
     [TestMethod]
     public void ShouldReturnIntArgumentParserWhenDataTypeIsInteger()

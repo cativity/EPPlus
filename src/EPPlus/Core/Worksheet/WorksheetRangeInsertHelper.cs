@@ -895,10 +895,7 @@ internal static class WorksheetRangeInsertHelper
 
     private static SourceCodeTokenizer _sct = new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty);
 
-    private static IEnumerable<Token> GetTokens(ExcelWorksheet ws, int row, int column, string formula)
-    {
-        return string.IsNullOrEmpty(formula) ? new List<Token>() : (List<Token>)_sct.Tokenize(formula, ws.Name);
-    }
+    private static IEnumerable<Token> GetTokens(ExcelWorksheet ws, int row, int column, string formula) => string.IsNullOrEmpty(formula) ? new List<Token>() : (List<Token>)_sct.Tokenize(formula, ws.Name);
 
     private static void FixFormulasInsertColumn(ExcelWorksheet ws, int columnFrom, int columns)
     {

@@ -59,7 +59,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
     /// </summary>
     public bool SubTotal
     {
-        get { return this.ExistsNode($"{this.GetSubTotalPath()}[@val={this.Index}]"); }
+        get => this.ExistsNode($"{this.GetSubTotalPath()}[@val={this.Index}]");
         set
         {
             string? path = this.GetSubTotalPath();
@@ -210,8 +210,5 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
         return null;
     }
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode("cx:spPr");
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode("cx:spPr");
 }

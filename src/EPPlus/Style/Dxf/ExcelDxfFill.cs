@@ -41,7 +41,7 @@ public class ExcelDxfFill : DxfStyleBase
     /// </summary>
     public ExcelFillStyle? PatternType
     {
-        get { return this._patternType; }
+        get => this._patternType;
         set
         {
             if (this.Style == eDxfFillStyle.GradientFill)
@@ -91,7 +91,7 @@ public class ExcelDxfFill : DxfStyleBase
     /// </summary>
     public eDxfFillStyle Style
     {
-        get { return this.Gradient == null ? eDxfFillStyle.PatternFill : eDxfFillStyle.GradientFill; }
+        get => this.Gradient == null ? eDxfFillStyle.PatternFill : eDxfFillStyle.GradientFill;
         set
         {
             if (value == eDxfFillStyle.PatternFill && this.Gradient != null)
@@ -175,16 +175,14 @@ public class ExcelDxfFill : DxfStyleBase
     /// Clone the object
     /// </summary>
     /// <returns>A new instance of the object</returns>
-    internal override DxfStyleBase Clone()
-    {
-        return new ExcelDxfFill(this._styles, this._callback)
+    internal override DxfStyleBase Clone() =>
+        new ExcelDxfFill(this._styles, this._callback)
         {
             PatternType = this.PatternType,
             PatternColor = (ExcelDxfColor)this.PatternColor?.Clone(),
             BackgroundColor = (ExcelDxfColor)this.BackgroundColor?.Clone(),
             Gradient = (ExcelDxfGradientFill)this.Gradient?.Clone()
         };
-    }
 
     internal override void SetStyle()
     {

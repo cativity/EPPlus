@@ -64,8 +64,8 @@ public class ExcelDoughnutChart : ExcelPieChart
     /// </summary>
     public decimal FirstSliceAngle
     {
-        get { return this._chartXmlHelper.GetXmlNodeDecimal(this._firstSliceAngPath); }
-        internal set { this._chartXmlHelper.SetXmlNodeString(this._firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this._chartXmlHelper.GetXmlNodeDecimal(this._firstSliceAngPath);
+        internal set => this._chartXmlHelper.SetXmlNodeString(this._firstSliceAngPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     //string _holeSizePath = "c:chartSpace/c:chart/c:plotArea/{0}/c:holeSize/@val";
@@ -76,8 +76,8 @@ public class ExcelDoughnutChart : ExcelPieChart
     /// </summary>
     public decimal HoleSize
     {
-        get { return this._chartXmlHelper.GetXmlNodeDecimal(this._holeSizePath); }
-        internal set { this._chartXmlHelper.SetXmlNodeString(this._holeSizePath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this._chartXmlHelper.GetXmlNodeDecimal(this._holeSizePath);
+        internal set => this._chartXmlHelper.SetXmlNodeString(this._holeSizePath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     internal override eChartType GetChartType(string name)

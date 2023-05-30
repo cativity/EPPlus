@@ -36,86 +36,44 @@ namespace EPPlusTest.Filter;
 public class FilterWildCardMatcherTests
 {
     [TestMethod]
-    public void MatchBeginingWith()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "val*"));
-    }
+    public void MatchBeginingWith() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "val*"));
 
     [TestMethod]
-    public void MatchEndsWith()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*ue 1"));
-    }
+    public void MatchEndsWith() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*ue 1"));
 
     [TestMethod]
-    public void MatchEndsWithDouble()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 11", "*1"));
-    }
+    public void MatchEndsWithDouble() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 11", "*1"));
 
     [TestMethod]
-    public void MatchContainsSingleChar()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "val?e 1"));
-    }
+    public void MatchContainsSingleChar() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "val?e 1"));
 
     [TestMethod]
-    public void MatchContains()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*ue*"));
-    }
+    public void MatchContains() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*ue*"));
 
     [TestMethod]
-    public void MatchContainsDouble()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Valuee 1", "*u*e*1"));
-    }
+    public void MatchContainsDouble() => Assert.IsTrue(FilterWildCardMatcher.Match("Valuee 1", "*u*e*1"));
 
     [TestMethod]
-    public void DontMatchContainsDouble()
-    {
-        Assert.IsFalse(FilterWildCardMatcher.Match("Valuee 1", "*u*e*2"));
-    }
+    public void DontMatchContainsDouble() => Assert.IsFalse(FilterWildCardMatcher.Match("Valuee 1", "*u*e*2"));
 
     [TestMethod]
-    public void MatchContainsAndSingleChar()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*??ue*"));
-    }
+    public void MatchContainsAndSingleChar() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "*??ue*"));
 
     [TestMethod]
-    public void DontMatchContainsAndSingleChar()
-    {
-        Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "*??alue*"));
-    }
+    public void DontMatchContainsAndSingleChar() => Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "*??alue*"));
 
     [TestMethod]
-    public void MatchSingleCharsFull()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "???????"));
-    }
+    public void MatchSingleCharsFull() => Assert.IsTrue(FilterWildCardMatcher.Match("Value 1", "???????"));
 
     [TestMethod]
-    public void DontMatchSingleCharsFullLess()
-    {
-        Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "??????"));
-    }
+    public void DontMatchSingleCharsFullLess() => Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "??????"));
 
     [TestMethod]
-    public void DontMatchSingleCharsFullMore()
-    {
-        Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "????????"));
-    }
+    public void DontMatchSingleCharsFullMore() => Assert.IsFalse(FilterWildCardMatcher.Match("Value 1", "????????"));
 
     [TestMethod]
-    public void MatchBlank()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("", ""));
-    }
+    public void MatchBlank() => Assert.IsTrue(FilterWildCardMatcher.Match("", ""));
 
     [TestMethod]
-    public void MatchBlankAll()
-    {
-        Assert.IsTrue(FilterWildCardMatcher.Match("", "*"));
-    }
+    public void MatchBlankAll() => Assert.IsTrue(FilterWildCardMatcher.Match("", "*"));
 }

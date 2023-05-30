@@ -27,18 +27,16 @@ public class ExcelVmlDrawingPosition : XmlHelper
     int _startPos;
 
     internal ExcelVmlDrawingPosition(XmlNamespaceManager ns, XmlNode topNode, int startPos)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this._startPos = startPos;
-    }
 
     /// <summary>
     /// Row. Zero based
     /// </summary>
     public int Row
     {
-        get { return this.GetNumber(2); }
-        set { this.SetNumber(2, value); }
+        get => this.GetNumber(2);
+        set => this.SetNumber(2, value);
     }
 
     /// <summary>
@@ -46,8 +44,8 @@ public class ExcelVmlDrawingPosition : XmlHelper
     /// </summary>
     public int RowOffset
     {
-        get { return this.GetNumber(3); }
-        set { this.SetNumber(3, value); }
+        get => this.GetNumber(3);
+        set => this.SetNumber(3, value);
     }
 
     /// <summary>
@@ -55,8 +53,8 @@ public class ExcelVmlDrawingPosition : XmlHelper
     /// </summary>
     public int Column
     {
-        get { return this.GetNumber(0); }
-        set { this.SetNumber(0, value); }
+        get => this.GetNumber(0);
+        set => this.SetNumber(0, value);
     }
 
     /// <summary>
@@ -64,8 +62,8 @@ public class ExcelVmlDrawingPosition : XmlHelper
     /// </summary>
     public int ColumnOffset
     {
-        get { return this.GetNumber(1); }
-        set { this.SetNumber(1, value); }
+        get => this.GetNumber(1);
+        set => this.SetNumber(1, value);
     }
 
     private void SetNumber(int pos, int value)

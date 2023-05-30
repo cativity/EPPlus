@@ -72,37 +72,22 @@ public class GetTypedCellValueTests
 
     [TestMethod]
     [ExpectedException(typeof(FormatException))]
-    public void EmptyStringToDecimal()
-    {
-        _ = ConvertUtil.GetTypedCellValue<decimal>("");
-    }
+    public void EmptyStringToDecimal() => _ = ConvertUtil.GetTypedCellValue<decimal>("");
 
     [TestMethod]
     [ExpectedException(typeof(FormatException))]
-    public void FloatingPointStringToInt()
-    {
-        _ = ConvertUtil.GetTypedCellValue<int>("1.4");
-    }
+    public void FloatingPointStringToInt() => _ = ConvertUtil.GetTypedCellValue<int>("1.4");
 
     [TestMethod]
     [ExpectedException(typeof(InvalidCastException))]
-    public void IntToDateTime()
-    {
-        _ = ConvertUtil.GetTypedCellValue<DateTime>(122);
-    }
+    public void IntToDateTime() => _ = ConvertUtil.GetTypedCellValue<DateTime>(122);
 
     [TestMethod]
     [ExpectedException(typeof(InvalidCastException))]
-    public void IntToTimeSpan()
-    {
-        _ = ConvertUtil.GetTypedCellValue<TimeSpan>(122);
-    }
+    public void IntToTimeSpan() => _ = ConvertUtil.GetTypedCellValue<TimeSpan>(122);
 
     [TestMethod]
-    public void IntStringToTimeSpan()
-    {
-        Assert.AreEqual(TimeSpan.FromDays(122), ConvertUtil.GetTypedCellValue<TimeSpan>("122"));
-    }
+    public void IntStringToTimeSpan() => Assert.AreEqual(TimeSpan.FromDays(122), ConvertUtil.GetTypedCellValue<TimeSpan>("122"));
 
     [TestMethod]
     public void BoolToInt()
@@ -127,10 +112,7 @@ public class GetTypedCellValueTests
 
     [TestMethod]
     [ExpectedException(typeof(FormatException))]
-    public void BadTextToInt()
-    {
-        _ = ConvertUtil.GetTypedCellValue<int>("text1");
-    }
+    public void BadTextToInt() => _ = ConvertUtil.GetTypedCellValue<int>("text1");
 
     [TestMethod]
     public void DoubleToDateTime()

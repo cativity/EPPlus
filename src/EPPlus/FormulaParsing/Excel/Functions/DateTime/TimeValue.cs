@@ -46,8 +46,5 @@ internal class TimeValue : ExcelFunction
                    : this.CreateResult(ExcelErrorValue.Create(eErrorType.Value), DataType.ExcelError);
     }
 
-    private static double GetTimeValue(System.DateTime result)
-    {
-        return (int)result.TimeOfDay.TotalSeconds == 0 ? 0d : result.TimeOfDay.TotalSeconds / (3600 * 24);
-    }
+    private static double GetTimeValue(System.DateTime result) => (int)result.TimeOfDay.TotalSeconds == 0 ? 0d : result.TimeOfDay.TotalSeconds / (3600 * 24);
 }

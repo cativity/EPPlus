@@ -23,14 +23,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public sealed class ExcelChartExAxis : ExcelChartAxis
 {
     internal ExcelChartExAxis(ExcelChart chart, XmlNamespaceManager nsm, XmlNode topNode)
-        : base(chart, nsm, topNode, "cx")
-    {
+        : base(chart, nsm, topNode, "cx") =>
         this.SchemaNodeOrder = new string[]
         {
             "catScaling", "valScaling", "title", "units", "majorGridlines", "minorGridlines", "majorTickMarks", "minorTickMarks", "tickLabels", "numFmt",
             "spPr", "txPr"
         };
-    }
 
     string _majorTickMarkPath = "cx:majorTickMarks/@type";
 
@@ -39,8 +37,8 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eAxisTickMark MajorTickMark
     {
-        get { return this.GetXmlNodeString(this._majorTickMarkPath).ToEnum(eAxisTickMark.None); }
-        set { this.SetXmlNodeString(this._majorTickMarkPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(this._majorTickMarkPath).ToEnum(eAxisTickMark.None);
+        set => this.SetXmlNodeString(this._majorTickMarkPath, value.ToEnumString());
     }
 
     string _minorTickMarkPath = "cx:majorTickMarks/@type";
@@ -50,8 +48,8 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eAxisTickMark MinorTickMark
     {
-        get { return this.GetXmlNodeString(this._minorTickMarkPath).ToEnum(eAxisTickMark.None); }
-        set { this.SetXmlNodeString(this._minorTickMarkPath, value.ToEnumString()); }
+        get => this.GetXmlNodeString(this._minorTickMarkPath).ToEnum(eAxisTickMark.None);
+        set => this.SetXmlNodeString(this._minorTickMarkPath, value.ToEnumString());
     }
 
     /// <summary>
@@ -59,7 +57,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eAxisPosition AxisPosition
     {
-        get { return eAxisPosition.Left; }
+        get => eAxisPosition.Left;
         internal set => throw new NotSupportedException();
     }
 
@@ -77,7 +75,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eCrossBetween CrossBetween
     {
-        get { return eCrossBetween.Between; }
+        get => eCrossBetween.Between;
         set => throw new NotSupportedException();
     }
 
@@ -86,7 +84,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override double? CrossesAt
     {
-        get { return null; }
+        get => null;
         set => throw new NotSupportedException();
     }
 
@@ -104,8 +102,8 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override bool Deleted
     {
-        get { return this.GetXmlNodeBool("@hidden"); }
-        set { this.SetXmlNodeBool("@hidden", value); }
+        get => this.GetXmlNodeBool("@hidden");
+        set => this.SetXmlNodeBool("@hidden", value);
     }
 
     /// <summary>
@@ -113,7 +111,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eTickLabelPosition TickLabelPosition
     {
-        get { return eTickLabelPosition.None; }
+        get => eTickLabelPosition.None;
         set => throw new NotSupportedException();
     }
 
@@ -167,10 +165,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// <summary>
     /// The title of the chart
     /// </summary>
-    public new ExcelChartExTitle Title
-    {
-        get { return (ExcelChartExTitle)this.GetTitle(); }
-    }
+    public new ExcelChartExTitle Title => (ExcelChartExTitle)this.GetTitle();
 
     internal override ExcelChartTitle GetTitle()
     {
@@ -188,7 +183,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override double? MinValue
     {
-        get { return null; }
+        get => null;
         set => throw new NotSupportedException();
     }
 
@@ -224,7 +219,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override double? MinorUnit
     {
-        get { return null; }
+        get => null;
         set => throw new NotSupportedException();
     }
 
@@ -233,7 +228,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eTimeUnit? MinorTimeUnit
     {
-        get { return null; }
+        get => null;
         set => throw new NotSupportedException();
     }
 
@@ -242,7 +237,7 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override double? LogBase
     {
-        get { return null; }
+        get => null;
         set => throw new NotSupportedException();
     }
 
@@ -251,14 +246,11 @@ public sealed class ExcelChartExAxis : ExcelChartAxis
     /// </summary>
     public override eAxisOrientation Orientation
     {
-        get { return eAxisOrientation.MinMax; }
+        get => eAxisOrientation.MinMax;
         set => throw new NotSupportedException();
     }
 
-    internal override string Id
-    {
-        get { return this.GetXmlNodeString("@id"); }
-    }
+    internal override string Id => this.GetXmlNodeString("@id");
 
     internal override eAxisType AxisType
     {

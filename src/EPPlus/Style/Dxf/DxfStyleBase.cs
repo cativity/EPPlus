@@ -193,10 +193,7 @@ public abstract class DxfStyleBase
         }
     }
 
-    internal static string GetAsString(object v)
-    {
-        return (v ?? "").ToString();
-    }
+    internal static string GetAsString(object v) => (v ?? "").ToString();
 
     /// <summary>
     /// Is this value allowed to be changed?

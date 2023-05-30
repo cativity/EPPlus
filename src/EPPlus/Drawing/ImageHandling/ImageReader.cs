@@ -153,10 +153,7 @@ namespace OfficeOpenXml.Drawing
             return IsGZip(sign);
         }
 
-        private static bool IsGZip(byte[] sign)
-        {
-            return sign.Length >= 2 && sign[0] == 0x1F && sign[1] == 0x8B;
-        }
+        private static bool IsGZip(byte[] sign) => sign.Length >= 2 && sign[0] == 0x1F && sign[1] == 0x8B;
 
         internal static bool TryGetImageBounds(ePictureType pictureType,
                                                MemoryStream ms,

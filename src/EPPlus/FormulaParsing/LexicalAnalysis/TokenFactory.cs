@@ -50,10 +50,7 @@ internal class TokenFactory : ITokenFactory
     private readonly INameValueProvider _nameValueProvider;
     private bool _r1c1;
 
-    public Token Create(IEnumerable<Token> tokens, string token)
-    {
-        return this.Create(tokens, token, null);
-    }
+    public Token Create(IEnumerable<Token> tokens, string token) => this.Create(tokens, token, null);
 
     public Token Create(IEnumerable<Token> tokens, string token, string worksheet)
     {
@@ -237,8 +234,5 @@ internal class TokenFactory : ITokenFactory
         return false;
     }
 
-    public Token Create(string token, TokenType explicitTokenType)
-    {
-        return new Token(token, explicitTokenType);
-    }
+    public Token Create(string token, TokenType explicitTokenType) => new(token, explicitTokenType);
 }

@@ -140,10 +140,7 @@ public class ExcelErrorValue
         /// </summary>
         /// <param name="candidate"></param>
         /// <returns></returns>
-        public static bool StringIsErrorValue(string candidate)
-        {
-            return !string.IsNullOrEmpty(candidate) && _values.ContainsKey(candidate);
-        }
+        public static bool StringIsErrorValue(string candidate) => !string.IsNullOrEmpty(candidate) && _values.ContainsKey(candidate);
 
         /// <summary>
         /// Converts a string to an <see cref="eErrorType"/>
@@ -167,10 +164,7 @@ public class ExcelErrorValue
     /// </summary>
     /// <param name="errorType">The type of error to create</param>
     /// <returns>The <see cref="ExcelErrorValue"/></returns>
-    public static ExcelErrorValue Create(eErrorType errorType)
-    {
-        return new ExcelErrorValue(errorType);
-    }
+    public static ExcelErrorValue Create(eErrorType errorType) => new(errorType);
 
     /// <summary>
     /// Parses a error value string and returns the <see cref="ExcelErrorValue"/>
@@ -194,10 +188,7 @@ public class ExcelErrorValue
         throw new ArgumentException("Not a valid error value: " + val);
     }
 
-    private ExcelErrorValue(eErrorType type)
-    {
-        this.Type = type;
-    }
+    private ExcelErrorValue(eErrorType type) => this.Type = type;
 
     /// <summary>
     /// The error type
@@ -244,10 +235,7 @@ public class ExcelErrorValue
     /// <param name="v1">Left side</param>
     /// <param name="v2">Right side</param>
     /// <returns>Return the error value in V2</returns>
-    public static ExcelErrorValue operator +(object v1, ExcelErrorValue v2)
-    {
-        return v2;
-    }
+    public static ExcelErrorValue operator +(object v1, ExcelErrorValue v2) => v2;
 
     /// <summary>
     /// Operator for addition.
@@ -255,19 +243,13 @@ public class ExcelErrorValue
     /// <param name="v1">Left side</param>
     /// <param name="v2">Right side</param>
     /// <returns>Return the error value in V1</returns>
-    public static ExcelErrorValue operator +(ExcelErrorValue v1, ExcelErrorValue v2)
-    {
-        return v1;
-    }
+    public static ExcelErrorValue operator +(ExcelErrorValue v1, ExcelErrorValue v2) => v1;
 
     /// <summary>
     /// Calculates a hash code for the object
     /// </summary>
     /// <returns></returns>
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public override int GetHashCode() => base.GetHashCode();
 
     /// <summary>
     /// Checks if the object is equals to another

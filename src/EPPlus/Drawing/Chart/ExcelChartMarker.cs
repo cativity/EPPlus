@@ -42,7 +42,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
     /// </summary>
     public eMarkerStyle Style
     {
-        get { return this.GetXmlNodeString("c:marker/c:symbol/@val").ToEnum(eMarkerStyle.None); }
+        get => this.GetXmlNodeString("c:marker/c:symbol/@val").ToEnum(eMarkerStyle.None);
         set
         {
             if (this._allowMarkers)
@@ -163,8 +163,5 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         }
     }
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode();
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode();
 }

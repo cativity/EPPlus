@@ -72,10 +72,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     internal class Formulas
     {
-        public Formulas(ISourceCodeTokenizer tokenizer)
-        {
-            this._tokenizer = tokenizer;
-        }
+        public Formulas(ISourceCodeTokenizer tokenizer) => this._tokenizer = tokenizer;
 
         private ISourceCodeTokenizer _tokenizer;
 
@@ -89,7 +86,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
         public string Formula
         {
-            get { return this._formula; }
+            get => this._formula;
             set
             {
                 if (this._formula != value)
@@ -118,10 +115,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
         internal IEnumerable<Token> Tokens { get; set; }
 
-        internal void SetTokens(string worksheet)
-        {
-            this.Tokens ??= this._tokenizer.Tokenize(this.Formula, worksheet);
-        }
+        internal void SetTokens(string worksheet) => this.Tokens ??= this._tokenizer.Tokenize(this.Formula, worksheet);
 
         internal string GetFormula(int row, int column, string worksheet)
         {
@@ -182,9 +176,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             return f;
         }
 
-        internal Formulas Clone()
-        {
-            return new Formulas(this._tokenizer)
+        internal Formulas Clone() =>
+            new(this._tokenizer)
             {
                 Index = this.Index,
                 Address = this.Address,
@@ -199,7 +192,6 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                 FirstCellDeleted = this.FirstCellDeleted,
                 SecondCellDeleted = this.SecondCellDeleted,
             };
-        }
     }
 
     /// <summary>
@@ -296,10 +288,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         /// </summary>
         /// <param name="index">The index in the collection</param>
         /// <returns></returns>
-        public string this[int index]
-        {
-            get { return this._list[index]; }
-        }
+        public string this[int index] => this._list[index];
 
         internal void Add(ExcelAddressBase address, bool doValidate)
         {
@@ -391,10 +380,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         /// <summary>
         /// Number of items in the collection
         /// </summary>
-        public int Count
-        {
-            get { return this._list.Count; }
-        }
+        public int Count => this._list.Count;
 
         #region IEnumerable<string> Members
 
@@ -402,19 +388,13 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         /// Gets the enumerator for the collection
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<string> GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+        public IEnumerator<string> GetEnumerator() => this._list.GetEnumerator();
 
         #endregion
 
         #region IEnumerable Members
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this._list.GetEnumerator();
-        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
         #endregion
 
@@ -456,10 +436,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             }
         }
 
-        internal void CleanupMergedCells()
-        {
-            this._list = this._list.Where(x => x != null).ToList();
-        }
+        internal void CleanupMergedCells() => this._list = this._list.Where(x => x != null).ToList();
     }
 
     internal CellStoreValue _values;
@@ -565,44 +542,32 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         this._comments = new ExcelCommentCollection(this._package, this, this.NameSpaceManager);
     }
 
-    internal void LoadThreadedComments()
-    {
-        this._threadedComments = new ExcelWorksheetThreadedComments(this.Workbook.ThreadedCommentPersons, this);
-    }
+    internal void LoadThreadedComments() => this._threadedComments = new ExcelWorksheetThreadedComments(this.Workbook.ThreadedCommentPersons, this);
 
     #endregion
 
     /// <summary>
     /// The Uri to the worksheet within the package
     /// </summary>
-    internal Uri WorksheetUri
-    {
-        get { return this._worksheetUri; }
-    }
+    internal Uri WorksheetUri => this._worksheetUri;
 
     /// <summary>
     /// The Zip.ZipPackagePart for the worksheet within the package
     /// </summary>
-    internal ZipPackagePart Part
-    {
-        get { return this._package.ZipPackage.GetPart(this.WorksheetUri); }
-    }
+    internal ZipPackagePart Part => this._package.ZipPackage.GetPart(this.WorksheetUri);
 
     /// <summary>
     /// The ID for the worksheet's relationship with the workbook in the package
     /// </summary>
-    internal string RelationshipId
-    {
-        get { return this._relationshipID; }
-    }
+    internal string RelationshipId => this._relationshipID;
 
     /// <summary>
     /// The unique identifier for the worksheet.
     /// </summary>
     internal int SheetId
     {
-        get { return this._sheetID; }
-        set { this._sheetID = value; }
+        get => this._sheetID;
+        set => this._sheetID = value;
     }
 
     internal bool IsChartSheet { get; set; }
@@ -671,8 +636,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     internal int PositionId
     {
-        get { return this._positionId; }
-        set { this._positionId = value; }
+        get => this._positionId;
+        set => this._positionId = value;
     }
 
     internal int IndexInList
@@ -693,10 +658,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <summary>
     /// The index in the worksheets collection
     /// </summary>
-    public int Index
-    {
-        get { return this._positionId; }
-    }
+    public int Index => this._positionId;
 
     const string AutoFilterPath = "d:autoFilter";
 
@@ -836,7 +798,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     public string Name
     {
-        get { return this._name; }
+        get => this._name;
         set
         {
             if (value == this._name)
@@ -861,10 +823,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal int GetColumnWidthPixels(int col, decimal mdw)
-    {
-        return ExcelColumn.ColumnWidthToPixels(this.GetColumnWidth(col + 1), mdw);
-    }
+    internal int GetColumnWidthPixels(int col, decimal mdw) => ExcelColumn.ColumnWidthToPixels(this.GetColumnWidth(col + 1), mdw);
 
     internal decimal GetColumnWidth(int col)
     {
@@ -989,10 +948,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal double GetRowHeightPixels(int row)
-    {
-        return this.GetRowHeight(row) / 0.75;
-    }
+    internal double GetRowHeightPixels(int row) => this.GetRowHeight(row) / 0.75;
 
     Dictionary<int, double> _textHeights = new Dictionary<int, double>();
 
@@ -1158,8 +1114,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     public bool CustomHeight
     {
-        get { return this.GetXmlNodeBool("d:sheetFormatPr/@customHeight"); }
-        set { this.SetXmlNodeBool("d:sheetFormatPr/@customHeight", value); }
+        get => this.GetXmlNodeBool("d:sheetFormatPr/@customHeight");
+        set => this.SetXmlNodeBool("d:sheetFormatPr/@customHeight", value);
     }
 
     /// <summary>
@@ -1280,21 +1236,18 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
                 return Color.FromArgb(int.Parse(col, NumberStyles.AllowHexSpecifier));
             }
         }
-        set { this.SetXmlNodeString(tabColorPath, value.ToArgb().ToString("X")); }
+        set => this.SetXmlNodeString(tabColorPath, value.ToArgb().ToString("X"));
     }
 
     const string codeModuleNamePath = "d:sheetPr/@codeName";
 
     internal string CodeModuleName
     {
-        get { return this.GetXmlNodeString(codeModuleNamePath); }
-        set { this.SetXmlNodeString(codeModuleNamePath, value); }
+        get => this.GetXmlNodeString(codeModuleNamePath);
+        set => this.SetXmlNodeString(codeModuleNamePath, value);
     }
 
-    internal void CodeNameChange(string value)
-    {
-        this.CodeModuleName = value;
-    }
+    internal void CodeNameChange(string value) => this.CodeModuleName = value;
 
     /// <summary>
     /// The VBA code modul for the worksheet, if the package contains a VBA project.
@@ -1321,10 +1274,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// The XML document holding the worksheet data.
     /// All column, row, cell, pagebreak, merged cell and hyperlink-data are loaded into memory and removed from the document when loading the document.        
     /// </summary>
-    public XmlDocument WorksheetXml
-    {
-        get { return this._worksheetXml; }
-    }
+    public XmlDocument WorksheetXml => this._worksheetXml;
 
     internal ExcelVmlDrawingCollection _vmlDrawings;
 
@@ -1868,10 +1818,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    private void LoadDataValidations(XmlReader xr)
-    {
-        this._dataValidations = new ExcelDataValidationCollection(xr, this);
-    }
+    private void LoadDataValidations(XmlReader xr) => this._dataValidations = new ExcelDataValidationCollection(xr, this);
 
     private void LoadExtLst(XmlReader xr, WorksheetZipStream stream, ref string xml, ref string lastXmlElement)
     {
@@ -2234,9 +2181,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="xr">The reader</param>
     /// <param name="row">The row number</param>
     /// <returns></returns>
-    private static RowInternal AddRow(XmlReader xr, int row)
-    {
-        return new RowInternal()
+    private static RowInternal AddRow(XmlReader xr, int row) =>
+        new()
         {
             Collapsed = GetBoolFromString(xr.GetAttribute("collapsed")),
             OutlineLevel = xr.GetAttribute("outlineLevel") == null ? (short)0 : short.Parse(xr.GetAttribute("outlineLevel"), CultureInfo.InvariantCulture),
@@ -2245,7 +2191,6 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
             Phonetic = GetBoolFromString(xr.GetAttribute("ph")),
             CustomHeight = GetBoolFromString(xr.GetAttribute("customHeight"))
         };
-    }
 
     private void SetValueFromXml(XmlReader xr, string type, int styleID, int row, int col)
     {
@@ -2335,10 +2280,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     ExcelSlicerXmlSources _slicerXmlSources;
 
-    internal ExcelSlicerXmlSources SlicerXmlSources
-    {
-        get { return this._slicerXmlSources ??= new ExcelSlicerXmlSources(this.NameSpaceManager, this.TopNode, this.Part); }
-    }
+    internal ExcelSlicerXmlSources SlicerXmlSources => this._slicerXmlSources ??= new ExcelSlicerXmlSources(this.NameSpaceManager, this.TopNode, this.Part);
 
     #region Worksheet Public Methods
 
@@ -2471,10 +2413,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// Returns the name of the worksheet
     /// </summary>
     /// <returns>The name of the worksheet</returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 
     internal ExcelColumn CopyColumn(ExcelColumn c, int col, int maxCol)
     {
@@ -2503,20 +2442,14 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <summary>
     /// Make the current worksheet active.
     /// </summary>
-    public void Select()
-    {
-        this.View.TabSelected = true;
-    }
+    public void Select() => this.View.TabSelected = true;
 
     /// <summary>
     /// Selects a range in the worksheet. The active cell is the topmost cell.
     /// Make the current worksheet active.
     /// </summary>
     /// <param name="Address">An address range</param>
-    public void Select(string Address)
-    {
-        this.Select(Address, true);
-    }
+    public void Select(string Address) => this.Select(Address, true);
 
     /// <summary>
     /// Selects a range in the worksheet. The actice cell is the topmost cell.
@@ -2588,10 +2521,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     /// <param name="rowFrom">The position of the new row(s)</param>
     /// <param name="rows">Number of rows to insert</param>
-    public void InsertRow(int rowFrom, int rows)
-    {
-        this.InsertRow(rowFrom, rows, 0);
-    }
+    public void InsertRow(int rowFrom, int rows) => this.InsertRow(rowFrom, rows, 0);
 
     /// <summary>
     /// Inserts new rows into the spreadsheet.  Existing rows below the position are 
@@ -2600,10 +2530,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="rowFrom">The position of the new row(s)</param>
     /// <param name="rows">Number of rows to insert.</param>
     /// <param name="copyStylesFromRow">Copy Styles from this row. Applied to all inserted rows</param>
-    public void InsertRow(int rowFrom, int rows, int copyStylesFromRow)
-    {
-        WorksheetRangeInsertHelper.InsertRow(this, rowFrom, rows, copyStylesFromRow);
-    }
+    public void InsertRow(int rowFrom, int rows, int copyStylesFromRow) => WorksheetRangeInsertHelper.InsertRow(this, rowFrom, rows, copyStylesFromRow);
 
     /// <summary>
     /// Inserts new columns into the spreadsheet.  Existing columns below the position are 
@@ -2611,10 +2538,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// </summary>
     /// <param name="columnFrom">The position of the new column(s)</param>
     /// <param name="columns">Number of columns to insert</param>        
-    public void InsertColumn(int columnFrom, int columns)
-    {
-        this.InsertColumn(columnFrom, columns, 0);
-    }
+    public void InsertColumn(int columnFrom, int columns) => this.InsertColumn(columnFrom, columns, 0);
 
     ///<summary>
     /// Inserts new columns into the spreadsheet.  Existing column to the left are 
@@ -2623,10 +2547,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="columnFrom">The position of the new column(s)</param>
     /// <param name="columns">Number of columns to insert.</param>
     /// <param name="copyStylesFromColumn">Copy Styles from this column. Applied to all inserted columns</param>
-    public void InsertColumn(int columnFrom, int columns, int copyStylesFromColumn)
-    {
-        WorksheetRangeInsertHelper.InsertColumn(this, columnFrom, columns, copyStylesFromColumn);
-    }
+    public void InsertColumn(int columnFrom, int columns, int copyStylesFromColumn) => WorksheetRangeInsertHelper.InsertColumn(this, columnFrom, columns, copyStylesFromColumn);
 
     #endregion
 
@@ -2636,20 +2557,14 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// Delete the specified row from the worksheet.
     /// </summary>
     /// <param name="row">A row to be deleted</param>
-    public void DeleteRow(int row)
-    {
-        this.DeleteRow(row, 1);
-    }
+    public void DeleteRow(int row) => this.DeleteRow(row, 1);
 
     /// <summary>
     /// Delete the specified rows from the worksheet.
     /// </summary>
     /// <param name="rowFrom">The start row</param>
     /// <param name="rows">Number of rows to delete</param>
-    public void DeleteRow(int rowFrom, int rows)
-    {
-        WorksheetRangeDeleteHelper.DeleteRow(this, rowFrom, rows);
-    }
+    public void DeleteRow(int rowFrom, int rows) => WorksheetRangeDeleteHelper.DeleteRow(this, rowFrom, rows);
 
     /// <summary>
     /// Deletes the specified rows from the worksheet.
@@ -2658,10 +2573,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="rows">Number of rows to delete</param>
     /// <param name="shiftOtherRowsUp">Not used. Rows are always shifted</param>
     [Obsolete("Use the two-parameter method instead")]
-    public void DeleteRow(int rowFrom, int rows, bool shiftOtherRowsUp)
-    {
-        this.DeleteRow(rowFrom, rows);
-    }
+    public void DeleteRow(int rowFrom, int rows, bool shiftOtherRowsUp) => this.DeleteRow(rowFrom, rows);
 
     #endregion
 
@@ -2671,20 +2583,14 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// Delete the specified column from the worksheet.
     /// </summary>
     /// <param name="column">The column to be deleted</param>
-    public void DeleteColumn(int column)
-    {
-        this.DeleteColumn(column, 1);
-    }
+    public void DeleteColumn(int column) => this.DeleteColumn(column, 1);
 
     /// <summary>
     /// Delete the specified columns from the worksheet.
     /// </summary>
     /// <param name="columnFrom">The start column</param>
     /// <param name="columns">Number of columns to delete</param>
-    public void DeleteColumn(int columnFrom, int columns)
-    {
-        WorksheetRangeDeleteHelper.DeleteColumn(this, columnFrom, columns);
-    }
+    public void DeleteColumn(int columnFrom, int columns) => WorksheetRangeDeleteHelper.DeleteColumn(this, columnFrom, columns);
 
     #endregion
 
@@ -2981,10 +2887,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    private void SaveSlicers()
-    {
-        this.SlicerXmlSources.Save();
-    }
+    private void SaveSlicers() => this.SlicerXmlSources.Save();
 
     private void SaveThreadedComments()
     {
@@ -3219,10 +3122,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal bool IsRichText(int row, int col)
-    {
-        return this._flags.GetFlagValue(row, col, CellFlags.RichText);
-    }
+    internal bool IsRichText(int row, int col) => this._flags.GetFlagValue(row, col, CellFlags.RichText);
 
     internal void SetTableTotalFunction(ExcelTable tbl, ExcelTableColumn col, int colNum = -1)
     {
@@ -3461,27 +3361,18 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <summary>
     /// Access to sheet protection properties
     /// </summary>
-    public ExcelSheetProtection Protection
-    {
-        get { return this._protection ??= new ExcelSheetProtection(this.NameSpaceManager, this.TopNode, this); }
-    }
+    public ExcelSheetProtection Protection => this._protection ??= new ExcelSheetProtection(this.NameSpaceManager, this.TopNode, this);
 
     private ExcelProtectedRangeCollection _protectedRanges;
 
     /// <summary>
     /// Access to protected ranges in the worksheet
     /// </summary>
-    public ExcelProtectedRangeCollection ProtectedRanges
-    {
-        get { return this._protectedRanges ??= new ExcelProtectedRangeCollection(this); }
-    }
+    public ExcelProtectedRangeCollection ProtectedRanges => this._protectedRanges ??= new ExcelProtectedRangeCollection(this);
 
     #region Drawing
 
-    internal bool HasDrawingRelationship
-    {
-        get { return this.WorksheetXml.DocumentElement.SelectSingleNode("d:drawing", this.NameSpaceManager) != null; }
-    }
+    internal bool HasDrawingRelationship => this.WorksheetXml.DocumentElement.SelectSingleNode("d:drawing", this.NameSpaceManager) != null;
 
     internal Dictionary<int, double> RowHeightCache { get; set; } = new Dictionary<int, double>();
 
@@ -3500,10 +3391,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal void LoadDrawings()
-    {
-        this._drawings ??= new ExcelDrawings(this._package, this);
-    }
+    internal void LoadDrawings() => this._drawings ??= new ExcelDrawings(this._package, this);
 
     #endregion
 
@@ -3515,10 +3403,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// Collection of Sparkline-objects. 
     /// Sparklines are small in-cell charts.
     /// </summary>
-    public ExcelSparklineGroupCollection SparklineGroups
-    {
-        get { return this._sparklineGroups ??= new ExcelSparklineGroupCollection(this); }
-    }
+    public ExcelSparklineGroupCollection SparklineGroups => this._sparklineGroups ??= new ExcelSparklineGroupCollection(this);
 
     #endregion
 
@@ -3567,10 +3452,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal bool HasLoadedPivotTables
-    {
-        get { return this._pivotTables != null; }
-    }
+    internal bool HasLoadedPivotTables => this._pivotTables != null;
 
     private ExcelConditionalFormattingCollection _conditionalFormatting;
 
@@ -3604,28 +3486,19 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal void ClearValidations()
-    {
-        this._dataValidations = null;
-    }
+    internal void ClearValidations() => this._dataValidations = null;
 
     ExcelBackgroundImage _backgroundImage;
 
     /// <summary>
     /// An image displayed as the background of the worksheet.
     /// </summary>
-    public ExcelBackgroundImage BackgroundImage
-    {
-        get { return this._backgroundImage ??= new ExcelBackgroundImage(this.NameSpaceManager, this.TopNode, this); }
-    }
+    public ExcelBackgroundImage BackgroundImage => this._backgroundImage ??= new ExcelBackgroundImage(this.NameSpaceManager, this.TopNode, this);
 
     /// <summary>
     /// The workbook object
     /// </summary>
-    public ExcelWorkbook Workbook
-    {
-        get { return this._package.Workbook; }
-    }
+    public ExcelWorkbook Workbook => this._package.Workbook;
 
     #endregion
 
@@ -3654,10 +3527,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         return i;
     }
 
-    internal void SetHFLegacyDrawingRel(string relID)
-    {
-        this.SetXmlNodeString("d:legacyDrawingHF/@r:id", relID);
-    }
+    internal void SetHFLegacyDrawingRel(string relID) => this.SetXmlNodeString("d:legacyDrawingHF/@r:id", relID);
 
     internal void RemoveLegacyDrawingRel(string relID)
     {
@@ -3817,70 +3687,40 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="x">First worksheet </param>
     /// <param name="y">Second worksheet</param>
     /// <returns></returns>
-    public bool Equals(ExcelWorksheet x, ExcelWorksheet y)
-    {
-        return x.Name == y.Name && x.SheetId == y.SheetId && x.WorksheetXml.OuterXml == y.WorksheetXml.OuterXml;
-    }
+    public bool Equals(ExcelWorksheet x, ExcelWorksheet y) => x.Name == y.Name && x.SheetId == y.SheetId && x.WorksheetXml.OuterXml == y.WorksheetXml.OuterXml;
 
     /// <summary>
     /// Returns a hashcode generated from the WorksheetXml
     /// </summary>
     /// <param name="obj">The worksheet</param>
     /// <returns>The hashcode</returns>
-    public int GetHashCode(ExcelWorksheet obj)
-    {
-        return obj.WorksheetXml.OuterXml.GetHashCode();
-    }
+    public int GetHashCode(ExcelWorksheet obj) => obj.WorksheetXml.OuterXml.GetHashCode();
 
     ControlsCollectionInternal _controls;
 
-    internal ControlsCollectionInternal Controls
-    {
-        get { return this._controls ??= new ControlsCollectionInternal(this.NameSpaceManager, this.TopNode); }
-    }
+    internal ControlsCollectionInternal Controls => this._controls ??= new ControlsCollectionInternal(this.NameSpaceManager, this.TopNode);
 
     /// <summary>
     /// A collection of row specific properties in the worksheet.
     /// </summary>
-    public ExcelRowsCollection Rows
-    {
-        get { return new ExcelRowsCollection(this); }
-    }
+    public ExcelRowsCollection Rows => new(this);
 
     /// <summary>
     /// A collection of column specific properties in the worksheet.
     /// </summary>
-    public ExcelColumnCollection Columns
-    {
-        get { return new ExcelColumnCollection(this); }
-    }
+    public ExcelColumnCollection Columns => new(this);
 
-    internal bool IsDisposed
-    {
-        get { return this._values == null; }
-    }
+    internal bool IsDisposed => this._values == null;
 
-    ExcelPackage IPictureRelationDocument.Package
-    {
-        get { return this._package; }
-    }
+    ExcelPackage IPictureRelationDocument.Package => this._package;
 
     Dictionary<string, HashInfo> _hashes = new Dictionary<string, HashInfo>();
 
-    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes
-    {
-        get { return this._hashes; }
-    }
+    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => this._hashes;
 
-    ZipPackagePart IPictureRelationDocument.RelatedPart
-    {
-        get { return this.Part; }
-    }
+    ZipPackagePart IPictureRelationDocument.RelatedPart => this.Part;
 
-    Uri IPictureRelationDocument.RelatedUri
-    {
-        get { return this._worksheetUri; }
-    }
+    Uri IPictureRelationDocument.RelatedUri => this._worksheetUri;
 
     #region Worksheet internal Accessor
 
@@ -3890,10 +3730,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <returns>cell value</returns>
-    internal ExcelValue GetCoreValueInner(int row, int col)
-    {
-        return this._values.GetValue(row, col);
-    }
+    internal ExcelValue GetCoreValueInner(int row, int col) => this._values.GetValue(row, col);
 
     /// <summary>
     /// Get accessor of sheet value
@@ -3901,10 +3738,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <returns>cell value</returns>
-    internal object GetValueInner(int row, int col)
-    {
-        return this._values.GetValue(row, col)._value;
-    }
+    internal object GetValueInner(int row, int col) => this._values.GetValue(row, col)._value;
 
     /// <summary>
     /// Get accessor of sheet styleId
@@ -3912,10 +3746,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <returns>cell styleId</returns>
-    internal int GetStyleInner(int row, int col)
-    {
-        return this._values.GetValue(row, col)._styleId;
-    }
+    internal int GetStyleInner(int row, int col) => this._values.GetValue(row, col)._styleId;
 
     /// <summary>
     /// Set accessor of sheet value
@@ -3923,10 +3754,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <param name="value">value</param>
-    internal void SetValueInner(int row, int col, object value)
-    {
-        this._values.SetValue_Value(row, col, value);
-    }
+    internal void SetValueInner(int row, int col, object value) => this._values.SetValue_Value(row, col, value);
 
     /// <summary>
     /// Set accessor of sheet styleId
@@ -3934,10 +3762,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <param name="styleId">styleId</param>
-    internal void SetStyleInner(int row, int col, int styleId)
-    {
-        this._values.SetValue_Style(row, col, styleId);
-    }
+    internal void SetStyleInner(int row, int col, int styleId) => this._values.SetValue_Style(row, col, styleId);
 
     /// <summary>
     /// Set accessor of sheet styleId
@@ -3946,10 +3771,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="col">column</param>
     /// <param name="value">value</param>
     /// <param name="styleId">styleId</param>
-    internal void SetValueStyleIdInner(int row, int col, object value, int styleId)
-    {
-        this._values.SetValue(row, col, value, styleId);
-    }
+    internal void SetValueStyleIdInner(int row, int col, object value, int styleId) => this._values.SetValue(row, col, value, styleId);
 
     /// <summary>
     /// Bulk(Range) set accessor of sheet value, for value array
@@ -4031,10 +3853,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <returns>is exists</returns>
-    internal bool ExistsValueInner(int row, int col)
-    {
-        return this._values.GetValue(row, col)._value != null;
-    }
+    internal bool ExistsValueInner(int row, int col) => this._values.GetValue(row, col)._value != null;
 
     /// <summary>
     /// Existance check of sheet styleId
@@ -4042,10 +3861,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
     /// <param name="row">row</param>
     /// <param name="col">column</param>
     /// <returns>is exists</returns>
-    internal bool ExistsStyleInner(int row, int col)
-    {
-        return this._values.GetValue(row, col)._styleId > 0;
-    }
+    internal bool ExistsStyleInner(int row, int col) => this._values.GetValue(row, col)._styleId > 0;
 
     /// <summary>
     /// Existence check of sheet value
@@ -4127,10 +3943,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         return ctrlContainerNode;
     }
 
-    internal void NormalStyleChange()
-    {
-        this._defaultRowHeight = double.NaN;
-    }
+    internal void NormalStyleChange() => this._defaultRowHeight = double.NaN;
 
     #endregion
 } // END class Worksheet

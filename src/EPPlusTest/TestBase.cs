@@ -173,10 +173,7 @@ public abstract class TestBase
         return p;
     }
 
-    static void CreateWorksheetPathIfNotExists()
-    {
-        CreatePathIfNotExists(_worksheetPath);
-    }
+    static void CreateWorksheetPathIfNotExists() => CreatePathIfNotExists(_worksheetPath);
 
     protected static void CreatePathIfNotExists(string path)
     {

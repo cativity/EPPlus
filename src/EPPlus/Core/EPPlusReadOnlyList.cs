@@ -13,29 +13,20 @@ public class EPPlusReadOnlyList<T> : IEnumerable<T>
 {
     internal List<T> _list = new List<T>();
 
-    IEnumerator<T> IEnumerable<T>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<T> IEnumerable<T>.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Return the enumerator for the collection
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// The indexer for the collection
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns>Returns the object at the index</returns>
-    public T this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public T this[int index] => this._list[index];
 
     ///// <summary>
     ///// Gets the item with the value supplied
@@ -56,26 +47,14 @@ public class EPPlusReadOnlyList<T> : IEnumerable<T>
     /// </summary>
     /// <param name="value"></param>
     /// <returns>The index</returns>
-    public int GetIndexByValue(T value)
-    {
-        return this._list.IndexOf(value);
-    }
+    public int GetIndexByValue(T value) => this._list.IndexOf(value);
 
     /// <summary>
     /// Number of items in the collection.
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
-    internal virtual void Clear()
-    {
-        this._list.Clear();
-    }
+    internal virtual void Clear() => this._list.Clear();
 
-    internal virtual void Add(T item)
-    {
-        this._list.Add(item);
-    }
+    internal virtual void Add(T item) => this._list.Add(item);
 }

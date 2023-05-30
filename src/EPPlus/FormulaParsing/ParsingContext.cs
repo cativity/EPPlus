@@ -29,10 +29,7 @@ namespace OfficeOpenXml.FormulaParsing;
 /// </summary>
 public class ParsingContext : IParsingLifetimeEventHandler
 {
-    private ParsingContext()
-    {
-        this.SubtotalAddresses = new HashSet<ulong>();
-    }
+    private ParsingContext() => this.SubtotalAddresses = new HashSet<ulong>();
 
     /// <summary>
     /// The <see cref="FormulaParser"/> of the current context.
@@ -74,10 +71,7 @@ public class ParsingContext : IParsingLifetimeEventHandler
     /// <summary>
     /// Returns true if a <see cref="IFormulaParserLogger"/> is attached to the parser.
     /// </summary>
-    public bool Debug
-    {
-        get { return this.Configuration.Logger != null; }
-    }
+    public bool Debug => this.Configuration.Logger != null;
 
     /// <summary>
     /// Factory method.
@@ -94,12 +88,8 @@ public class ParsingContext : IParsingLifetimeEventHandler
         return context;
     }
 
-    void IParsingLifetimeEventHandler.ParsingCompleted()
-    {
-        this.AddressCache.Clear();
+    void IParsingLifetimeEventHandler.ParsingCompleted() => this.AddressCache.Clear();
 
-        // SubtotalAddresses.Clear();
-    }
-
+    // SubtotalAddresses.Clear();
     internal HashSet<ulong> SubtotalAddresses { get; private set; }
 }

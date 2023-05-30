@@ -37,76 +37,40 @@ public class IndexTests
      */
 
     [TestMethod]
-    public void Test1()
-    {
-        Index(1.0, 1.0, 100.1);
-    }
+    public void Test1() => Index(1.0, 1.0, 100.1);
 
     [TestMethod]
-    public void Test2()
-    {
-        Index(1.0, 2.0, 200.1);
-    }
+    public void Test2() => Index(1.0, 2.0, 200.1);
 
     [TestMethod]
-    public void Test3()
-    {
-        Index(12.1, 1.0, 101.20);
-    }
+    public void Test3() => Index(12.1, 1.0, 101.20);
 
     [TestMethod]
-    public void Test4()
-    {
-        Index(12.4, 1.0, 101.20);
-    }
+    public void Test4() => Index(12.4, 1.0, 101.20);
 
     [TestMethod]
-    public void Test5()
-    {
-        Index(12.5, 1.0, 101.20);
-    }
+    public void Test5() => Index(12.5, 1.0, 101.20);
 
     [TestMethod]
-    public void Test6()
-    {
-        Index(12.6, 1.0, 101.20);
-    }
+    public void Test6() => Index(12.6, 1.0, 101.20);
 
     [TestMethod]
-    public void Test7()
-    {
-        Index(12.9, 1.0, 101.20);
-    }
+    public void Test7() => Index(12.9, 1.0, 101.20);
 
     [TestMethod]
-    public void Test8()
-    {
-        Index(13, 1.0, 101.30);
-    }
+    public void Test8() => Index(13, 1.0, 101.30);
 
     [TestMethod]
-    public void Test9()
-    {
-        Index(13, 1.0, 101.30);
-    }
+    public void Test9() => Index(13, 1.0, 101.30);
 
     [TestMethod]
-    public void Test10()
-    {
-        Index(13, 1.9, 101.30);
-    }
+    public void Test10() => Index(13, 1.9, 101.30);
 
     [TestMethod]
-    public void Test11()
-    {
-        Index(12.6, 2.0, 201.20);
-    }
+    public void Test11() => Index(12.6, 2.0, 201.20);
 
     [TestMethod]
-    public void Test12()
-    {
-        Index(13, 2.0, 201.30);
-    }
+    public void Test12() => Index(13, 2.0, 201.30);
 
     public static void Index(double row, double column, double expectedValue)
     {

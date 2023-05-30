@@ -41,10 +41,7 @@ public class EffectReadTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingEffectRead.xlsx");
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingEffectRead.xlsx");
 
     [TestMethod]
     public void InnerShadowDefaultRead()

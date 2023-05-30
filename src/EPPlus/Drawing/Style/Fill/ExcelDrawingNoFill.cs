@@ -32,15 +32,9 @@ public class ExcelDrawingNoFill : ExcelDrawingFillBase
     /// <summary>
     /// The type of fill
     /// </summary>
-    public override eFillStyle Style
-    {
-        get { return eFillStyle.NoFill; }
-    }
+    public override eFillStyle Style => eFillStyle.NoFill;
 
-    internal override string NodeName
-    {
-        get { return "a:noFill"; }
-    }
+    internal override string NodeName => "a:noFill";
 
     internal override void GetXml()
     {

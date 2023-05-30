@@ -50,8 +50,5 @@ public static class FunctionsHelper
         return list;
     }
 
-    public static IEnumerable<FunctionArgument> Empty()
-    {
-        return new List<FunctionArgument>() { new FunctionArgument(null) };
-    }
+    public static IEnumerable<FunctionArgument> Empty() => new List<FunctionArgument>() { new FunctionArgument(null) };
 }

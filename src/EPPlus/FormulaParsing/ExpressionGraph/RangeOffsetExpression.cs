@@ -27,10 +27,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 /// </summary>
 internal class RangeOffsetExpression : Expression
 {
-    public RangeOffsetExpression(ParsingContext context)
-    {
-        this._parsingContext = context;
-    }
+    public RangeOffsetExpression(ParsingContext context) => this._parsingContext = context;
 
     /// <summary>
     /// The first part of the range, should be an OFFSET call

@@ -102,10 +102,7 @@ namespace OfficeOpenXml.Drawing
         /// <summary>
         /// The type of drawing
         /// </summary>
-        public override eDrawingType DrawingType
-        {
-            get { return eDrawingType.Picture; }
-        }
+        public override eDrawingType DrawingType => eDrawingType.Picture;
 #if !NET35 && !NET40
         internal async Task LoadImageAsync(Stream stream, ePictureType type)
         {
@@ -274,54 +271,38 @@ namespace OfficeOpenXml.Drawing
 
         internal ZipPackagePart Part;
 
-        internal new string Id
-        {
-            get { return this.Name; }
-        }
+        internal new string Id => this.Name;
 
         ExcelDrawingFill _fill;
 
         /// <summary>
         /// Access to Fill properties
         /// </summary>
-        public ExcelDrawingFill Fill
-        {
-            get { return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder); }
-        }
+        public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder);
 
         ExcelDrawingBorder _border;
 
         /// <summary>
         /// Access to Fill properties
         /// </summary>
-        public ExcelDrawingBorder Border
-        {
-            get
-            {
-                return this._border ??= new ExcelDrawingBorder(this._drawings,
-                                                               this.NameSpaceManager,
-                                                               this.TopNode,
-                                                               "xdr:pic/xdr:spPr/a:ln",
-                                                               this.SchemaNodeOrder);
-            }
-        }
+        public ExcelDrawingBorder Border =>
+            this._border ??= new ExcelDrawingBorder(this._drawings,
+                                                    this.NameSpaceManager,
+                                                    this.TopNode,
+                                                    "xdr:pic/xdr:spPr/a:ln",
+                                                    this.SchemaNodeOrder);
 
         ExcelDrawingEffectStyle _effect;
 
         /// <summary>
         /// Effects
         /// </summary>
-        public ExcelDrawingEffectStyle Effect
-        {
-            get
-            {
-                return this._effect ??= new ExcelDrawingEffectStyle(this._drawings,
-                                                                    this.NameSpaceManager,
-                                                                    this.TopNode,
-                                                                    "xdr:pic/xdr:spPr/a:effectLst",
-                                                                    this.SchemaNodeOrder);
-            }
-        }
+        public ExcelDrawingEffectStyle Effect =>
+            this._effect ??= new ExcelDrawingEffectStyle(this._drawings,
+                                                         this.NameSpaceManager,
+                                                         this.TopNode,
+                                                         "xdr:pic/xdr:spPr/a:effectLst",
+                                                         this.SchemaNodeOrder);
 
         const string _preferRelativeResizePath = "xdr:pic/xdr:nvPicPr/xdr:cNvPicPr/@preferRelativeResize";
 
@@ -330,8 +311,8 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public bool PreferRelativeResize
         {
-            get { return this.GetXmlNodeBool(_preferRelativeResizePath); }
-            set { this.SetXmlNodeBool(_preferRelativeResizePath, value); }
+            get => this.GetXmlNodeBool(_preferRelativeResizePath);
+            set => this.SetXmlNodeBool(_preferRelativeResizePath, value);
         }
 
         const string _lockAspectRatioPath = "xdr:pic/xdr:nvPicPr/xdr:cNvPicPr/a:picLocks/@noChangeAspect";
@@ -341,8 +322,8 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         public bool LockAspectRatio
         {
-            get { return this.GetXmlNodeBool(_lockAspectRatioPath); }
-            set { this.SetXmlNodeBool(_lockAspectRatioPath, value); }
+            get => this.GetXmlNodeBool(_lockAspectRatioPath);
+            set => this.SetXmlNodeBool(_lockAspectRatioPath, value);
         }
 
         internal override void CellAnchorChanged()

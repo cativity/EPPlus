@@ -60,10 +60,7 @@ internal class AverageIf : HiddenValuesHandlingFunction
         return this._expressionEvaluator.Evaluate(obj, expression);
     }
 
-    private static string GetCriteraFromArg(IEnumerable<FunctionArgument> arguments)
-    {
-        return arguments.ElementAt(1).ValueFirst != null ? ArgToString(arguments, 1) : null;
-    }
+    private static string GetCriteraFromArg(IEnumerable<FunctionArgument> arguments) => arguments.ElementAt(1).ValueFirst != null ? ArgToString(arguments, 1) : null;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

@@ -53,8 +53,5 @@ public class BoolArgumentParser : ArgumentParser
         return result;
     }
 
-    public override object Parse(object obj, RoundingMethod roundingMethod)
-    {
-        return this.Parse(obj);
-    }
+    public override object Parse(object obj, RoundingMethod roundingMethod) => this.Parse(obj);
 }

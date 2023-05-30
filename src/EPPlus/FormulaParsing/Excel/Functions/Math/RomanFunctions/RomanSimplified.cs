@@ -19,8 +19,5 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math.RomanFunctions;
 
 internal class RomanSimplified : RomanBase
 {
-    internal override string Execute(int number)
-    {
-        return HandleType(4, this.GetClassicRomanFormat(number));
-    }
+    internal override string Execute(int number) => HandleType(4, this.GetClassicRomanFormat(number));
 }

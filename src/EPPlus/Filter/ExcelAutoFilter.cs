@@ -96,7 +96,7 @@ public class ExcelAutoFilter : XmlHelper
     /// </summary>
     public ExcelAddressBase Address
     {
-        get { return this._address ??= new ExcelAddressBase(this.GetXmlNodeString("@ref")); }
+        get => this._address ??= new ExcelAddressBase(this.GetXmlNodeString("@ref"));
         internal set
         {
             if (value._fromCol != this.Address._fromCol
@@ -116,8 +116,5 @@ public class ExcelAutoFilter : XmlHelper
     /// <summary>
     /// The columns to filter
     /// </summary>
-    public ExcelFilterColumnCollection Columns
-    {
-        get { return this._columns; }
-    }
+    public ExcelFilterColumnCollection Columns => this._columns;
 }

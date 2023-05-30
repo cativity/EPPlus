@@ -59,7 +59,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     /// </summary>
     public bool Deleted
     {
-        get { return this.GetXmlNodeBool("c:delete/@val"); }
+        get => this.GetXmlNodeBool("c:delete/@val");
         set
         {
             this.CreateTopNode();
@@ -152,42 +152,27 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
     /// <summary>
     /// Access to text body properties
     /// </summary>
-    public ExcelTextBody TextBody
-    {
-        get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder); }
-    }
+    public ExcelTextBody TextBody => this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"c:txPr/a:bodyPr", this.SchemaNodeOrder);
 
     /// <summary>
     /// Access to border properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get { return null; }
-    }
+    public ExcelDrawingBorder Border => null;
 
     /// <summary>
     /// Access to effects styling properties
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get { return null; }
-    }
+    public ExcelDrawingEffectStyle Effect => null;
 
     /// <summary>
     /// Access to fill styling properties.
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return null; }
-    }
+    public ExcelDrawingFill Fill => null;
 
     /// <summary>
     /// Access to 3D properties.
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return null; }
-    }
+    public ExcelDrawing3D ThreeD => null;
 
     internal void Save()
     {

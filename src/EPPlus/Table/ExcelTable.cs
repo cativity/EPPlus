@@ -135,10 +135,7 @@ namespace OfficeOpenXml.Table
             return xml;
         }
 
-        internal static string CleanDisplayName(string name)
-        {
-            return Regex.Replace(name, @"[^\w\.-_]", "_");
-        }
+        internal static string CleanDisplayName(string name) => Regex.Replace(name, @"[^\w\.-_]", "_");
 
         internal ZipPackagePart Part { get; set; }
 
@@ -158,8 +155,8 @@ namespace OfficeOpenXml.Table
 
         internal int Id
         {
-            get { return this.GetXmlNodeInt(ID_PATH); }
-            set { this.SetXmlNodeString(ID_PATH, value.ToString()); }
+            get => this.GetXmlNodeInt(ID_PATH);
+            set => this.SetXmlNodeString(ID_PATH, value.ToString());
         }
 
         const string NAME_PATH = "@name";
@@ -170,7 +167,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public string Name
         {
-            get { return this.GetXmlNodeString(NAME_PATH); }
+            get => this.GetXmlNodeString(NAME_PATH);
             set
             {
                 if (this.Name.Equals(value, StringComparison.CurrentCultureIgnoreCase) == false && this.WorkSheet.Workbook.ExistsTableName(value))
@@ -219,7 +216,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public ExcelAddressBase Address
         {
-            get { return this._address; }
+            get => this._address;
             internal set
             {
                 this._address = value;
@@ -235,10 +232,7 @@ namespace OfficeOpenXml.Table
         /// <summary>
         /// The table range
         /// </summary>
-        public ExcelRangeBase Range
-        {
-            get { return this.WorkSheet.Cells[this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol]; }
-        }
+        public ExcelRangeBase Range => this.WorkSheet.Cells[this._address._fromRow, this._address._fromCol, this._address._toRow, this._address._toCol];
 
         internal ExcelRangeBase DataRange
         {
@@ -258,19 +252,13 @@ namespace OfficeOpenXml.Table
         /// </summary>
         /// <returns></returns>
         /// <seealso cref="ExcelRangeBase.ToText()"/>
-        public string ToText()
-        {
-            return this.Range.ToText();
-        }
+        public string ToText() => this.Range.ToText();
 
         /// <summary>
         /// Creates an <see cref="IExcelHtmlTableExporter"/> object to export the table to HTML
         /// </summary>
         /// <returns>The exporter object</returns>
-        public IExcelHtmlTableExporter CreateHtmlExporter()
-        {
-            return new Export.HtmlExport.Exporters.ExcelHtmlTableExporter(this);
-        }
+        public IExcelHtmlTableExporter CreateHtmlExporter() => new Export.HtmlExport.Exporters.ExcelHtmlTableExporter(this);
 
         /// <summary>
         /// Converts the table range to CSV format
@@ -278,10 +266,7 @@ namespace OfficeOpenXml.Table
         /// <param name="format">Parameters/options for conversion to text</param>
         /// <returns></returns>
         /// <seealso cref="ExcelRangeBase.ToText(ExcelOutputTextFormat)"/>
-        public string ToText(ExcelOutputTextFormat format)
-        {
-            return this.Range.ToText(format);
-        }
+        public string ToText(ExcelOutputTextFormat format) => this.Range.ToText(format);
 
 #if !NET35 && !NET40
         /// <summary>
@@ -289,20 +274,14 @@ namespace OfficeOpenXml.Table
         /// </summary>
         /// <returns></returns>
         /// <seealso cref="ExcelRangeBase.ToTextAsync()"/>
-        public Task<string> ToTextAsync()
-        {
-            return this.Range.ToTextAsync();
-        }
+        public Task<string> ToTextAsync() => this.Range.ToTextAsync();
 
         /// <summary>
         /// Converts the table range to CSV format
         /// </summary>
         /// <returns></returns>
         /// <seealso cref="ExcelRangeBase.ToText(ExcelOutputTextFormat)"/>
-        public Task<string> ToTextAsync(ExcelOutputTextFormat format)
-        {
-            return this.Range.ToTextAsync(format);
-        }
+        public Task<string> ToTextAsync(ExcelOutputTextFormat format) => this.Range.ToTextAsync(format);
 #endif
 
         /// <summary>
@@ -311,10 +290,7 @@ namespace OfficeOpenXml.Table
         /// <param name="file">The export file</param>
         /// <param name="format">Export options</param>
         /// <seealso cref="ExcelRangeBase.SaveToText(FileInfo, ExcelOutputTextFormat)"></seealso>
-        public void SaveToText(FileInfo file, ExcelOutputTextFormat format)
-        {
-            this.Range.SaveToText(file, format);
-        }
+        public void SaveToText(FileInfo file, ExcelOutputTextFormat format) => this.Range.SaveToText(file, format);
 
         /// <summary>
         /// Exports the table to a <see cref="Stream"/>
@@ -322,10 +298,7 @@ namespace OfficeOpenXml.Table
         /// <param name="stream">Data will be exported to this stream</param>
         /// <param name="format">Export options</param>
         /// <seealso cref="ExcelRangeBase.SaveToText(Stream, ExcelOutputTextFormat)"></seealso>
-        public void SaveToText(Stream stream, ExcelOutputTextFormat format)
-        {
-            this.Range.SaveToText(stream, format);
-        }
+        public void SaveToText(Stream stream, ExcelOutputTextFormat format) => this.Range.SaveToText(stream, format);
 #if !NET35 && !NET40
         /// <summary>
         /// Exports the table to a <see cref="Stream"/>
@@ -333,10 +306,7 @@ namespace OfficeOpenXml.Table
         /// <param name="stream">Data will be exported to this stream</param>
         /// <param name="format">Export options</param>
         /// <seealso cref="ExcelRangeBase.SaveToText(Stream, ExcelOutputTextFormat)"></seealso>
-        public async Task SaveToTextAsync(Stream stream, ExcelOutputTextFormat format)
-        {
-            await this.Range.SaveToTextAsync(stream, format);
-        }
+        public async Task SaveToTextAsync(Stream stream, ExcelOutputTextFormat format) => await this.Range.SaveToTextAsync(stream, format);
 
         /// <summary>
         /// Exports the table to a file
@@ -344,10 +314,7 @@ namespace OfficeOpenXml.Table
         /// <param name="file">Data will be exported to this stream</param>
         /// <param name="format">Export options</param>
         /// <seealso cref="ExcelRangeBase.SaveToTextAsync(FileInfo, ExcelOutputTextFormat)"/>
-        public async Task SaveToTextAsync(FileInfo file, ExcelOutputTextFormat format)
-        {
-            await this.Range.SaveToTextAsync(file, format);
-        }
+        public async Task SaveToTextAsync(FileInfo file, ExcelOutputTextFormat format) => await this.Range.SaveToTextAsync(file, format);
 
         /// <summary>
         /// Save the table to json
@@ -386,10 +353,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         /// <returns>A <see cref="System.Data.DataTable"/> containing the data in the table range</returns>
         /// <seealso cref="ExcelRangeBase.ToDataTable()"/>
-        public DataTable ToDataTable()
-        {
-            return this.Range.ToDataTable();
-        }
+        public DataTable ToDataTable() => this.Range.ToDataTable();
 
         /// <summary>
         /// Returns the table as a JSON string
@@ -458,20 +422,14 @@ namespace OfficeOpenXml.Table
         /// </summary>
         /// <returns>A <see cref="System.Data.DataTable"/> containing the data in the table range</returns>
         /// <seealso cref="ExcelRangeBase.ToDataTable(ToDataTableOptions)"/>
-        public DataTable ToDataTable(ToDataTableOptions options)
-        {
-            return this.Range.ToDataTable(options);
-        }
+        public DataTable ToDataTable(ToDataTableOptions options) => this.Range.ToDataTable(options);
 
         /// <summary>
         /// Exports the table to a <see cref="System.Data.DataTable"/>
         /// </summary>
         /// <returns>A <see cref="System.Data.DataTable"/> containing the data in the table range</returns>
         /// <seealso cref="ExcelRangeBase.ToDataTable(Action{ToDataTableOptions})"/>
-        public DataTable ToDataTable(Action<ToDataTableOptions> configHandler)
-        {
-            return this.Range.ToDataTable(configHandler);
-        }
+        public DataTable ToDataTable(Action<ToDataTableOptions> configHandler) => this.Range.ToDataTable(configHandler);
 
         #endregion
 
@@ -552,10 +510,7 @@ namespace OfficeOpenXml.Table
         /// <typeparam name="T">The type to map to</typeparam>
         /// <param name="setRow">The call back function to map each row to the item of type T.</param>
         /// <returns>A list of T</returns>
-        public List<T> ToCollection<T>(Func<Export.ToCollection.ToCollectionRow, T> setRow)
-        {
-            return this.ToCollectionWithMappings(setRow, ToCollectionTableOptions.Default);
-        }
+        public List<T> ToCollection<T>(Func<Export.ToCollection.ToCollectionRow, T> setRow) => this.ToCollectionWithMappings(setRow, ToCollectionTableOptions.Default);
 
         /// <summary>
         /// Returns a collection of T for the table. 
@@ -614,10 +569,7 @@ namespace OfficeOpenXml.Table
         /// <summary>
         /// Collection of the columns in the table
         /// </summary>
-        public ExcelTableColumnCollection Columns
-        {
-            get { return this._cols ??= new ExcelTableColumnCollection(this); }
-        }
+        public ExcelTableColumnCollection Columns => this._cols ??= new ExcelTableColumnCollection(this);
 
         TableStyles _tableStyle = TableStyles.Medium6;
 
@@ -626,7 +578,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public TableStyles TableStyle
         {
-            get { return this._tableStyle; }
+            get => this._tableStyle;
             set
             {
                 this._tableStyle = value;
@@ -647,7 +599,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowHeader
         {
-            get { return this.GetXmlNodeInt(HEADERROWCOUNT_PATH) != 0; }
+            get => this.GetXmlNodeInt(HEADERROWCOUNT_PATH) != 0;
             set
             {
                 if ((this.Address._toRow - this.Address._fromRow < 0 && value) || (this.Address._toRow - this.Address._fromRow == 1 && value && this.ShowTotal))
@@ -762,7 +714,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowFilter
         {
-            get { return this.ShowHeader && this.AutoFilterAddress != null; }
+            get => this.ShowHeader && this.AutoFilterAddress != null;
             set
             {
                 if (this.ShowHeader)
@@ -792,7 +744,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowTotal
         {
-            get { return this.GetXmlNodeInt(TOTALSROWCOUNT_PATH) == 1; }
+            get => this.GetXmlNodeInt(TOTALSROWCOUNT_PATH) == 1;
             set
             {
                 if (value != this.ShowTotal)
@@ -845,7 +797,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public string StyleName
         {
-            get { return this.GetXmlNodeString(STYLENAME_PATH); }
+            get => this.GetXmlNodeString(STYLENAME_PATH);
             set
             {
                 this._tableStyle = GetTableStyle(value);
@@ -891,8 +843,8 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowFirstColumn
         {
-            get { return this.GetXmlNodeBool(SHOWFIRSTCOLUMN_PATH); }
-            set { this.SetXmlNodeBool(SHOWFIRSTCOLUMN_PATH, value, false); }
+            get => this.GetXmlNodeBool(SHOWFIRSTCOLUMN_PATH);
+            set => this.SetXmlNodeBool(SHOWFIRSTCOLUMN_PATH, value, false);
         }
 
         const string SHOWLASTCOLUMN_PATH = "d:tableStyleInfo/@showLastColumn";
@@ -902,8 +854,8 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowLastColumn
         {
-            get { return this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH); }
-            set { this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value, false); }
+            get => this.GetXmlNodeBool(SHOWLASTCOLUMN_PATH);
+            set => this.SetXmlNodeBool(SHOWLASTCOLUMN_PATH, value, false);
         }
 
         const string SHOWROWSTRIPES_PATH = "d:tableStyleInfo/@showRowStripes";
@@ -913,8 +865,8 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowRowStripes
         {
-            get { return this.GetXmlNodeBool(SHOWROWSTRIPES_PATH); }
-            set { this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value, false); }
+            get => this.GetXmlNodeBool(SHOWROWSTRIPES_PATH);
+            set => this.SetXmlNodeBool(SHOWROWSTRIPES_PATH, value, false);
         }
 
         const string SHOWCOLUMNSTRIPES_PATH = "d:tableStyleInfo/@showColumnStripes";
@@ -924,8 +876,8 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public bool ShowColumnStripes
         {
-            get { return this.GetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH); }
-            set { this.SetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH, value, false); }
+            get => this.GetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH);
+            set => this.SetXmlNodeBool(SHOWCOLUMNSTRIPES_PATH, value, false);
         }
 
         const string TOTALSROWCELLSTYLE_PATH = "@totalsRowCellStyle";
@@ -935,7 +887,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public string TotalsRowCellStyle
         {
-            get { return this.GetXmlNodeString(TOTALSROWCELLSTYLE_PATH); }
+            get => this.GetXmlNodeString(TOTALSROWCELLSTYLE_PATH);
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -959,7 +911,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public string DataCellStyleName
         {
-            get { return this.GetXmlNodeString(DATACELLSTYLE_PATH); }
+            get => this.GetXmlNodeString(DATACELLSTYLE_PATH);
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -986,7 +938,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public string HeaderRowCellStyle
         {
-            get { return this.GetXmlNodeString(HEADERROWCELLSTYLE_PATH); }
+            get => this.GetXmlNodeString(HEADERROWCELLSTYLE_PATH);
             set
             {
                 if (this.WorkSheet.Workbook.Styles.NamedStyles.FindIndexById(value) < 0)
@@ -1009,30 +961,21 @@ namespace OfficeOpenXml.Table
         /// <param name="x">Table 1</param>
         /// <param name="y">Table 2</param>
         /// <returns></returns>
-        public bool Equals(ExcelTable x, ExcelTable y)
-        {
-            return x.WorkSheet == y.WorkSheet && x.Id == y.Id && x.TableXml.OuterXml == y.TableXml.OuterXml;
-        }
+        public bool Equals(ExcelTable x, ExcelTable y) => x.WorkSheet == y.WorkSheet && x.Id == y.Id && x.TableXml.OuterXml == y.TableXml.OuterXml;
 
         /// <summary>
         /// Returns a hashcode generated from the TableXml
         /// </summary>
         /// <param name="obj">The table</param>
         /// <returns>The hashcode</returns>
-        public int GetHashCode(ExcelTable obj)
-        {
-            return obj.TableXml.OuterXml.GetHashCode();
-        }
+        public int GetHashCode(ExcelTable obj) => obj.TableXml.OuterXml.GetHashCode();
 
         /// <summary>
         /// Adds new rows to the table. 
         /// </summary>
         /// <param name="rows">Number of rows to add to the table. Default is 1</param>
         /// <returns></returns>
-        public ExcelRangeBase AddRow(int rows = 1)
-        {
-            return this.InsertRow(int.MaxValue, rows);
-        }
+        public ExcelRangeBase AddRow(int rows = 1) => this.InsertRow(int.MaxValue, rows);
 
         /// <summary>
         /// Inserts one or more rows before the specified position in the table.
@@ -1298,8 +1241,8 @@ namespace OfficeOpenXml.Table
 
         internal int? HeaderRowBorderDxfId
         {
-            get { return this.GetXmlNodeIntNull("@headerRowBorderDxfId"); }
-            set { this.SetXmlNodeInt("@headerRowBorderDxfId", value); }
+            get => this.GetXmlNodeIntNull("@headerRowBorderDxfId");
+            set => this.SetXmlNodeInt("@headerRowBorderDxfId", value);
         }
 
         /// <summary>
@@ -1309,8 +1252,8 @@ namespace OfficeOpenXml.Table
 
         internal int? TableBorderDxfId
         {
-            get { return this.GetXmlNodeIntNull("@tableBorderDxfId"); }
-            set { this.SetXmlNodeInt("@tableBorderDxfId", value); }
+            get => this.GetXmlNodeIntNull("@tableBorderDxfId");
+            set => this.SetXmlNodeInt("@tableBorderDxfId", value);
         }
 
         /// <summary>
@@ -1391,10 +1334,7 @@ namespace OfficeOpenXml.Table
         /// options.SortBy.Column(0).ThenSortBy.Column(1, eSortDirection.Descending);
         /// </code>
         /// </example>
-        public void Sort(TableSortOptions options)
-        {
-            this._tableSorter.Sort(options);
-        }
+        public void Sort(TableSortOptions options) => this._tableSorter.Sort(options);
 
         /// <summary>
         /// Sorts the data in the table according to the supplied action of <see cref="RangeSortOptions"/>
@@ -1405,10 +1345,7 @@ namespace OfficeOpenXml.Table
         /// </code>
         /// </example>
         /// <param name="configuration">An action with parameters for sorting</param>
-        public void Sort(Action<TableSortOptions> configuration)
-        {
-            this._tableSorter.Sort(configuration);
-        }
+        public void Sort(Action<TableSortOptions> configuration) => this._tableSorter.Sort(configuration);
 
         #endregion
     }

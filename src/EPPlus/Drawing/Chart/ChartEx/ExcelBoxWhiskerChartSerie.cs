@@ -34,8 +34,8 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
     /// </summary>
     public eParentLabelLayout ParentLabelLayout
     {
-        get { return this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None); }
-        set { this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString()); }
+        get => this.GetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val").ToEnum(eParentLabelLayout.None);
+        set => this.SetXmlNodeString("cx:layoutPr/cx:parentLabelLayout/@val", value.ToEnumString());
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
 
             return s.ToEnum(eQuartileMethod.Inclusive);
         }
-        set { this.SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString()); }
+        set => this.SetXmlNodeString("cx:layoutPr/cx:statistics/@quartileMethod", value.ToEnumString());
     }
 
     /// <summary>
@@ -62,8 +62,8 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
     /// </summary>
     public bool ShowMeanLine
     {
-        get { return this.GetXmlNodeBool($"{_path}/@meanLine"); }
-        set { this.SetXmlNodeBool($"{_path}/@meanLine", value); }
+        get => this.GetXmlNodeBool($"{_path}/@meanLine");
+        set => this.SetXmlNodeBool($"{_path}/@meanLine", value);
     }
 
     /// <summary>
@@ -71,8 +71,8 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
     /// </summary>
     public bool ShowMeanMarker
     {
-        get { return this.GetXmlNodeBool($"{_path}/@meanMarker"); }
-        set { this.SetXmlNodeBool($"{_path}/@meanMarker", value); }
+        get => this.GetXmlNodeBool($"{_path}/@meanMarker");
+        set => this.SetXmlNodeBool($"{_path}/@meanMarker", value);
     }
 
     /// <summary>
@@ -80,8 +80,8 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
     /// </summary>
     public bool ShowNonOutliers
     {
-        get { return this.GetXmlNodeBool($"{_path}/@nonoutliers"); }
-        set { this.SetXmlNodeBool($"{_path}/@nonoutliers", value); }
+        get => this.GetXmlNodeBool($"{_path}/@nonoutliers");
+        set => this.SetXmlNodeBool($"{_path}/@nonoutliers", value);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class ExcelBoxWhiskerChartSerie : ExcelChartExSerie
     /// </summary>
     public bool ShowOutliers
     {
-        get { return this.GetXmlNodeBool($"{_path}/@outliers"); }
-        set { this.SetXmlNodeBool($"{_path}/@outliers", value); }
+        get => this.GetXmlNodeBool($"{_path}/@outliers");
+        set => this.SetXmlNodeBool($"{_path}/@outliers", value);
     }
 }

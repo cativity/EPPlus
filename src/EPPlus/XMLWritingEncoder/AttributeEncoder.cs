@@ -12,8 +12,5 @@ internal static class AttributeEncoder
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
-    internal static string EncodeXMLAttribute(this string s)
-    {
-        return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
-    }
+    internal static string EncodeXMLAttribute(this string s) => s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
 }

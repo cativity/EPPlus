@@ -800,9 +800,8 @@ public class Issues : TestBase
             this.ReleaseYear = releaseYear;
         }
 
-        internal static List<Car> GenerateList()
-        {
-            return new List<Car>
+        internal static List<Car> GenerateList() =>
+            new()
             {
                 //random data
                 new Car(1, "Toyota", "Carolla", 1950),
@@ -816,7 +815,6 @@ public class Issues : TestBase
                 new Car(9, "BMW", "M6", 2003),
                 new Car(10, "Merc", "S Class", 2001)
             };
-        }
     }
 
     [TestMethod]
@@ -2973,10 +2971,7 @@ public class Issues : TestBase
     }
 
     [TestMethod]
-    public void LoadFontSize()
-    {
-        FontSize.LoadAllFontsFromResource();
-    }
+    public void LoadFontSize() => FontSize.LoadAllFontsFromResource();
 
     [TestMethod]
     public void PiechartWithHorizontalSource()
@@ -3019,10 +3014,7 @@ public class Issues : TestBase
     }
 
     [TestMethod]
-    public void CheckEnvironment()
-    {
-        _ = Graphics.FromHwnd(IntPtr.Zero);
-    }
+    public void CheckEnvironment() => _ = Graphics.FromHwnd(IntPtr.Zero);
 
     [TestMethod]
     public void Issue592()
@@ -4610,10 +4602,7 @@ public class Issues : TestBase
         }
     }
 
-    static int GetSheetRowIndex(ExcelTable table, int tableRow)
-    {
-        return table.Address.Start.Row + tableRow + (table.ShowHeader ? 1 : 0);
-    }
+    static int GetSheetRowIndex(ExcelTable table, int tableRow) => table.Address.Start.Row + tableRow + (table.ShowHeader ? 1 : 0);
 
     [TestMethod]
     public void Issue852()

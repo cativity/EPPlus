@@ -21,10 +21,8 @@ namespace OfficeOpenXml.Table.PivotTable;
 public class ExcelPivotAreaAutoSort : ExcelPivotArea
 {
     internal ExcelPivotAreaAutoSort(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
-        : base(nsm, topNode, pt)
-    {
+        : base(nsm, topNode, pt) =>
         this.Conditions = new ExcelPivotAreaStyleConditions(nsm, topNode, pt);
-    }
 
     /// <summary>
     /// Conditions for the auto sort scope. Conditions can be set for specific data fields. Specify labels, data grand totals and more.

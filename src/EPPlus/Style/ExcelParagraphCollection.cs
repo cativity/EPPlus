@@ -81,18 +81,12 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
     /// </summary>
     /// <param name="Index">The index</param>
     /// <returns></returns>
-    public ExcelParagraph this[int Index]
-    {
-        get { return this._list[Index]; }
-    }
+    public ExcelParagraph this[int Index] => this._list[Index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Add a rich text string
@@ -212,10 +206,7 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
     /// Remove the specified item
     /// </summary>
     /// <param name="Item">The item</param>
-    public void Remove(ExcelRichText Item)
-    {
-        _ = this.TopNode.RemoveChild(Item.TopNode);
-    }
+    public void Remove(ExcelRichText Item) => _ = this.TopNode.RemoveChild(Item.TopNode);
 
     /// <summary>
     /// The full text 
@@ -265,19 +256,13 @@ public class ExcelParagraphCollection : XmlHelper, IEnumerable<ExcelParagraph>
 
     #region IEnumerable<ExcelRichText> Members
 
-    IEnumerator<ExcelParagraph> IEnumerable<ExcelParagraph>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<ExcelParagraph> IEnumerable<ExcelParagraph>.GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 
     #region IEnumerable Members
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 }

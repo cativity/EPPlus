@@ -196,18 +196,9 @@ internal class Aggregate : ExcelFunction
         return result;
     }
 
-    private static bool IgnoreHidden(int options)
-    {
-        return options == 1 || options == 3 || options == 5 || options == 7;
-    }
+    private static bool IgnoreHidden(int options) => options == 1 || options == 3 || options == 5 || options == 7;
 
-    private static bool IgnoreErrors(int options)
-    {
-        return options == 2 || options == 3 || options == 6 || options == 7;
-    }
+    private static bool IgnoreErrors(int options) => options == 2 || options == 3 || options == 6 || options == 7;
 
-    private static bool IgnoreNestedSubtotalAndAggregate(int options)
-    {
-        return options == 0 || options == 1 || options == 2 || options == 3;
-    }
+    private static bool IgnoreNestedSubtotalAndAggregate(int options) => options == 0 || options == 1 || options == 2 || options == 3;
 }

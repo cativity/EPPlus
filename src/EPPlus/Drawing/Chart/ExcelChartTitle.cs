@@ -67,17 +67,14 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         }
     }
 
-    internal static string GetInitXml(string prefix)
-    {
-        return
-            $"<{prefix}:tx><{prefix}:rich><a:bodyPr rot=\"0\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\" />"
-            + $"<a:lstStyle />"
-            + $"<a:p><a:pPr>"
-            + $"<a:defRPr sz=\"1080\" b=\"1\" i=\"0\" u=\"none\" strike=\"noStrike\" kern=\"1200\" baseline=\"0\">"
-            + "<a:effectLst/><a:latin typeface=\"+mn-lt\"/><a:ea typeface=\"+mn-ea\"/><a:cs typeface=\"+mn-cs\"/></a:defRPr>"
-            + $"</a:pPr><a:r><a:t/></a:r></a:p></{prefix}:rich></{prefix}:tx><{prefix}:layout /><{prefix}:overlay val=\"0\" />"
-            + $"<{prefix}:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></{prefix}:spPr>";
-    }
+    internal static string GetInitXml(string prefix) =>
+        $"<{prefix}:tx><{prefix}:rich><a:bodyPr rot=\"0\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\" />"
+        + $"<a:lstStyle />"
+        + $"<a:p><a:pPr>"
+        + $"<a:defRPr sz=\"1080\" b=\"1\" i=\"0\" u=\"none\" strike=\"noStrike\" kern=\"1200\" baseline=\"0\">"
+        + "<a:effectLst/><a:latin typeface=\"+mn-lt\"/><a:ea typeface=\"+mn-ea\"/><a:cs typeface=\"+mn-cs\"/></a:defRPr>"
+        + $"</a:pPr><a:r><a:t/></a:r></a:p></{prefix}:rich></{prefix}:tx><{prefix}:layout /><{prefix}:overlay val=\"0\" />"
+        + $"<{prefix}:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></{prefix}:spPr>";
 
     /// <summary>
     /// The text
@@ -89,27 +86,19 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// <summary>
     /// A reference to the border properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this._chart,
-                                                           this.NameSpaceManager,
-                                                           this.TopNode,
-                                                           $"{this._nsPrefix}:spPr/a:ln",
-                                                           this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingBorder Border =>
+        this._border ??= new ExcelDrawingBorder(this._chart,
+                                                this.NameSpaceManager,
+                                                this.TopNode,
+                                                $"{this._nsPrefix}:spPr/a:ln",
+                                                this.SchemaNodeOrder);
 
     ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to the fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
 
     ExcelTextFont _font;
 
@@ -143,48 +132,32 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// <summary>
     /// Access to text body properties
     /// </summary>
-    public ExcelTextBody TextBody
-    {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager,
-                                                        this.TopNode,
-                                                        $"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr",
-                                                        this.SchemaNodeOrder);
-        }
-    }
+    public ExcelTextBody TextBody =>
+        this._textBody ??= new ExcelTextBody(this.NameSpaceManager,
+                                             this.TopNode,
+                                             $"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr",
+                                             this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                $"{this._nsPrefix}:spPr/a:effectLst",
-                                                                this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect =>
+        this._effect ??= new ExcelDrawingEffectStyle(this._chart,
+                                                     this.NameSpaceManager,
+                                                     this.TopNode,
+                                                     $"{this._nsPrefix}:spPr/a:effectLst",
+                                                     this.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder);
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode($"{this._nsPrefix}:spPr");
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode($"{this._nsPrefix}:spPr");
 
     ExcelParagraphCollection _richText;
 
@@ -270,8 +243,8 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// </summary>
     public bool AnchorCtr
     {
-        get { return this.GetXmlNodeBool($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", false); }
-        set { this.SetXmlNodeBool($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", value, false); }
+        get => this.GetXmlNodeBool($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", false);
+        set => this.SetXmlNodeBool($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", value, false);
     }
 
     /// <summary>
@@ -279,8 +252,8 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// </summary>
     public eTextAnchoringType Anchor
     {
-        get { return this.GetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchor").TranslateTextAchoring(); }
-        set { this.SetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", value.TranslateTextAchoringText()); }
+        get => this.GetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchor").TranslateTextAchoring();
+        set => this.SetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@anchorCtr", value.TranslateTextAchoringText());
     }
 
     const string TextVerticalPath = "xdr:sp/xdr:txBody/a:bodyPr/@vert";
@@ -290,8 +263,8 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// </summary>
     public eTextVerticalType TextVertical
     {
-        get { return this.GetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@vert").TranslateTextVertical(); }
-        set { this.SetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@vert", value.TranslateTextVerticalText()); }
+        get => this.GetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@vert").TranslateTextVertical();
+        set => this.SetXmlNodeString($"{this._nsPrefix}:tx/{this._nsPrefix}:rich/a:bodyPr/@vert", value.TranslateTextVerticalText());
     }
 
     /// <summary>
@@ -357,10 +330,8 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
 public class ExcelChartTitleStandard : ExcelChartTitle
 {
     internal ExcelChartTitleStandard(ExcelChart chart, XmlNamespaceManager nameSpaceManager, XmlNode node, string nsPrefix)
-        : base(chart, nameSpaceManager, node, nsPrefix)
-    {
+        : base(chart, nameSpaceManager, node, nsPrefix) =>
         this.titleLinkPath = string.Format(this.titleLinkPath, nsPrefix);
-    }
 
     private readonly string titleLinkPath = "{0}:tx/{0}:strRef";
 

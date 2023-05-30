@@ -62,8 +62,8 @@ public abstract class ExcelSlicerCache : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        internal protected set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        internal protected set => this.SetXmlNodeString("@name", value);
     }
 
     /// <summary>
@@ -71,8 +71,8 @@ public abstract class ExcelSlicerCache : XmlHelper
     /// </summary>
     public string SourceName
     {
-        get { return this.GetXmlNodeString("@sourceName"); }
-        internal protected set { this.SetXmlNodeString("@sourceName", value); }
+        get => this.GetXmlNodeString("@sourceName");
+        internal protected set => this.SetXmlNodeString("@sourceName", value);
     }
 
     /// <summary>
@@ -82,11 +82,7 @@ public abstract class ExcelSlicerCache : XmlHelper
 
     internal abstract void Init(ExcelWorkbook wb);
 
-    internal static string GetStartXml()
-    {
-        return
-            $"<slicerCacheDefinition sourceName=\"\" xr10:uid=\"{{{Guid.NewGuid()}}}\" name=\"\" xmlns:xr10=\"http://schemas.microsoft.com/office/spreadsheetml/2016/revision10\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" mc:Ignorable=\"x xr10\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" />";
-    }
+    internal static string GetStartXml() => $"<slicerCacheDefinition sourceName=\"\" xr10:uid=\"{{{Guid.NewGuid()}}}\" name=\"\" xmlns:xr10=\"http://schemas.microsoft.com/office/spreadsheetml/2016/revision10\" xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" mc:Ignorable=\"x xr10\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" />";
 
     internal void CreateWorkbookReference(ExcelWorkbook wb, string uriGuid)
     {

@@ -22,25 +22,23 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 public class ObjectEnumerableArgConverter : CollectionFlattener<object>
 {
-    public virtual IEnumerable<object> ConvertArgs(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return base.FuncArgsToFlatEnumerable(arguments,
-                                             (arg, argList) =>
-                                             {
-                                                 if (arg.Value is IRangeInfo)
-                                                 {
-                                                     foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
-                                                     {
-                                                         if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
-                                                         {
-                                                             argList.Add(cell.Value);
-                                                         }
-                                                     }
-                                                 }
-                                                 else
-                                                 {
-                                                     argList.Add(arg.Value);
-                                                 }
-                                             });
-    }
+    public virtual IEnumerable<object> ConvertArgs(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context) =>
+        base.FuncArgsToFlatEnumerable(arguments,
+                                      (arg, argList) =>
+                                      {
+                                          if (arg.Value is IRangeInfo)
+                                          {
+                                              foreach (ICellInfo? cell in (IRangeInfo)arg.Value)
+                                              {
+                                                  if (!CellStateHelper.ShouldIgnore(ignoreHidden, cell, context))
+                                                  {
+                                                      argList.Add(cell.Value);
+                                                  }
+                                              }
+                                          }
+                                          else
+                                          {
+                                              argList.Add(arg.Value);
+                                          }
+                                      });
 }

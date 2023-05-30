@@ -35,8 +35,5 @@ public abstract class StyleBase
 
     internal abstract string Id { get; }
 
-    internal virtual void SetIndex(int index)
-    {
-        this.Index = index;
-    }
+    internal virtual void SetIndex(int index) => this.Index = index;
 }

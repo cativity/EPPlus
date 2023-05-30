@@ -40,16 +40,10 @@ public class ProtectedRangesTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ProtectedRanges.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ProtectedRanges.xlsx", true);
 
     [ClassCleanup]
-    public static void CleanUp()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void CleanUp() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void AddProtectedRange()

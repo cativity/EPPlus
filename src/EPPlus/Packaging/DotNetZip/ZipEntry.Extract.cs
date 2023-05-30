@@ -70,10 +70,7 @@ internal partial class ZipEntry
     /// </para>
     ///
     /// </remarks>
-    internal void Extract()
-    {
-        this.InternalExtract(".", null, null);
-    }
+    internal void Extract() => this.InternalExtract(".", null, null);
 
     /// <summary>
     ///   Extract the entry to a file in the filesystem, using the specified
@@ -120,10 +117,7 @@ internal partial class ZipEntry
     ///   the stream to which the entry should be extracted.
     /// </param>
     ///
-    public void Extract(Stream stream)
-    {
-        this.InternalExtract(null, stream, null);
-    }
+    public void Extract(Stream stream) => this.InternalExtract(null, stream, null);
 
     /// <summary>
     ///   Extract the entry to the filesystem, starting at the specified base
@@ -176,10 +170,7 @@ internal partial class ZipEntry
     ///   details about how the last modified time of the created file is set.
     /// </para>
     /// </remarks>
-    public void Extract(string baseDirectory)
-    {
-        this.InternalExtract(baseDirectory, null, null);
-    }
+    public void Extract(string baseDirectory) => this.InternalExtract(baseDirectory, null, null);
 
     /// <summary>
     ///   Extract the entry to the filesystem, starting at the specified base
@@ -293,10 +284,7 @@ internal partial class ZipEntry
     /// </code>
     /// </example>
     /// <param name="password">The Password to use for decrypting the entry.</param>
-    public void ExtractWithPassword(string password)
-    {
-        this.InternalExtract(".", null, password);
-    }
+    public void ExtractWithPassword(string password) => this.InternalExtract(".", null, password);
 
     /// <summary>
     ///   Extract the entry to the filesystem, starting at the specified base
@@ -323,10 +311,7 @@ internal partial class ZipEntry
     ///
     /// <param name="baseDirectory">The pathname of the base directory.</param>
     /// <param name="password">The Password to use for decrypting the entry.</param>
-    public void ExtractWithPassword(string baseDirectory, string password)
-    {
-        this.InternalExtract(baseDirectory, null, password);
-    }
+    public void ExtractWithPassword(string baseDirectory, string password) => this.InternalExtract(baseDirectory, null, password);
 
     /// <summary>
     ///   Extract the entry to a file in the filesystem, relative to the
@@ -403,10 +388,7 @@ internal partial class ZipEntry
     /// <param name="password">
     ///   The password to use for decrypting the entry.
     /// </param>
-    public void ExtractWithPassword(Stream stream, string password)
-    {
-        this.InternalExtract(null, stream, password);
-    }
+    public void ExtractWithPassword(Stream stream, string password) => this.InternalExtract(null, stream, password);
 
     /// <summary>
     ///   Opens a readable stream corresponding to the zip entry in the

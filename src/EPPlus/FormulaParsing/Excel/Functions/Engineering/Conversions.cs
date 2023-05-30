@@ -86,8 +86,7 @@ internal class Conversions
 
     #region Initialization methods
 
-    private static void InitMetricPrefixList()
-    {
+    private static void InitMetricPrefixList() =>
         _metricPrefixes = new List<Prefix>
         {
             new Prefix("y", MathObj.Pow(10, -24)),
@@ -112,10 +111,8 @@ internal class Conversions
             new Prefix("Z", MathObj.Pow(10, 21)),
             new Prefix("Y", MathObj.Pow(10, 24))
         };
-    }
 
-    private static void InitBinaryPrefixList()
-    {
+    private static void InitBinaryPrefixList() =>
         _binaryPrefixes = new List<Prefix>
         {
             new Prefix("ki", MathObj.Pow(2, 10)),
@@ -127,7 +124,6 @@ internal class Conversions
             new Prefix("Zi", MathObj.Pow(2, 70)),
             new Prefix("Yi", MathObj.Pow(2, 80)),
         };
-    }
 
     private static void AddMetricPrefix(string abbrevation)
     {

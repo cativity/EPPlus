@@ -23,10 +23,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlButton : ExcelControlWithText
 {
     internal ExcelControlButton(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(90, 30); //Default size
-    }
 
     internal ExcelControlButton(ExcelDrawings drawings,
                                 XmlNode drawNode,
@@ -48,10 +46,7 @@ public class ExcelControlButton : ExcelControlWithText
     /// <summary>
     /// The buttons margin settings
     /// </summary>
-    public ExcelControlMargin Margin
-    {
-        get { return this._margin ??= new ExcelControlMargin(this); }
-    }
+    public ExcelControlMargin Margin => this._margin ??= new ExcelControlMargin(this);
 
     /// <summary>
     /// The buttons text layout flow
@@ -78,8 +73,8 @@ public class ExcelControlButton : ExcelControlWithText
     /// </summary>
     internal eTextAnchoringType TextAnchor
     {
-        get { return this.TextBody.Anchor; }
-        set { this.TextBody.Anchor = value; }
+        get => this.TextBody.Anchor;
+        set => this.TextBody.Anchor = value;
     }
 
     private string _textAlignPath = "xdr:sp/xdr:txBody/a:p/a:pPr/@algn";

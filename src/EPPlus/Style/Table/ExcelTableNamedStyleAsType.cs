@@ -25,10 +25,7 @@ public class ExcelTableNamedStyleAsType
 {
     ExcelTableNamedStyleBase _tableNamedStyle;
 
-    internal ExcelTableNamedStyleAsType(ExcelTableNamedStyleBase tableNamedStyle)
-    {
-        this._tableNamedStyle = tableNamedStyle;
-    }
+    internal ExcelTableNamedStyleAsType(ExcelTableNamedStyleBase tableNamedStyle) => this._tableNamedStyle = tableNamedStyle;
 
     /// <summary>
     /// Converts the table named style object to it's top level or another nested class.        
@@ -50,26 +47,17 @@ public class ExcelTableNamedStyleAsType
     /// Returns the table named style object as a named style for tables only
     /// </summary>
     /// <returns>The table named style object</returns>
-    public ExcelTableNamedStyle TableStyle
-    {
-        get { return this._tableNamedStyle as ExcelTableNamedStyle; }
-    }
+    public ExcelTableNamedStyle TableStyle => this._tableNamedStyle as ExcelTableNamedStyle;
 
     /// <summary>
     /// Returns the table named style object as a named style for pivot tables only
     /// </summary>
     /// <returns>The pivot table named style object</returns>
-    public ExcelPivotTableNamedStyle PivotTableStyle
-    {
-        get { return this._tableNamedStyle as ExcelPivotTableNamedStyle; }
-    }
+    public ExcelPivotTableNamedStyle PivotTableStyle => this._tableNamedStyle as ExcelPivotTableNamedStyle;
 
     /// <summary>
     /// Returns the table named style object as a named style that can be applied to both tables and pivot tables.
     /// </summary>
     /// <returns>The shared table named style object</returns>
-    public ExcelTableAndPivotTableNamedStyle TableAndPivotTableStyle
-    {
-        get { return this._tableNamedStyle as ExcelTableAndPivotTableNamedStyle; }
-    }
+    public ExcelTableAndPivotTableNamedStyle TableAndPivotTableStyle => this._tableNamedStyle as ExcelTableAndPivotTableNamedStyle;
 }

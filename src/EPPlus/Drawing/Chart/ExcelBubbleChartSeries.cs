@@ -21,10 +21,7 @@ namespace OfficeOpenXml.Drawing.Chart;
 /// </summary>
 public sealed class ExcelBubbleChartSeries : ExcelChartSeries<ExcelBubbleChartSerie>
 {
-    internal ExcelBubbleChartSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list)
-    {
-        this.Init(chart, ns, node, isPivot, list);
-    }
+    internal ExcelBubbleChartSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list) => this.Init(chart, ns, node, isPivot, list);
 
     /// <summary>
     /// Adds a new serie to a bubble chart
@@ -33,10 +30,7 @@ public sealed class ExcelBubbleChartSeries : ExcelChartSeries<ExcelBubbleChartSe
     /// <param name="XSerie">The X-Axis range</param>
     /// <param name="BubbleSize">The size of the bubbles range. If set to null, a size of 1 is used</param>
     /// <returns></returns>
-    public ExcelChartSerie Add(ExcelRangeBase Serie, ExcelRangeBase XSerie, ExcelRangeBase BubbleSize)
-    {
-        return this.AddSeries(Serie.FullAddressAbsolute, XSerie.FullAddressAbsolute, BubbleSize?.FullAddressAbsolute);
-    }
+    public ExcelChartSerie Add(ExcelRangeBase Serie, ExcelRangeBase XSerie, ExcelRangeBase BubbleSize) => this.AddSeries(Serie.FullAddressAbsolute, XSerie.FullAddressAbsolute, BubbleSize?.FullAddressAbsolute);
 
     /// <summary>
     /// 
@@ -45,8 +39,5 @@ public sealed class ExcelBubbleChartSeries : ExcelChartSeries<ExcelBubbleChartSe
     /// <param name="XSerieAddress">The X-Axis range</param>
     /// <param name="BubbleSizeAddress">The size of the bubbles range. If set to null or String.Empty, a size of 1 is used</param>
     /// <returns></returns>
-    public ExcelChartSerie Add(string SerieAddress, string XSerieAddress, string BubbleSizeAddress)
-    {
-        return this.AddSeries(SerieAddress, XSerieAddress, BubbleSizeAddress);
-    }
+    public ExcelChartSerie Add(string SerieAddress, string XSerieAddress, string BubbleSizeAddress) => this.AddSeries(SerieAddress, XSerieAddress, BubbleSizeAddress);
 }

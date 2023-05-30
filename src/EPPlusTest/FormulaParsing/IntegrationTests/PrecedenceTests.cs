@@ -49,10 +49,7 @@ public class PrecedenceTests : FormulaParserTestBase
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._excelPackage.Dispose();
-    }
+    public void Cleanup() => this._excelPackage.Dispose();
 
     [TestMethod]
     public void ShouldCaluclateUsingPrecedenceMultiplyBeforeAdd()
@@ -90,8 +87,5 @@ public class PrecedenceTests : FormulaParserTestBase
     }
 
     [TestMethod]
-    public void Bugfixtest()
-    {
-        _ = this._parser.Parse("(1+2)+3^2");
-    }
+    public void Bugfixtest() => _ = this._parser.Parse("(1+2)+3^2");
 }

@@ -42,10 +42,7 @@ public class EffectTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingEffect.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingEffect.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

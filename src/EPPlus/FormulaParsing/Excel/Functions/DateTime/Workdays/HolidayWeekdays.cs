@@ -39,10 +39,7 @@ public class HolidayWeekdays
         }
     }
 
-    public bool IsHolidayWeekday(System.DateTime dateTime)
-    {
-        return this._holidayDays.Contains(dateTime.DayOfWeek);
-    }
+    public bool IsHolidayWeekday(System.DateTime dateTime) => this._holidayDays.Contains(dateTime.DayOfWeek);
 
     public System.DateTime AdjustResultWithHolidays(System.DateTime resultDate, IEnumerable<FunctionArgument> arguments)
     {

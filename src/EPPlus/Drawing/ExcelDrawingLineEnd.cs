@@ -43,7 +43,7 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
     /// </summary>
     public eEndStyle? Style
     {
-        get { return TranslateEndStyle(this.GetXmlNodeString(this._linePath + this._stylePath)); }
+        get => TranslateEndStyle(this.GetXmlNodeString(this._linePath + this._stylePath));
         set
         {
             this._init();
@@ -66,7 +66,7 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
     /// </summary>
     public eEndSize? Width
     {
-        get { return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._widthPath)); }
+        get => TranslateEndSize(this.GetXmlNodeString(this._linePath + this._widthPath));
         set
         {
             this._init();
@@ -89,7 +89,7 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
     /// </summary>
     public eEndSize? Height
     {
-        get { return TranslateEndSize(this.GetXmlNodeString(this._linePath + this._heightPath)); }
+        get => TranslateEndSize(this.GetXmlNodeString(this._linePath + this._heightPath));
         set
         {
             this._init();
@@ -107,10 +107,7 @@ public sealed class ExcelDrawingLineEnd : XmlHelper
 
     #region "Translate Enum functions"
 
-    private static string TranslateEndStyleText(eEndStyle value)
-    {
-        return value.ToString().ToLower();
-    }
+    private static string TranslateEndStyleText(eEndStyle value) => value.ToString().ToLower();
 
     private static eEndStyle? TranslateEndStyle(string text)
     {

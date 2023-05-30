@@ -38,7 +38,7 @@ public class ExcelBandedTableStyleElement : ExcelTableStyleElement
     /// </summary>
     public int BandSize
     {
-        get { return this._bandSize; }
+        get => this._bandSize;
         set
         {
             if (value < 1 && value > 9)

@@ -22,10 +22,7 @@ public class ExcelVbaReference
     /// Constructor.
     /// Defaults ReferenceRecordID to 0xD
     /// </summary>
-    public ExcelVbaReference()
-    {
-        this.ReferenceRecordID = 0xD;
-    }
+    public ExcelVbaReference() => this.ReferenceRecordID = 0xD;
 
     /// <summary>
     /// The reference record ID. See MS-OVBA documentation for more info. 
@@ -52,8 +49,5 @@ public class ExcelVbaReference
     /// A string representation of the object (the Name)
     /// </summary>
     /// <returns></returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 }

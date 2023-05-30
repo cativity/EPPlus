@@ -31,10 +31,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 internal partial class ZipFile
 {
-    private string ArchiveNameForEvent
-    {
-        get { return this._name != null ? this._name : "(stream)"; }
-    }
+    private string ArchiveNameForEvent => this._name != null ? this._name : "(stream)";
 
     #region Save
 

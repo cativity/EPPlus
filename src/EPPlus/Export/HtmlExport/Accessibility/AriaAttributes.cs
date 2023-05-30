@@ -33,18 +33,9 @@ internal class AriaAttributes
         public string DefaultValue { get; private set; }
     }
 
-    public static AriaAttribute AriaLabel
-    {
-        get { return new AriaAttribute("aria-label", string.Empty); }
-    }
+    public static AriaAttribute AriaLabel => new("aria-label", string.Empty);
 
-    public static AriaAttribute AriaDescribedBy
-    {
-        get { return new AriaAttribute("aria-describedby", string.Empty); }
-    }
+    public static AriaAttribute AriaDescribedBy => new("aria-describedby", string.Empty);
 
-    public static AriaAttribute AriaLabelledBy
-    {
-        get { return new AriaAttribute("aria-labelledby", string.Empty); }
-    }
+    public static AriaAttribute AriaLabelledBy => new("aria-labelledby", string.Empty);
 }

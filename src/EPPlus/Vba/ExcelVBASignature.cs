@@ -64,7 +64,7 @@ public class ExcelVbaSignature
     /// </summary>
     public X509Certificate2 Certificate
     {
-        get { return this._certificate; }
+        get => this._certificate;
         set
         {
             if (this._certificate == null

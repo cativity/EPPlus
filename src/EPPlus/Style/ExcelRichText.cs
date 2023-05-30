@@ -39,10 +39,7 @@ public class ExcelRichText : XmlHelper
 
     internal CallbackDelegate _callback;
 
-    internal void SetCallback(CallbackDelegate callback)
-    {
-        this._callback = callback;
-    }
+    internal void SetCallback(CallbackDelegate callback) => this._callback = callback;
 
     const string TEXT_PATH = "d:t";
 
@@ -51,7 +48,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public string Text
     {
-        get { return this.GetXmlNodeString(TEXT_PATH); }
+        get => this.GetXmlNodeString(TEXT_PATH);
         set
         {
             if (value == null)
@@ -145,7 +142,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public bool Bold
     {
-        get { return this.ExistsNode(BOLD_PATH); }
+        get => this.ExistsNode(BOLD_PATH);
         set
         {
             this._collection.ConvertRichtext();
@@ -173,11 +170,10 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public bool Italic
     {
-        get
-        {
+        get =>
+
             //return GetXmlNodeBool(ITALIC_PATH, false);
-            return this.ExistsNode(ITALIC_PATH);
-        }
+            this.ExistsNode(ITALIC_PATH);
         set
         {
             this._collection.ConvertRichtext();
@@ -205,7 +201,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public bool Strike
     {
-        get { return this.ExistsNode(STRIKE_PATH); }
+        get => this.ExistsNode(STRIKE_PATH);
         set
         {
             this._collection.ConvertRichtext();
@@ -233,7 +229,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public bool UnderLine
     {
-        get { return this.ExistsNode(UNDERLINE_PATH); }
+        get => this.ExistsNode(UNDERLINE_PATH);
         set
         {
             this._collection.ConvertRichtext();
@@ -311,7 +307,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public float Size
     {
-        get { return Convert.ToSingle(this.GetXmlNodeDecimal(SIZE_PATH)); }
+        get => Convert.ToSingle(this.GetXmlNodeDecimal(SIZE_PATH));
         set
         {
             this._collection.ConvertRichtext();
@@ -331,7 +327,7 @@ public class ExcelRichText : XmlHelper
     /// </summary>
     public string FontName
     {
-        get { return this.GetXmlNodeString(FONT_PATH); }
+        get => this.GetXmlNodeString(FONT_PATH);
         set
         {
             this._collection.ConvertRichtext();
@@ -413,10 +409,7 @@ public class ExcelRichText : XmlHelper
     /// Color settings.
     /// <seealso cref="Color"/>
     /// </summary>
-    public ExcelRichTextColor ColorSettings
-    {
-        get { return this._colorSettings ??= new ExcelRichTextColor(this.NameSpaceManager, this.TopNode, this); }
-    }
+    public ExcelRichTextColor ColorSettings => this._colorSettings ??= new ExcelRichTextColor(this.NameSpaceManager, this.TopNode, this);
 
     /// <summary>
     /// A referens to the richtext collection

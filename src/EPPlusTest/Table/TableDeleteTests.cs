@@ -49,10 +49,7 @@ public class TableDeleteTests : TestBase
     }
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     #region Delete Row
 

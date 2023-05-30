@@ -312,8 +312,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public int EntriesTotal
     {
-        get { return this._entriesTotal; }
-        set { this._entriesTotal = value; }
+        get => this._entriesTotal;
+        set => this._entriesTotal = value;
     }
 
     /// <summary>
@@ -321,8 +321,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public ZipEntry CurrentEntry
     {
-        get { return this._latestEntry; }
-        set { this._latestEntry = value; }
+        get => this._latestEntry;
+        set => this._latestEntry = value;
     }
 
     /// <summary>
@@ -331,8 +331,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public bool Cancel
     {
-        get { return this._cancel; }
-        set { this._cancel = this._cancel || value; }
+        get => this._cancel;
+        set => this._cancel = this._cancel || value;
     }
 
     /// <summary>
@@ -340,8 +340,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public ZipProgressEventType EventType
     {
-        get { return this._flavor; }
-        set { this._flavor = value; }
+        get => this._flavor;
+        set => this._flavor = value;
     }
 
     /// <summary>
@@ -349,8 +349,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public string ArchiveName
     {
-        get { return this._archiveName; }
-        set { this._archiveName = value; }
+        get => this._archiveName;
+        set => this._archiveName = value;
     }
 
     /// <summary>
@@ -358,8 +358,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public long BytesTransferred
     {
-        get { return this._bytesTransferred; }
-        set { this._bytesTransferred = value; }
+        get => this._bytesTransferred;
+        set => this._bytesTransferred = value;
     }
 
     /// <summary>
@@ -368,8 +368,8 @@ internal class ZipProgressEventArgs : EventArgs
     /// </summary>
     public long TotalBytesToTransfer
     {
-        get { return this._totalBytesToTransfer; }
-        set { this._totalBytesToTransfer = value; }
+        get => this._totalBytesToTransfer;
+        set => this._totalBytesToTransfer = value;
     }
 }
 
@@ -527,10 +527,7 @@ internal class SaveProgressEventArgs : ZipProgressEventArgs
     /// <summary>
     /// Number of entries saved so far.
     /// </summary>
-    public int EntriesSaved
-    {
-        get { return this._entriesSaved; }
-    }
+    public int EntriesSaved => this._entriesSaved;
 }
 
 /// <summary>
@@ -633,18 +630,12 @@ internal class ExtractProgressEventArgs : ZipProgressEventArgs
     /// EventType is Extracting_BeforeExtractEntry or Extracting_AfterExtractEntry, and
     /// the Extract() is occurring witin the scope of a call to ExtractAll().
     /// </summary>
-    public int EntriesExtracted
-    {
-        get { return this._entriesExtracted; }
-    }
+    public int EntriesExtracted => this._entriesExtracted;
 
     /// <summary>
     /// Returns the extraction target location, a filesystem path.
     /// </summary>
-    public string ExtractLocation
-    {
-        get { return this._target; }
-    }
+    public string ExtractLocation => this._target;
 }
 
 /// <summary>
@@ -671,16 +662,10 @@ internal class ZipErrorEventArgs : ZipProgressEventArgs
     /// <summary>
     /// Returns the exception that occurred, if any.
     /// </summary>
-    public Exception @Exception
-    {
-        get { return this._exc; }
-    }
+    public Exception @Exception => this._exc;
 
     /// <summary>
     /// Returns the name of the file that caused the exception, if any.
     /// </summary>
-    public string FileName
-    {
-        get { return this.CurrentEntry.LocalFileName; }
-    }
+    public string FileName => this.CurrentEntry.LocalFileName;
 }

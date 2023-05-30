@@ -33,10 +33,8 @@ public sealed class ExcelSurfaceChart : ExcelChartStandard
                                ExcelPivotTable PivotTableSource,
                                XmlDocument chartXml,
                                ExcelGroupShape parent = null)
-        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent) =>
         this.Init();
-    }
 
     internal ExcelSurfaceChart(ExcelDrawings drawings,
                                XmlNode node,
@@ -45,21 +43,14 @@ public sealed class ExcelSurfaceChart : ExcelChartStandard
                                XmlDocument chartXml,
                                XmlNode chartNode,
                                ExcelGroupShape parent = null)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.Init();
-    }
 
     internal ExcelSurfaceChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
-        : base(topChart, chartNode, parent)
-    {
+        : base(topChart, chartNode, parent) =>
         this.Init();
-    }
 
-    private void Init()
-    {
-        this.SetTypeProperties();
-    }
+    private void Init() => this.SetTypeProperties();
 
     #endregion
 
@@ -76,8 +67,8 @@ public sealed class ExcelSurfaceChart : ExcelChartStandard
     /// </summary>
     public bool Wireframe
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(WIREFRAME_PATH); }
-        set { this._chartXmlHelper.SetXmlNodeBool(WIREFRAME_PATH, value); }
+        get => this._chartXmlHelper.GetXmlNodeBool(WIREFRAME_PATH);
+        set => this._chartXmlHelper.SetXmlNodeBool(WIREFRAME_PATH, value);
     }
 
     internal void SetTypeProperties()

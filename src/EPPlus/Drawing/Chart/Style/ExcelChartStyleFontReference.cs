@@ -25,10 +25,8 @@ public class ExcelChartStyleFontReference : XmlHelper
     string _path;
 
     internal ExcelChartStyleFontReference(XmlNamespaceManager nsm, XmlNode topNode, string path)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._path = path;
-    }
 
     /// <summary>
     /// The index to the style matrix.
@@ -36,8 +34,8 @@ public class ExcelChartStyleFontReference : XmlHelper
     /// </summary>
     public eThemeFontCollectionType Index
     {
-        get { return this.GetXmlNodeString($"{this._path}/@idx").ToEnum(eThemeFontCollectionType.None); }
-        set { this.SetXmlNodeString($"{this._path}/@idx", value.ToEnumString()); }
+        get => this.GetXmlNodeString($"{this._path}/@idx").ToEnum(eThemeFontCollectionType.None);
+        set => this.SetXmlNodeString($"{this._path}/@idx", value.ToEnumString());
     }
 
     ExcelChartStyleColorManager _color;
@@ -46,10 +44,7 @@ public class ExcelChartStyleFontReference : XmlHelper
     /// The color of the font
     /// This will replace any the StyleClr node in the chart style xml.
     /// </summary>
-    public ExcelChartStyleColorManager Color
-    {
-        get { return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
-    }
+    public ExcelChartStyleColorManager Color => this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the reference has a color

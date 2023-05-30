@@ -35,18 +35,9 @@ internal class ControlsCollectionInternal : XmlHelper, IEnumerable<ControlIntern
         }
     }
 
-    public IEnumerator<ControlInternal> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ControlInternal> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
-    internal ControlInternal GetControlByShapeId(int shapeId)
-    {
-        return this._list.FirstOrDefault(x => x.ShapeId == shapeId);
-    }
+    internal ControlInternal GetControlByShapeId(int shapeId) => this._list.FirstOrDefault(x => x.ShapeId == shapeId);
 }

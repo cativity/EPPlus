@@ -39,10 +39,7 @@ public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingSt
         }
     }
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode("cx:spPr");
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode("cx:spPr");
 
     /// <summary>
     /// Adds an individual data label for customization.
@@ -83,13 +80,7 @@ public class ExcelChartExDataLabelCollection : ExcelChartExDataLabel, IDrawingSt
     /// Get the enumerator
     /// </summary>
     /// <returns></returns>
-    public IEnumerator<ExcelChartExDataLabelItem> GetEnumerator()
-    {
-        return this._dic.Values.GetEnumerator();
-    }
+    public IEnumerator<ExcelChartExDataLabelItem> GetEnumerator() => this._dic.Values.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._dic.Values.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._dic.Values.GetEnumerator();
 }

@@ -16,18 +16,14 @@ public class IterativeCalculationsTest
     //private ExcelWorksheet _sheet;
 
     [TestInitialize]
-    public void Initialize()
-    {
-        this._package = new ExcelPackage();
-        //this._sheet = this._package.Workbook.Worksheets.Add("test");
-    }
+    public void Initialize() => this._package = new ExcelPackage();
 
+    //this._sheet = this._package.Workbook.Worksheets.Add("test");
     [TestCleanup]
-    public void Cleanup()
-    {
+    public void Cleanup() =>
+
         //this._sheet = null;
         this._package.Dispose();
-    }
 
     //[TestMethod]
     //public void A1andB1CircularRegShouldWork()

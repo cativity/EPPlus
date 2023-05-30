@@ -49,8 +49,8 @@ public class ExcelPivotTableDataField : XmlHelper
     /// </summary>
     public int Index
     {
-        get { return this.GetXmlNodeInt("@fld"); }
-        internal set { this.SetXmlNodeString("@fld", value.ToString()); }
+        get => this.GetXmlNodeInt("@fld");
+        internal set => this.SetXmlNodeString("@fld", value.ToString());
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class ExcelPivotTableDataField : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
+        get => this.GetXmlNodeString("@name");
         set
         {
             if (this.Field._pivotTable.DataFields.ExistsDfName(value, this))
@@ -75,8 +75,8 @@ public class ExcelPivotTableDataField : XmlHelper
     /// </summary>
     public int BaseField
     {
-        get { return this.GetXmlNodeInt("@baseField"); }
-        set { this.SetXmlNodeString("@baseField", value.ToString()); }
+        get => this.GetXmlNodeInt("@baseField");
+        set => this.SetXmlNodeString("@baseField", value.ToString());
     }
 
     /// <summary>
@@ -84,8 +84,8 @@ public class ExcelPivotTableDataField : XmlHelper
     /// </summary>
     public int BaseItem
     {
-        get { return this.GetXmlNodeInt("@baseItem"); }
-        set { this.SetXmlNodeString("@baseItem", value.ToString()); }
+        get => this.GetXmlNodeInt("@baseItem");
+        set => this.SetXmlNodeString("@baseItem", value.ToString());
     }
 
     /// <summary>
@@ -93,8 +93,8 @@ public class ExcelPivotTableDataField : XmlHelper
     /// </summary>
     internal int NumFmtId
     {
-        get { return this.GetXmlNodeInt("@numFmtId"); }
-        set { this.SetXmlNodeString("@numFmtId", value.ToString()); }
+        get => this.GetXmlNodeInt("@numFmtId");
+        set => this.SetXmlNodeString("@numFmtId", value.ToString());
     }
 
     /// <summary>
@@ -189,10 +189,7 @@ public class ExcelPivotTableDataField : XmlHelper
     /// <summary>
     /// Represents a pivot fields Show As properties.
     /// </summary>
-    public ExcelPivotTableDataFieldShowDataAs ShowDataAs
-    {
-        get { return this._showDataAs ??= new ExcelPivotTableDataFieldShowDataAs(this); }
-    }
+    public ExcelPivotTableDataFieldShowDataAs ShowDataAs => this._showDataAs ??= new ExcelPivotTableDataFieldShowDataAs(this);
 
     internal eShowDataAs ShowDataAsInternal
     {
@@ -237,13 +234,11 @@ public class ExcelPivotTableDataField : XmlHelper
         }
     }
 
-    private static bool IsShowDataAsExtLst(eShowDataAs value)
-    {
-        return value == eShowDataAs.PercentOfParent
-               || value == eShowDataAs.PercentOfParentColumn
-               || value == eShowDataAs.PercentOfParentRow
-               || value == eShowDataAs.RankAscending
-               || value == eShowDataAs.RankDescending
-               || value == eShowDataAs.PercentOfRunningTotal;
-    }
+    private static bool IsShowDataAsExtLst(eShowDataAs value) =>
+        value == eShowDataAs.PercentOfParent
+        || value == eShowDataAs.PercentOfParentColumn
+        || value == eShowDataAs.PercentOfParentRow
+        || value == eShowDataAs.RankAscending
+        || value == eShowDataAs.RankDescending
+        || value == eShowDataAs.PercentOfRunningTotal;
 }

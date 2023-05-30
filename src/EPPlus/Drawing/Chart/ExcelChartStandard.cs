@@ -175,10 +175,7 @@ public class ExcelChartStandard : ExcelChart
         this.LoadAxis();
     }
 
-    internal virtual void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null)
-    {
-        this.Series.Init(chart, ns, node, isPivot, list);
-    }
+    internal virtual void InitSeries(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, bool isPivot, List<ExcelChartSerie> list = null) => this.Series.Init(chart, ns, node, isPivot, list);
 
     private void Init(ExcelDrawings drawings, XmlNode chartNode)
     {
@@ -521,25 +518,22 @@ public class ExcelChartStandard : ExcelChart
         _ = xml.AppendFormat("</{0}>", chartNodeText);
     }
 
-    private static object GetAxisShapeProperties()
-    {
-        return //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
-            "<c:txPr>"
-            + "<a:bodyPr rot=\"-60000000\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\"/>"
-            + "<a:lstStyle/>"
-            + "<a:p><a:pPr><a:defRPr kern=\"1200\" sz=\"900\"/></a:pPr></a:p>"
-            + "</c:txPr>";
-    }
+    private static object GetAxisShapeProperties() =>
 
-    private static string AddLegend()
-    {
-        return "<c:legend><c:legendPos val=\"r\"/><c:layout/><c:overlay val=\"0\" />"
-               +
+        //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
+        "<c:txPr>"
+        + "<a:bodyPr rot=\"-60000000\" spcFirstLastPara=\"1\" vertOverflow=\"ellipsis\" vert=\"horz\" wrap=\"square\" anchor=\"ctr\" anchorCtr=\"1\"/>"
+        + "<a:lstStyle/>"
+        + "<a:p><a:pPr><a:defRPr kern=\"1200\" sz=\"900\"/></a:pPr></a:p>"
+        + "</c:txPr>";
 
-               //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
-               "<c:txPr><a:bodyPr anchorCtr=\"1\" anchor=\"ctr\" wrap=\"square\" vert=\"horz\" vertOverflow=\"ellipsis\" spcFirstLastPara=\"1\" rot=\"0\"/><a:lstStyle/><a:p><a:pPr><a:defRPr/></a:pPr><a:endParaRPr/></a:p></c:txPr>"
-               + "</c:legend>";
-    }
+    private static string AddLegend() =>
+        "<c:legend><c:legendPos val=\"r\"/><c:layout/><c:overlay val=\"0\" />"
+        +
+
+        //"<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/></c:spPr>" +
+        "<c:txPr><a:bodyPr anchorCtr=\"1\" anchor=\"ctr\" wrap=\"square\" vert=\"horz\" vertOverflow=\"ellipsis\" spcFirstLastPara=\"1\" rot=\"0\"/><a:lstStyle/><a:p><a:pPr><a:defRPr/></a:pPr><a:endParaRPr/></a:p></c:txPr>"
+        + "</c:legend>";
 
     private string GetChartSerieStartXml(eChartType type, int axID, int xAxID, int serAxID)
     {
@@ -757,10 +751,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    private static string Add3DPart(string name)
-    {
-        return string.Format("<c:{0}><c:thickness val=\"0\"/></c:{0}>", name); //<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/></c:spPr>
-    }
+    private static string Add3DPart(string name) => string.Format("<c:{0}><c:thickness val=\"0\"/></c:{0}>", name); //<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln><a:effectLst/><a:sp3d/></c:spPr>
 
     #endregion
 
@@ -951,10 +942,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    internal void RemoveSecondaryAxis()
-    {
-        throw new NotImplementedException("Not yet implemented");
-    }
+    internal void RemoveSecondaryAxis() => throw new NotImplementedException("Not yet implemented");
 
     /// <summary>
     /// Title of the chart
@@ -969,26 +957,17 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    internal override ExcelChartTitle GetTitle()
-    {
-        return new ExcelChartTitleStandard(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("c:chartSpace/c:chart", this.NameSpaceManager), "c");
-    }
+    internal override ExcelChartTitle GetTitle() => new ExcelChartTitleStandard(this, this.NameSpaceManager, this.ChartXml.SelectSingleNode("c:chartSpace/c:chart", this.NameSpaceManager), "c");
 
     /// <summary>
     /// True if the chart has a title
     /// </summary>
-    public override bool HasTitle
-    {
-        get { return this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:title", this.NameSpaceManager) != null; }
-    }
+    public override bool HasTitle => this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:title", this.NameSpaceManager) != null;
 
     /// <summary>
     /// If the chart has a legend
     /// </summary>
-    public override bool HasLegend
-    {
-        get { return this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager) != null; }
-    }
+    public override bool HasLegend => this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager) != null;
 
     /// <summary>
     /// Remove the title from the chart
@@ -1059,8 +1038,8 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public override bool RoundedCorners
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(_roundedCornersPath); }
-        set { this._chartXmlHelper.SetXmlNodeBool(_roundedCornersPath, value); }
+        get => this._chartXmlHelper.GetXmlNodeBool(_roundedCornersPath);
+        set => this._chartXmlHelper.SetXmlNodeBool(_roundedCornersPath, value);
     }
 
     const string _plotVisibleOnlyPath = "../../c:plotVisOnly/@val";
@@ -1070,16 +1049,14 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public override bool ShowHiddenData
     {
-        get
-        {
+        get =>
+
             //!!Inverted value!!
-            return !this._chartXmlHelper.GetXmlNodeBool(_plotVisibleOnlyPath);
-        }
-        set
-        {
+            !this._chartXmlHelper.GetXmlNodeBool(_plotVisibleOnlyPath);
+        set =>
+
             //!!Inverted value!!
             this._chartXmlHelper.SetXmlNodeBool(_plotVisibleOnlyPath, !value);
-        }
     }
 
     const string _displayBlanksAsPath = "../../c:dispBlanksAs/@val";
@@ -1102,7 +1079,7 @@ public class ExcelChartStandard : ExcelChart
                 return (eDisplayBlanksAs)Enum.Parse(typeof(eDisplayBlanksAs), v, true);
             }
         }
-        set { this._chartXmlHelper.SetXmlNodeString(_displayBlanksAsPath, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
+        set => this._chartXmlHelper.SetXmlNodeString(_displayBlanksAsPath, value.ToString().ToLower(CultureInfo.InvariantCulture));
     }
 
     const string _showDLblsOverMax = "../../c:showDLblsOverMax/@val";
@@ -1112,8 +1089,8 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public override bool ShowDataLabelsOverMaximum
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(_showDLblsOverMax, true); }
-        set { this._chartXmlHelper.SetXmlNodeBool(_showDLblsOverMax, value, true); }
+        get => this._chartXmlHelper.GetXmlNodeBool(_showDLblsOverMax, true);
+        set => this._chartXmlHelper.SetXmlNodeBool(_showDLblsOverMax, value, true);
     }
 
     /// <summary>
@@ -1164,130 +1141,90 @@ public class ExcelChartStandard : ExcelChart
     /// <summary>
     /// Plotarea
     /// </summary>
-    public override ExcelChartPlotArea PlotArea
-    {
-        get
-        {
-            return this._plotArea ??= new ExcelChartPlotArea(this.NameSpaceManager,
-                                                             this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", this.NameSpaceManager),
-                                                             this,
-                                                             "c");
-        }
-    }
+    public override ExcelChartPlotArea PlotArea =>
+        this._plotArea ??= new ExcelChartPlotArea(this.NameSpaceManager,
+                                                  this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:plotArea", this.NameSpaceManager),
+                                                  this,
+                                                  "c");
 
     /// <summary>
     /// Legend
     /// </summary>
-    public new ExcelChartLegend Legend
-    {
-        get
-        {
-            return this._legend ??= new ExcelChartLegend(this.NameSpaceManager,
-                                                         this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager),
-                                                         this,
-                                                         "c");
-        }
-    }
+    public new ExcelChartLegend Legend =>
+        this._legend ??= new ExcelChartLegend(this.NameSpaceManager,
+                                              this.ChartXml.SelectSingleNode("c:chartSpace/c:chart/c:legend", this.NameSpaceManager),
+                                              this,
+                                              "c");
 
     ExcelDrawingBorder _border;
 
     /// <summary>
     /// Border
     /// </summary>
-    public override ExcelDrawingBorder Border
-    {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this,
-                                                           this.NameSpaceManager,
-                                                           this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                           "c:spPr/a:ln",
-                                                           this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelDrawingBorder Border =>
+        this._border ??= new ExcelDrawingBorder(this,
+                                                this.NameSpaceManager,
+                                                this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                                "c:spPr/a:ln",
+                                                this._chartXmlHelper.SchemaNodeOrder);
 
     ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to Fill properties
     /// </summary>
-    public override ExcelDrawingFill Fill
-    {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFill(this,
-                                                       this.NameSpaceManager,
-                                                       this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                       "c:spPr",
-                                                       this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelDrawingFill Fill =>
+        this._fill ??= new ExcelDrawingFill(this,
+                                            this.NameSpaceManager,
+                                            this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                            "c:spPr",
+                                            this._chartXmlHelper.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public override ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this,
-                                                                this.NameSpaceManager,
-                                                                this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                                "c:spPr/a:effectLst",
-                                                                this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelDrawingEffectStyle Effect =>
+        this._effect ??= new ExcelDrawingEffectStyle(this,
+                                                     this.NameSpaceManager,
+                                                     this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                                     "c:spPr/a:effectLst",
+                                                     this._chartXmlHelper.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public override ExcelDrawing3D ThreeD
-    {
-        get
-        {
-            return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager,
-                                                       this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                       "c:spPr",
-                                                       this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelDrawing3D ThreeD =>
+        this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager,
+                                            this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                            "c:spPr",
+                                            this._chartXmlHelper.SchemaNodeOrder);
 
     ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
     /// </summary>
-    public override ExcelTextFont Font
-    {
-        get
-        {
-            return this._font ??= new ExcelTextFont(this,
-                                                    this.NameSpaceManager,
-                                                    this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                    "c:txPr/a:p/a:pPr/a:defRPr",
-                                                    this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelTextFont Font =>
+        this._font ??= new ExcelTextFont(this,
+                                         this.NameSpaceManager,
+                                         this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                         "c:txPr/a:p/a:pPr/a:defRPr",
+                                         this._chartXmlHelper.SchemaNodeOrder);
 
     ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
     /// </summary>
-    public override ExcelTextBody TextBody
-    {
-        get
-        {
-            return this._textBody ??= new ExcelTextBody(this.NameSpaceManager,
-                                                        this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
-                                                        "c:txPr/a:bodyPr",
-                                                        this._chartXmlHelper.SchemaNodeOrder);
-        }
-    }
+    public override ExcelTextBody TextBody =>
+        this._textBody ??= new ExcelTextBody(this.NameSpaceManager,
+                                             this.ChartXml.SelectSingleNode("c:chartSpace", this.NameSpaceManager),
+                                             "c:txPr/a:bodyPr",
+                                             this._chartXmlHelper.SchemaNodeOrder);
 
     /// <summary>
     /// 3D-settings
@@ -1314,8 +1251,8 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public eGrouping Grouping
     {
-        get { return GetGroupingEnum(this._chartXmlHelper.GetXmlNodeString(this._groupingPath)); }
-        internal set { this._chartXmlHelper.SetXmlNodeString(this._groupingPath, GetGroupingText(value)); }
+        get => GetGroupingEnum(this._chartXmlHelper.GetXmlNodeString(this._groupingPath));
+        internal set => this._chartXmlHelper.SetXmlNodeString(this._groupingPath, GetGroupingText(value));
     }
 
     string _varyColorsPath = "c:varyColors/@val";
@@ -1325,7 +1262,7 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public override bool VaryColors
     {
-        get { return this._chartXmlHelper.GetXmlNodeBool(this._varyColorsPath); }
+        get => this._chartXmlHelper.GetXmlNodeBool(this._varyColorsPath);
         set
         {
             if (value)
@@ -1376,10 +1313,7 @@ public class ExcelChartStandard : ExcelChart
 
     #endregion
 
-    internal static int Items
-    {
-        get { return 0; }
-    }
+    internal static int Items => 0;
 
     internal void SetPivotSource(ExcelPivotTable pivotTableSource)
     {
@@ -1399,18 +1333,15 @@ public class ExcelChartStandard : ExcelChart
 
     ExcelChartAxisStandard[] _axisStandard;
 
-    public new ExcelChartAxisStandard[] Axis
-    {
-        get { return this._axisStandard ??= this._axis.Select(x => (ExcelChartAxisStandard)x).ToArray(); }
-    }
+    public new ExcelChartAxisStandard[] Axis => this._axisStandard ??= this._axis.Select(x => (ExcelChartAxisStandard)x).ToArray();
 
     /// <summary>
     /// The X Axis
     /// </summary>
     public new ExcelChartAxisStandard XAxis
     {
-        get { return (ExcelChartAxisStandard)base.XAxis; }
-        internal set { base.XAxis = value; }
+        get => (ExcelChartAxisStandard)base.XAxis;
+        internal set => base.XAxis = value;
     }
 
     /// <summary>
@@ -1418,7 +1349,7 @@ public class ExcelChartStandard : ExcelChart
     /// </summary>
     public new ExcelChartAxisStandard YAxis
     {
-        get { return (ExcelChartAxisStandard)base.YAxis; }
-        internal set { base.YAxis = value; }
+        get => (ExcelChartAxisStandard)base.YAxis;
+        internal set => base.YAxis = value;
     }
 }

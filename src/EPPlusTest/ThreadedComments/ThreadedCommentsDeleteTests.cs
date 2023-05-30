@@ -23,10 +23,7 @@ public class ThreadedCommentsDeleteTests : TestBase
     }
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void DeleteOneRowShiftUp()

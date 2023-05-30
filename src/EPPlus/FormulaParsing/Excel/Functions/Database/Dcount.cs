@@ -34,10 +34,7 @@ internal class Dcount : ExcelFunction
     {
     }
 
-    public Dcount(RowMatcher rowMatcher)
-    {
-        this._rowMatcher = rowMatcher;
-    }
+    public Dcount(RowMatcher rowMatcher) => this._rowMatcher = rowMatcher;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

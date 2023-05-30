@@ -37,10 +37,7 @@ partial class ZipEntry
     /// <summary>
     /// True if the referenced entry is a directory.
     /// </summary>
-    internal bool AttributesIndicateDirectory
-    {
-        get { return this._InternalFileAttrs == 0 && (this._ExternalFileAttrs & 0x0010) == 0x0010; }
-    }
+    internal bool AttributesIndicateDirectory => this._InternalFileAttrs == 0 && (this._ExternalFileAttrs & 0x0010) == 0x0010;
 
     internal void ResetDirEntry()
     {
@@ -380,10 +377,7 @@ partial class ZipEntry
     /// </summary>
     /// <param name="signature">the candidate 4-byte signature value.</param>
     /// <returns>true, if the signature is valid according to the PKWare spec.</returns>
-    internal static bool IsNotValidZipDirEntrySig(int signature)
-    {
-        return signature != ZipConstants.ZipDirEntrySignature;
-    }
+    internal static bool IsNotValidZipDirEntrySig(int signature) => signature != ZipConstants.ZipDirEntrySignature;
 
     private short _VersionMadeBy;
     private short _InternalFileAttrs;

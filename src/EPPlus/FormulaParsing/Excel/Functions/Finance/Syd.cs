@@ -43,8 +43,5 @@ internal class Syd : ExcelFunction
         return this.CreateResult(result * (life + 1 - period) * 2, DataType.Decimal);
     }
 
-    private static double GetInterest(double rate, double remainingAmount)
-    {
-        return remainingAmount * rate;
-    }
+    private static double GetInterest(double rate, double remainingAmount) => remainingAmount * rate;
 }

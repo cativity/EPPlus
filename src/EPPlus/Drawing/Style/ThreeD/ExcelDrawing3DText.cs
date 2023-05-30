@@ -27,17 +27,15 @@ public class ExcelDrawing3DText : ExcelDrawing3D
     private readonly string _flatTextZCoordinatePath = "{0}/a:flatTx/@z";
 
     internal ExcelDrawing3DText(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
-        : base(nameSpaceManager, topNode, path, schemaNodeOrder)
-    {
+        : base(nameSpaceManager, topNode, path, schemaNodeOrder) =>
         this._flatTextZCoordinatePath = string.Format(this._flatTextZCoordinatePath, path);
-    }
 
     /// <summary>
     /// The Z coordinate to be used when positioning the flat text within the 3D scene
     /// </summary>
     public double FlatTextZCoordinate
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0; }
+        get => this.GetXmlNodeEmuToPtNull(this._flatTextZCoordinatePath) ?? 0;
         set
         {
             this.InitXml(true);

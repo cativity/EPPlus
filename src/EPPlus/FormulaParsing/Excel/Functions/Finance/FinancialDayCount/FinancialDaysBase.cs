@@ -179,10 +179,7 @@ internal abstract class FinancialDaysBase
         return CreateCalendarPeriod(startDate, frequency, date.GetBasis(), true);
     }
 
-    public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency)
-    {
-        return this.GetCalendarYearPeriodsBackwards(settlement, date, frequency, 0);
-    }
+    public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency) => this.GetCalendarYearPeriodsBackwards(settlement, date, frequency, 0);
 
     public IEnumerable<FinancialPeriod> GetCalendarYearPeriodsBackwards(FinancialDay settlement, FinancialDay date, int frequency, int additionalPeriods)
     {
@@ -243,10 +240,7 @@ internal abstract class FinancialDaysBase
         return nPeriods;
     }
 
-    protected virtual double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)
-    {
-        return (basis * (end.Year - start.Year)) + (30 * (end.Month - start.Month)) + ((end.Day > 30 ? 30 : end.Day) - (start.Day > 30 ? 30 : start.Day));
-    }
+    protected virtual double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis) => (basis * (end.Year - start.Year)) + (30 * (end.Month - start.Month)) + ((end.Day > 30 ? 30 : end.Day) - (start.Day > 30 ? 30 : start.Day));
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
     protected double ActualDaysInLeapYear(FinancialDay start, FinancialDay end)

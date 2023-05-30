@@ -159,10 +159,7 @@ namespace OfficeOpenXml
         /// <param name="Reader">The datareader to load from</param>
         /// <param name="PrintHeaders">Print the caption property (if set) or the columnname property if not, on first row</param>
         /// <returns>The filled range</returns>
-        public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders)
-        {
-            return await this.LoadFromDataReaderAsync(Reader, PrintHeaders, CancellationToken.None);
-        }
+        public async Task<ExcelRangeBase> LoadFromDataReaderAsync(DbDataReader Reader, bool PrintHeaders) => await this.LoadFromDataReaderAsync(Reader, PrintHeaders, CancellationToken.None);
 
         /// <summary>
         /// Load the data from the datareader starting from the top left cell of the range
@@ -240,20 +237,14 @@ namespace OfficeOpenXml
         /// <param name="Table">The datatable to load</param>
         /// <param name="PrintHeaders">Print the caption property (if set) or the columnname property if not, on first row</param>
         /// <returns>The filled range</returns>
-        public ExcelRangeBase LoadFromDataTable(DataTable Table, bool PrintHeaders)
-        {
-            return this.LoadFromDataTable(Table, PrintHeaders, null);
-        }
+        public ExcelRangeBase LoadFromDataTable(DataTable Table, bool PrintHeaders) => this.LoadFromDataTable(Table, PrintHeaders, null);
 
         /// <summary>
         /// Load the data from the datatable starting from the top left cell of the range
         /// </summary>
         /// <param name="table">The datatable to load</param>
         /// <returns>The filled range</returns>
-        public ExcelRangeBase LoadFromDataTable(DataTable table)
-        {
-            return this.LoadFromDataTable(table, false, null);
-        }
+        public ExcelRangeBase LoadFromDataTable(DataTable table) => this.LoadFromDataTable(table, false, null);
 
         /// <summary>
         /// Load the data from the <see cref="DataTable"/> starting from the top left cell of the range
@@ -357,10 +348,7 @@ namespace OfficeOpenXml
         /// <param name="Collection">The collection to load</param>
         /// <param name="PrintHeaders">Print the property names on the first row. If the property is decorated with a <see cref="DisplayNameAttribute"/> or a <see cref="DescriptionAttribute"/> that attribute will be used instead of the reflected member name.</param>
         /// <returns>The filled range</returns>
-        public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders)
-        {
-            return this.LoadFromCollection<T>(Collection, PrintHeaders, null, BindingFlags.Public | BindingFlags.Instance, null);
-        }
+        public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders) => this.LoadFromCollection<T>(Collection, PrintHeaders, null, BindingFlags.Public | BindingFlags.Instance, null);
 
         /// <summary>
         /// Load a collection of T into the worksheet starting from the top left row of the range.
@@ -371,10 +359,7 @@ namespace OfficeOpenXml
         /// <param name="PrintHeaders">Print the property names on the first row. If the property is decorated with a <see cref="DisplayNameAttribute"/> or a <see cref="DescriptionAttribute"/> that attribute will be used instead of the reflected member name.</param>
         /// <param name="TableStyle">Will create a table with this style. If set to TableStyles.None no table will be created</param>
         /// <returns>The filled range</returns>
-        public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders, TableStyles? TableStyle)
-        {
-            return this.LoadFromCollection<T>(Collection, PrintHeaders, TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
-        }
+        public ExcelRangeBase LoadFromCollection<T>(IEnumerable<T> Collection, bool PrintHeaders, TableStyles? TableStyle) => this.LoadFromCollection<T>(Collection, PrintHeaders, TableStyle, BindingFlags.Public | BindingFlags.Instance, null);
 
         /// <summary>
         /// Load a collection into the worksheet starting from the top left row of the range.
@@ -390,10 +375,8 @@ namespace OfficeOpenXml
                                                     bool PrintHeaders,
                                                     TableStyles? TableStyle,
                                                     BindingFlags memberFlags,
-                                                    MemberInfo[] Members)
-        {
-            return this.LoadFromCollectionInternal(Collection, PrintHeaders, TableStyle, memberFlags, Members);
-        }
+                                                    MemberInfo[] Members) =>
+            this.LoadFromCollectionInternal(Collection, PrintHeaders, TableStyle, memberFlags, Members);
 
         private ExcelRangeBase LoadFromCollectionInternal<T>(IEnumerable<T> Collection,
                                                              bool PrintHeaders,
@@ -470,10 +453,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="Text">The Text</param>
         /// <returns>The range containing the data</returns>
-        public ExcelRangeBase LoadFromText(string Text)
-        {
-            return this.LoadFromText(Text, new ExcelTextFormat());
-        }
+        public ExcelRangeBase LoadFromText(string Text) => this.LoadFromText(Text, new ExcelTextFormat());
 
         /// <summary>
         /// Loads a CSV text into a range starting from the top left cell.
@@ -524,10 +504,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="TextFile">The Textfile</param>
         /// <returns></returns>
-        public ExcelRangeBase LoadFromText(FileInfo TextFile)
-        {
-            return this.LoadFromText(File.ReadAllText(TextFile.FullName, Encoding.ASCII));
-        }
+        public ExcelRangeBase LoadFromText(FileInfo TextFile) => this.LoadFromText(File.ReadAllText(TextFile.FullName, Encoding.ASCII));
 
         /// <summary>
         /// Loads a CSV file into a range starting from the top left cell.
@@ -659,10 +636,7 @@ namespace OfficeOpenXml
         ///    }
         /// </code>
         /// </example>
-        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items)
-        {
-            return this.LoadFromDictionaries(items, false, TableStyles.None, null);
-        }
+        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items) => this.LoadFromDictionaries(items, false, TableStyles.None, null);
 
         /// <summary>
         /// Load a collection of dictionaries (or dynamic/ExpandoObjects) into the worksheet starting from the top left row of the range.
@@ -693,10 +667,7 @@ namespace OfficeOpenXml
         ///    }
         /// </code>
         /// </example>
-        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders)
-        {
-            return this.LoadFromDictionaries(items, printHeaders, TableStyles.None, null);
-        }
+        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders) => this.LoadFromDictionaries(items, printHeaders, TableStyles.None, null);
 
         /// <summary>
         /// Load a collection of dictionaries (or dynamic/ExpandoObjects) into the worksheet starting from the top left row of the range.
@@ -728,10 +699,7 @@ namespace OfficeOpenXml
         ///    }
         /// </code>
         /// </example>
-        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders, TableStyles? tableStyle)
-        {
-            return this.LoadFromDictionaries(items, printHeaders, tableStyle, null);
-        }
+        public ExcelRangeBase LoadFromDictionaries(IEnumerable<IDictionary<string, object>> items, bool printHeaders, TableStyles? tableStyle) => this.LoadFromDictionaries(items, printHeaders, tableStyle, null);
 
         /// <summary>
         /// Load a collection of dictionaries (or dynamic/ExpandoObjects) into the worksheet starting from the top left row of the range.

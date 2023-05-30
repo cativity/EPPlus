@@ -38,8 +38,8 @@ public class ExcelPivotTablePageFieldSettings : XmlHelper
 
     internal int Index
     {
-        get { return this.GetXmlNodeInt("@fld"); }
-        set { this.SetXmlNodeString("@fld", value.ToString()); }
+        get => this.GetXmlNodeInt("@fld");
+        set => this.SetXmlNodeString("@fld", value.ToString());
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public class ExcelPivotTablePageFieldSettings : XmlHelper
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value);
     }
 
     /***** Dont work. Need items to be populated. ****/
@@ -57,7 +57,7 @@ public class ExcelPivotTablePageFieldSettings : XmlHelper
     /// </summary>
     internal int SelectedItem
     {
-        get { return this.GetXmlNodeInt("@item"); }
+        get => this.GetXmlNodeInt("@item");
         set
         {
             if (value < 0)
@@ -73,13 +73,13 @@ public class ExcelPivotTablePageFieldSettings : XmlHelper
 
     internal int NumFmtId
     {
-        get { return this.GetXmlNodeInt("@numFmtId"); }
-        set { this.SetXmlNodeString("@numFmtId", value.ToString()); }
+        get => this.GetXmlNodeInt("@numFmtId");
+        set => this.SetXmlNodeString("@numFmtId", value.ToString());
     }
 
     internal int Hier
     {
-        get { return this.GetXmlNodeInt("@hier"); }
-        set { this.SetXmlNodeString("@hier", value.ToString()); }
+        get => this.GetXmlNodeInt("@hier");
+        set => this.SetXmlNodeString("@hier", value.ToString());
     }
 }

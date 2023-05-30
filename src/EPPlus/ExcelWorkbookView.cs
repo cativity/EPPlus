@@ -51,8 +51,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public int Left
     {
-        get { return this.GetXmlNodeInt(LEFT_PATH); }
-        internal set { this.SetXmlNodeString(LEFT_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(LEFT_PATH);
+        internal set => this.SetXmlNodeString(LEFT_PATH, value.ToString());
     }
 
     const string TOP_PATH = "d:bookViews/d:workbookView/@yWindow";
@@ -62,8 +62,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public int Top
     {
-        get { return this.GetXmlNodeInt(TOP_PATH); }
-        internal set { this.SetXmlNodeString(TOP_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(TOP_PATH);
+        internal set => this.SetXmlNodeString(TOP_PATH, value.ToString());
     }
 
     const string WIDTH_PATH = "d:bookViews/d:workbookView/@windowWidth";
@@ -73,8 +73,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public int Width
     {
-        get { return this.GetXmlNodeInt(WIDTH_PATH); }
-        internal set { this.SetXmlNodeString(WIDTH_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(WIDTH_PATH);
+        internal set => this.SetXmlNodeString(WIDTH_PATH, value.ToString());
     }
 
     const string HEIGHT_PATH = "d:bookViews/d:workbookView/@windowHeight";
@@ -84,8 +84,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public int Height
     {
-        get { return this.GetXmlNodeInt(HEIGHT_PATH); }
-        internal set { this.SetXmlNodeString(HEIGHT_PATH, value.ToString()); }
+        get => this.GetXmlNodeInt(HEIGHT_PATH);
+        internal set => this.SetXmlNodeString(HEIGHT_PATH, value.ToString());
     }
 
     const string MINIMIZED_PATH = "d:bookViews/d:workbookView/@minimized";
@@ -95,8 +95,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public bool Minimized
     {
-        get { return this.GetXmlNodeBool(MINIMIZED_PATH); }
-        set { this.SetXmlNodeString(MINIMIZED_PATH, value.ToString()); }
+        get => this.GetXmlNodeBool(MINIMIZED_PATH);
+        set => this.SetXmlNodeString(MINIMIZED_PATH, value.ToString());
     }
 
     const string SHOWVERTICALSCROLL_PATH = "d:bookViews/d:workbookView/@showVerticalScroll";
@@ -106,8 +106,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public bool ShowVerticalScrollBar
     {
-        get { return this.GetXmlNodeBool(SHOWVERTICALSCROLL_PATH, true); }
-        set { this.SetXmlNodeBool(SHOWVERTICALSCROLL_PATH, value, true); }
+        get => this.GetXmlNodeBool(SHOWVERTICALSCROLL_PATH, true);
+        set => this.SetXmlNodeBool(SHOWVERTICALSCROLL_PATH, value, true);
     }
 
     const string SHOWHORIZONTALSCR_PATH = "d:bookViews/d:workbookView/@showHorizontalScroll";
@@ -117,8 +117,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public bool ShowHorizontalScrollBar
     {
-        get { return this.GetXmlNodeBool(SHOWHORIZONTALSCR_PATH, true); }
-        set { this.SetXmlNodeBool(SHOWHORIZONTALSCR_PATH, value, true); }
+        get => this.GetXmlNodeBool(SHOWHORIZONTALSCR_PATH, true);
+        set => this.SetXmlNodeBool(SHOWHORIZONTALSCR_PATH, value, true);
     }
 
     const string SHOWSHEETTABS_PATH = "d:bookViews/d:workbookView/@showSheetTabs";
@@ -128,8 +128,8 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     public bool ShowSheetTabs
     {
-        get { return this.GetXmlNodeBool(SHOWSHEETTABS_PATH, true); }
-        set { this.SetXmlNodeBool(SHOWSHEETTABS_PATH, value, true); }
+        get => this.GetXmlNodeBool(SHOWSHEETTABS_PATH, true);
+        set => this.SetXmlNodeBool(SHOWSHEETTABS_PATH, value, true);
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public class ExcelWorkbookView : XmlHelper
     /// </summary>
     internal int? FirstSheet
     {
-        get { return this.GetXmlNodeIntNull(FirstSheet_PATH); }
-        set { this.SetXmlNodeInt(FirstSheet_PATH, value); }
+        get => this.GetXmlNodeIntNull(FirstSheet_PATH);
+        set => this.SetXmlNodeInt(FirstSheet_PATH, value);
     }
 }

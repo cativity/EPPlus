@@ -63,8 +63,8 @@ public class CompoundDoc
     ///</summary>
     public TestContext TestContext
     {
-        get { return this.testContextInstance; }
-        set { this.testContextInstance = value; }
+        get => this.testContextInstance;
+        set => this.testContextInstance = value;
     }
 
     #region Additional test attributes

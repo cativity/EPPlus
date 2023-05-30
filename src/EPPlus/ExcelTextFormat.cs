@@ -123,10 +123,8 @@ public class ExcelTextFormat : ExcelTextFormatBase
     /// </list>
     /// </summary>
     public ExcelTextFormat()
-        : base()
-    {
+        : base() =>
         this.DataTypes = null;
-    }
 
     /// <summary>
     /// Datatypes list for each column (if column is not present Unknown is assumed)

@@ -39,8 +39,8 @@ public class ExcelSlicerStyleElement : XmlHelper
     /// </summary>
     public ExcelDxfSlicerStyle Style
     {
-        get { return this._style ??= this._styles.GetDxfSlicer(this.GetXmlNodeIntNull("@dxfId")); }
-        internal set { this._style = value; }
+        get => this._style ??= this._styles.GetDxfSlicer(this.GetXmlNodeIntNull("@dxfId"));
+        internal set => this._style = value;
     }
 
     /// <summary>

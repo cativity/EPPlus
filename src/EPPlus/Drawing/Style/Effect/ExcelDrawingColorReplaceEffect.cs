@@ -34,8 +34,5 @@ public class ExcelDrawingColorReplaceEffect : XmlHelper
     /// <summary>
     /// The color to replace with
     /// </summary>
-    public ExcelDrawingColorManager Color
-    {
-        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingColorManager Color => this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, "", this.SchemaNodeOrder);
 }

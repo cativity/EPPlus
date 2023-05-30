@@ -46,16 +46,10 @@ public class ChartTemplateTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("ChartTemplate.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("ChartTemplate.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void LoadChartStyle()

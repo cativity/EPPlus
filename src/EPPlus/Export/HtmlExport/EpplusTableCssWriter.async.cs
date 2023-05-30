@@ -139,10 +139,7 @@ namespace OfficeOpenXml.Export.HtmlExport
             await this.WriteClassEndAsync(this._settings.Minify);
         }
 
-        internal async Task FlushStreamAsync()
-        {
-            await this._writer.FlushAsync();
-        }
+        internal async Task FlushStreamAsync() => await this._writer.FlushAsync();
 
         private async Task WriteFillStylesAsync(ExcelDxfFill f)
         {

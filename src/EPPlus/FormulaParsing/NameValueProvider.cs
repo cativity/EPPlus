@@ -30,10 +30,7 @@ public class NameValueProvider : INameValueProvider
     /// <summary>
     /// An empty <see cref="INameValueProvider"/>
     /// </summary>
-    public static INameValueProvider Empty
-    {
-        get { return new NameValueProvider(); }
-    }
+    public static INameValueProvider Empty => new NameValueProvider();
 
     /// <summary>
     /// Implementation of the IsNamedValue function. In this case (Empty provider) it always return false.
@@ -41,20 +38,14 @@ public class NameValueProvider : INameValueProvider
     /// <param name="key"></param>
     /// <param name="worksheet"></param>
     /// <returns></returns>
-    public bool IsNamedValue(string key, string worksheet)
-    {
-        return false;
-    }
+    public bool IsNamedValue(string key, string worksheet) => false;
 
     /// <summary>
     /// Implementation of the GetNamedValue function. In this case (Empty provider) it always return null.
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public object GetNamedValue(string key)
-    {
-        return null;
-    }
+    public object GetNamedValue(string key) => null;
 
     /// <summary>
     /// Implementation of the Reload function
@@ -63,8 +54,5 @@ public class NameValueProvider : INameValueProvider
     {
     }
 
-    public object GetNamedValue(string key, string worksheet)
-    {
-        return null;
-    }
+    public object GetNamedValue(string key, string worksheet) => null;
 }

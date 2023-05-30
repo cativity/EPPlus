@@ -60,17 +60,14 @@ public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingS
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     const string INVERTIFNEGATIVE_PATH = "c:invertIfNegative/@val";
 
     internal bool InvertIfNegative
     {
-        get { return this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true); }
-        set { this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value); }
+        get => this.GetXmlNodeBool(INVERTIFNEGATIVE_PATH, true);
+        set => this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value);
     }
 
     ExcelChartDataPointCollection _dataPoints;
@@ -78,8 +75,5 @@ public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingS
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 }

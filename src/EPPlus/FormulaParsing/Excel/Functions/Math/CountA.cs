@@ -27,10 +27,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 internal class CountA : HiddenValuesHandlingFunction
 {
     public CountA()
-        : base()
-    {
+        : base() =>
         this.IgnoreErrors = false;
-    }
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {
@@ -91,8 +89,5 @@ internal class CountA : HiddenValuesHandlingFunction
         }
     }
 
-    private static bool ShouldCount(object value)
-    {
-        return value != null;
-    }
+    private static bool ShouldCount(object value) => value != null;
 }

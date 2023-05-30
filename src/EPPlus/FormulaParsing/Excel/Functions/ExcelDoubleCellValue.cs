@@ -42,21 +42,12 @@ public struct ExcelDoubleCellValue : IComparable<ExcelDoubleCellValue>, ICompara
 
     public double Value;
 
-    public static implicit operator double(ExcelDoubleCellValue d)
-    {
-        return d.Value;
-    }
+    public static implicit operator double(ExcelDoubleCellValue d) => d.Value;
 
     //  User-defined conversion from double to Digit
-    public static implicit operator ExcelDoubleCellValue(double d)
-    {
-        return new ExcelDoubleCellValue(d);
-    }
+    public static implicit operator ExcelDoubleCellValue(double d) => new(d);
 
-    public int CompareTo(ExcelDoubleCellValue other)
-    {
-        return this.Value.CompareTo(other.Value);
-    }
+    public int CompareTo(ExcelDoubleCellValue other) => this.Value.CompareTo(other.Value);
 
     public int CompareTo(object obj)
     {
@@ -68,33 +59,15 @@ public struct ExcelDoubleCellValue : IComparable<ExcelDoubleCellValue>, ICompara
         return this.Value.CompareTo(((ExcelDoubleCellValue)obj).Value);
     }
 
-    public override bool Equals(object obj)
-    {
-        return this.CompareTo(obj) == 0;
-    }
+    public override bool Equals(object obj) => this.CompareTo(obj) == 0;
 
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public override int GetHashCode() => base.GetHashCode();
 
-    public static bool operator ==(ExcelDoubleCellValue a, ExcelDoubleCellValue b)
-    {
-        return a.Value.CompareTo(b.Value) == 0d;
-    }
+    public static bool operator ==(ExcelDoubleCellValue a, ExcelDoubleCellValue b) => a.Value.CompareTo(b.Value) == 0d;
 
-    public static bool operator ==(ExcelDoubleCellValue a, double b)
-    {
-        return a.Value.CompareTo(b) == 0d;
-    }
+    public static bool operator ==(ExcelDoubleCellValue a, double b) => a.Value.CompareTo(b) == 0d;
 
-    public static bool operator !=(ExcelDoubleCellValue a, ExcelDoubleCellValue b)
-    {
-        return a.Value.CompareTo(b.Value) != 0d;
-    }
+    public static bool operator !=(ExcelDoubleCellValue a, ExcelDoubleCellValue b) => a.Value.CompareTo(b.Value) != 0d;
 
-    public static bool operator !=(ExcelDoubleCellValue a, double b)
-    {
-        return a.Value.CompareTo(b) != 0d;
-    }
+    public static bool operator !=(ExcelDoubleCellValue a, double b) => a.Value.CompareTo(b) != 0d;
 }

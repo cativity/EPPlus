@@ -36,8 +36,8 @@ public class ExcelTheme : ExcelThemeBase
     /// </summary>
     public string Name
     {
-        get { return this.GetXmlNodeString("@name"); }
-        set { this.SetXmlNodeString("@name", value); }
+        get => this.GetXmlNodeString("@name");
+        set => this.SetXmlNodeString("@name", value);
     }
 
     internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)

@@ -42,10 +42,7 @@ public class WildCardValueMatcherTests
     private WildCardValueMatcher _matcher;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._matcher = new WildCardValueMatcher();
-    }
+    public void Setup() => this._matcher = new WildCardValueMatcher();
 
     [TestMethod]
     public void IsMatchShouldReturn0WhenSingleCharWildCardMatches()

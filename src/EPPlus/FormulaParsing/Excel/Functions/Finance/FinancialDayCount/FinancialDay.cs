@@ -33,10 +33,7 @@ internal abstract class FinancialDay
         this.Day = (short)day;
     }
 
-    public override string ToString()
-    {
-        return $"{this.Year}-{this.Month}-{this.Day}";
-    }
+    public override string ToString() => $"{this.Year}-{this.Month}-{this.Day}";
 
     public short Year { get; set; }
 
@@ -44,20 +41,11 @@ internal abstract class FinancialDay
 
     public short Day { get; set; }
 
-    public bool IsLastDayOfFebruary
-    {
-        get { return this.Month == 2 && this.Day == System.DateTime.DaysInMonth(this.Year, this.Month); }
-    }
+    public bool IsLastDayOfFebruary => this.Month == 2 && this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
 
-    public bool IsLastDayOfMonth
-    {
-        get { return this.Day == System.DateTime.DaysInMonth(this.Year, this.Month); }
-    }
+    public bool IsLastDayOfMonth => this.Day == System.DateTime.DaysInMonth(this.Year, this.Month);
 
-    public System.DateTime ToDateTime()
-    {
-        return new System.DateTime(this.Year, this.Month, this.Day);
-    }
+    public System.DateTime ToDateTime() => new(this.Year, this.Month, this.Day);
 
     public FinancialDay SubtractYears(int years)
     {
@@ -164,10 +152,7 @@ internal abstract class FinancialDay
 
     protected abstract FinancialDay Factory(short year, short month, short day);
 
-    internal DayCountBasis GetBasis()
-    {
-        return this.Basis;
-    }
+    internal DayCountBasis GetBasis() => this.Basis;
 
     protected abstract DayCountBasis Basis { get; }
 
@@ -195,8 +180,5 @@ internal abstract class FinancialDay
         }
     }
 
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
+    public override int GetHashCode() => base.GetHashCode();
 }

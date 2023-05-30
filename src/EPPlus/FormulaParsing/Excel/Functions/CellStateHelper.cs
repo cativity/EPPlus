@@ -20,15 +20,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 internal static class CellStateHelper
 {
-    private static bool IsSubTotal(ICellInfo c, ParsingContext context)
-    {
-        return context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id);
-    }
+    private static bool IsSubTotal(ICellInfo c, ParsingContext context) => context.Scopes.Current.IsSubtotal && context.SubtotalAddresses.Contains(c.Id);
 
-    internal static bool ShouldIgnore(bool ignoreHiddenValues, ICellInfo c, ParsingContext context)
-    {
-        return ShouldIgnore(ignoreHiddenValues, false, c, context);
-    }
+    internal static bool ShouldIgnore(bool ignoreHiddenValues, ICellInfo c, ParsingContext context) => ShouldIgnore(ignoreHiddenValues, false, c, context);
 
     internal static bool ShouldIgnore(bool ignoreHiddenValues, bool ignoreNonNumeric, ICellInfo c, ParsingContext context)
     {

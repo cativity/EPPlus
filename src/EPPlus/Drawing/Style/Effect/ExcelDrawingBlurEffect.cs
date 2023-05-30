@@ -39,8 +39,8 @@ public class ExcelDrawingBlurEffect : ExcelDrawingEffectBase
     /// </summary>
     public double? Radius
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._radiusPath) ?? 0; }
-        set { this.SetXmlNodeEmuToPt(this._radiusPath, value); }
+        get => this.GetXmlNodeEmuToPtNull(this._radiusPath) ?? 0;
+        set => this.SetXmlNodeEmuToPt(this._radiusPath, value);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class ExcelDrawingBlurEffect : ExcelDrawingEffectBase
     /// </summary>
     public bool GrowBounds
     {
-        get { return this.GetXmlNodeBool(this._glowBoundsPath, true); }
-        set { this.SetXmlNodeBool(this._glowBoundsPath, value, true); }
+        get => this.GetXmlNodeBool(this._glowBoundsPath, true);
+        set => this.SetXmlNodeBool(this._glowBoundsPath, value, true);
     }
 }

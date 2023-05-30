@@ -24,10 +24,7 @@ public partial class ExcelRangeBase
     /// <summary>
     /// Fills the range by adding 1 to each cell starting from the value in the top left cell by column
     /// </summary>
-    public void FillNumber()
-    {
-        this.FillNumber(x => { });
-    }
+    public void FillNumber() => this.FillNumber(x => { });
 
     /// <summary>
     /// Fills a range by adding the step value to the start Value. If <paramref name="startValue"/> is null the first value in the row/column is used.
@@ -35,14 +32,12 @@ public partial class ExcelRangeBase
     /// </summary>
     /// <param name="startValue">The start value of the first cell. If this value is null the value of the first cell is used.</param>
     /// <param name="stepValue">The value used for each step</param>
-    public void FillNumber(double? startValue, double stepValue = 1)
-    {
+    public void FillNumber(double? startValue, double stepValue = 1) =>
         this.FillNumber(x =>
         {
             x.StepValue = stepValue;
             x.StartValue = startValue;
         });
-    }
 
     /// <summary>
     /// Fills a range by using the argument options. 
@@ -101,23 +96,18 @@ public partial class ExcelRangeBase
     /// <summary>
     /// Fills the range by adding 1 day to each cell starting from the value in the top left cell by column.
     /// </summary>
-    public void FillDateTime()
-    {
-        this.FillDateTime(x => { });
-    }
+    public void FillDateTime() => this.FillDateTime(x => { });
 
     /// <summary>
     /// Fills the range by adding 1 day to each cell per column starting from <paramref name="startValue"/>.
     /// </summary>
-    public void FillDateTime(DateTime? startValue, eDateTimeUnit dateTimeUnit = eDateTimeUnit.Day, int stepValue = 1)
-    {
+    public void FillDateTime(DateTime? startValue, eDateTimeUnit dateTimeUnit = eDateTimeUnit.Day, int stepValue = 1) =>
         this.FillDateTime(x =>
         {
             x.StartValue = startValue;
             x.DateTimeUnit = dateTimeUnit;
             x.StepValue = stepValue;
         });
-    }
 
     /// <summary>
     /// Fill the range with dates.
@@ -178,10 +168,7 @@ public partial class ExcelRangeBase
     /// </summary>
     /// <typeparam name="T">Type used in the list.</typeparam>
     /// <param name="list">The list to use.</param>
-    public void FillList<T>(IEnumerable<T> list)
-    {
-        this.FillList(list, x => { });
-    }
+    public void FillList<T>(IEnumerable<T> list) => this.FillList(list, x => { });
 
     /// <summary>
     /// 

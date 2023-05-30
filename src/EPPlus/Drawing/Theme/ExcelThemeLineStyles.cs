@@ -42,25 +42,16 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelThemeLine> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<ExcelThemeLine> GetEnumerator() => this._list.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="index">The index</param>
     /// <returns>The line style</returns>
-    public ExcelThemeLine this[int index]
-    {
-        get { return this._list[index]; }
-    }
+    public ExcelThemeLine this[int index] => this._list[index];
 
     /// <summary>
     /// Adds a new line to the collection
@@ -114,8 +105,5 @@ public class ExcelThemeLineStyles : XmlHelper, IEnumerable<ExcelThemeLine>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 }

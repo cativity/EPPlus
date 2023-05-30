@@ -44,7 +44,7 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public eRectangleAlignment Alignment
     {
-        get { return this.GetXmlNodeString(this._shadowAlignmentPath).TranslateRectangleAlignment(); }
+        get => this.GetXmlNodeString(this._shadowAlignmentPath).TranslateRectangleAlignment();
         set
         {
             if (value == eRectangleAlignment.Bottom)
@@ -63,8 +63,8 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public bool RotateWithShape
     {
-        get { return this.GetXmlNodeBool(this._rotateWithShapePath, true); }
-        set { this.SetXmlNodeBool(this._rotateWithShapePath, value, true); }
+        get => this.GetXmlNodeBool(this._rotateWithShapePath, true);
+        set => this.SetXmlNodeBool(this._rotateWithShapePath, value, true);
     }
 
     /// <summary>
@@ -73,8 +73,8 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public double HorizontalSkewAngle
     {
-        get { return this.GetXmlNodeAngel(this._horizontalSkewAnglePath); }
-        set { this.SetXmlNodeAngel(this._horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90); }
+        get => this.GetXmlNodeAngel(this._horizontalSkewAnglePath);
+        set => this.SetXmlNodeAngel(this._horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public double VerticalSkewAngle
     {
-        get { return this.GetXmlNodeAngel(this._verticalSkewAnglePath); }
-        set { this.SetXmlNodeAngel(this._verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90); }
+        get => this.GetXmlNodeAngel(this._verticalSkewAnglePath);
+        set => this.SetXmlNodeAngel(this._verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
     }
 
     /// <summary>
@@ -93,8 +93,8 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public double HorizontalScalingFactor
     {
-        get { return this.GetXmlNodePercentage(this._horizontalScalingFactorPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._horizontalScalingFactorPath, value, true, 10000); }
+        get => this.GetXmlNodePercentage(this._horizontalScalingFactorPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._horizontalScalingFactorPath, value, true, 10000);
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class ExcelDrawingOuterShadowEffect : ExcelDrawingInnerShadowEffect
     /// </summary>
     public double VerticalScalingFactor
     {
-        get { return this.GetXmlNodePercentage(this._verticalScalingFactorPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._verticalScalingFactorPath, value, true, 10000); }
+        get => this.GetXmlNodePercentage(this._verticalScalingFactorPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._verticalScalingFactorPath, value, true, 10000);
     }
 }

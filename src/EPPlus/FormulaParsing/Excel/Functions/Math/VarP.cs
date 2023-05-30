@@ -26,10 +26,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 internal class VarP : HiddenValuesHandlingFunction
 {
     public VarP()
-        : base()
-    {
+        : base() =>
         this.IgnoreErrors = false;
-    }
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

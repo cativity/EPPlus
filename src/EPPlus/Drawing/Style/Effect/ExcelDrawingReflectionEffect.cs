@@ -59,8 +59,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? StartPosition
     {
-        get { return this.GetXmlNodePercentage(this._startPositionPath) ?? 0; }
-        set { this.SetXmlNodePercentage(this._startPositionPath, value, false); }
+        get => this.GetXmlNodePercentage(this._startPositionPath) ?? 0;
+        set => this.SetXmlNodePercentage(this._startPositionPath, value, false);
     }
 
     /// <summary>
@@ -68,8 +68,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? StartOpacity
     {
-        get { return this.GetXmlNodePercentage(this._startOpacityPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._startOpacityPath, value, false); }
+        get => this.GetXmlNodePercentage(this._startOpacityPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._startOpacityPath, value, false);
     }
 
     /// <summary>
@@ -77,8 +77,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? EndPosition
     {
-        get { return this.GetXmlNodePercentage(this._endPositionPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._endPositionPath, value, false); }
+        get => this.GetXmlNodePercentage(this._endPositionPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._endPositionPath, value, false);
     }
 
     /// <summary>
@@ -86,8 +86,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? EndOpacity
     {
-        get { return this.GetXmlNodePercentage(this._endOpacityPath) ?? 0; }
-        set { this.SetXmlNodePercentage(this._endOpacityPath, value, false); }
+        get => this.GetXmlNodePercentage(this._endOpacityPath) ?? 0;
+        set => this.SetXmlNodePercentage(this._endOpacityPath, value, false);
     }
 
     /// <summary>
@@ -95,8 +95,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? FadeDirection
     {
-        get { return this.GetXmlNodeAngel(this._fadeDirectionPath, 90); }
-        set { this.SetXmlNodeAngel(this._fadeDirectionPath, value, "FadeDirection", -90, 90); }
+        get => this.GetXmlNodeAngel(this._fadeDirectionPath, 90);
+        set => this.SetXmlNodeAngel(this._fadeDirectionPath, value, "FadeDirection", -90, 90);
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public eRectangleAlignment Alignment
     {
-        get { return this.GetXmlNodeString(this._shadowAlignmentPath).TranslateRectangleAlignment(); }
+        get => this.GetXmlNodeString(this._shadowAlignmentPath).TranslateRectangleAlignment();
         set
         {
             if (value == eRectangleAlignment.Bottom)
@@ -123,8 +123,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public bool RotateWithShape
     {
-        get { return this.GetXmlNodeBool(this._rotateWithShapePath, true); }
-        set { this.SetXmlNodeBool(this._rotateWithShapePath, value, true); }
+        get => this.GetXmlNodeBool(this._rotateWithShapePath, true);
+        set => this.SetXmlNodeBool(this._rotateWithShapePath, value, true);
     }
 
     /// <summary>
@@ -133,8 +133,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? HorizontalSkewAngle
     {
-        get { return this.GetXmlNodeAngel(this._horizontalSkewAnglePath); }
-        set { this.SetXmlNodeAngel(this._horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90); }
+        get => this.GetXmlNodeAngel(this._horizontalSkewAnglePath);
+        set => this.SetXmlNodeAngel(this._horizontalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? VerticalSkewAngle
     {
-        get { return this.GetXmlNodeAngel(this._verticalSkewAnglePath); }
-        set { this.SetXmlNodeAngel(this._verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90); }
+        get => this.GetXmlNodeAngel(this._verticalSkewAnglePath);
+        set => this.SetXmlNodeAngel(this._verticalSkewAnglePath, value, "HorizontalSkewAngle", -90, 90);
     }
 
     /// <summary>
@@ -153,8 +153,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? HorizontalScalingFactor
     {
-        get { return this.GetXmlNodePercentage(this._horizontalScalingFactorPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._horizontalScalingFactorPath, value, true, 10000); }
+        get => this.GetXmlNodePercentage(this._horizontalScalingFactorPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._horizontalScalingFactorPath, value, true, 10000);
     }
 
     /// <summary>
@@ -163,8 +163,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? VerticalScalingFactor
     {
-        get { return this.GetXmlNodePercentage(this._verticalScalingFactorPath) ?? 100; }
-        set { this.SetXmlNodePercentage(this._verticalScalingFactorPath, value, true, 10000); }
+        get => this.GetXmlNodePercentage(this._verticalScalingFactorPath) ?? 100;
+        set => this.SetXmlNodePercentage(this._verticalScalingFactorPath, value, true, 10000);
     }
 
     /// <summary>
@@ -172,8 +172,8 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? Direction
     {
-        get { return this.GetXmlNodeAngel(this._directionPath); }
-        set { this.SetXmlNodeAngel(this._directionPath, value, "Direction"); }
+        get => this.GetXmlNodeAngel(this._directionPath);
+        set => this.SetXmlNodeAngel(this._directionPath, value, "Direction");
     }
 
     /// <summary>
@@ -181,7 +181,7 @@ public class ExcelDrawingReflectionEffect : ExcelDrawingShadowEffectBase
     /// </summary>
     public double? BlurRadius
     {
-        get { return this.GetXmlNodeEmuToPt(this._blurRadPath); }
-        set { this.SetXmlNodeEmuToPt(this._blurRadPath, value); }
+        get => this.GetXmlNodeEmuToPt(this._blurRadPath);
+        set => this.SetXmlNodeEmuToPt(this._blurRadPath, value);
     }
 }

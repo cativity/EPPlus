@@ -29,10 +29,8 @@ internal class ExcelLookupNavigator : LookupNavigator
     private int _index;
 
     public ExcelLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
-        : base(direction, arguments, parsingContext)
-    {
+        : base(direction, arguments, parsingContext) =>
         this.Initialize();
-    }
 
     private void Initialize()
     {
@@ -53,10 +51,7 @@ internal class ExcelLookupNavigator : LookupNavigator
         this.SetCurrentValue();
     }
 
-    private void SetCurrentValue()
-    {
-        this._currentValue = this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, this._currentRow, this._currentCol);
-    }
+    private void SetCurrentValue() => this._currentValue = this.ParsingContext.ExcelDataProvider.GetCellValue(this._rangeAddress.Worksheet, this._currentRow, this._currentCol);
 
     private bool HasNext()
     {
@@ -70,10 +65,7 @@ internal class ExcelLookupNavigator : LookupNavigator
         }
     }
 
-    public override int Index
-    {
-        get { return this._index; }
-    }
+    public override int Index => this._index;
 
     public override bool MoveNext()
     {
@@ -97,10 +89,7 @@ internal class ExcelLookupNavigator : LookupNavigator
         return true;
     }
 
-    public override object CurrentValue
-    {
-        get { return this._currentValue; }
-    }
+    public override object CurrentValue => this._currentValue;
 
     public override object GetLookupValue()
     {

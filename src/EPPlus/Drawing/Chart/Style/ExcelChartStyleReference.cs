@@ -25,10 +25,8 @@ public class ExcelChartStyleReference : XmlHelper
     string _path;
 
     internal ExcelChartStyleReference(XmlNamespaceManager nsm, XmlNode topNode, string path)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._path = path;
-    }
 
     /// <summary>
     /// The index to the theme style matrix.
@@ -36,7 +34,7 @@ public class ExcelChartStyleReference : XmlHelper
     /// </summary>
     public int Index
     {
-        get { return this.GetXmlNodeInt($"{this._path}/@idx"); }
+        get => this.GetXmlNodeInt($"{this._path}/@idx");
         set
         {
             if (value < 0)
@@ -54,10 +52,7 @@ public class ExcelChartStyleReference : XmlHelper
     /// The color to be used for the reference. 
     /// This will replace any the StyleClr node in the chart style xml.
     /// </summary>
-    public ExcelChartStyleColorManager Color
-    {
-        get { return this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
-    }
+    public ExcelChartStyleColorManager Color => this._color ??= new ExcelChartStyleColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the reference has a color

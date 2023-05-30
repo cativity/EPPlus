@@ -42,36 +42,21 @@ public class ExcelDrawingScene3DBackDrop : XmlHelper
     /// <summary>
     /// The anchor point
     /// </summary>
-    public ExcelDrawingPoint3D AnchorPoint
-    {
-        get
-        {
-            return this._anchorPoint ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._anchorPath, "", this.InitXml);
-        }
-    }
+    public ExcelDrawingPoint3D AnchorPoint => this._anchorPoint ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._anchorPath, "", this.InitXml);
 
     ExcelDrawingPoint3D _upVector;
 
     /// <summary>
     /// The up vector
     /// </summary>
-    public ExcelDrawingPoint3D UpVector
-    {
-        get { return this._upVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._upPath, "d", this.InitXml); }
-    }
+    public ExcelDrawingPoint3D UpVector => this._upVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._upPath, "d", this.InitXml);
 
     ExcelDrawingPoint3D _normalVector;
 
     /// <summary>
     /// The normal vector
     /// </summary>
-    public ExcelDrawingPoint3D NormalVector
-    {
-        get
-        {
-            return this._normalVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._normPath, "d", this.InitXml);
-        }
-    }
+    public ExcelDrawingPoint3D NormalVector => this._normalVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._normPath, "d", this.InitXml);
 
     private void InitXml(bool delete)
     {

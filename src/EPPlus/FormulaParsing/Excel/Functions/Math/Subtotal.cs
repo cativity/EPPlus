@@ -27,10 +27,7 @@ internal class Subtotal : ExcelFunction
 {
     private Dictionary<int, HiddenValuesHandlingFunction> _functions = new Dictionary<int, HiddenValuesHandlingFunction>();
 
-    public Subtotal()
-    {
-        this.Initialize();
-    }
+    public Subtotal() => this.Initialize();
 
     private void Initialize()
     {

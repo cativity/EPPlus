@@ -42,7 +42,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
     /// </summary>
     public int Thickness
     {
-        get { return this.GetXmlNodeInt(THICKNESS_PATH); }
+        get => this.GetXmlNodeInt(THICKNESS_PATH);
         set
         {
             if (value < 0 && value > 9)
@@ -59,48 +59,30 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
     /// <summary>
     /// Access fill properties
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingFill Fill => this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
     ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access border properties
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get { return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingBorder Border => this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder);
 
     ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect => this._effect ??= new ExcelDrawingEffectStyle(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:effectLst", this.SchemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder);
 
-    void IDrawingStyleBase.CreatespPr()
-    {
-        this.CreatespPrNode();
-    }
+    void IDrawingStyleBase.CreatespPr() => this.CreatespPrNode();
 
     #endregion
 }

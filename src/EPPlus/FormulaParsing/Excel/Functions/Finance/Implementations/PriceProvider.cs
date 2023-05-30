@@ -26,15 +26,13 @@ internal class PriceProvider : IPriceProvider
                            double yield,
                            double redemption,
                            int frequency,
-                           DayCountBasis basis = DayCountBasis.US_30_360)
-    {
-        return PriceImpl.GetPrice(FinancialDayFactory.Create(settlement, basis),
-                                  FinancialDayFactory.Create(maturity, basis),
-                                  rate,
-                                  yield,
-                                  redemption,
-                                  frequency,
-                                  basis)
-                        .Result;
-    }
+                           DayCountBasis basis = DayCountBasis.US_30_360) =>
+        PriceImpl.GetPrice(FinancialDayFactory.Create(settlement, basis),
+                           FinancialDayFactory.Create(maturity, basis),
+                           rate,
+                           yield,
+                           redemption,
+                           frequency,
+                           basis)
+                 .Result;
 }

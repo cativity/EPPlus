@@ -298,10 +298,7 @@ internal static class ConvertUtil
         return null;
     }
 
-    internal static string ExcelEscapeString(string s)
-    {
-        return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
-    }
+    internal static string ExcelEscapeString(string s) => s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;");
 
     /// <summary>
     /// Return true if preserve space attribute is set.
@@ -473,10 +470,7 @@ internal static class ConvertUtil
     /// <exception cref="InvalidCastException">
     ///     <paramref name="value"/> is not string and direct conversion fails
     /// </exception>
-    public static T GetTypedCellValue<T>(object value)
-    {
-        return GetTypedCellValueInner<T>(value, false);
-    }
+    public static T GetTypedCellValue<T>(object value) => GetTypedCellValueInner<T>(value, false);
 
     internal static T GetTypedCellValueInner<T>(object value, bool returnDefaultIfException)
     {

@@ -42,23 +42,16 @@ namespace EPPlusTest.DataValidation;
 public class ValidationCollectionTests : ValidationTestBase
 {
     [TestInitialize]
-    public void Setup()
-    {
-        this.SetupTestData();
-    }
+    public void Setup() => this.SetupTestData();
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this.CleanupTestData();
-    }
+    public void Cleanup() => this.CleanupTestData();
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void ExcelDataValidationCollection_AddDecimal_ShouldThrowWhenAddressIsNullOrEmpty()
-    {
+    public void ExcelDataValidationCollection_AddDecimal_ShouldThrowWhenAddressIsNullOrEmpty() =>
+
         // Act
         _ = this._sheet.DataValidations.AddDecimalValidation(string.Empty);
-    }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
     public void ExcelDataValidationCollection_AddDecimal_ShouldThrowWhenNewValidationCollidesWithExisting()

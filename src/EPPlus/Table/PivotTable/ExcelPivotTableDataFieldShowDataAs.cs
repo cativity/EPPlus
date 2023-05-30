@@ -38,10 +38,7 @@ public class ExcelPivotTableDataFieldShowDataAs
 {
     ExcelPivotTableDataField _dataField;
 
-    internal ExcelPivotTableDataFieldShowDataAs(ExcelPivotTableDataField dataField)
-    {
-        this._dataField = dataField;
-    }
+    internal ExcelPivotTableDataFieldShowDataAs(ExcelPivotTableDataField dataField) => this._dataField = dataField;
 
     /// <summary>
     /// Sets the show data as to type Normal. This removes the Show data as setting.
@@ -253,10 +250,7 @@ public class ExcelPivotTableDataFieldShowDataAs
     /// <summary>
     /// The value of the "Show Data As" setting
     /// </summary>
-    public eShowDataAs Value
-    {
-        get { return this._dataField.ShowDataAsInternal; }
-    }
+    public eShowDataAs Value => this._dataField.ShowDataAsInternal;
 
     private void Validate(ExcelPivotTableField baseField, int? baseItem = null)
     {

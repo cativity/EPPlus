@@ -35,8 +35,8 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     /// </summary>
     public string Attribution
     {
-        get { return this.GetXmlNodeString(_attributionPath); }
-        set { this.SetXmlNodeString(_attributionPath, value); }
+        get => this.GetXmlNodeString(_attributionPath);
+        set => this.SetXmlNodeString(_attributionPath, value);
     }
 
     const string _regionPath = "cx:layoutPr/cx:geography/@cultureRegion";
@@ -94,7 +94,7 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     /// </summary>
     public eProjectionType ProjectionType
     {
-        get { return this.GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic); }
+        get => this.GetXmlNodeString(_projectionTypePath).ToEnum(eProjectionType.Automatic);
         set
         {
             if (value == eProjectionType.Automatic)
@@ -115,7 +115,7 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     /// </summary>
     public eGeoMappingLevel ViewedRegionType
     {
-        get { return this.GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic); }
+        get => this.GetXmlNodeString(_geoMappingLevelPath).ToEnum(eGeoMappingLevel.Automatic);
         set
         {
             if (value == eGeoMappingLevel.Automatic)
@@ -134,18 +134,15 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
     /// <summary>
     /// Colors for the gradient scale of the region map series. 
     /// </summary>
-    public ExcelChartExValueColors Colors
-    {
-        get { return this._colors ??= new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartExValueColors Colors => this._colors ??= new ExcelChartExValueColors(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// Layout type for region labels
     /// </summary>
     public eRegionLabelLayout RegionLableLayout
     {
-        get { return this.GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None); }
-        set { this.SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString()); }
+        get => this.GetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val").ToEnum(eRegionLabelLayout.None);
+        set => this.SetXmlNodeString("cx:layoutPr/cx:regionLabelLayout/@val", value.ToEnumString());
     }
 
     /// <summary>

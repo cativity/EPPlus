@@ -35,10 +35,7 @@ public class TableSortLayerBuilder
     /// <summary>
     /// Add a new Sort layer.
     /// </summary>
-    public TableSortLayer ThenSortBy
-    {
-        get { return new TableSortLayer(this._options); }
-    }
+    public TableSortLayer ThenSortBy => new(this._options);
 
     /// <summary>
     /// Use a custom list for sorting on the current Sort layer.

@@ -33,10 +33,7 @@ internal abstract class AbstractHtmlExporter
     protected readonly CellDataWriter _cellDataWriter = new CellDataWriter();
     protected Dictionary<string, int> _styleCache;
 
-    internal void SetStyleCache(Dictionary<string, int> styleCache)
-    {
-        this._styleCache = styleCache;
-    }
+    internal void SetStyleCache(Dictionary<string, int> styleCache) => this._styleCache = styleCache;
 
     protected void GetDataTypes(ExcelAddressBase adr, ExcelTable table)
     {
@@ -97,10 +94,7 @@ internal abstract class AbstractHtmlExporter
         }
     }
 
-    protected static string GetImageCellClassName(HtmlImage image, HtmlExportSettings settings)
-    {
-        return image == null && settings.Pictures.Position != ePicturePosition.Absolute ? "" : settings.StyleClassPrefix + "image-cell";
-    }
+    protected static string GetImageCellClassName(HtmlImage image, HtmlExportSettings settings) => image == null && settings.Pictures.Position != ePicturePosition.Absolute ? "" : settings.StyleClassPrefix + "image-cell";
 
     protected HtmlImage GetImage(int worksheetId, int row, int col)
     {

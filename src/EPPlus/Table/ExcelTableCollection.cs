@@ -132,10 +132,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     /// </summary>
     /// <param name="Index">The index</param>
     /// <param name="ClearRange">Clear the rage if set to true</param>
-    public void Delete(int Index, bool ClearRange = false)
-    {
-        this.Delete(this[Index], ClearRange);
-    }
+    public void Delete(int Index, bool ClearRange = false) => this.Delete(this[Index], ClearRange);
 
     /// <summary>
     /// Delete the table with the specified name
@@ -222,10 +219,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._tables.Count; }
-    }
+    public int Count => this._tables.Count;
 
     /// <summary>
     /// Get the table object from a range.
@@ -287,13 +281,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelTable> GetEnumerator()
-    {
-        return this._tables.GetEnumerator();
-    }
+    public IEnumerator<ExcelTable> GetEnumerator() => this._tables.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._tables.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._tables.GetEnumerator();
 }

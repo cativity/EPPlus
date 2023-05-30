@@ -34,39 +34,27 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// Get the enumerator
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelDxfGradientFillColor> GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    public IEnumerator<ExcelDxfGradientFillColor> GetEnumerator() => this._lst.GetEnumerator();
 
     /// <summary>
     /// Get the enumerator
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._lst.GetEnumerator();
 
     /// <summary>
     /// Indexer for the collection
     /// </summary>
     /// <param name="index">The index in the collection</param>
     /// <returns>The color</returns>
-    public ExcelDxfGradientFillColor this[int index]
-    {
-        get { return this._lst[index]; }
-    }
+    public ExcelDxfGradientFillColor this[int index] => this._lst[index];
 
     /// <summary>
     /// Gets the first occurance with the color with the specified position
     /// </summary>
     /// <param name="position">The position in percentage</param>
     /// <returns>The color</returns>
-    public ExcelDxfGradientFillColor this[double position]
-    {
-        get { return this._lst.Find(i => i.Position == position); }
-    }
+    public ExcelDxfGradientFillColor this[double position] => this._lst.Find(i => i.Position == position);
 
     /// <summary>
     /// Adds a RGB color at the specified position
@@ -90,10 +78,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._lst.Count; }
-    }
+    public int Count => this._lst.Count;
 
     internal override string Id
     {
@@ -113,19 +98,13 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// <summary>
     /// If the style has any value set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this._lst.Count > 0; }
-    }
+    public override bool HasValue => this._lst.Count > 0;
 
     /// <summary>
     /// Remove the style at the index in the collection.
     /// </summary>
     /// <param name="index"></param>
-    public void RemoveAt(int index)
-    {
-        this._lst.RemoveAt(index);
-    }
+    public void RemoveAt(int index) => this._lst.RemoveAt(index);
 
     /// <summary>
     /// Remove the style at the position from the collection.
@@ -145,18 +124,12 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     /// Remove the style from the collection
     /// </summary>
     /// <param name="item"></param>
-    public void Remove(ExcelDxfGradientFillColor item)
-    {
-        _ = this._lst.Remove(item);
-    }
+    public void Remove(ExcelDxfGradientFillColor item) => _ = this._lst.Remove(item);
 
     /// <summary>
     /// Clear all style items from the collection
     /// </summary>
-    public override void Clear()
-    {
-        this._lst.Clear();
-    }
+    public override void Clear() => this._lst.Clear();
 
     internal override void CreateNodes(XmlHelper helper, string path)
     {

@@ -27,23 +27,11 @@ internal class FinancialDays_Actual_365 : FinancialDaysBase, IFinanicalDays
         return this.GetDaysBetweenDates(start, end, (int)this.DaysPerYear);
     }
 
-    public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate)
-    {
-        return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
-    }
+    public double GetDaysBetweenDates(FinancialDay startDate, FinancialDay endDate) => this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
 
-    protected override double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis)
-    {
-        return end.ToDateTime().Subtract(start.ToDateTime()).TotalDays;
-    }
+    protected override double GetDaysBetweenDates(FinancialDay start, FinancialDay end, int basis) => end.ToDateTime().Subtract(start.ToDateTime()).TotalDays;
 
-    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
-    {
-        return this.DaysPerYear / frequency;
-    }
+    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency) => this.DaysPerYear / frequency;
 
-    public double DaysPerYear
-    {
-        get { return 365d; }
-    }
+    public double DaysPerYear => 365d;
 }

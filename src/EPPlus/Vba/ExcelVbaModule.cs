@@ -33,23 +33,18 @@ public class ExcelVBAModule
     };
 
     //private const string _validModulePattern = "^[a-zA-Z][a-zA-Z0-9_ ]*$";
-    internal ExcelVBAModule()
-    {
-        this.Attributes = new ExcelVbaModuleAttributesCollection();
-    }
+    internal ExcelVBAModule() => this.Attributes = new ExcelVbaModuleAttributesCollection();
 
     internal ExcelVBAModule(ModuleNameChange nameChangeCallback)
-        : this()
-    {
+        : this() =>
         this._nameChangeCallback = nameChangeCallback;
-    }
 
     /// <summary>
     /// The name of the module
     /// </summary>
     public string Name
     {
-        get { return this._name; }
+        get => this._name;
         set
         {
             if (value.Any(c => c > 255))
@@ -110,7 +105,7 @@ public class ExcelVBAModule
     /// </summary>
     public string Code
     {
-        get { return this._code; }
+        get => this._code;
         set
         {
             if (value.StartsWith("Attribute", StringComparison.OrdinalIgnoreCase) || value.StartsWith("VERSION", StringComparison.OrdinalIgnoreCase))
@@ -160,8 +155,5 @@ public class ExcelVBAModule
     /// Converts the object to a string
     /// </summary>
     /// <returns>The name of the VBA module</returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 }

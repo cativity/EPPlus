@@ -44,10 +44,7 @@ public class TableSortOptions : SortOptionsBase
     private readonly ExcelTable _table;
     private readonly Dictionary<string, int> _columnNameIndexes;
 
-    internal ExcelTable Table
-    {
-        get { return this._table; }
-    }
+    internal ExcelTable Table => this._table;
 
     internal int GetColumnNameIndex(string name)
     {
@@ -62,8 +59,5 @@ public class TableSortOptions : SortOptionsBase
     /// <summary>
     /// Defines the first <see cref="TableSortLayer"/>.
     /// </summary>
-    public TableSortLayer SortBy
-    {
-        get { return this._sortLayer ??= new TableSortLayer(this); }
-    }
+    public TableSortLayer SortBy => this._sortLayer ??= new TableSortLayer(this);
 }

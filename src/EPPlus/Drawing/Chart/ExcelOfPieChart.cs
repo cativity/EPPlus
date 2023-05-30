@@ -26,10 +26,8 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelOfPieChart : ExcelPieChart
 {
     internal ExcelOfPieChart(ExcelDrawings drawings, XmlNode node, eChartType type, bool isPivot, ExcelGroupShape parent = null)
-        : base(drawings, node, type, isPivot, parent)
-    {
+        : base(drawings, node, type, isPivot, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelOfPieChart(ExcelDrawings drawings,
                              XmlNode node,
@@ -38,10 +36,8 @@ public class ExcelOfPieChart : ExcelPieChart
                              ExcelPivotTable PivotTableSource,
                              XmlDocument chartXml,
                              ExcelGroupShape parent = null)
-        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent)
-    {
+        : base(drawings, node, type, topChart, PivotTableSource, chartXml, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelOfPieChart(ExcelDrawings drawings,
                              XmlNode node,
@@ -50,16 +46,12 @@ public class ExcelOfPieChart : ExcelPieChart
                              XmlDocument chartXml,
                              XmlNode chartNode,
                              ExcelGroupShape parent = null)
-        : base(drawings, node, uriChart, part, chartXml, chartNode, parent)
-    {
+        : base(drawings, node, uriChart, part, chartXml, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     internal ExcelOfPieChart(ExcelChart topChart, XmlNode chartNode, ExcelGroupShape parent = null)
-        : base(topChart, chartNode, parent)
-    {
+        : base(topChart, chartNode, parent) =>
         this.SetTypeProperties();
-    }
 
     private void SetTypeProperties()
     {
@@ -105,8 +97,8 @@ public class ExcelOfPieChart : ExcelPieChart
     /// </summary>
     public int GapWidth
     {
-        get { return this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath); }
-        set { this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this._chartXmlHelper.GetXmlNodeInt(this._gapWidthPath);
+        set => this._chartXmlHelper.SetXmlNodeString(this._gapWidthPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     internal override eChartType GetChartType(string name)

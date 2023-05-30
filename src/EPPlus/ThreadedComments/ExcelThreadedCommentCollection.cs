@@ -27,11 +27,10 @@ namespace OfficeOpenXml.ThreadedComments;
 public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThreadedComment>
 {
     internal ExcelThreadedCommentCollection(ExcelWorksheet worksheet, XmlNode topNode)
-        : base(worksheet.NameSpaceManager, topNode)
-    {
+        : base(worksheet.NameSpaceManager, topNode) =>
+
         //this._package = worksheet._package;
         this.Worksheet = worksheet;
-    }
 
     //private readonly ExcelPackage _package;
 
@@ -55,10 +54,7 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// <param name="index">Index in this collection</param>
     /// <returns>The <see cref="ExcelThreadedComment"/> at the requested <paramref name="index"/></returns>
     /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="index"/> falls out of range</exception>
-    public ExcelThreadedComment this[int index]
-    {
-        get { return this._commentList[index]; }
-    }
+    public ExcelThreadedComment this[int index] => this._commentList[index];
 
     /// <summary>
     /// Returns a <see cref="ExcelThreadedComment"/> by its <paramref name="id"/>
@@ -83,27 +79,18 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ExcelThreadedComment> GetEnumerator()
-    {
-        return this._commentList.GetEnumerator();
-    }
+    public IEnumerator<ExcelThreadedComment> GetEnumerator() => this._commentList.GetEnumerator();
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._commentList.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._commentList.GetEnumerator();
 
     /// <summary>
     /// Number of <see cref="ExcelThreadedComment"/>s
     /// </summary>
-    public int Count
-    {
-        get { return this._commentList.Count; }
-    }
+    public int Count => this._commentList.Count;
 
     private void RebuildIndex()
     {
@@ -173,8 +160,5 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return "Count = " + this._commentList.Count;
-    }
+    public override string ToString() => "Count = " + this._commentList.Count;
 }

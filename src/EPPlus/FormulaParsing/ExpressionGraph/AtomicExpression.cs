@@ -25,8 +25,5 @@ public abstract class AtomicExpression : Expression
     {
     }
 
-    public override bool IsGroupedExpression
-    {
-        get { return false; }
-    }
+    public override bool IsGroupedExpression => false;
 }

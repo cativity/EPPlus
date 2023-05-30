@@ -35,8 +35,8 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
     /// </summary>
     public bool CellColor
     {
-        get { return this.GetXmlNodeBool("d:cellColor"); }
-        set { this.SetXmlNodeBool("d:cellColor", value); }
+        get => this.GetXmlNodeBool("d:cellColor");
+        set => this.SetXmlNodeBool("d:cellColor", value);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
     /// </summary>
     public int DxfId
     {
-        get { return this.GetXmlNodeInt("d:dxfId"); }
+        get => this.GetXmlNodeInt("d:dxfId");
         set
         {
             if (value < 0)
@@ -56,10 +56,7 @@ public class ExcelColorFilterColumn : ExcelFilterColumn
         }
     }
 
-    internal override bool Match(object value, string valueText)
-    {
-        return true;
-    }
+    internal override bool Match(object value, string valueText) => true;
 
     internal override void Save()
     {

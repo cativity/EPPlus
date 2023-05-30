@@ -52,10 +52,7 @@ public class TokenSeparatorProvider : ITokenSeparatorProvider
         _tokens.Add(":", new Token(":", TokenType.Colon));
     }
 
-    IDictionary<string, Token> ITokenSeparatorProvider.Tokens
-    {
-        get { return _tokens; }
-    }
+    IDictionary<string, Token> ITokenSeparatorProvider.Tokens => _tokens;
 
     /// <summary>
     /// Returns true if the item is an operator, otherwise false.
@@ -80,10 +77,7 @@ public class TokenSeparatorProvider : ITokenSeparatorProvider
     /// </summary>
     /// <param name="part"></param>
     /// <returns></returns>
-    public bool IsPossibleLastPartOfMultipleCharOperator(string part)
-    {
-        return part == "=" || part == ">";
-    }
+    public bool IsPossibleLastPartOfMultipleCharOperator(string part) => part == "=" || part == ">";
 
     /// <summary>
     /// Returns a separator <see cref="Token"/> by its string representation.

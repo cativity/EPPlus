@@ -202,10 +202,7 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
     /// and the Rule Type (TwoColorScale ou ThreeColorScale).
     /// </summary>
     /// <returns></returns>
-    private int GetNodeOrder()
-    {
-        return ExcelConditionalFormattingValueObjectType.GetOrderByPosition(this.Position, this.RuleType);
-    }
+    private int GetNodeOrder() => ExcelConditionalFormattingValueObjectType.GetOrderByPosition(this.Position, this.RuleType);
 
     /// <summary>
     /// Create the 'cfvo'/'color' nodes in the right order. They should appear like this:
@@ -281,8 +278,8 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
     /// </summary>
     internal eExcelConditionalFormattingValueObjectPosition Position
     {
-        get { return this._position; }
-        set { this._position = value; }
+        get => this._position;
+        set => this._position = value;
     }
 
     /// <summary>
@@ -290,8 +287,8 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
     /// </summary>
     internal eExcelConditionalFormattingRuleType RuleType
     {
-        get { return this._ruleType; }
-        set { this._ruleType = value; }
+        get => this._ruleType;
+        set => this._ruleType = value;
     }
 
     /// <summary>
@@ -376,13 +373,12 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
 
             return ExcelConditionalFormattingHelper.ConvertFromColorCode(colorCode);
         }
-        set
-        {
+        set =>
+
             // Use the color code to store (Ex. "FF5B35F2")
             this.CreateNodeByOrdem(eExcelConditionalFormattingValueObjectNodeType.Color,
                                    ExcelConditionalFormattingConstants.Paths.RgbAttribute,
                                    value.ToArgb().ToString("x"));
-        }
     }
 
     /// <summary>
@@ -390,19 +386,17 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
     /// </summary>
     public double Value
     {
-        get
-        {
-            return this.GetXmlNodeDouble(string.Format("{0}[position()={1}]/{2}",
+        get =>
+            this.GetXmlNodeDouble(string.Format("{0}[position()={1}]/{2}",
 
-                                                       // {0}
-                                                       ExcelConditionalFormattingConstants.Paths.Cfvo,
+                                                // {0}
+                                                ExcelConditionalFormattingConstants.Paths.Cfvo,
 
-                                                       // {1}
-                                                       this.GetNodeOrder(),
+                                                // {1}
+                                                this.GetNodeOrder(),
 
-                                                       // {2}
-                                                       ExcelConditionalFormattingConstants.Paths.ValAttribute));
-        }
+                                                // {2}
+                                                ExcelConditionalFormattingConstants.Paths.ValAttribute));
         set
         {
             string valueToStore = string.Empty;

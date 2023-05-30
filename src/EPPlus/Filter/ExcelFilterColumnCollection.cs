@@ -76,10 +76,7 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._columns.Count; }
-    }
+    public int Count => this._columns.Count;
 
     internal XmlNode Add(int position, string topNodeName)
     {
@@ -230,19 +227,13 @@ public class ExcelFilterColumnCollection : XmlHelper, IEnumerable<ExcelFilterCol
     /// Gets the enumerator of the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelFilterColumn> GetEnumerator()
-    {
-        return this._columns.Values.GetEnumerator();
-    }
+    public IEnumerator<ExcelFilterColumn> GetEnumerator() => this._columns.Values.GetEnumerator();
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._columns.Values.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._columns.Values.GetEnumerator();
 
     /// <summary>
     /// Remove the filter column with the position from the collection

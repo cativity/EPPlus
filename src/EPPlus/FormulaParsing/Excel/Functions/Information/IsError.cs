@@ -57,8 +57,5 @@ internal class IsError : ErrorHandlingFunction
         return this.CreateResult(false, DataType.Boolean);
     }
 
-    public override CompileResult HandleError(string errorCode)
-    {
-        return this.CreateResult(true, DataType.Boolean);
-    }
+    public override CompileResult HandleError(string errorCode) => this.CreateResult(true, DataType.Boolean);
 }

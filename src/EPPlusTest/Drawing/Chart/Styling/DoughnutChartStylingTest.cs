@@ -45,16 +45,10 @@ public class DoughnutChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DoughnutChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DoughnutChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void DoughnutChart_Styles()
@@ -77,25 +71,25 @@ public class DoughnutChartStylingTest : TestBase
     private static void DoughnutStyles(ExcelWorksheet ws, eDoughnutChartType chartType)
     {
         //Style 1
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle1", 0, 5, ePresetChartStyle.DoughnutChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle1", 0, 5, ePresetChartStyle.DoughnutChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle2", 0, 18, ePresetChartStyle.DoughnutChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle2", 0, 18, ePresetChartStyle.DoughnutChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle3", 0, 31, ePresetChartStyle.DoughnutChartStyle3, c => { c.DataLabel.ShowPercent = true; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle3", 0, 31, ePresetChartStyle.DoughnutChartStyle3, c => c.DataLabel.ShowPercent = true);
 
         //Style 4
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle4", 22, 5, ePresetChartStyle.DoughnutChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle4", 22, 5, ePresetChartStyle.DoughnutChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle5", 22, 18, ePresetChartStyle.DoughnutChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle5", 22, 18, ePresetChartStyle.DoughnutChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddDoughnut(ws, chartType, "DoughnutChartStyle6", 22, 31, ePresetChartStyle.DoughnutChartStyle6, c => { });
 
         //Style 7
-        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle7", 44, 5, ePresetChartStyle.DoughnutChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddDoughnut(ws, chartType, "DoughnutChartStyle7", 44, 5, ePresetChartStyle.DoughnutChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddDoughnut(ws,

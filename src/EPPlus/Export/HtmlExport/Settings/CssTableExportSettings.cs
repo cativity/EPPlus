@@ -18,10 +18,7 @@ namespace OfficeOpenXml.Export.HtmlExport;
 /// </summary>
 public class CssTableExportSettings : CssExportSettings
 {
-    internal CssTableExportSettings()
-    {
-        this.ResetToDefault();
-    }
+    internal CssTableExportSettings() => this.ResetToDefault();
 
     /// <summary>
     /// Include Css for the current table style

@@ -45,10 +45,7 @@ public class IndexToAddressTranslatorTests
     private IndexToAddressTranslator _indexToAddressTranslator;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this.SetupTranslator(12345, ExcelReferenceType.RelativeRowAndColumn);
-    }
+    public void Setup() => this.SetupTranslator(12345, ExcelReferenceType.RelativeRowAndColumn);
 
     private void SetupTranslator(int maxRows, ExcelReferenceType refType)
     {
@@ -58,10 +55,7 @@ public class IndexToAddressTranslatorTests
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void ShouldThrowIfExcelDataProviderIsNull()
-    {
-        _ = new IndexToAddressTranslator(null);
-    }
+    public void ShouldThrowIfExcelDataProviderIsNull() => _ = new IndexToAddressTranslator(null);
 
     [TestMethod]
     public void ShouldTranslate1And1ToA1()

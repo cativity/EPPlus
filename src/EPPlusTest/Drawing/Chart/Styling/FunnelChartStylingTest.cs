@@ -47,16 +47,10 @@ public class FunnelChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("FunnelChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("FunnelChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void FunnelChart_Styles()
@@ -83,28 +77,28 @@ public class FunnelChartStylingTest : TestBase
                  });
 
         //Funnel chart Style 2
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle2, "FunnelChartStyle2", 0, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle2, "FunnelChartStyle2", 0, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 3
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle3, "FunnelChartStyle3", 0, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle3, "FunnelChartStyle3", 0, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 4
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle4, "FunnelChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle4, "FunnelChartStyle4", 20, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 5
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle5, "FunnelChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle5, "FunnelChartStyle5", 20, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 6
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle6, "FunnelChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle6, "FunnelChartStyle6", 20, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 7
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle7, "FunnelChartStyle7", 40, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle7, "FunnelChartStyle7", 40, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 8
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle8, "FunnelChartStyle8", 40, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle8, "FunnelChartStyle8", 40, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Funnel chart Style 9
-        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle9, "FunnelChartStyle9", 40, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChart(ws, ePresetChartStyle.FunnelChartStyle9, "FunnelChartStyle9", 40, 31, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelFunnelChart AddChart(ExcelWorksheet ws, ePresetChartStyle style, string name, int row, int col, Action<ExcelFunnelChart> SetProperties)

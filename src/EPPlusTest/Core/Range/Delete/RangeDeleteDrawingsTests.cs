@@ -19,10 +19,7 @@ public class WorksheetRangeInsertDeleteDrawingsTests : TestBase
     }
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     #region Row Tests
 

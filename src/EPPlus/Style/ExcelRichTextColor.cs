@@ -26,18 +26,13 @@ public class ExcelRichTextColor : XmlHelper
     private ExcelRichText _rt;
 
     internal ExcelRichTextColor(XmlNamespaceManager ns, XmlNode topNode, ExcelRichText rt)
-        : base(ns, topNode)
-    {
+        : base(ns, topNode) =>
         this._rt = rt;
-    }
 
     /// <summary>
     /// Gets the rgb color depending in <see cref="Rgb"/>, <see cref="Theme"/> and <see cref="Tint"/>
     /// </summary>
-    public Color Color
-    {
-        get { return this._rt.Color; }
-    }
+    public Color Color => this._rt.Color;
 
     /// <summary>
     /// The rgb color value set in the file.
@@ -80,7 +75,7 @@ public class ExcelRichTextColor : XmlHelper
     /// </summary>
     public eThemeSchemeColor? Theme
     {
-        get { return this.GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>(); }
+        get => this.GetXmlNodeString(ExcelRichText.COLOR_THEME_PATH).ToEnum<eThemeSchemeColor>();
         set
         {
             this._rt._collection.ConvertRichtext();
@@ -107,7 +102,7 @@ public class ExcelRichTextColor : XmlHelper
     /// </summary>
     public double? Tint
     {
-        get { return this.GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH); }
+        get => this.GetXmlNodeDoubleNull(ExcelRichText.COLOR_TINT_PATH);
         set
         {
             this._rt._collection.ConvertRichtext();

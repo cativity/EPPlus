@@ -47,7 +47,7 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int Column
     {
-        get { return this._column; }
+        get => this._column;
         set
         {
             this._column = value;
@@ -62,7 +62,7 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int Row
     {
-        get { return this._row; }
+        get => this._row;
         set
         {
             this._row = value;
@@ -81,7 +81,7 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int ColumnOff
     {
-        get { return this._columnOff; }
+        get => this._columnOff;
         set
         {
             this._columnOff = value;
@@ -100,7 +100,7 @@ public class ExcelPosition : XmlHelper
     /// </summary>
     public int RowOff
     {
-        get { return this._rowOff; }
+        get => this._rowOff;
         set
         {
             this._rowOff = value;

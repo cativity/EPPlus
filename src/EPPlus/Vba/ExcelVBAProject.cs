@@ -134,20 +134,14 @@ public class ExcelVbaProject
     /// <summary>
     /// The digital signature
     /// </summary>
-    public ExcelVbaSignature Signature
-    {
-        get { return this._signature ??= new ExcelVbaSignature(this.Part); }
-    }
+    public ExcelVbaSignature Signature => this._signature ??= new ExcelVbaSignature(this.Part);
 
     ExcelVbaProtection _protection;
 
     /// <summary>
     /// VBA protection 
     /// </summary>
-    public ExcelVbaProtection Protection
-    {
-        get { return this._protection ??= new ExcelVbaProtection(this); }
-    }
+    public ExcelVbaProtection Protection => this._protection ??= new ExcelVbaProtection(this);
 
     #endregion
 
@@ -1251,17 +1245,11 @@ public class ExcelVbaProject
         }
     }
 
-    private string WriteVisibilityState()
-    {
-        return this.Encrypt(new byte[] { (byte)(this.Protection.VisibilityState ? 0xFF : 0) });
-    }
+    private string WriteVisibilityState() => this.Encrypt(new byte[] { (byte)(this.Protection.VisibilityState ? 0xFF : 0) });
 
     #endregion
 
-    private string GetString(BinaryReader br, uint size)
-    {
-        return GetString(br, size, Encoding.GetEncoding(this.CodePage));
-    }
+    private string GetString(BinaryReader br, uint size) => GetString(br, size, Encoding.GetEncoding(this.CodePage));
 
     private static string GetString(BinaryReader br, uint size, Encoding enc)
     {
@@ -1379,10 +1367,7 @@ public class ExcelVbaProject
     /// <summary>
     /// Remove the project from the package
     /// </summary>
-    public void Remove()
-    {
-        this._wb.RemoveVBAProject();
-    }
+    public void Remove() => this._wb.RemoveVBAProject();
 
     internal void RemoveMe()
     {
@@ -1416,8 +1401,5 @@ public class ExcelVbaProject
     /// The name of the project
     /// </summary>
     /// <returns>Returns the name of the project</returns>
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 }

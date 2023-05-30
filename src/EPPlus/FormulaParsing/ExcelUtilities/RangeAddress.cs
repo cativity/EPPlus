@@ -21,10 +21,7 @@ namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
 public class RangeAddress
 {
-    public RangeAddress()
-    {
-        this.Address = string.Empty;
-    }
+    public RangeAddress() => this.Address = string.Empty;
 
     internal string Address { get; set; }
 
@@ -38,17 +35,11 @@ public class RangeAddress
 
     public int ToRow { get; internal set; }
 
-    public override string ToString()
-    {
-        return this.Address;
-    }
+    public override string ToString() => this.Address;
 
     private static RangeAddress _empty = new RangeAddress();
 
-    public static RangeAddress Empty
-    {
-        get { return _empty; }
-    }
+    public static RangeAddress Empty => _empty;
 
     /// <summary>
     /// Returns true if this range collides (full or partly) with the supplied range

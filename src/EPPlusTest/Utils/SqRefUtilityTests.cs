@@ -40,10 +40,7 @@ namespace EPPlusTest.Utils;
 public class SqRefUtilityTests
 {
     [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-    public void SqRefUtility_ToSqRefAddress_ShouldThrowIfAddressIsNullOrEmpty()
-    {
-        _ = SqRefUtility.ToSqRefAddress(null);
-    }
+    public void SqRefUtility_ToSqRefAddress_ShouldThrowIfAddressIsNullOrEmpty() => _ = SqRefUtility.ToSqRefAddress(null);
 
     [TestMethod]
     public void SqRefUtility_ToSqRefAddress_ShouldRemoveCommas()

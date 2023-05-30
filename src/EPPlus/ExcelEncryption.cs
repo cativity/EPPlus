@@ -72,19 +72,13 @@ public class ExcelEncryption
     /// Constructor
     /// <remarks>Default AES 256 with SHA-512 as the hash algorithm. Spincount is set to 100000</remarks>
     /// </summary>
-    internal ExcelEncryption()
-    {
-        this.Algorithm = EncryptionAlgorithm.AES256;
-    }
+    internal ExcelEncryption() => this.Algorithm = EncryptionAlgorithm.AES256;
 
     /// <summary>
     /// Constructor
     /// </summary>
     /// <param name="encryptionAlgorithm">Algorithm used to encrypt the package. Default is AES128</param>
-    internal ExcelEncryption(EncryptionAlgorithm encryptionAlgorithm)
-    {
-        this.Algorithm = encryptionAlgorithm;
-    }
+    internal ExcelEncryption(EncryptionAlgorithm encryptionAlgorithm) => this.Algorithm = encryptionAlgorithm;
 
     bool _isEncrypted;
 
@@ -93,7 +87,7 @@ public class ExcelEncryption
     /// </summary>
     public bool IsEncrypted
     {
-        get { return this._isEncrypted; }
+        get => this._isEncrypted;
         set
         {
             this._isEncrypted = value;
@@ -116,7 +110,7 @@ public class ExcelEncryption
     /// </summary>
     public string Password
     {
-        get { return this._password; }
+        get => this._password;
         set
         {
             this._password = value;
@@ -136,7 +130,7 @@ public class ExcelEncryption
     /// </summary>
     public EncryptionVersion Version
     {
-        get { return this._version; }
+        get => this._version;
         set
         {
             if (value != this.Version)

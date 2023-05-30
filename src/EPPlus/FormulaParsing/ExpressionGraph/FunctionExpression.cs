@@ -127,18 +127,12 @@ internal class FunctionExpression : AtomicExpression
     /// Adds a new <see cref="FunctionArgumentExpression"/> for the next child
     /// </summary>
     /// <returns></returns>
-    public override Expression PrepareForNextChild()
-    {
-        return base.AddChild(new FunctionArgumentExpression(this));
-    }
+    public override Expression PrepareForNextChild() => base.AddChild(new FunctionArgumentExpression(this));
 
     /// <summary>
     /// Returns true if there are any existing children to this expression
     /// </summary>
-    public override bool HasChildren
-    {
-        get { return this.Children.Any() && this.Children.First().Children.Any(); }
-    }
+    public override bool HasChildren => this.Children.Any() && this.Children.First().Children.Any();
 
     /// <summary>
     /// Adds a child expression

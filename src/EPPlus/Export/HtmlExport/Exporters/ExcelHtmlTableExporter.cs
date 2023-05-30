@@ -38,10 +38,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         private readonly HtmlTableExportSettings _settings;
         private readonly Dictionary<string, int> _styleCache = new Dictionary<string, int>();
 
-        public HtmlTableExportSettings Settings
-        {
-            get { return this._settings; }
-        }
+        public HtmlTableExportSettings Settings => this._settings;
 
         /// <summary>
         /// Exports an <see cref="ExcelTable"/> to a html string

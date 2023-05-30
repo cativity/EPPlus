@@ -24,10 +24,8 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 public class NamedValueExpression : AtomicExpression
 {
     public NamedValueExpression(string expression, ParsingContext parsingContext)
-        : base(expression)
-    {
+        : base(expression) =>
         this._parsingContext = parsingContext;
-    }
 
     private readonly ParsingContext _parsingContext;
 

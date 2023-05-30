@@ -127,10 +127,7 @@ internal class DateDif : DateParsingFunction
         return nMonths;
     }
 
-    private static System.DateTime GetStartYearEndDate(System.DateTime start, System.DateTime end)
-    {
-        return new System.DateTime(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
-    }
+    private static System.DateTime GetStartYearEndDate(System.DateTime start, System.DateTime end) => new(start.Year, end.Month, end.Day, end.Hour, end.Minute, end.Second, end.Millisecond);
 
     private static System.DateTime GetStartYearEndDateY(System.DateTime start, System.DateTime end)
     {

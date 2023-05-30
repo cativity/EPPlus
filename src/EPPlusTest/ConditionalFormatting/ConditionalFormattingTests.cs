@@ -44,17 +44,11 @@ public class ConditionalFormattingTests : TestBase
     private static ExcelPackage _pck;
 
     [ClassInitialize()]
-    public static void Init(TestContext testContext)
-    {
-        _pck = OpenPackage("ConditionalFormatting.xlsx", true);
-    }
+    public static void Init(TestContext testContext) => _pck = OpenPackage("ConditionalFormatting.xlsx", true);
 
     // Use ClassCleanup to run code after all tests in a class have run
     [ClassCleanup()]
-    public static void MyClassCleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void MyClassCleanup() => SaveAndCleanup(_pck);
 
     /// <summary>
     /// 

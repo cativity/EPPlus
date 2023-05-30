@@ -334,8 +334,8 @@ public sealed class ExcelHeaderFooter : XmlHelper
     /// </summary>
     public bool AlignWithMargins
     {
-        get { return this.GetXmlNodeBool(alignWithMarginsPath); }
-        set { this.SetXmlNodeString(alignWithMarginsPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(alignWithMarginsPath);
+        set => this.SetXmlNodeString(alignWithMarginsPath, value ? "1" : "0");
     }
 
     #endregion
@@ -349,8 +349,8 @@ public sealed class ExcelHeaderFooter : XmlHelper
     /// </summary>
     public bool differentOddEven
     {
-        get { return this.GetXmlNodeBool(differentOddEvenPath); }
-        set { this.SetXmlNodeString(differentOddEvenPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(differentOddEvenPath);
+        set => this.SetXmlNodeString(differentOddEvenPath, value ? "1" : "0");
     }
 
     #endregion
@@ -364,8 +364,8 @@ public sealed class ExcelHeaderFooter : XmlHelper
     /// </summary>
     public bool differentFirst
     {
-        get { return this.GetXmlNodeBool(differentFirstPath); }
-        set { this.SetXmlNodeString(differentFirstPath, value ? "1" : "0"); }
+        get => this.GetXmlNodeBool(differentFirstPath);
+        set => this.SetXmlNodeString(differentFirstPath, value ? "1" : "0");
     }
 
     #endregion
@@ -379,8 +379,8 @@ public sealed class ExcelHeaderFooter : XmlHelper
     /// </summary>
     public bool ScaleWithDocument
     {
-        get { return this.GetXmlNodeBool(scaleWithDocPath); }
-        set { this.SetXmlNodeBool(scaleWithDocPath, value); }
+        get => this.GetXmlNodeBool(scaleWithDocPath);
+        set => this.SetXmlNodeBool(scaleWithDocPath, value);
     }
 
     #endregion
@@ -391,25 +391,13 @@ public sealed class ExcelHeaderFooter : XmlHelper
     /// Provides access to the header on odd numbered pages of the document.
     /// If you want the same header on both odd and even pages, then only set values in this ExcelHeaderFooterText class.
     /// </summary>
-    public ExcelHeaderFooterText OddHeader
-    {
-        get
-        {
-            return this._oddHeader ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H");
-        }
-    }
+    public ExcelHeaderFooterText OddHeader => this._oddHeader ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddHeader", this.NameSpaceManager), this._ws, "H");
 
     /// <summary>
     /// Provides access to the footer on odd numbered pages of the document.
     /// If you want the same footer on both odd and even pages, then only set values in this ExcelHeaderFooterText class.
     /// </summary>
-    public ExcelHeaderFooterText OddFooter
-    {
-        get
-        {
-            return this._oddFooter ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F");
-        }
-    }
+    public ExcelHeaderFooterText OddFooter => this._oddFooter ??= new ExcelHeaderFooterText(this.TopNode.SelectSingleNode("d:oddFooter", this.NameSpaceManager), this._ws, "F");
 
     // evenHeader and evenFooter set differentOddEven = true
     /// <summary>

@@ -23,15 +23,10 @@ internal class FunctionArgumentExpression : GroupExpression
     private readonly Expression _function;
 
     public FunctionArgumentExpression(Expression function)
-        : base(false)
-    {
+        : base(false) =>
         this._function = function;
-    }
 
-    public override bool IsGroupedExpression
-    {
-        get { return false; }
-    }
+    public override bool IsGroupedExpression => false;
 
     public override bool IgnoreCircularReference
     {
@@ -47,8 +42,5 @@ internal class FunctionArgumentExpression : GroupExpression
         }
     }
 
-    public override Expression PrepareForNextChild()
-    {
-        return this._function.PrepareForNextChild();
-    }
+    public override Expression PrepareForNextChild() => this._function.PrepareForNextChild();
 }

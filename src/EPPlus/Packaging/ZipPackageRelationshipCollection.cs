@@ -32,39 +32,21 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
     /// </summary>
     internal protected Dictionary<string, ZipPackageRelationship> _rels = new Dictionary<string, ZipPackageRelationship>(StringComparer.OrdinalIgnoreCase);
 
-    internal void Add(ZipPackageRelationship item)
-    {
-        this._rels.Add(item.Id, item);
-    }
+    internal void Add(ZipPackageRelationship item) => this._rels.Add(item.Id, item);
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>the enumerator</returns>
-    public IEnumerator<ZipPackageRelationship> GetEnumerator()
-    {
-        return this._rels.Values.GetEnumerator();
-    }
+    public IEnumerator<ZipPackageRelationship> GetEnumerator() => this._rels.Values.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._rels.Values.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._rels.Values.GetEnumerator();
 
-    internal void Remove(string id)
-    {
-        _ = this._rels.Remove(id);
-    }
+    internal void Remove(string id) => _ = this._rels.Remove(id);
 
-    internal bool ContainsKey(string id)
-    {
-        return this._rels.ContainsKey(id);
-    }
+    internal bool ContainsKey(string id) => this._rels.ContainsKey(id);
 
-    internal ZipPackageRelationship this[string id]
-    {
-        get { return this._rels[id]; }
-    }
+    internal ZipPackageRelationship this[string id] => this._rels[id];
 
     internal ZipPackageRelationshipCollection GetRelationshipsByType(string relationshipType)
     {
@@ -117,8 +99,5 @@ public class ZipPackageRelationshipCollection : IEnumerable<ZipPackageRelationsh
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._rels.Count; }
-    }
+    public int Count => this._rels.Count;
 }

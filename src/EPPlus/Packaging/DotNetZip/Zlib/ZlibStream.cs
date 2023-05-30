@@ -315,10 +315,7 @@ public class ZlibStream : Stream
     /// A tuning knob to trade speed for effectiveness. This parameter is
     /// effective only when mode is <c>CompressionMode.Compress</c>.
     /// </param>
-    public ZlibStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
-    {
-        this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.ZLIB, leaveOpen);
-    }
+    public ZlibStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen) => this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.ZLIB, leaveOpen);
 
     #region Zlib properties
 
@@ -328,7 +325,7 @@ public class ZlibStream : Stream
     /// </summary>
     virtual public FlushType FlushMode
     {
-        get { return this._baseStream._flushMode; }
+        get => this._baseStream._flushMode;
         set
         {
             if (this._disposed)
@@ -359,7 +356,7 @@ public class ZlibStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get { return this._baseStream._bufferSize; }
+        get => this._baseStream._bufferSize;
         set
         {
             if (this._disposed)
@@ -384,16 +381,10 @@ public class ZlibStream : Stream
     }
 
     /// <summary> Returns the total number of bytes input so far.</summary>
-    virtual public long TotalIn
-    {
-        get { return this._baseStream._z.TotalBytesIn; }
-    }
+    virtual public long TotalIn => this._baseStream._z.TotalBytesIn;
 
     /// <summary> Returns the total number of bytes output so far.</summary>
-    virtual public long TotalOut
-    {
-        get { return this._baseStream._z.TotalBytesOut; }
-    }
+    virtual public long TotalOut => this._baseStream._z.TotalBytesOut;
 
     #endregion
 
@@ -467,10 +458,7 @@ public class ZlibStream : Stream
     /// <remarks>
     /// Always returns false.
     /// </remarks>
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
     /// <summary>
     /// Indicates whether the stream can be written.
@@ -507,10 +495,7 @@ public class ZlibStream : Stream
     /// <summary>
     /// Reading this property always throws a <see cref="NotSupportedException"/>.
     /// </summary>
-    public override long Length
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public override long Length => throw new NotSupportedException();
 
     /// <summary>
     ///   The position of the stream pointer.
@@ -540,7 +525,7 @@ public class ZlibStream : Stream
             return 0;
         }
 
-        set { throw new NotSupportedException(); }
+        set => throw new NotSupportedException();
     }
 
     /// <summary>
@@ -599,10 +584,7 @@ public class ZlibStream : Stream
     /// </param>
     ///
     /// <returns>nothing. This method always throws.</returns>
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        throw new NotSupportedException();
-    }
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
     /// <summary>
     /// Calling this method always throws a <see cref="NotSupportedException"/>.
@@ -611,10 +593,7 @@ public class ZlibStream : Stream
     ///   The new value for the stream length....  IF
     ///   THIS METHOD ACTUALLY DID ANYTHING.
     /// </param>
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 
     /// <summary>
     /// Write data to the stream.

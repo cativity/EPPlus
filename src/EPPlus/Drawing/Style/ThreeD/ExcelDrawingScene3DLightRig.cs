@@ -53,17 +53,14 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
     /// <summary>
     /// Defines a rotation in 3D space
     /// </summary>
-    public ExcelDrawingSphereCoordinate Rotation
-    {
-        get { return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent); }
-    }
+    public ExcelDrawingSphereCoordinate Rotation => this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
 
     /// <summary>
     /// The direction from which the light rig is oriented in relation to the scene.
     /// </summary>
     public eLightRigDirection Direction
     {
-        get { return this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection(); }
+        get => this.GetXmlNodeString(this._directionPath).TranslateLightRigDirection();
         set
         {
             this._initParent(false);
@@ -76,7 +73,7 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
     /// </summary>
     public eRigPresetType RigType
     {
-        get { return this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced); }
+        get => this.GetXmlNodeString(this._typePath).ToEnum(eRigPresetType.Balanced);
         set
         {
             if (value == eRigPresetType.None)

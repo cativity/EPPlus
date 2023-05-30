@@ -27,7 +27,7 @@ public class ExcelDatabaseRow
 
     public object this[string field]
     {
-        get { return this._items[field]; }
+        get => this._items[field];
 
         set
         {

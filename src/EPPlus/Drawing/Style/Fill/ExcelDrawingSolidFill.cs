@@ -38,25 +38,16 @@ public class ExcelDrawingSolidFill : ExcelDrawingFillBase
     /// <summary>
     /// The fill style
     /// </summary>
-    public override eFillStyle Style
-    {
-        get { return eFillStyle.SolidFill; }
-    }
+    public override eFillStyle Style => eFillStyle.SolidFill;
 
     ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the fill
     /// </summary>
-    public ExcelDrawingColorManager Color
-    {
-        get { return this._color ??= new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml); }
-    }
+    public ExcelDrawingColorManager Color => this._color ??= new ExcelDrawingColorManager(this._nsm, this._topNode, this._fillPath, this._schemaNodeOrder, this._initXml);
 
-    internal override string NodeName
-    {
-        get { return "a:solidFill"; }
-    }
+    internal override string NodeName => "a:solidFill";
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {

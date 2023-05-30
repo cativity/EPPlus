@@ -227,18 +227,12 @@ internal static class ExcelConditionalFormattingHelper
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
-    public static string EncodeXML(this string s)
-    {
-        return s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
-    }
+    public static string EncodeXML(this string s) => s.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
 
     /// <summary>
     /// Decode from XML (special characteres: &apos; &quot; &gt; &lt; &amp;)
     /// </summary>
     /// <param name="s"></param>
     /// <returns></returns>
-    public static string DecodeXML(this string s)
-    {
-        return s.Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("&", "&amp;");
-    }
+    public static string DecodeXML(this string s) => s.Replace("'", "&apos;").Replace("\"", "&quot;").Replace(">", "&gt;").Replace("<", "&lt;").Replace("&", "&amp;");
 }

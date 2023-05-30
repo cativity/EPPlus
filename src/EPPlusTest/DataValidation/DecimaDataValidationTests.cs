@@ -53,14 +53,8 @@ public class DecimaDataValidationTests : ValidationTestBase
     }
 
     [TestMethod]
-    public void DecimalDataValidation_Formula1IsSet()
-    {
-        Assert.IsNotNull(this._validation.Formula);
-    }
+    public void DecimalDataValidation_Formula1IsSet() => Assert.IsNotNull(this._validation.Formula);
 
     [TestMethod]
-    public void DecimalDataValidation_Formula2IsSet()
-    {
-        Assert.IsNotNull(this._validation.Formula2);
-    }
+    public void DecimalDataValidation_Formula2IsSet() => Assert.IsNotNull(this._validation.Formula2);
 }

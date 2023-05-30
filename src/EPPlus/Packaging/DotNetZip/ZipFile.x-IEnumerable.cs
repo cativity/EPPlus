@@ -118,10 +118,7 @@ internal partial class ZipFile
         }
     }
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.GetEnumerator();
 
     /// <summary>
     /// An IEnumerator, for use of a ZipFile in a foreach construct.
@@ -139,7 +136,6 @@ internal partial class ZipFile
     /// </returns>
     [System.Runtime.InteropServices.DispId(-4)]
     public System.Collections.IEnumerator GetNewEnum() // the name of this method is not significant
-    {
-        return this.GetEnumerator();
-    }
+        =>
+            this.GetEnumerator();
 }

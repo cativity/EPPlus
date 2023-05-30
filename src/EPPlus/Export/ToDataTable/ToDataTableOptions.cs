@@ -41,33 +41,21 @@ public class ToDataTableOptions
         this.DataTableName = DefaultDataTableName;
     }
 
-    internal IEnumerable<string> PrimaryKeyNames
-    {
-        get { return this._primaryKeyFields; }
-    }
+    internal IEnumerable<string> PrimaryKeyNames => this._primaryKeyFields;
 
-    internal IEnumerable<int> PrimaryKeyIndexes
-    {
-        get { return this._primaryKeyIndexes; }
-    }
+    internal IEnumerable<int> PrimaryKeyIndexes => this._primaryKeyIndexes;
 
     /// <summary>
     /// Returns an instance of ToDataTableOptions with default values set. <see cref="ColumnNameParsingStrategy"/> is set to <see cref="NameParsingStrategy.Preserve"/>, <see cref="PredefinedMappingsOnly"/> is set to false, <see cref="FirstRowIsColumnNames"/> is set to true
     /// </summary>
-    internal static ToDataTableOptions Default
-    {
-        get { return new ToDataTableOptions(); }
-    }
+    internal static ToDataTableOptions Default => new();
 
     /// <summary>
     /// Creates an instance of ToDataTableOptions with default values set.
     /// </summary>
     /// <returns></returns>
     /// <seealso cref="Default"/>
-    public static ToDataTableOptions Create()
-    {
-        return new ToDataTableOptions();
-    }
+    public static ToDataTableOptions Create() => new();
 
     /// <summary>
     /// Creates an instance of <see cref="ToDataTableOptions"/>. Use the <paramref name="configHandler"/> parameter to set the values on it.

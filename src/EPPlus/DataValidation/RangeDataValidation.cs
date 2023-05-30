@@ -83,43 +83,19 @@ internal class RangeDataValidation : IRangeDataValidation
         }
     }
 
-    public IExcelDataValidationAny AddAnyDataValidation()
-    {
-        return this._worksheet.DataValidations.AddAnyValidation(this._address);
-    }
+    public IExcelDataValidationAny AddAnyDataValidation() => this._worksheet.DataValidations.AddAnyValidation(this._address);
 
-    public IExcelDataValidationInt AddIntegerDataValidation()
-    {
-        return this._worksheet.DataValidations.AddIntegerValidation(this._address);
-    }
+    public IExcelDataValidationInt AddIntegerDataValidation() => this._worksheet.DataValidations.AddIntegerValidation(this._address);
 
-    public IExcelDataValidationDecimal AddDecimalDataValidation()
-    {
-        return this._worksheet.DataValidations.AddDecimalValidation(this._address);
-    }
+    public IExcelDataValidationDecimal AddDecimalDataValidation() => this._worksheet.DataValidations.AddDecimalValidation(this._address);
 
-    public IExcelDataValidationDateTime AddDateTimeDataValidation()
-    {
-        return this._worksheet.DataValidations.AddDateTimeValidation(this._address);
-    }
+    public IExcelDataValidationDateTime AddDateTimeDataValidation() => this._worksheet.DataValidations.AddDateTimeValidation(this._address);
 
-    public IExcelDataValidationList AddListDataValidation()
-    {
-        return this._worksheet.DataValidations.AddListValidation(this._address);
-    }
+    public IExcelDataValidationList AddListDataValidation() => this._worksheet.DataValidations.AddListValidation(this._address);
 
-    public IExcelDataValidationInt AddTextLengthDataValidation()
-    {
-        return this._worksheet.DataValidations.AddTextLengthValidation(this._address);
-    }
+    public IExcelDataValidationInt AddTextLengthDataValidation() => this._worksheet.DataValidations.AddTextLengthValidation(this._address);
 
-    public IExcelDataValidationTime AddTimeDataValidation()
-    {
-        return this._worksheet.DataValidations.AddTimeValidation(this._address);
-    }
+    public IExcelDataValidationTime AddTimeDataValidation() => this._worksheet.DataValidations.AddTimeValidation(this._address);
 
-    public IExcelDataValidationCustom AddCustomDataValidation()
-    {
-        return this._worksheet.DataValidations.AddCustomValidation(this._address);
-    }
+    public IExcelDataValidationCustom AddCustomDataValidation() => this._worksheet.DataValidations.AddCustomValidation(this._address);
 }

@@ -31,8 +31,5 @@ internal class FinancialDay_Us_30_360 : FinancialDay
 
     protected override DayCountBasis Basis => DayCountBasis.US_30_360;
 
-    protected override FinancialDay Factory(short year, short month, short day)
-    {
-        return new FinancialDay_Us_30_360(year, month, day);
-    }
+    protected override FinancialDay Factory(short year, short month, short day) => new FinancialDay_Us_30_360(year, month, day);
 }

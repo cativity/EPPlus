@@ -47,19 +47,13 @@ public class SortConditionCollection : XmlHelper, IEnumerable<SortCondition>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<SortCondition> GetEnumerator()
-    {
-        return this._sortConditions.GetEnumerator();
-    }
+    public IEnumerator<SortCondition> GetEnumerator() => this._sortConditions.GetEnumerator();
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._sortConditions.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._sortConditions.GetEnumerator();
 
     /// <summary>
     /// Adds a new condition to the collection.

@@ -28,10 +28,8 @@ public class BooleanExpression : AtomicExpression
     }
 
     public BooleanExpression(bool value)
-        : base(value ? "true" : "false")
-    {
+        : base(value ? "true" : "false") =>
         this._precompiledValue = value;
-    }
 
     public override CompileResult Compile()
     {

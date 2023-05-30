@@ -24,10 +24,7 @@ public class ExcelVbaReferenceControl : ExcelVbaReference
     /// Constructor.
     /// Sets ReferenceRecordID to 0x2F
     /// </summary>
-    public ExcelVbaReferenceControl()
-    {
-        this.ReferenceRecordID = 0x2F;
-    }
+    public ExcelVbaReferenceControl() => this.ReferenceRecordID = 0x2F;
 
     /// <summary>
     /// LibIdExternal 
@@ -37,8 +34,8 @@ public class ExcelVbaReferenceControl : ExcelVbaReference
     [Obsolete("Use LibIdExtended instead of this.")]
     public string LibIdExternal
     {
-        get { return this.LibIdExtended; }
-        set { this.LibIdExtended = value; }
+        get => this.LibIdExtended;
+        set => this.LibIdExtended = value;
     }
 
     /// <summary>

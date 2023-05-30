@@ -26,10 +26,7 @@ public abstract class Expression
 
     private readonly List<Expression> _children = new List<Expression>();
 
-    public IEnumerable<Expression> Children
-    {
-        get { return this._children; }
-    }
+    public IEnumerable<Expression> Children => this._children;
 
     public Expression Next { get; set; }
 
@@ -54,15 +51,9 @@ public abstract class Expression
         this.Operator = null;
     }
 
-    public virtual bool HasChildren
-    {
-        get { return this._children.Any(); }
-    }
+    public virtual bool HasChildren => this._children.Any();
 
-    public virtual Expression PrepareForNextChild()
-    {
-        return this;
-    }
+    public virtual Expression PrepareForNextChild() => this;
 
     public virtual Expression AddChild(Expression child)
     {

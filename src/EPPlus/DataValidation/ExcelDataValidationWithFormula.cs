@@ -37,10 +37,8 @@ public abstract class ExcelDataValidationWithFormula<T> : ExcelDataValidation
     /// <param name="uid">Uid of the data validation, format should be a Guid surrounded by curly braces.</param>
     /// <param name="address"></param>
     internal ExcelDataValidationWithFormula(string uid, string address, ExcelWorksheet ws)
-        : base(uid, address, ws)
-    {
+        : base(uid, address, ws) =>
         this._workSheetName = ws.Name;
-    }
 
     /// <summary>
     /// Constructor for reading data

@@ -23,10 +23,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Accessibility;
 /// </summary>
 public class AccessibilitySettings
 {
-    internal AccessibilitySettings()
-    {
-        this.TableSettings.ResetToDefault();
-    }
+    internal AccessibilitySettings() => this.TableSettings.ResetToDefault();
 
     /// <summary>
     /// Settings for a html table

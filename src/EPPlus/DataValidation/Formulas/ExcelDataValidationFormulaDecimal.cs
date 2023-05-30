@@ -39,8 +39,5 @@ internal class ExcelDataValidationFormulaDecimal : ExcelDataValidationFormulaVal
         }
     }
 
-    protected override string GetValueAsString()
-    {
-        return this.Value.HasValue ? this.Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
-    }
+    protected override string GetValueAsString() => this.Value.HasValue ? this.Value.Value.ToString("R15", CultureInfo.InvariantCulture) : string.Empty;
 }

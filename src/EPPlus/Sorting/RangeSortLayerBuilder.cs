@@ -35,10 +35,7 @@ public class RangeSortLayerBuilder
     /// <summary>
     /// Adds a new Sort layer to the sort options (i.e. the sort).
     /// </summary>
-    public virtual RangeSortLayer ThenSortBy
-    {
-        get { return new RangeSortLayer(this._options); }
-    }
+    public virtual RangeSortLayer ThenSortBy => new(this._options);
 
     /// <summary>
     /// Use a custom list for sorting on the current Sort layer.

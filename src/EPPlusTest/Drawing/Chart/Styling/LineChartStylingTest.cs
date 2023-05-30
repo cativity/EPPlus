@@ -45,16 +45,10 @@ public class LineChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("LineChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("LineChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void LineChart_Styles()
@@ -161,37 +155,37 @@ public class LineChartStylingTest : TestBase
                 });
 
         //Style 4
-        _ = AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.LineChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle4", 22, 5, ePresetChartStyle.LineChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddLine(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.LineChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle5", 22, 18, ePresetChartStyle.LineChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddLine(ws, chartType, "ColumnChartStyle6", 22, 31, ePresetChartStyle.LineChartStyle6, c => { });
 
         //Style 7
-        _ = AddLine(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.LineChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle7", 44, 5, ePresetChartStyle.LineChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
-        _ = AddLine(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.LineChartStyle8, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle8", 44, 18, ePresetChartStyle.LineChartStyle8, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 9
         _ = AddLine(ws, chartType, "ColumnChartStyle9", 44, 31, ePresetChartStyle.LineChartStyle9, c => { });
 
         //Style 10
-        _ = AddLine(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.LineChartStyle10, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle10", 66, 5, ePresetChartStyle.LineChartStyle10, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 11
-        _ = AddLine(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.LineChartStyle11, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle11", 66, 18, ePresetChartStyle.LineChartStyle11, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 12
         _ = AddLine(ws, chartType, "ColumnChartStyle12", 66, 31, ePresetChartStyle.LineChartStyle12, c => { });
 
         //Style 13
-        _ = AddLine(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.LineChartStyle13, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle13", 88, 5, ePresetChartStyle.LineChartStyle13, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 14
-        _ = AddLine(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.LineChartStyle14, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddLine(ws, chartType, "ColumnChartStyle14", 88, 18, ePresetChartStyle.LineChartStyle14, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 15
         _ = AddLine(ws, chartType, "ColumnChartStyle15", 88, 31, ePresetChartStyle.LineChartStyle15, c => { });

@@ -23,16 +23,10 @@ public class DrawingGroupingTests : TestBase
     static ExcelWorksheet _ws;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingGrouping.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingGrouping.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void Group_GroupBoxWithRadioButtonsTest()

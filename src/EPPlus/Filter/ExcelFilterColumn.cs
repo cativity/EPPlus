@@ -53,10 +53,7 @@ public abstract class ExcelFilterColumn : XmlHelper
     /// <summary>
     /// Zero-based index indicating the AutoFilter column to which this filter information applies
     /// </summary>
-    public int Position
-    {
-        get => this.GetXmlNodeInt("@colId");
-    }
+    public int Position => this.GetXmlNodeInt("@colId");
 
     const string _hiddenButtonPath = "@hiddenButton";
 
@@ -65,8 +62,8 @@ public abstract class ExcelFilterColumn : XmlHelper
     /// </summary>
     public bool HiddenButton
     {
-        get { return this.GetXmlNodeBool(_hiddenButtonPath); }
-        set { this.SetXmlNodeBool(_hiddenButtonPath, value, false); }
+        get => this.GetXmlNodeBool(_hiddenButtonPath);
+        set => this.SetXmlNodeBool(_hiddenButtonPath, value, false);
     }
 
     const string _showButtonPath = "@showButton";
@@ -76,8 +73,8 @@ public abstract class ExcelFilterColumn : XmlHelper
     /// </summary>
     public bool ShowButton
     {
-        get { return this.GetXmlNodeBool(_showButtonPath); }
-        set { this.SetXmlNodeBool(_showButtonPath, value, true); }
+        get => this.GetXmlNodeBool(_showButtonPath);
+        set => this.SetXmlNodeBool(_showButtonPath, value, true);
     }
 
     internal abstract void Save();

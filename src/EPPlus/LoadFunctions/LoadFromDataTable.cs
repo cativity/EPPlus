@@ -57,7 +57,7 @@ internal class LoadFromDataTable
         {
             this._worksheet._values.SetValueRow_Value(this._range._fromRow,
                                                       this._range._fromCol,
-                                                      this._dataTable.Columns.Cast<DataColumn>().Select((dc) => { return dc.Caption; }).ToArray());
+                                                      this._dataTable.Columns.Cast<DataColumn>().Select((dc) => dc.Caption).ToArray());
 
             row++;
         }

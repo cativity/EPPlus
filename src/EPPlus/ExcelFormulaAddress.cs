@@ -36,10 +36,8 @@ public class ExcelFormulaAddress : ExcelAddressBase
     /// <param name="toRow">End row</param>
     /// <param name="toColumn">End column</param>
     public ExcelFormulaAddress(int fromRow, int fromCol, int toRow, int toColumn)
-        : base(fromRow, fromCol, toRow, toColumn)
-    {
+        : base(fromRow, fromCol, toRow, toColumn) =>
         this._ws = "";
-    }
 
     /// <summary>
     /// Creates an Address object
@@ -47,10 +45,8 @@ public class ExcelFormulaAddress : ExcelAddressBase
     /// <param name="address">The formula address</param>
     /// <param name="worksheet">The worksheet</param>
     public ExcelFormulaAddress(string address, ExcelWorksheet worksheet)
-        : base(address, worksheet?.Workbook, worksheet?.Name)
-    {
+        : base(address, worksheet?.Workbook, worksheet?.Name) =>
         this.SetFixed();
-    }
 
     internal ExcelFormulaAddress(string ws, string address)
         : base(address)
@@ -164,10 +160,7 @@ public class ExcelFormulaAddress : ExcelAddressBase
     /// <summary>
     /// Addresses can be separated by a comma. If the address contains multiple addresses this list contains them.
     /// </summary>
-    public new List<ExcelFormulaAddress> Addresses
-    {
-        get { return this._addresses ??= new List<ExcelFormulaAddress>(); }
-    }
+    public new List<ExcelFormulaAddress> Addresses => this._addresses ??= new List<ExcelFormulaAddress>();
 
     internal string GetOffset(int row, int column, bool withWbWs = false)
     {

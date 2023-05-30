@@ -25,10 +25,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 /// </summary>
 public abstract class HiddenValuesHandlingFunction : ExcelFunction
 {
-    public HiddenValuesHandlingFunction()
-    {
-        this.IgnoreErrors = true;
-    }
+    public HiddenValuesHandlingFunction() => this.IgnoreErrors = true;
 
     /// <summary>
     /// Set to true or false to indicate whether the function should ignore hidden values.
@@ -40,10 +37,7 @@ public abstract class HiddenValuesHandlingFunction : ExcelFunction
     /// </summary>
     public bool IgnoreErrors { get; set; }
 
-    protected override IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this.ArgsToDoubleEnumerable(arguments, context, this.IgnoreErrors, false);
-    }
+    protected override IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context) => this.ArgsToDoubleEnumerable(arguments, context, this.IgnoreErrors, false);
 
     protected IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments,
                                                                        ParsingContext context,

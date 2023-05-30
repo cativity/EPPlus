@@ -48,16 +48,10 @@ public class WaterfallChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("WaterfallChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("WaterfallChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void WaterfallChart_Styles()
@@ -127,19 +121,19 @@ public class WaterfallChartStylingTest : TestBase
                    });
 
         //Waterfall chart Style 4
-        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle4, "WaterfallChartStyle4", 20, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle4, "WaterfallChartStyle4", 20, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Waterfall chart Style 5
-        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle5, "WaterfallChartStyle5", 20, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle5, "WaterfallChartStyle5", 20, 18, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Waterfall chart Style 6
-        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle6, "WaterfallChartStyle6", 20, 31, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle6, "WaterfallChartStyle6", 20, 31, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Waterfall chart Style 7
-        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle7, "WaterfallChartStyle7", 40, 5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle7, "WaterfallChartStyle7", 40, 5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Waterfall chart Style 8
-        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle8, "WaterfallChartStyle8", 40, 18, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.WaterfallChartStyle8, "WaterfallChartStyle8", 40, 18, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelWaterfallChart AddChartEx(ExcelWorksheet ws,

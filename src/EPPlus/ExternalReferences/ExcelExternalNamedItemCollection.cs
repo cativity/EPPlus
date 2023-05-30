@@ -61,8 +61,5 @@ public class ExcelExternalNamedItemCollection<T> : EPPlusReadOnlyList<T>
     /// </summary>
     /// <param name="name">The name. Case insensitive</param>
     /// <returns>true if the name exists in the collection, otherwise false</returns>
-    public bool ContainsKey(string name)
-    {
-        return this._names.ContainsKey(name);
-    }
+    public bool ContainsKey(string name) => this._names.ContainsKey(name);
 }

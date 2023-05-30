@@ -68,62 +68,35 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
     /// <summary>
     /// Defines the color scheme
     /// </summary>
-    public ExcelColorScheme ColorScheme
-    {
-        get
-        {
-            return this._colorScheme ??=
-                           new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager));
-        }
-    }
+    public ExcelColorScheme ColorScheme =>
+        this._colorScheme ??=
+            new ExcelColorScheme(this.NameSpaceManager, this.TopNode.SelectSingleNode(this._colorSchemePath, this.NameSpaceManager));
 
     internal ExcelFontScheme _fontScheme;
 
     /// <summary>
     /// Defines the font scheme
     /// </summary>
-    public ExcelFontScheme FontScheme
-    {
-        get
-        {
-            return this._fontScheme ??= new ExcelFontScheme(this._pck,
-                                                              this.NameSpaceManager,
-                                                              this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager));
-        }
-    }
+    public ExcelFontScheme FontScheme =>
+        this._fontScheme ??= new ExcelFontScheme(this._pck,
+                                                 this.NameSpaceManager,
+                                                 this.TopNode.SelectSingleNode(this._fontSchemePath, this.NameSpaceManager));
 
     private ExcelFormatScheme _formatScheme;
 
     /// <summary>
     /// The background fill styles, effect styles, fill styles, and line styles which define the style matrix for a theme
     /// </summary>
-    public ExcelFormatScheme FormatScheme
-    {
-        get
-        {
-            return this._formatScheme ??= new ExcelFormatScheme(this.NameSpaceManager,
-                                                                  this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager),
-                                                                  this);
-        }
-    }
+    public ExcelFormatScheme FormatScheme =>
+        this._formatScheme ??= new ExcelFormatScheme(this.NameSpaceManager,
+                                                     this.TopNode.SelectSingleNode(this._fmtSchemePath, this.NameSpaceManager),
+                                                     this);
 
-    ExcelPackage IPictureRelationDocument.Package
-    {
-        get => this._pck;
-    }
+    ExcelPackage IPictureRelationDocument.Package => this._pck;
 
-    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes
-    {
-        get => this._hashes;
-    }
+    Dictionary<string, HashInfo> IPictureRelationDocument.Hashes => this._hashes;
 
-    ZipPackagePart IPictureRelationDocument.RelatedPart
-    {
-        get => this.Part;
-    }
+    ZipPackagePart IPictureRelationDocument.RelatedPart => this.Part;
 
-    Uri IPictureRelationDocument.RelatedUri
-    {
-        get => this.ThemeUri;
-    }
+    Uri IPictureRelationDocument.RelatedUri => this.ThemeUri;
 }

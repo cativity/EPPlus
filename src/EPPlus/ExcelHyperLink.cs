@@ -27,10 +27,8 @@ public class ExcelHyperLink : Uri
     /// </summary>
     /// <param name="uriString">The URI</param>
     public ExcelHyperLink(string uriString)
-        : base(uriString)
-    {
+        : base(uriString) =>
         this.OriginalUri = this;
-    }
 #if !Core
         /// <summary>
         /// A new hyperlink with the specified URI. This syntax is obsolete
@@ -50,10 +48,8 @@ public class ExcelHyperLink : Uri
     /// <param name="uriString">The URI</param>
     /// <param name="uriKind">Kind (absolute/relative or indeterminate)</param>
     public ExcelHyperLink(string uriString, UriKind uriKind)
-        : base(uriString, uriKind)
-    {
+        : base(uriString, uriKind) =>
         this.OriginalUri = this;
-    }
 
     /// <summary>
     /// Sheet internal reference
@@ -74,8 +70,8 @@ public class ExcelHyperLink : Uri
     /// </summary>
     public string ReferenceAddress
     {
-        get { return this._referenceAddress; }
-        set { this._referenceAddress = value; }
+        get => this._referenceAddress;
+        set => this._referenceAddress = value;
     }
 
     string _display = "";
@@ -85,8 +81,8 @@ public class ExcelHyperLink : Uri
     /// </summary>
     public string Display
     {
-        get { return this._display; }
-        set { this._display = value; }
+        get => this._display;
+        set => this._display = value;
     }
 
     /// <summary>
@@ -101,8 +97,8 @@ public class ExcelHyperLink : Uri
     /// </summary>
     public int ColSpann
     {
-        get { return this._colSpann; }
-        set { this._colSpann = value; }
+        get => this._colSpann;
+        set => this._colSpann = value;
     }
 
     int _rowSpann;
@@ -112,8 +108,8 @@ public class ExcelHyperLink : Uri
     /// </summary>
     public int RowSpann
     {
-        get { return this._rowSpann; }
-        set { this._rowSpann = value; }
+        get => this._rowSpann;
+        set => this._rowSpann = value;
     }
 
     /// <summary>

@@ -31,8 +31,5 @@ internal class FinancialDay_Actual_Actual : FinancialDay
 
     protected override DayCountBasis Basis => DayCountBasis.Actual_Actual;
 
-    protected override FinancialDay Factory(short year, short month, short day)
-    {
-        return new FinancialDay_Actual_Actual(year, month, day);
-    }
+    protected override FinancialDay Factory(short year, short month, short day) => new FinancialDay_Actual_Actual(year, month, day);
 }

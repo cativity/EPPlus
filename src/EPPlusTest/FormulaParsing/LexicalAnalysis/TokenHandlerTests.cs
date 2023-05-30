@@ -50,10 +50,7 @@ public class TokenHandlerTests
     }
 
     [TestMethod]
-    public void HasMoreTokensShouldBeTrueWhenTokensExists()
-    {
-        Assert.IsTrue(this._handler.HasMore());
-    }
+    public void HasMoreTokensShouldBeTrueWhenTokensExists() => Assert.IsTrue(this._handler.HasMore());
 
     [TestMethod]
     public void HasMoreTokensShouldBeFalseWhenAllAreHandled()

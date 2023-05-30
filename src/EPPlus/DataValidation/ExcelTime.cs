@@ -126,8 +126,8 @@ public class ExcelTime
 
     internal event EventHandler TimeChanged
     {
-        add { this._timeChanged += value; }
-        remove { this._timeChanged -= value; }
+        add => this._timeChanged += value;
+        remove => this._timeChanged -= value;
     }
 
     private void OnTimeChanged()
@@ -145,7 +145,7 @@ public class ExcelTime
     /// </summary>
     public int Hour
     {
-        get { return this._hour; }
+        get => this._hour;
         set
         {
             if (value < 0)
@@ -170,7 +170,7 @@ public class ExcelTime
     /// </summary>
     public int Minute
     {
-        get { return this._minute; }
+        get => this._minute;
         set
         {
             if (value < 0)
@@ -195,7 +195,7 @@ public class ExcelTime
     /// </summary>
     public int? Second
     {
-        get { return this._second; }
+        get => this._second;
         set
         {
             if (value < 0)
@@ -213,10 +213,7 @@ public class ExcelTime
         }
     }
 
-    private static decimal Round(decimal value)
-    {
-        return Math.Round(value, NumberOfDecimals);
-    }
+    private static decimal Round(decimal value) => Math.Round(value, NumberOfDecimals);
 
     private decimal ToSeconds()
     {
@@ -242,10 +239,7 @@ public class ExcelTime
     /// Returns the excel decimal representation of a time as a string.
     /// </summary>
     /// <returns></returns>
-    public string ToExcelString()
-    {
-        return this.ToExcelTime().ToString(CultureInfo.InvariantCulture);
-    }
+    public string ToExcelString() => this.ToExcelTime().ToString(CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Converts the object to a string

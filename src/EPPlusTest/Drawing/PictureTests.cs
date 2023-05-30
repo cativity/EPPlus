@@ -25,10 +25,7 @@ public class PictureTests : TestBase
     }
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void AddPictureBmp()

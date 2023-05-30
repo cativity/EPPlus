@@ -23,10 +23,7 @@ namespace OfficeOpenXml.Utils.CompundDocument;
 [DebuggerDisplay("FullName: {" + nameof(FullName) + "}")]
 internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
 {
-    public CompoundDocumentItem()
-    {
-        this.Children = new List<CompoundDocumentItem>();
-    }
+    public CompoundDocumentItem() => this.Children = new List<CompoundDocumentItem>();
 
     public CompoundDocumentItem Parent { get; set; }
 
@@ -135,10 +132,7 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
         bw.Write(this.StreamSize);
     }
 
-    public override string ToString()
-    {
-        return this.Name;
-    }
+    public override string ToString() => this.Name;
 
     /// <summary>
     /// Compare length first, then sort by name in upper invariant

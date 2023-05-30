@@ -45,10 +45,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="filePath">The input file.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task LoadAsync(string filePath, CancellationToken cancellationToken = default)
-        {
-            await this.LoadAsync(new FileInfo(filePath), cancellationToken);
-        }
+        public async Task LoadAsync(string filePath, CancellationToken cancellationToken = default) => await this.LoadAsync(new FileInfo(filePath), cancellationToken);
 
         /// <summary>
         /// Loads the specified package data from a stream.
@@ -69,10 +66,7 @@ namespace OfficeOpenXml
         /// <param name="filePath">The input file.</param>
         /// <param name="password">The password</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task LoadAsync(string filePath, string password, CancellationToken cancellationToken = default)
-        {
-            await this.LoadAsync(new FileInfo(filePath), password, cancellationToken);
-        }
+        public async Task LoadAsync(string filePath, string password, CancellationToken cancellationToken = default) => await this.LoadAsync(new FileInfo(filePath), password, cancellationToken);
 
         /// <summary>
         /// Loads the specified package data from a stream.
@@ -95,20 +89,14 @@ namespace OfficeOpenXml
         /// <param name="output">The out stream. Sets the Stream property</param>
         /// <param name="password">The password</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task LoadAsync(string filePath, Stream output, string password, CancellationToken cancellationToken = default)
-        {
-            await this.LoadAsync(new FileInfo(filePath), output, password, cancellationToken);
-        }
+        public async Task LoadAsync(string filePath, Stream output, string password, CancellationToken cancellationToken = default) => await this.LoadAsync(new FileInfo(filePath), output, password, cancellationToken);
 
         /// <summary>
         /// Loads the specified package data from a stream.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task LoadAsync(Stream input, CancellationToken cancellationToken = default)
-        {
-            await this.LoadAsync(input, RecyclableMemory.GetStream(), null, cancellationToken).ConfigureAwait(false);
-        }
+        public async Task LoadAsync(Stream input, CancellationToken cancellationToken = default) => await this.LoadAsync(input, RecyclableMemory.GetStream(), null, cancellationToken).ConfigureAwait(false);
 
         /// <summary>
         /// Loads the specified package data from a stream.
@@ -116,10 +104,7 @@ namespace OfficeOpenXml
         /// <param name="input">The input.</param>
         /// <param name="Password">The password to decrypt the document</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task LoadAsync(Stream input, string Password, CancellationToken cancellationToken = default)
-        {
-            await this.LoadAsync(input, RecyclableMemory.GetStream(), Password, cancellationToken).ConfigureAwait(false);
-        }
+        public async Task LoadAsync(Stream input, string Password, CancellationToken cancellationToken = default) => await this.LoadAsync(input, RecyclableMemory.GetStream(), Password, cancellationToken).ConfigureAwait(false);
 
         /// <summary>
         /// 
@@ -331,10 +316,7 @@ namespace OfficeOpenXml
         /// </summary>
         /// <param name="filePath">The file location</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task SaveAsAsync(string filePath, CancellationToken cancellationToken = default)
-        {
-            await this.SaveAsAsync(new FileInfo(filePath), cancellationToken);
-        }
+        public async Task SaveAsAsync(string filePath, CancellationToken cancellationToken = default) => await this.SaveAsAsync(new FileInfo(filePath), cancellationToken);
 
         /// <summary>
         /// Saves the workbook to a new file
@@ -359,10 +341,7 @@ namespace OfficeOpenXml
         /// <param name="password">The password to encrypt the workbook with. 
         /// This parameter overrides the Encryption.Password.</param>
         /// <param name="cancellationToken">The cancellation token</param>
-        public async Task SaveAsAsync(string filePath, string password, CancellationToken cancellationToken = default)
-        {
-            await this.SaveAsAsync(new FileInfo(filePath), password, cancellationToken);
-        }
+        public async Task SaveAsAsync(string filePath, string password, CancellationToken cancellationToken = default) => await this.SaveAsAsync(new FileInfo(filePath), password, cancellationToken);
 
         /// <summary>
         /// Copies the Package to the Outstream
@@ -456,10 +435,7 @@ namespace OfficeOpenXml
         /// </example>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns></returns>
-        public async Task<byte[]> GetAsByteArrayAsync(CancellationToken cancellationToken = default)
-        {
-            return await this.GetAsByteArrayAsync(true, cancellationToken).ConfigureAwait(false);
-        }
+        public async Task<byte[]> GetAsByteArrayAsync(CancellationToken cancellationToken = default) => await this.GetAsByteArrayAsync(true, cancellationToken).ConfigureAwait(false);
 
         /// <summary>
         /// Saves and returns the Excel files as a bytearray

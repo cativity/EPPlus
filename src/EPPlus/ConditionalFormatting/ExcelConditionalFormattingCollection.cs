@@ -231,10 +231,7 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
     /// <summary>
     /// Number of validations
     /// </summary>
-    public int Count
-    {
-        get { return this._rules.Count; }
-    }
+    public int Count => this._rules.Count;
 
     /// <summary>
     /// Index operator, returns by 0-based index
@@ -243,27 +240,21 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
     /// <returns></returns>
     public IExcelConditionalFormattingRule this[int index]
     {
-        get { return this._rules[index]; }
-        set { this._rules[index] = value; }
+        get => this._rules[index];
+        set => this._rules[index] = value;
     }
 
     /// <summary>
     /// Get the 'cfRule' enumerator
     /// </summary>
     /// <returns></returns>
-    IEnumerator<IExcelConditionalFormattingRule> IEnumerable<IExcelConditionalFormattingRule>.GetEnumerator()
-    {
-        return this._rules.GetEnumerator();
-    }
+    IEnumerator<IExcelConditionalFormattingRule> IEnumerable<IExcelConditionalFormattingRule>.GetEnumerator() => this._rules.GetEnumerator();
 
     /// <summary>
     /// Get the 'cfRule' enumerator
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._rules.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._rules.GetEnumerator();
 
     /// <summary>
     /// Removes all 'cfRule' from the collection and from the XML.
@@ -349,10 +340,7 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
     /// </summary>
     /// <param name="priority"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingRule RulesByPriority(int priority)
-    {
-        return this._rules.Find(x => x.Priority == priority);
-    }
+    public IExcelConditionalFormattingRule RulesByPriority(int priority) => this._rules.Find(x => x.Priority == priority);
 
     #endregion IEnumerable<IExcelConditionalFormatting>
 
@@ -388,410 +376,287 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingAverageGroup AddAboveAverage(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveAverage, address);
-    }
+    public IExcelConditionalFormattingAverageGroup AddAboveAverage(ExcelAddress address) => (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveAverage, address);
 
     /// <summary>
     /// Add AboveOrEqualAverage Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingAverageGroup AddAboveOrEqualAverage(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveOrEqualAverage, address);
-    }
+    public IExcelConditionalFormattingAverageGroup AddAboveOrEqualAverage(ExcelAddress address) => (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveOrEqualAverage, address);
 
     /// <summary>
     /// Add BelowAverage Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingAverageGroup AddBelowAverage(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowAverage, address);
-    }
+    public IExcelConditionalFormattingAverageGroup AddBelowAverage(ExcelAddress address) => (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowAverage, address);
 
     /// <summary>
     /// Add BelowOrEqualAverage Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingAverageGroup AddBelowOrEqualAverage(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowOrEqualAverage, address);
-    }
+    public IExcelConditionalFormattingAverageGroup AddBelowOrEqualAverage(ExcelAddress address) => (IExcelConditionalFormattingAverageGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowOrEqualAverage, address);
 
     /// <summary>
     /// Add AboveStdDev Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingStdDevGroup AddAboveStdDev(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingStdDevGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveStdDev, address);
-    }
+    public IExcelConditionalFormattingStdDevGroup AddAboveStdDev(ExcelAddress address) => (IExcelConditionalFormattingStdDevGroup)this.AddRule(eExcelConditionalFormattingRuleType.AboveStdDev, address);
 
     /// <summary>
     /// Add BelowStdDev Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingStdDevGroup AddBelowStdDev(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingStdDevGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowStdDev, address);
-    }
+    public IExcelConditionalFormattingStdDevGroup AddBelowStdDev(ExcelAddress address) => (IExcelConditionalFormattingStdDevGroup)this.AddRule(eExcelConditionalFormattingRuleType.BelowStdDev, address);
 
     /// <summary>
     /// Add Bottom Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTopBottomGroup AddBottom(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.Bottom, address);
-    }
+    public IExcelConditionalFormattingTopBottomGroup AddBottom(ExcelAddress address) => (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.Bottom, address);
 
     /// <summary>
     /// Add BottomPercent Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTopBottomGroup AddBottomPercent(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.BottomPercent, address);
-    }
+    public IExcelConditionalFormattingTopBottomGroup AddBottomPercent(ExcelAddress address) => (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.BottomPercent, address);
 
     /// <summary>
     /// Add Top Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTopBottomGroup AddTop(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.Top, address);
-    }
+    public IExcelConditionalFormattingTopBottomGroup AddTop(ExcelAddress address) => (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.Top, address);
 
     /// <summary>
     /// Add TopPercent Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTopBottomGroup AddTopPercent(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.TopPercent, address);
-    }
+    public IExcelConditionalFormattingTopBottomGroup AddTopPercent(ExcelAddress address) => (IExcelConditionalFormattingTopBottomGroup)this.AddRule(eExcelConditionalFormattingRuleType.TopPercent, address);
 
     /// <summary>
     /// Add Last7Days Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddLast7Days(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Last7Days, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddLast7Days(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Last7Days, address);
 
     /// <summary>
     /// Add LastMonth Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddLastMonth(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.LastMonth, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddLastMonth(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.LastMonth, address);
 
     /// <summary>
     /// Add LastWeek Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddLastWeek(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.LastWeek, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddLastWeek(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.LastWeek, address);
 
     /// <summary>
     /// Add NextMonth Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddNextMonth(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.NextMonth, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddNextMonth(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.NextMonth, address);
 
     /// <summary>
     /// Add NextWeek Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddNextWeek(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.NextWeek, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddNextWeek(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.NextWeek, address);
 
     /// <summary>
     /// Add ThisMonth Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddThisMonth(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.ThisMonth, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddThisMonth(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.ThisMonth, address);
 
     /// <summary>
     /// Add ThisWeek Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddThisWeek(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.ThisWeek, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddThisWeek(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.ThisWeek, address);
 
     /// <summary>
     /// Add Today Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddToday(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Today, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddToday(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Today, address);
 
     /// <summary>
     /// Add Tomorrow Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddTomorrow(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Tomorrow, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddTomorrow(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Tomorrow, address);
 
     /// <summary>
     /// Add Yesterday Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTimePeriodGroup AddYesterday(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Yesterday, address);
-    }
+    public IExcelConditionalFormattingTimePeriodGroup AddYesterday(ExcelAddress address) => (IExcelConditionalFormattingTimePeriodGroup)this.AddRule(eExcelConditionalFormattingRuleType.Yesterday, address);
 
     /// <summary>
     /// Add BeginsWith Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingBeginsWith AddBeginsWith(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingBeginsWith)this.AddRule(eExcelConditionalFormattingRuleType.BeginsWith, address);
-    }
+    public IExcelConditionalFormattingBeginsWith AddBeginsWith(ExcelAddress address) => (IExcelConditionalFormattingBeginsWith)this.AddRule(eExcelConditionalFormattingRuleType.BeginsWith, address);
 
     /// <summary>
     /// Add Between Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingBetween AddBetween(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingBetween)this.AddRule(eExcelConditionalFormattingRuleType.Between, address);
-    }
+    public IExcelConditionalFormattingBetween AddBetween(ExcelAddress address) => (IExcelConditionalFormattingBetween)this.AddRule(eExcelConditionalFormattingRuleType.Between, address);
 
     /// <summary>
     /// Add ContainsBlanks Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingContainsBlanks AddContainsBlanks(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingContainsBlanks)this.AddRule(eExcelConditionalFormattingRuleType.ContainsBlanks, address);
-    }
+    public IExcelConditionalFormattingContainsBlanks AddContainsBlanks(ExcelAddress address) => (IExcelConditionalFormattingContainsBlanks)this.AddRule(eExcelConditionalFormattingRuleType.ContainsBlanks, address);
 
     /// <summary>
     /// Add ContainsErrors Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingContainsErrors AddContainsErrors(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingContainsErrors)this.AddRule(eExcelConditionalFormattingRuleType.ContainsErrors, address);
-    }
+    public IExcelConditionalFormattingContainsErrors AddContainsErrors(ExcelAddress address) => (IExcelConditionalFormattingContainsErrors)this.AddRule(eExcelConditionalFormattingRuleType.ContainsErrors, address);
 
     /// <summary>
     /// Add ContainsText Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingContainsText AddContainsText(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingContainsText)this.AddRule(eExcelConditionalFormattingRuleType.ContainsText, address);
-    }
+    public IExcelConditionalFormattingContainsText AddContainsText(ExcelAddress address) => (IExcelConditionalFormattingContainsText)this.AddRule(eExcelConditionalFormattingRuleType.ContainsText, address);
 
     /// <summary>
     /// Add DuplicateValues Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingDuplicateValues AddDuplicateValues(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingDuplicateValues)this.AddRule(eExcelConditionalFormattingRuleType.DuplicateValues, address);
-    }
+    public IExcelConditionalFormattingDuplicateValues AddDuplicateValues(ExcelAddress address) => (IExcelConditionalFormattingDuplicateValues)this.AddRule(eExcelConditionalFormattingRuleType.DuplicateValues, address);
 
     /// <summary>
     /// Add EndsWith Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingEndsWith AddEndsWith(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingEndsWith)this.AddRule(eExcelConditionalFormattingRuleType.EndsWith, address);
-    }
+    public IExcelConditionalFormattingEndsWith AddEndsWith(ExcelAddress address) => (IExcelConditionalFormattingEndsWith)this.AddRule(eExcelConditionalFormattingRuleType.EndsWith, address);
 
     /// <summary>
     /// Add Equal Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingEqual AddEqual(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingEqual)this.AddRule(eExcelConditionalFormattingRuleType.Equal, address);
-    }
+    public IExcelConditionalFormattingEqual AddEqual(ExcelAddress address) => (IExcelConditionalFormattingEqual)this.AddRule(eExcelConditionalFormattingRuleType.Equal, address);
 
     /// <summary>
     /// Add Expression Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingExpression AddExpression(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingExpression)this.AddRule(eExcelConditionalFormattingRuleType.Expression, address);
-    }
+    public IExcelConditionalFormattingExpression AddExpression(ExcelAddress address) => (IExcelConditionalFormattingExpression)this.AddRule(eExcelConditionalFormattingRuleType.Expression, address);
 
     /// <summary>
     /// Add GreaterThan Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingGreaterThan AddGreaterThan(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingGreaterThan)this.AddRule(eExcelConditionalFormattingRuleType.GreaterThan, address);
-    }
+    public IExcelConditionalFormattingGreaterThan AddGreaterThan(ExcelAddress address) => (IExcelConditionalFormattingGreaterThan)this.AddRule(eExcelConditionalFormattingRuleType.GreaterThan, address);
 
     /// <summary>
     /// Add GreaterThanOrEqual Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingGreaterThanOrEqual AddGreaterThanOrEqual(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingGreaterThanOrEqual)this.AddRule(eExcelConditionalFormattingRuleType.GreaterThanOrEqual, address);
-    }
+    public IExcelConditionalFormattingGreaterThanOrEqual AddGreaterThanOrEqual(ExcelAddress address) => (IExcelConditionalFormattingGreaterThanOrEqual)this.AddRule(eExcelConditionalFormattingRuleType.GreaterThanOrEqual, address);
 
     /// <summary>
     /// Add LessThan Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingLessThan AddLessThan(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingLessThan)this.AddRule(eExcelConditionalFormattingRuleType.LessThan, address);
-    }
+    public IExcelConditionalFormattingLessThan AddLessThan(ExcelAddress address) => (IExcelConditionalFormattingLessThan)this.AddRule(eExcelConditionalFormattingRuleType.LessThan, address);
 
     /// <summary>
     /// Add LessThanOrEqual Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingLessThanOrEqual AddLessThanOrEqual(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingLessThanOrEqual)this.AddRule(eExcelConditionalFormattingRuleType.LessThanOrEqual, address);
-    }
+    public IExcelConditionalFormattingLessThanOrEqual AddLessThanOrEqual(ExcelAddress address) => (IExcelConditionalFormattingLessThanOrEqual)this.AddRule(eExcelConditionalFormattingRuleType.LessThanOrEqual, address);
 
     /// <summary>
     /// Add NotBetween Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingNotBetween AddNotBetween(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingNotBetween)this.AddRule(eExcelConditionalFormattingRuleType.NotBetween, address);
-    }
+    public IExcelConditionalFormattingNotBetween AddNotBetween(ExcelAddress address) => (IExcelConditionalFormattingNotBetween)this.AddRule(eExcelConditionalFormattingRuleType.NotBetween, address);
 
     /// <summary>
     /// Add NotContainsBlanks Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingNotContainsBlanks AddNotContainsBlanks(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingNotContainsBlanks)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsBlanks, address);
-    }
+    public IExcelConditionalFormattingNotContainsBlanks AddNotContainsBlanks(ExcelAddress address) => (IExcelConditionalFormattingNotContainsBlanks)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsBlanks, address);
 
     /// <summary>
     /// Add NotContainsErrors Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingNotContainsErrors AddNotContainsErrors(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingNotContainsErrors)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsErrors, address);
-    }
+    public IExcelConditionalFormattingNotContainsErrors AddNotContainsErrors(ExcelAddress address) => (IExcelConditionalFormattingNotContainsErrors)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsErrors, address);
 
     /// <summary>
     /// Add NotContainsText Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingNotContainsText AddNotContainsText(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingNotContainsText)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsText, address);
-    }
+    public IExcelConditionalFormattingNotContainsText AddNotContainsText(ExcelAddress address) => (IExcelConditionalFormattingNotContainsText)this.AddRule(eExcelConditionalFormattingRuleType.NotContainsText, address);
 
     /// <summary>
     /// Add NotEqual Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingNotEqual AddNotEqual(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingNotEqual)this.AddRule(eExcelConditionalFormattingRuleType.NotEqual, address);
-    }
+    public IExcelConditionalFormattingNotEqual AddNotEqual(ExcelAddress address) => (IExcelConditionalFormattingNotEqual)this.AddRule(eExcelConditionalFormattingRuleType.NotEqual, address);
 
     /// <summary>
     /// Add Unique Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingUniqueValues AddUniqueValues(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingUniqueValues)this.AddRule(eExcelConditionalFormattingRuleType.UniqueValues, address);
-    }
+    public IExcelConditionalFormattingUniqueValues AddUniqueValues(ExcelAddress address) => (IExcelConditionalFormattingUniqueValues)this.AddRule(eExcelConditionalFormattingRuleType.UniqueValues, address);
 
     /// <summary>
     /// Add ThreeColorScale Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingThreeColorScale AddThreeColorScale(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingThreeColorScale)this.AddRule(eExcelConditionalFormattingRuleType.ThreeColorScale, address);
-    }
+    public IExcelConditionalFormattingThreeColorScale AddThreeColorScale(ExcelAddress address) => (IExcelConditionalFormattingThreeColorScale)this.AddRule(eExcelConditionalFormattingRuleType.ThreeColorScale, address);
 
     /// <summary>
     /// Add TwoColorScale Rule
     /// </summary>
     /// <param name="address"></param>
     /// <returns></returns>
-    public IExcelConditionalFormattingTwoColorScale AddTwoColorScale(ExcelAddress address)
-    {
-        return (IExcelConditionalFormattingTwoColorScale)this.AddRule(eExcelConditionalFormattingRuleType.TwoColorScale, address);
-    }
+    public IExcelConditionalFormattingTwoColorScale AddTwoColorScale(ExcelAddress address) => (IExcelConditionalFormattingTwoColorScale)this.AddRule(eExcelConditionalFormattingRuleType.TwoColorScale, address);
 
     /// <summary>
     /// Add ThreeIconSet Rule

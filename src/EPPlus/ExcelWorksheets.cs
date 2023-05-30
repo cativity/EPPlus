@@ -122,10 +122,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// <summary>
     /// Returns the number of worksheets in the workbook
     /// </summary>
-    public int Count
-    {
-        get { return this._worksheets.Count; }
-    }
+    public int Count => this._worksheets.Count;
 
     #endregion
 
@@ -139,17 +136,11 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// Foreach support
     /// </summary>
     /// <returns>An enumerator</returns>
-    public IEnumerator<ExcelWorksheet> GetEnumerator()
-    {
-        return this._worksheets.GetEnumerator();
-    }
+    public IEnumerator<ExcelWorksheet> GetEnumerator() => this._worksheets.GetEnumerator();
 
     #region IEnumerable Members
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._worksheets.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._worksheets.GetEnumerator();
 
     #endregion
 
@@ -270,10 +261,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// <param name="chartType">The type of chart</param>
     /// <param name="pivotTableSource">The pivottable source</param>
     /// <returns></returns>
-    public ExcelChartsheet AddChart(string Name, eChartType chartType, ExcelPivotTable pivotTableSource)
-    {
-        return (ExcelChartsheet)this.AddSheet(Name, true, chartType, pivotTableSource);
-    }
+    public ExcelChartsheet AddChart(string Name, eChartType chartType, ExcelPivotTable pivotTableSource) => (ExcelChartsheet)this.AddSheet(Name, true, chartType, pivotTableSource);
 
     /// <summary>
     /// Adds a stock chart sheet to the workbook.
@@ -429,10 +417,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// </summary>
     /// <param name="Name">The Name</param>
     /// <returns>True if valid</returns>
-    private static bool ValidateName(string Name)
-    {
-        return System.Text.RegularExpressions.Regex.IsMatch(Name, @":|\?|/|\\|\[|\]");
-    }
+    private static bool ValidateName(string Name) => System.Text.RegularExpressions.Regex.IsMatch(Name, @":|\?|/|\\|\[|\]");
 
     /// <summary>
     /// Creates the XML document representing a new empty worksheet
@@ -670,10 +655,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// </summary>
     /// <param name="Name">The name of the worksheet</param>
     /// <returns></returns>
-    public ExcelWorksheet this[string Name]
-    {
-        get { return this.GetByName(Name); }
-    }
+    public ExcelWorksheet this[string Name] => this.GetByName(Name);
 
     /// <summary>
     /// Copies the named worksheet and creates a new worksheet in the same workbook
@@ -758,40 +740,28 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// </summary>
     /// <param name="sourceName">The name of the source worksheet</param>
     /// <param name="targetName">The name of the target worksheet</param>
-    public void MoveBefore(string sourceName, string targetName)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourceName, targetName, true);
-    }
+    public void MoveBefore(string sourceName, string targetName) => MoveSheetXmlNode.RearrangeWorksheets(this, sourceName, targetName, true);
 
     /// <summary>
     /// Moves the source worksheet to the position before the target worksheet
     /// </summary>
     /// <param name="sourcePositionId">The id of the source worksheet</param>
     /// <param name="targetPositionId">The id of the target worksheet</param>
-    public void MoveBefore(int sourcePositionId, int targetPositionId)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, targetPositionId, true);
-    }
+    public void MoveBefore(int sourcePositionId, int targetPositionId) => MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, targetPositionId, true);
 
     /// <summary>
     /// Moves the source worksheet to the position after the target worksheet
     /// </summary>
     /// <param name="sourceName">The name of the source worksheet</param>
     /// <param name="targetName">The name of the target worksheet</param>
-    public void MoveAfter(string sourceName, string targetName)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourceName, targetName, false);
-    }
+    public void MoveAfter(string sourceName, string targetName) => MoveSheetXmlNode.RearrangeWorksheets(this, sourceName, targetName, false);
 
     /// <summary>
     /// Moves the source worksheet to the position after the target worksheet
     /// </summary>
     /// <param name="sourcePositionId">The id of the source worksheet</param>
     /// <param name="targetPositionId">The id of the target worksheet</param>
-    public void MoveAfter(int sourcePositionId, int targetPositionId)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, targetPositionId, true);
-    }
+    public void MoveAfter(int sourcePositionId, int targetPositionId) => MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, targetPositionId, true);
 
     /// <summary>
     /// Moves the source worksheet to the start of the worksheets collection
@@ -808,10 +778,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// Moves the source worksheet to the start of the worksheets collection
     /// </summary>
     /// <param name="sourcePositionId">The position of the source worksheet</param>
-    public void MoveToStart(int sourcePositionId)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this._pck._worksheetAdd, true);
-    }
+    public void MoveToStart(int sourcePositionId) => MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this._pck._worksheetAdd, true);
 
     /// <summary>
     /// Moves the source worksheet to the end of the worksheets collection
@@ -828,10 +795,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
     /// Moves the source worksheet to the end of the worksheets collection
     /// </summary>
     /// <param name="sourcePositionId">The position of the source worksheet</param>
-    public void MoveToEnd(int sourcePositionId)
-    {
-        MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this.Count - 1 + this._pck._worksheetAdd, false);
-    }
+    public void MoveToEnd(int sourcePositionId) => MoveSheetXmlNode.RearrangeWorksheets(this, sourcePositionId, this.Count - 1 + this._pck._worksheetAdd, false);
 
     /// <summary>
     /// Dispose the worksheets collection
@@ -850,8 +814,5 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
         }
     }
 
-    internal void NormalStyleChange()
-    {
-        throw new NotImplementedException();
-    }
+    internal void NormalStyleChange() => throw new NotImplementedException();
 } // end class Worksheets

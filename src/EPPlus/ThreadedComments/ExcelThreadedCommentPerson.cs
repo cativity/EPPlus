@@ -43,8 +43,8 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     /// </summary>
     public string Id
     {
-        get { return this.GetXmlNodeString("@id"); }
-        set { this.SetXmlNodeString("@id", value); }
+        get => this.GetXmlNodeString("@id");
+        set => this.SetXmlNodeString("@id", value);
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     /// </summary>
     public string DisplayName
     {
-        get { return this.GetXmlNodeString("@displayName"); }
-        set { this.SetXmlNodeString("@displayName", value); }
+        get => this.GetXmlNodeString("@displayName");
+        set => this.SetXmlNodeString("@displayName", value);
     }
 
     /// <summary>
@@ -62,8 +62,8 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     /// </summary>
     public string UserId
     {
-        get { return this.GetXmlNodeString("@userId"); }
-        set { this.SetXmlNodeString("@userId", value); }
+        get => this.GetXmlNodeString("@userId");
+        set => this.SetXmlNodeString("@userId", value);
     }
 
     /// <summary>
@@ -164,17 +164,11 @@ public class ExcelThreadedCommentPerson : XmlHelper, IEqualityComparer<ExcelThre
     /// </summary>
     /// <param name="obj">The <see cref="System.Object"/> for which a hash code is to be returned.</param>
     /// <returns></returns>
-    public int GetHashCode(ExcelThreadedCommentPerson obj)
-    {
-        return obj.GetHashCode();
-    }
+    public int GetHashCode(ExcelThreadedCommentPerson obj) => obj.GetHashCode();
 
     /// <summary>
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return this.DisplayName + " (id: " + this.UserId + ")";
-    }
+    public override string ToString() => this.DisplayName + " (id: " + this.UserId + ")";
 }

@@ -22,10 +22,7 @@ public class ExcelVbaReferenceProject : ExcelVbaReference
     /// Constructor.
     /// Sets ReferenceRecordID to 0x0E
     /// </summary>
-    public ExcelVbaReferenceProject()
-    {
-        this.ReferenceRecordID = 0x0E;
-    }
+    public ExcelVbaReferenceProject() => this.ReferenceRecordID = 0x0E;
 
     /// <summary>
     /// LibIdRelative

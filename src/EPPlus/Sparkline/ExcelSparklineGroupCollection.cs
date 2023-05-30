@@ -43,10 +43,7 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._lst.Count; }
-    }
+    public int Count => this._lst.Count;
 
     /// <summary>
     /// Adds a new sparklinegroup to the collection
@@ -196,33 +193,21 @@ public class ExcelSparklineGroupCollection : IEnumerable<ExcelSparklineGroup>
     /// </summary>
     /// <param name="index">The position of the Sparklinegroup. 0-base</param>
     /// <returns></returns>
-    public ExcelSparklineGroup this[int index]
-    {
-        get { return this._lst[index]; }
-    }
+    public ExcelSparklineGroup this[int index] => this._lst[index];
 
     /// <summary>
     /// The enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelSparklineGroup> GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    public IEnumerator<ExcelSparklineGroup> GetEnumerator() => this._lst.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._lst.GetEnumerator();
 
     /// <summary>
     /// Removes the sparkline.
     /// </summary>
     /// <param name="index">The index of the item to be removed</param>
-    public void RemoveAt(int index)
-    {
-        this.Remove(this._lst[index]);
-    }
+    public void RemoveAt(int index) => this.Remove(this._lst[index]);
 
     /// <summary>
     /// Removes the sparkline.

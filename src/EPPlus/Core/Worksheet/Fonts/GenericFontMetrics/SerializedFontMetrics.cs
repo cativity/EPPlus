@@ -42,10 +42,7 @@ internal class SerializedFontMetrics
 
     public Dictionary<char, FontMetricsClass> CharMetrics { get; private set; }
 
-    public uint GetKey()
-    {
-        return GetKey(this.Family, this.SubFamily);
-    }
+    public uint GetKey() => GetKey(this.Family, this.SubFamily);
 
     public static uint GetKey(FontMetricsFamilies family, FontSubFamilies subFamily)
     {

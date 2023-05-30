@@ -57,8 +57,8 @@ public class ExcelDrawingFontSpecial : ExcelDrawingFontBase
     /// </summary>        
     public string Panose
     {
-        get { return this.GetXmlNodeString("@panose"); }
-        set { this.SetXmlNodeString("@panose", value); }
+        get => this.GetXmlNodeString("@panose");
+        set => this.SetXmlNodeString("@panose", value);
     }
 
     /// <summary>
@@ -79,6 +79,6 @@ public class ExcelDrawingFontSpecial : ExcelDrawingFontBase
                 return ePitchFamily.Default;
             }
         }
-        set { this.SetXmlNodeString("@pitchFamily", ((int)value).ToString()); }
+        set => this.SetXmlNodeString("@pitchFamily", ((int)value).ToString());
     }
 }

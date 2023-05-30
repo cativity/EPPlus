@@ -66,10 +66,8 @@ internal class ZipSegmentedStream : Stream
     // will mask the original one.
 
     private ZipSegmentedStream()
-        : base()
-    {
+        : base() =>
         this._exceptionPending = false;
-    }
 
     public static ZipSegmentedStream ForReading(string name, uint initialDiskNumber, uint maxDiskNumber)
     {
@@ -149,7 +147,7 @@ internal class ZipSegmentedStream : Stream
 
     public uint CurrentSegment
     {
-        get { return this._currentDiskNumber; }
+        get => this._currentDiskNumber;
         private set
         {
             this._currentDiskNumber = value;
@@ -168,15 +166,9 @@ internal class ZipSegmentedStream : Stream
     ///     started.
     ///   </para>
     /// </remarks>
-    public string CurrentName
-    {
-        get { return this._currentName ??= this._NameForSegment(this.CurrentSegment); }
-    }
+    public string CurrentName => this._currentName ??= this._NameForSegment(this.CurrentSegment);
 
-    public string CurrentTempName
-    {
-        get { return this._currentTempName; }
-    }
+    public string CurrentTempName => this._currentTempName;
 
     private string _NameForSegment(uint diskNumber)
     {
@@ -209,10 +201,7 @@ internal class ZipSegmentedStream : Stream
         return this.CurrentSegment;
     }
 
-    public override string ToString()
-    {
-        return string.Format("{0}[{1}][{2}], pos=0x{3:X})", "ZipSegmentedStream", this.CurrentName, this.rwMode.ToString(), this.Position);
-    }
+    public override string ToString() => string.Format("{0}[{1}][{2}], pos=0x{3:X})", "ZipSegmentedStream", this.CurrentName, this.rwMode.ToString(), this.Position);
 
     private void _SetReadStream()
     {
@@ -446,35 +435,20 @@ internal class ZipSegmentedStream : Stream
         return r;
     }
 
-    public override bool CanRead
-    {
-        get { return this.rwMode == RwMode.ReadOnly && this._innerStream != null && this._innerStream.CanRead; }
-    }
+    public override bool CanRead => this.rwMode == RwMode.ReadOnly && this._innerStream != null && this._innerStream.CanRead;
 
-    public override bool CanSeek
-    {
-        get { return this._innerStream != null && this._innerStream.CanSeek; }
-    }
+    public override bool CanSeek => this._innerStream != null && this._innerStream.CanSeek;
 
-    public override bool CanWrite
-    {
-        get { return this.rwMode == RwMode.Write && this._innerStream != null && this._innerStream.CanWrite; }
-    }
+    public override bool CanWrite => this.rwMode == RwMode.Write && this._innerStream != null && this._innerStream.CanWrite;
 
-    public override void Flush()
-    {
-        this._innerStream.Flush();
-    }
+    public override void Flush() => this._innerStream.Flush();
 
-    public override long Length
-    {
-        get { return this._innerStream.Length; }
-    }
+    public override long Length => this._innerStream.Length;
 
     public override long Position
     {
-        get { return this._innerStream.Position; }
-        set { this._innerStream.Position = value; }
+        get => this._innerStream.Position;
+        set => this._innerStream.Position = value;
     }
 
     public override long Seek(long offset, SeekOrigin origin)

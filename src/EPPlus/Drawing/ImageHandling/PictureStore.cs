@@ -49,10 +49,7 @@ internal class PictureStore : IDisposable
         this._images = this._pck.Workbook._images;
     }
 
-    internal ImageInfo AddImage(byte[] image)
-    {
-        return this.AddImage(image, null, null);
-    }
+    internal ImageInfo AddImage(byte[] image) => this.AddImage(image, null, null);
 
     internal ImageInfo AddImage(byte[] image, Uri uri, ePictureType? pictureType)
     {
@@ -463,8 +460,5 @@ internal class PictureStore : IDisposable
         return container.RelPic.Id;
     }
 
-    public void Dispose()
-    {
-        this._images = null;
-    }
+    public void Dispose() => this._images = null;
 }

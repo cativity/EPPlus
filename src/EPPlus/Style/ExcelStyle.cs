@@ -94,8 +94,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public ExcelHorizontalAlignment HorizontalAlignment
     {
-        get { return this._xfs.HorizontalAlignment; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, this._positionID, this._address)); }
+        get => this._xfs.HorizontalAlignment;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.HorizontalAlign, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -103,12 +103,11 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public ExcelVerticalAlignment VerticalAlignment
     {
-        get
-        {
+        get =>
+
             //return _styles.CellXfs[Index].VerticalAlignment;
-            return this._xfs.VerticalAlignment;
-        }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
+            this._xfs.VerticalAlignment;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.VerticalAlign, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -116,8 +115,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public bool JustifyLastLine
     {
-        get { return this._xfs.JustifyLastLine; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, this._positionID, this._address)); }
+        get => this._xfs.JustifyLastLine;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.JustifyLastLine, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -125,8 +124,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public bool WrapText
     {
-        get { return this._xfs.WrapText; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, this._positionID, this._address)); }
+        get => this._xfs.WrapText;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.WrapText, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -134,25 +133,22 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public ExcelReadingOrder ReadingOrder
     {
-        get { return this._xfs.ReadingOrder; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, this._positionID, this._address)); }
+        get => this._xfs.ReadingOrder;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ReadingOrder, value, this._positionID, this._address));
     }
 
     /// <summary>
     /// Makes the text vertically. This is the same as setting <see cref="TextRotation"/> to 255.
     /// </summary>
-    public void SetTextVertical()
-    {
-        this.TextRotation = 255;
-    }
+    public void SetTextVertical() => this.TextRotation = 255;
 
     /// <summary>
     /// Shrink the text to fit
     /// </summary>
     public bool ShrinkToFit
     {
-        get { return this._xfs.ShrinkToFit; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, this._positionID, this._address)); }
+        get => this._xfs.ShrinkToFit;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.ShrinkToFit, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -160,7 +156,7 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public int Indent
     {
-        get { return this._xfs.Indent; }
+        get => this._xfs.Indent;
         set
         {
             if (value < 0 || value > 250)
@@ -178,7 +174,7 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public int TextRotation
     {
-        get { return this._xfs.TextRotation; }
+        get => this._xfs.TextRotation;
         set
         {
             if ((value < 0 || value > 180) && value != 255)
@@ -196,8 +192,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public bool Locked
     {
-        get { return this._xfs.Locked; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, this._positionID, this._address)); }
+        get => this._xfs.Locked;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Locked, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -206,8 +202,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public bool Hidden
     {
-        get { return this._xfs.Hidden; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, this._positionID, this._address)); }
+        get => this._xfs.Hidden;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.Hidden, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -215,8 +211,8 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public bool QuotePrefix
     {
-        get { return this._xfs.QuotePrefix; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, this._positionID, this._address)); }
+        get => this._xfs.QuotePrefix;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.QuotePrefix, value, this._positionID, this._address));
     }
 
     const string xfIdPath = "@xfId";
@@ -226,37 +222,32 @@ public sealed class ExcelStyle : StyleBase
     /// </summary>
     public int XfId
     {
-        get { return this._xfs.XfId; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, this._positionID, this._address)); }
+        get => this._xfs.XfId;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Style, eStyleProperty.XfId, value, this._positionID, this._address));
     }
 
     internal int PositionID { get; set; }
 
     internal ExcelStyles Styles { get; set; }
 
-    internal override string Id
-    {
-        get
-        {
-            return this.Numberformat.Id
-                   + "|"
-                   + this.Font.Id
-                   + "|"
-                   + this.Fill.Id
-                   + "|"
-                   + this.Border.Id
-                   + "|"
-                   + this.VerticalAlignment
-                   + "|"
-                   + this.HorizontalAlignment
-                   + "|"
-                   + this.WrapText.ToString()
-                   + "|"
-                   + this.ReadingOrder.ToString()
-                   + "|"
-                   + this.XfId.ToString()
-                   + "|"
-                   + this.QuotePrefix.ToString();
-        }
-    }
+    internal override string Id =>
+        this.Numberformat.Id
+        + "|"
+        + this.Font.Id
+        + "|"
+        + this.Fill.Id
+        + "|"
+        + this.Border.Id
+        + "|"
+        + this.VerticalAlignment
+        + "|"
+        + this.HorizontalAlignment
+        + "|"
+        + this.WrapText.ToString()
+        + "|"
+        + this.ReadingOrder.ToString()
+        + "|"
+        + this.XfId.ToString()
+        + "|"
+        + this.QuotePrefix.ToString();
 }

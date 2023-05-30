@@ -45,28 +45,16 @@ public class IntegrationTests : TestBase
     private ExcelPackage _unitTestPackage;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _package = OpenPackage("DatavalidationIntegrationTests.xlsx", true);
-    }
+    public static void Init(TestContext context) => _package = OpenPackage("DatavalidationIntegrationTests.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_package);
-    }
+    public static void Cleanup() => SaveAndCleanup(_package);
 
     [TestInitialize]
-    public void TestInitialize()
-    {
-        this._unitTestPackage = new ExcelPackage();
-    }
+    public void TestInitialize() => this._unitTestPackage = new ExcelPackage();
 
     [TestCleanup]
-    public void TestCleanup()
-    {
-        this._unitTestPackage.Dispose();
-    }
+    public void TestCleanup() => this._unitTestPackage.Dispose();
 
     [TestMethod]
     public void DataValidations_AddOneValidationOfTypeWhole()

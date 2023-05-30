@@ -107,33 +107,26 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// <summary>
     /// The first column in the collection
     /// </summary>
-    public int StartColumn
-    {
-        get { return this._fromCol; }
-    }
+    public int StartColumn => this._fromCol;
 
     /// <summary>
     /// The last column in the collection
     /// </summary>
-    public int EndColumn
-    {
-        get { return this._toCol; }
-    }
+    public int EndColumn => this._toCol;
 
     /// <summary>
     /// If the column is collapsed in outline mode
     /// </summary>
     public bool Collapsed
     {
-        get { return this.GetValue(new Func<ExcelColumn, bool>(x => x.Collapsed), false); }
-        set { this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Collapsed = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, bool>(x => x.Collapsed), false);
+        set => this.SetValue(new Action<ExcelColumn, bool>((x, v) => x.Collapsed = v), value);
     }
 
     /// <summary>
     /// Groups the columns using an outline. Adds one to <see cref="OutlineLevel" /> for each column if the outline level is less than 8.
     /// </summary>
-    public void Group()
-    {
+    public void Group() =>
         this.SetValue(new Action<ExcelColumn, int>((x, v) =>
                       {
                           if (x.OutlineLevel < 8)
@@ -142,14 +135,12 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
                           }
                       }),
                       1);
-    }
 
     /// <summary>
     /// Ungroups the columns from the outline. 
     /// Subtracts one from <see cref="OutlineLevel" /> for each column if the outline level is larger that zero. 
     /// </summary>
-    public void UnGroup()
-    {
+    public void UnGroup() =>
         this.SetValue(new Action<ExcelColumn, int>((x, v) =>
                       {
                           if (x.OutlineLevel >= 0)
@@ -158,7 +149,6 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
                           }
                       }),
                       -1);
-    }
 
     /// <summary>
     /// Collapses and hides the column's children. Children are columns immegetaly to the right or left of the column depending on the <see cref="ExcelWorksheet.OutLineSummaryRight"/>
@@ -238,8 +228,8 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public int OutlineLevel
     {
-        get { return this.GetValue(new Func<ExcelColumn, int>(x => x.OutlineLevel), 0); }
-        set { this.SetValue(new Action<ExcelColumn, int>((x, v) => { x.OutlineLevel = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, int>(x => x.OutlineLevel), 0);
+        set => this.SetValue(new Action<ExcelColumn, int>((x, v) => x.OutlineLevel = v), value);
     }
 
     /// <summary>
@@ -247,8 +237,8 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public bool Phonetic
     {
-        get { return this.GetValue(new Func<ExcelColumn, bool>(x => x.Phonetic), false); }
-        set { this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Phonetic = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, bool>(x => x.Phonetic), false);
+        set => this.SetValue(new Action<ExcelColumn, bool>((x, v) => x.Phonetic = v), value);
     }
 
     /// <summary>
@@ -257,8 +247,8 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public bool BestFit
     {
-        get { return this.GetValue(new Func<ExcelColumn, bool>(x => x.BestFit), false); }
-        set { this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.BestFit = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, bool>(x => x.BestFit), false);
+        set => this.SetValue(new Action<ExcelColumn, bool>((x, v) => x.BestFit = v), value);
     }
 
     /// <summary>
@@ -266,8 +256,8 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public bool Hidden
     {
-        get { return this.GetValue(new Func<ExcelColumn, bool>(x => x.Hidden), false); }
-        set { this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.Hidden = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, bool>(x => x.Hidden), false);
+        set => this.SetValue(new Action<ExcelColumn, bool>((x, v) => x.Hidden = v), value);
     }
 
     /// <summary>
@@ -275,22 +265,19 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public double Width
     {
-        get { return this.GetValue(new Func<ExcelColumn, double>(x => x.Width), this._worksheet.DefaultColWidth); }
-        set { this.SetValue(new Action<ExcelColumn, double>((x, v) => { x.Width = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, double>(x => x.Width), this._worksheet.DefaultColWidth);
+        set => this.SetValue(new Action<ExcelColumn, double>((x, v) => x.Width = v), value);
     }
 
-    internal double VisualWidth
-    {
-        get { return this.GetValue(new Func<ExcelColumn, double>(x => x.VisualWidth), this._worksheet.DefaultColWidth); }
-    }
+    internal double VisualWidth => this.GetValue(new Func<ExcelColumn, double>(x => x.VisualWidth), this._worksheet.DefaultColWidth);
 
     /// <summary>
     /// Adds a manual page break after the column.
     /// </summary>
     public bool PageBreak
     {
-        get { return this.GetValue(new Func<ExcelColumn, bool>(x => x.PageBreak), false); }
-        set { this.SetValue(new Action<ExcelColumn, bool>((x, v) => { x.PageBreak = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, bool>(x => x.PageBreak), false);
+        set => this.SetValue(new Action<ExcelColumn, bool>((x, v) => x.PageBreak = v), value);
     }
 
     #region ExcelColumn Style
@@ -317,8 +304,8 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public string StyleName
     {
-        get { return this.GetValue<string>(new Func<ExcelColumn, string>(x => x.StyleName), ""); }
-        set { this.SetValue(new Action<ExcelColumn, string>((x, v) => { x.StyleName = v; }), value); }
+        get => this.GetValue<string>(new Func<ExcelColumn, string>(x => x.StyleName), "");
+        set => this.SetValue(new Action<ExcelColumn, string>((x, v) => x.StyleName = v), value);
     }
 
     /// <summary>
@@ -326,25 +313,19 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </summary>
     public int StyleID
     {
-        get { return this.GetValue(new Func<ExcelColumn, int>(x => x.StyleID), 0); }
-        set { this.SetValue(new Action<ExcelColumn, int>((x, v) => { x.StyleID = v; }), value); }
+        get => this.GetValue(new Func<ExcelColumn, int>(x => x.StyleID), 0);
+        set => this.SetValue(new Action<ExcelColumn, int>((x, v) => x.StyleID = v), value);
     }
 
     /// <summary>
     /// The current range when enumerating
     /// </summary>
-    public ExcelRangeColumn Current
-    {
-        get { return new ExcelRangeColumn(this._worksheet, this.enumCol, this.enumCol); }
-    }
+    public ExcelRangeColumn Current => new(this._worksheet, this.enumCol, this.enumCol);
 
     /// <summary>
     /// The current range when enumerating
     /// </summary>
-    object IEnumerator.Current
-    {
-        get { return new ExcelRangeColumn(this._worksheet, this.enumCol, this.enumCol); }
-    }
+    object IEnumerator.Current => new ExcelRangeColumn(this._worksheet, this.enumCol, this.enumCol);
 
     #endregion
 
@@ -356,10 +337,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// Cells containing formulas must be calculated before autofit is called.
     /// Wrapped and merged cells are also ignored.
     /// </remarks>
-    public void AutoFit()
-    {
-        this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns();
-    }
+    public void AutoFit() => this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns();
 
     /// <summary>
     /// Set the column width from the content of the range. Columns outside of the worksheets dimension are ignored.
@@ -370,10 +348,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// Wrapped and merged cells are also ignored.
     /// </remarks>
     /// <param name="MinimumWidth">Minimum column width</param>
-    public void AutoFit(double MinimumWidth)
-    {
-        this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth);
-    }
+    public void AutoFit(double MinimumWidth) => this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth);
 
     /// <summary>
     /// Set the column width from the content of the range. Columns outside of the worksheets dimension are ignored.
@@ -385,10 +360,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// </remarks>        
     /// <param name="MinimumWidth">Minimum column width</param>
     /// <param name="MaximumWidth">Maximum column width</param>
-    public void AutoFit(double MinimumWidth, double MaximumWidth)
-    {
-        this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth, MaximumWidth);
-    }
+    public void AutoFit(double MinimumWidth, double MaximumWidth) => this._worksheet.Cells[1, this._fromCol, ExcelPackage.MaxRows, this._toCol].AutoFitColumns(MinimumWidth, MaximumWidth);
 
     private ExcelColumn GetColumn(int col, bool ignoreFromCol = true)
     {
@@ -527,26 +499,17 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
     /// <summary>
     /// Reference to the cell range of the column(s)
     /// </summary>
-    public ExcelRangeBase Range
-    {
-        get { return new ExcelRangeBase(this._worksheet, ExcelCellBase.GetAddress(1, this._fromCol, ExcelPackage.MaxRows, this._toCol)); }
-    }
+    public ExcelRangeBase Range => new(this._worksheet, ExcelCellBase.GetAddress(1, this._fromCol, ExcelPackage.MaxRows, this._toCol));
 
     /// <summary>
     /// Gets the enumerator
     /// </summary>
-    public IEnumerator<ExcelRangeColumn> GetEnumerator()
-    {
-        return this;
-    }
+    public IEnumerator<ExcelRangeColumn> GetEnumerator() => this;
 
     /// <summary>
     /// Gets the enumerator
     /// </summary>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this;
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this;
 
     /// <summary>
     /// Iterate to the next row

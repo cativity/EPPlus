@@ -38,16 +38,10 @@ namespace EPPlusTest.DataValidation;
 public class CustomValidationTests : ValidationTestBase
 {
     [TestInitialize]
-    public void Setup()
-    {
-        this.SetupTestData();
-    }
+    public void Setup() => this.SetupTestData();
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this.CleanupTestData();
-    }
+    public void Cleanup() => this.CleanupTestData();
 
     [TestMethod]
     public void CustomValidation_FormulaIsSet()

@@ -45,10 +45,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     /// Adds a pivot area style for the top right cells of the pivot table, to the right of any filter button, if reading order i set to Left-To-Right. 
     /// </summary>
     /// <returns></returns>
-    public ExcelPivotTableAreaStyle AddTopEnd()
-    {
-        return this.AddTopEnd(null);
-    }
+    public ExcelPivotTableAreaStyle AddTopEnd() => this.AddTopEnd(null);
 
     /// <summary>
     /// Adds a style for the top right cells of the pivot table, to the right of any filter button, if reading order i set to Left-To-Right. 
@@ -152,28 +149,19 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     /// Adds a pivot area style that affects the whole table.
     /// </summary>
     /// <returns>The style object used to set the styles</returns>
-    public ExcelPivotTableAreaStyle AddWholeTable()
-    {
-        return this.AddAll(false, false);
-    }
+    public ExcelPivotTableAreaStyle AddWholeTable() => this.AddAll(false, false);
 
     /// <summary>
     /// Adds a pivot area style that affects all labels
     /// </summary>
     /// <returns>The style object used to set the styles</returns>
-    public ExcelPivotTableAreaStyle AddAllLabels()
-    {
-        return this.AddAll(true, false);
-    }
+    public ExcelPivotTableAreaStyle AddAllLabels() => this.AddAll(true, false);
 
     /// <summary>
     /// Adds a pivot area style that affects all data cells
     /// </summary>
     /// <returns>The style object used to set the styles</returns>
-    public ExcelPivotTableAreaStyle AddAllData()
-    {
-        return this.AddAll(false, true);
-    }
+    public ExcelPivotTableAreaStyle AddAllData() => this.AddAll(false, true);
 
     internal ExcelPivotTableAreaStyle AddAll(bool labels, bool data)
     {

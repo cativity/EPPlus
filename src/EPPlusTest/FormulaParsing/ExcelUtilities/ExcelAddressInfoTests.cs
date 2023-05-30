@@ -40,10 +40,7 @@ namespace EPPlusTest.ExcelUtilities;
 public class ExcelAddressInfoTests
 {
     [TestMethod, ExpectedException(typeof(ArgumentException))]
-    public void ParseShouldThrowIfAddressIsNull()
-    {
-        _ = ExcelAddressInfo.Parse(null);
-    }
+    public void ParseShouldThrowIfAddressIsNull() => _ = ExcelAddressInfo.Parse(null);
 
     [TestMethod]
     public void ParseShouldSetWorksheet()

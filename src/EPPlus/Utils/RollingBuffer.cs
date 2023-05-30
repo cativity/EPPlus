@@ -24,10 +24,7 @@ internal class RollingBuffer
     byte[] _buffer;
     int _index;
 
-    internal RollingBuffer(int size)
-    {
-        this._buffer = new byte[size];
-    }
+    internal RollingBuffer(int size) => this._buffer = new byte[size];
 
     internal void Write(byte[] bytes, int size = -1)
     {

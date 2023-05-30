@@ -31,16 +31,10 @@ public struct TextMeasurement
     /// </summary>
     public float Height { get; set; }
 
-    public static TextMeasurement Empty
-    {
-        get { return new TextMeasurement(-1, -1); }
-    }
+    public static TextMeasurement Empty => new(-1, -1);
 
     /// <summary>
     /// Returns true if this is an empty measurement
     /// </summary>
-    public bool IsEmpty
-    {
-        get { return this.Width == -1 && this.Height == -1; }
-    }
+    public bool IsEmpty => this.Width == -1 && this.Height == -1;
 }

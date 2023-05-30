@@ -85,10 +85,7 @@ public class ExcelChartTrendlineCollection : IEnumerable<ExcelChartTrendline>
     /// <summary>
     /// Number of items in the collection.
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     /// <summary>
     /// Returns a chart trendline at the specific position.  
@@ -108,13 +105,7 @@ public class ExcelChartTrendlineCollection : IEnumerable<ExcelChartTrendline>
         }
     }
 
-    IEnumerator<ExcelChartTrendline> IEnumerable<ExcelChartTrendline>.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    IEnumerator<ExcelChartTrendline> IEnumerable<ExcelChartTrendline>.GetEnumerator() => this._list.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 }

@@ -27,10 +27,7 @@ public class LoadFromDataTableTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     private ExcelPackage _package;
     private ExcelWorksheet _worksheet;

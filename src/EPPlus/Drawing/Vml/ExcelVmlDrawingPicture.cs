@@ -29,26 +29,21 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     ExcelWorksheet _worksheet;
 
     internal ExcelVmlDrawingPicture(XmlNode topNode, XmlNamespaceManager ns, ExcelWorksheet ws)
-        : base(topNode, ns)
-    {
+        : base(topNode, ns) =>
         this._worksheet = ws;
-    }
 
     /// <summary>
     /// Position ID
     /// </summary>
-    public string Position
-    {
-        get { return this.GetXmlNodeString("@id"); }
-    }
+    public string Position => this.GetXmlNodeString("@id");
 
     /// <summary>
     /// The width in points
     /// </summary>
     public double Width
     {
-        get { return this.GetStyleProp("width"); }
-        set { this.SetStyleProp("width", value.ToString(CultureInfo.InvariantCulture) + "pt"); }
+        get => this.GetStyleProp("width");
+        set => this.SetStyleProp("width", value.ToString(CultureInfo.InvariantCulture) + "pt");
     }
 
     /// <summary>
@@ -56,8 +51,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public double Height
     {
-        get { return this.GetStyleProp("height"); }
-        set { this.SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt"); }
+        get => this.GetStyleProp("height");
+        set => this.SetStyleProp("height", value.ToString(CultureInfo.InvariantCulture) + "pt");
     }
 
     /// <summary>
@@ -65,8 +60,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public double Left
     {
-        get { return this.GetStyleProp("left"); }
-        set { this.SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetStyleProp("left");
+        set => this.SetStyleProp("left", value.ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -74,8 +69,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public double Top
     {
-        get { return this.GetStyleProp("top"); }
-        set { this.SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetStyleProp("top");
+        set => this.SetStyleProp("top", value.ToString(CultureInfo.InvariantCulture));
     }
 
     /// <summary>
@@ -83,8 +78,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public string Title
     {
-        get { return this.GetXmlNodeString("v:imagedata/@o:title"); }
-        set { this.SetXmlNodeString("v:imagedata/@o:title", value); }
+        get => this.GetXmlNodeString("v:imagedata/@o:title");
+        set => this.SetXmlNodeString("v:imagedata/@o:title", value);
     }
 
     ExcelImage _image;
@@ -120,8 +115,8 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
 
     internal string RelId
     {
-        get { return this.GetXmlNodeString("v:imagedata/@o:relid"); }
-        set { this.SetXmlNodeString("v:imagedata/@o:relid", value); }
+        get => this.GetXmlNodeString("v:imagedata/@o:relid");
+        set => this.SetXmlNodeString("v:imagedata/@o:relid", value);
     }
 
     /// <summary>
@@ -129,7 +124,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public bool BiLevel
     {
-        get { return this.GetXmlNodeString("v:imagedata/@bilevel") == "t"; }
+        get => this.GetXmlNodeString("v:imagedata/@bilevel") == "t";
         set
         {
             if (value)
@@ -148,7 +143,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
     /// </summary>
     public bool GrayScale
     {
-        get { return this.GetXmlNodeString("v:imagedata/@grayscale") == "t"; }
+        get => this.GetXmlNodeString("v:imagedata/@grayscale") == "t";
         set
         {
             if (value)
@@ -327,10 +322,7 @@ public class ExcelVmlDrawingPicture : ExcelVmlDrawingBase, IPictureContainer
         return 0;
     }
 
-    IPictureRelationDocument RelationDocument
-    {
-        get { return this._worksheet.VmlDrawings; }
-    }
+    IPictureRelationDocument RelationDocument => this._worksheet.VmlDrawings;
 
     string ImageHash { get; set; }
 

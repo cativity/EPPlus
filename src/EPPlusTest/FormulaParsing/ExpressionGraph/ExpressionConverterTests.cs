@@ -45,10 +45,7 @@ public class ExpressionConverterTests
     private IExpressionConverter _converter;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._converter = new ExpressionConverter();
-    }
+    public void Setup() => this._converter = new ExpressionConverter();
 
     [TestMethod]
     public void ToStringExpressionShouldConvertIntegerExpressionToStringExpression()

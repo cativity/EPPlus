@@ -23,10 +23,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 [FunctionMetadata(Category = ExcelFunctionCategory.MathAndTrig, EPPlusVersion = "4", Description = "Returns the product of a supplied list of numbers")]
 internal class Product : HiddenValuesHandlingFunction
 {
-    public Product()
-    {
-        this.IgnoreErrors = false;
-    }
+    public Product() => this.IgnoreErrors = false;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

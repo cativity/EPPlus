@@ -28,10 +28,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
                       "Returns the Average of a list of supplied numbers, counting text and the logical value FALSE as the value 0 and counting the logical value TRUE as the value 1")]
 internal class AverageA : HiddenValuesHandlingFunction
 {
-    public AverageA()
-    {
-        this.IgnoreErrors = false;
-    }
+    public AverageA() => this.IgnoreErrors = false;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

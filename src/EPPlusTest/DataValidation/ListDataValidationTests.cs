@@ -49,16 +49,10 @@ public class ListDataValidationTests : ValidationTestBase
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this.CleanupTestData();
-    }
+    public void Cleanup() => this.CleanupTestData();
 
     [TestMethod]
-    public void ListDataValidation_FormulaIsSet()
-    {
-        Assert.IsNotNull(this._validation.Formula);
-    }
+    public void ListDataValidation_FormulaIsSet() => Assert.IsNotNull(this._validation.Formula);
 
     [TestMethod]
     public void ListDataValidation_CanAssignFormula()
@@ -85,10 +79,7 @@ public class ListDataValidationTests : ValidationTestBase
     }
 
     [TestMethod, ExpectedException(typeof(InvalidOperationException))]
-    public void ListDataValidation_ShouldThrowWhenNoFormulaOrValueIsSet()
-    {
-        this._validation.Validate();
-    }
+    public void ListDataValidation_ShouldThrowWhenNoFormulaOrValueIsSet() => this._validation.Validate();
 
     [TestMethod]
     public void ListDataValidation_ShowErrorMessageIsSet()

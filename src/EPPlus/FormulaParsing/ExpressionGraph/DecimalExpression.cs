@@ -26,16 +26,12 @@ public class DecimalExpression : AtomicExpression
     }
 
     public DecimalExpression(string expression, bool negate)
-        : base(expression)
-    {
+        : base(expression) =>
         this._negate = negate;
-    }
 
     public DecimalExpression(double compiledValue)
-        : base(compiledValue.ToString(CultureInfo.InvariantCulture))
-    {
+        : base(compiledValue.ToString(CultureInfo.InvariantCulture)) =>
         this._compiledValue = compiledValue;
-    }
 
     public override CompileResult Compile()
     {

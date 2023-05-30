@@ -52,8 +52,5 @@ public class FormulaErrorHandlingTestBase
         Package.Workbook.Calculate();
     }
 
-    public void BaseCleanup()
-    {
-        this.Package.Dispose();
-    }
+    public void BaseCleanup() => this.Package.Dispose();
 }

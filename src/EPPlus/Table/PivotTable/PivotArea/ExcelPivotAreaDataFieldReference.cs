@@ -51,23 +51,14 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
     /// </summary>
     /// <param name="index">The zero-based index of the collection</param>
     /// <returns></returns>
-    public ExcelPivotTableDataField this[int index]
-    {
-        get { return this._dataFields[index]; }
-    }
+    public ExcelPivotTableDataField this[int index] => this._dataFields[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._dataFields.Count; }
-    }
+    public int Count => this._dataFields.Count;
 
-    internal void AddInternal(ExcelPivotTableDataField item)
-    {
-        this._dataFields.Add(item);
-    }
+    internal void AddInternal(ExcelPivotTableDataField item) => this._dataFields.Add(item);
 
     /// <summary>
     /// Adds the data field at the specific index
@@ -150,26 +141,17 @@ public class ExcelPivotAreaDataFieldReference : ExcelPivotAreaReferenceBase, IEn
         }
     }
 
-    internal void Clear()
-    {
-        this._dataFields.Clear();
-    }
+    internal void Clear() => this._dataFields.Clear();
 
     /// <summary>
     /// Gets the enumerator
     /// </summary>
     /// <returns></returns>
-    public IEnumerator<ExcelPivotTableDataField> GetEnumerator()
-    {
-        return ((IEnumerable<ExcelPivotTableDataField>)this._dataFields).GetEnumerator();
-    }
+    public IEnumerator<ExcelPivotTableDataField> GetEnumerator() => ((IEnumerable<ExcelPivotTableDataField>)this._dataFields).GetEnumerator();
 
     /// <summary>
     /// Gets the enumerator
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return ((IEnumerable)this._dataFields).GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)this._dataFields).GetEnumerator();
 }

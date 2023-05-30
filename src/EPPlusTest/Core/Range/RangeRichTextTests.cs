@@ -26,10 +26,7 @@ public class RangeRichTextTests : TestBase
     }
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void AddThreeParagraphsAndValidate()
@@ -51,17 +48,11 @@ public class RangeRichTextTests : TestBase
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void AddEmptyStringShouldThrowArgumentException()
-    {
-        _ = _ws.Cells["D1"].RichText.Add(null);
-    }
+    public void AddEmptyStringShouldThrowArgumentException() => _ = _ws.Cells["D1"].RichText.Add(null);
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void AddNullShouldThrowArgumentException()
-    {
-        _ = _ws.Cells["D1"].RichText.Add(null);
-    }
+    public void AddNullShouldThrowArgumentException() => _ = _ws.Cells["D1"].RichText.Add(null);
 
     [TestMethod]
     [ExpectedException(typeof(InvalidOperationException))]

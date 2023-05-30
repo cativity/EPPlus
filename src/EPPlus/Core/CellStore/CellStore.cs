@@ -57,15 +57,9 @@ internal class CellStore<T> : IDisposable
     /// For internal use only. 
     /// Must be set before any instance of the CellStore is created.
     /// </summary>
-    public CellStore()
-    {
-        this._columnIndex = new ColumnIndex<T>[CellStoreSettings.ColSizeMin];
-    }
+    public CellStore() => this._columnIndex = new ColumnIndex<T>[CellStoreSettings.ColSizeMin];
 
-    ~CellStore()
-    {
-        this._columnIndex = null;
-    }
+    ~CellStore() => this._columnIndex = null;
 
     internal bool HasValues
     {
@@ -100,10 +94,7 @@ internal class CellStore<T> : IDisposable
         return pos;
     }
 
-    internal int GetColumnPosition(int column)
-    {
-        return ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
-    }
+    internal int GetColumnPosition(int column) => ArrayUtil.OptimizedBinarySearch(this._columnIndex, column, this.ColumnCount);
 
     internal ColumnIndex<T> GetColumnIndex(int column)
     {
@@ -529,20 +520,11 @@ internal class CellStore<T> : IDisposable
         }
     }
 
-    private static bool IsWithinPage(int row, ColumnIndex<T> column, int pagePos)
-    {
-        return row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex;
-    }
+    private static bool IsWithinPage(int row, ColumnIndex<T> column, int pagePos) => row >= column._pages[pagePos].MinIndex && row <= column._pages[pagePos].MaxIndex;
 
-    internal void Clear(int fromRow, int fromCol, int rows, int columns)
-    {
-        this.Delete(fromRow, fromCol, rows, columns, false);
-    }
+    internal void Clear(int fromRow, int fromCol, int rows, int columns) => this.Delete(fromRow, fromCol, rows, columns, false);
 
-    internal void Delete(int fromRow, int fromCol, int rows, int columns)
-    {
-        this.Delete(fromRow, fromCol, rows, columns, true);
-    }
+    internal void Delete(int fromRow, int fromCol, int rows, int columns) => this.Delete(fromRow, fromCol, rows, columns, true);
 
     internal void Delete(int fromRow, int fromCol, int rows, int columns, bool shift)
     {
@@ -1353,10 +1335,7 @@ internal class CellStore<T> : IDisposable
         this._columnIndex = null;
     }
 
-    internal bool NextCell(ref int row, ref int col)
-    {
-        return this.NextCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
-    }
+    internal bool NextCell(ref int row, ref int col) => this.NextCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
 
     internal bool NextCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
     {
@@ -1580,10 +1559,7 @@ internal class CellStore<T> : IDisposable
         return true;
     }
 
-    internal bool PrevCell(ref int row, ref int col)
-    {
-        return this.PrevCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
-    }
+    internal bool PrevCell(ref int row, ref int col) => this.PrevCell(ref row, ref col, 0, 0, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
 
     internal bool PrevCell(ref int row, ref int col, int minRow, int minColPos, int maxRow, int maxColPos)
     {

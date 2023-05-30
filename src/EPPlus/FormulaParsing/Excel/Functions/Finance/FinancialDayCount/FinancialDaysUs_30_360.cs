@@ -58,13 +58,7 @@ internal class FinancialDaysUs_30_360 : FinancialDaysBase, IFinanicalDays
         return this.GetDaysBetweenDates(startDate, endDate, (int)this.DaysPerYear);
     }
 
-    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency)
-    {
-        return this.DaysPerYear / frequency;
-    }
+    public double GetCoupdays(FinancialDay start, FinancialDay end, int frequency) => this.DaysPerYear / frequency;
 
-    public double DaysPerYear
-    {
-        get { return 360d; }
-    }
+    public double DaysPerYear => 360d;
 }

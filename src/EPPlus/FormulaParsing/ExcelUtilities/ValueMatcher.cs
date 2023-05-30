@@ -91,10 +91,7 @@ public class ValueMatcher
         return v;
     }
 
-    protected virtual int CompareStringToString(string searchedValue, string candidate)
-    {
-        return candidate.CompareTo(searchedValue);
-    }
+    protected virtual int CompareStringToString(string searchedValue, string candidate) => candidate.CompareTo(searchedValue);
 
     protected virtual int CompareStringToObject(string searchedValue, object candidate)
     {

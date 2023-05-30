@@ -32,10 +32,7 @@ public class LoadFromDictionariesParams : LoadFunctionFunctionParamsBase
     /// The keys supplied to this function will be included in the dataset, all others will be ignored.
     /// </summary>
     /// <param name="keys">The keys to include</param>
-    public void SetKeys(params string[] keys)
-    {
-        this.Keys = keys;
-    }
+    public void SetKeys(params string[] keys) => this.Keys = keys;
 
     /// <summary>
     /// Culture to be used when reading numbers/dates.

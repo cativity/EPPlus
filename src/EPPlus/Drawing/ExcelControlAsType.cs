@@ -25,10 +25,7 @@ public class ExcelControlAsType
 {
     ExcelDrawing _drawing;
 
-    internal ExcelControlAsType(ExcelDrawing drawing)
-    {
-        this._drawing = drawing;
-    }
+    internal ExcelControlAsType(ExcelDrawing drawing) => this._drawing = drawing;
 
     /// <summary>
     /// Converts the drawing to it's top level or other nested drawing class.        
@@ -36,98 +33,69 @@ public class ExcelControlAsType
     /// <typeparam name="T">The type of drawing. T must be inherited from ExcelDrawing</typeparam>
     /// <returns>The drawing as type T</returns>
     public T Type<T>()
-        where T : ExcelControl
-    {
-        return this._drawing as T;
-    }
+        where T : ExcelControl =>
+        this._drawing as T;
 
     /// <summary>
     /// Returns the drawing as a button. 
     /// If this drawing is not a button, null will be returned
     /// </summary>
     /// <returns>The drawing as a button</returns>
-    public ExcelControlButton Button
-    {
-        get { return this._drawing as ExcelControlButton; }
-    }
+    public ExcelControlButton Button => this._drawing as ExcelControlButton;
 
     /// <summary>
     /// Returns the drawing as a drop-down. 
     /// If this drawing is not a drop-down, null will be returned
     /// </summary>
     /// <returns>The drawing as a drop-down</returns>        
-    public ExcelControlDropDown DropDown
-    {
-        get { return this._drawing as ExcelControlDropDown; }
-    }
+    public ExcelControlDropDown DropDown => this._drawing as ExcelControlDropDown;
 
     /// <summary>
     /// Returns the drawing as a group box. 
     /// If this drawing is not a group box, null will be returned
     /// </summary>
     /// <returns>The drawing as a group box</returns>        
-    public ExcelControlGroupBox GroupBox
-    {
-        get { return this._drawing as ExcelControlGroupBox; }
-    }
+    public ExcelControlGroupBox GroupBox => this._drawing as ExcelControlGroupBox;
 
     /// <summary>
     /// Returns the drawing as a label. 
     /// If this drawing is not a label, null will be returned
     /// </summary>
     /// <returns>The drawing as a label</returns>        
-    public ExcelControlLabel Label
-    {
-        get { return this._drawing as ExcelControlLabel; }
-    }
+    public ExcelControlLabel Label => this._drawing as ExcelControlLabel;
 
     /// <summary>
     /// Returns the drawing as a list box. 
     /// If this drawing is not a list box, null will be returned
     /// </summary>
     /// <returns>The drawing as a list box</returns>        
-    public ExcelControlListBox ListBox
-    {
-        get { return this._drawing as ExcelControlListBox; }
-    }
+    public ExcelControlListBox ListBox => this._drawing as ExcelControlListBox;
 
     /// <summary>
     /// Returns the drawing as a check box. 
     /// If this drawing is not a check box, null will be returned
     /// </summary>
     /// <returns>The drawing as a check box</returns>        
-    public ExcelControlCheckBox CheckBox
-    {
-        get { return this._drawing as ExcelControlCheckBox; }
-    }
+    public ExcelControlCheckBox CheckBox => this._drawing as ExcelControlCheckBox;
 
     /// <summary>
     /// Returns the drawing as a radio button. 
     /// If this drawing is not a radio button, null will be returned
     /// </summary>
     /// <returns>The drawing as a radio button</returns>        
-    public ExcelControlRadioButton RadioButton
-    {
-        get { return this._drawing as ExcelControlRadioButton; }
-    }
+    public ExcelControlRadioButton RadioButton => this._drawing as ExcelControlRadioButton;
 
     /// <summary>
     /// Returns the drawing as a scroll bar. 
     /// If this drawing is not a scroll bar, null will be returned
     /// </summary>
     /// <returns>The drawing as a scroll bar</returns>        
-    public ExcelControlScrollBar ScrollBar
-    {
-        get { return this._drawing as ExcelControlScrollBar; }
-    }
+    public ExcelControlScrollBar ScrollBar => this._drawing as ExcelControlScrollBar;
 
     /// <summary>
     /// Returns the drawing as a spin button. 
     /// If this drawing is not a spin button, null will be returned
     /// </summary>
     /// <returns>The drawing as a spin button</returns>        
-    public ExcelControlSpinButton SpinButton
-    {
-        get { return this._drawing as ExcelControlSpinButton; }
-    }
+    public ExcelControlSpinButton SpinButton => this._drawing as ExcelControlSpinButton;
 }

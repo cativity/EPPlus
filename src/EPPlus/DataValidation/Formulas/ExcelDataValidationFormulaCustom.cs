@@ -33,15 +33,9 @@ internal class ExcelDataValidationFormulaCustom : ExcelDataValidationFormula, IE
         this.State = FormulaState.Formula;
     }
 
-    internal override string GetXmlValue()
-    {
-        return this.ExcelFormula;
-    }
+    internal override string GetXmlValue() => this.ExcelFormula;
 
-    protected override string GetValueAsString()
-    {
-        return this.ExcelFormula;
-    }
+    protected override string GetValueAsString() => this.ExcelFormula;
 
     internal override void ResetValue()
     {

@@ -42,10 +42,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// <summary>
     /// Address in the worksheet
     /// </summary>
-    public string Address
-    {
-        get { return this.Range.Address; }
-    }
+    public string Address => this.Range.Address;
 
     const string VERTICAL_ALIGNMENT_PATH = "x:ClientData/x:TextVAlign";
 
@@ -140,7 +137,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// </summary>
     public bool Visible
     {
-        get { return this.TopNode.SelectSingleNode(VISIBLE_PATH, this.NameSpaceManager) != null; }
+        get => this.TopNode.SelectSingleNode(VISIBLE_PATH, this.NameSpaceManager) != null;
         set
         {
             if (value)
@@ -325,7 +322,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
                 return 0;
             }
         }
-        set { this.SetXmlNodeString(LINEWIDTH_PATH, value.ToString(CultureInfo.InvariantCulture) + "pt"); }
+        set => this.SetXmlNodeString(LINEWIDTH_PATH, value.ToString(CultureInfo.InvariantCulture) + "pt");
     }
 
     const string TEXTBOX_STYLE_PATH = "v:textbox/@style";
@@ -341,7 +338,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
 
             return value == "t";
         }
-        set { this.SetXmlNodeString(TEXTBOX_STYLE_PATH, SetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", value ? "t" : "f")); }
+        set => this.SetXmlNodeString(TEXTBOX_STYLE_PATH, SetStyle(this.GetXmlNodeString(TEXTBOX_STYLE_PATH), "mso-fit-shape-to-text", value ? "t" : "f"));
     }
 
     const string LOCKED_PATH = "x:ClientData/x:Locked";
@@ -351,8 +348,8 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// </summary>
     public bool Locked
     {
-        get { return this.GetXmlNodeBool(LOCKED_PATH, false); }
-        set { this.SetXmlNodeBool(LOCKED_PATH, value, false); }
+        get => this.GetXmlNodeBool(LOCKED_PATH, false);
+        set => this.SetXmlNodeBool(LOCKED_PATH, value, false);
     }
 
     const string LOCK_TEXT_PATH = "x:ClientData/x:LockText";
@@ -362,8 +359,8 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// </summary>
     public bool LockText
     {
-        get { return this.GetXmlNodeBool(LOCK_TEXT_PATH, false); }
-        set { this.SetXmlNodeBool(LOCK_TEXT_PATH, value, false); }
+        get => this.GetXmlNodeBool(LOCK_TEXT_PATH, false);
+        set => this.SetXmlNodeBool(LOCK_TEXT_PATH, value, false);
     }
 
     ExcelVmlDrawingPosition _from;
@@ -371,23 +368,14 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// <summary>
     /// From position. For comments only when Visible=true.
     /// </summary>
-    public ExcelVmlDrawingPosition From
-    {
-        get
-        {
-            return this._from ??= new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 0);
-        }
-    }
+    public ExcelVmlDrawingPosition From => this._from ??= new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 0);
 
     ExcelVmlDrawingPosition _to;
 
     /// <summary>
     /// To position. For comments only when Visible=true.
     /// </summary>
-    public ExcelVmlDrawingPosition To
-    {
-        get { return this._to ??= new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 4); }
-    }
+    public ExcelVmlDrawingPosition To => this._to ??= new ExcelVmlDrawingPosition(this.NameSpaceManager, this.TopNode.SelectSingleNode("x:ClientData", this.NameSpaceManager), 4);
 
     const string ROW_PATH = "x:ClientData/x:Row";
 
@@ -396,8 +384,8 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// </summary>
     internal int Row
     {
-        get { return this.GetXmlNodeInt(ROW_PATH); }
-        set { this.SetXmlNodeString(ROW_PATH, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt(ROW_PATH);
+        set => this.SetXmlNodeString(ROW_PATH, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string COLUMN_PATH = "x:ClientData/x:Column";
@@ -407,16 +395,16 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// </summary>
     internal int Column
     {
-        get { return this.GetXmlNodeInt(COLUMN_PATH); }
-        set { this.SetXmlNodeString(COLUMN_PATH, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeInt(COLUMN_PATH);
+        set => this.SetXmlNodeString(COLUMN_PATH, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string STYLE_PATH = "@style";
 
     internal string Style
     {
-        get { return this.GetXmlNodeString(STYLE_PATH); }
-        set { this.SetXmlNodeString(STYLE_PATH, value); }
+        get => this.GetXmlNodeString(STYLE_PATH);
+        set => this.SetXmlNodeString(STYLE_PATH, value);
     }
 
     internal ExcelVmlDrawingFill _fill;
@@ -424,16 +412,13 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// <summary>
     /// Fill properties for the comment
     /// </summary>
-    public ExcelVmlDrawingFill Fill
-    {
-        get { return this._fill ??= new ExcelVmlDrawingFill(this.Range.Worksheet.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelVmlDrawingFill Fill => this._fill ??= new ExcelVmlDrawingFill(this.Range.Worksheet.Drawings, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     #region IRangeID Members
 
     ulong IRangeID.RangeID
     {
-        get { return ExcelCellBase.GetCellId(this.Range.Worksheet.SheetId, this.Range.Start.Row, this.Range.Start.Column); }
+        get => ExcelCellBase.GetCellId(this.Range.Worksheet.SheetId, this.Range.Start.Row, this.Range.Start.Column);
         set { }
     }
 

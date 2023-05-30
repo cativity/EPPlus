@@ -38,8 +38,5 @@ public class OperatorsDict : Dictionary<string, IOperator>
 
     private static IDictionary<string, IOperator> _instance;
 
-    public static IDictionary<string, IOperator> Instance
-    {
-        get { return _instance ??= new OperatorsDict(); }
-    }
+    public static IDictionary<string, IOperator> Instance => _instance ??= new OperatorsDict();
 }

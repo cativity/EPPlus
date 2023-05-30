@@ -33,8 +33,8 @@ public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
     /// </summary>
     public double Start
     {
-        get { return (double)this.GetXmlNodeDoubleNull(startPath); }
-        private set { this.SetXmlNodeString(startPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => (double)this.GetXmlNodeDoubleNull(startPath);
+        private set => this.SetXmlNodeString(startPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string endPath = "d:fieldGroup/d:rangePr/@endNum";
@@ -44,8 +44,8 @@ public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
     /// </summary>
     public double End
     {
-        get { return (double)this.GetXmlNodeDoubleNull(endPath); }
-        private set { this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => (double)this.GetXmlNodeDoubleNull(endPath);
+        private set => this.SetXmlNodeString(endPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string groupIntervalPath = "d:fieldGroup/d:rangePr/@groupInterval";
@@ -55,7 +55,7 @@ public class ExcelPivotTableFieldNumericGroup : ExcelPivotTableFieldGroup
     /// </summary>
     public double Interval
     {
-        get { return (double)this.GetXmlNodeDoubleNull(groupIntervalPath); }
-        private set { this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => (double)this.GetXmlNodeDoubleNull(groupIntervalPath);
+        private set => this.SetXmlNodeString(groupIntervalPath, value.ToString(CultureInfo.InvariantCulture));
     }
 }

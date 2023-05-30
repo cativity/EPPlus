@@ -53,10 +53,7 @@ public class LoadFromCollectionAttributesComplexTypeTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._collection.Clear();
-    }
+    public void Cleanup() => this._collection.Clear();
 
     [TestMethod]
     public void ShouldSetupColumnsWithPath()

@@ -51,10 +51,7 @@ public class WorksheetRefsTest
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     [TestMethod]
     public void ShouldHandleReferenceToOtherSheet()

@@ -53,47 +53,32 @@ namespace OfficeOpenXml.Drawing
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
         /// <param name="imagePath">A path to the image file to load</param>
-        public ExcelImage(string imagePath)
-        {
-            this.SetImage(imagePath);
-        }
+        public ExcelImage(string imagePath) => this.SetImage(imagePath);
 
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
         /// <param name="imageFile">A FileInfo referencing the image file to load</param>
-        public ExcelImage(FileInfo imageFile)
-        {
-            this.SetImage(imageFile);
-        }
+        public ExcelImage(FileInfo imageFile) => this.SetImage(imageFile);
 
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
         /// <param name="imageStream">The stream containing the image</param>
         /// <param name="pictureType">The type of image loaded in the stream</param>
-        public ExcelImage(Stream imageStream, ePictureType pictureType)
-        {
-            _ = this.SetImage(imageStream, pictureType);
-        }
+        public ExcelImage(Stream imageStream, ePictureType pictureType) => _ = this.SetImage(imageStream, pictureType);
 
         /// <summary>
         /// Creates an ExcelImage to be used as template for adding images.
         /// </summary>
         /// <param name="imageBytes">The image as a byte array</param>
         /// <param name="pictureType">The type of image loaded in the stream</param>
-        public ExcelImage(byte[] imageBytes, ePictureType pictureType)
-        {
-            _ = this.SetImage(imageBytes, pictureType);
-        }
+        public ExcelImage(byte[] imageBytes, ePictureType pictureType) => _ = this.SetImage(imageBytes, pictureType);
 
         /// <summary>
         /// If this object contains an image.
         /// </summary>
-        public bool HasImage
-        {
-            get { return this.Type.HasValue; }
-        }
+        public bool HasImage => this.Type.HasValue;
 
         /// <summary>
         /// The type of image.
@@ -157,10 +142,7 @@ namespace OfficeOpenXml.Drawing
         /// </summary>
         /// <param name="imageBytes">The image as a byte array.</param>
         /// <param name="pictureType">The type of image.</param>
-        public ExcelImage SetImage(byte[] imageBytes, ePictureType pictureType)
-        {
-            return this.SetImage(imageBytes, pictureType, true);
-        }
+        public ExcelImage SetImage(byte[] imageBytes, ePictureType pictureType) => this.SetImage(imageBytes, pictureType, true);
 
         /// <summary>
         /// Sets a new image. 

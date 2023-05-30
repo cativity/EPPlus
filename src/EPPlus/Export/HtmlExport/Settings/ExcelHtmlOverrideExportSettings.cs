@@ -47,7 +47,7 @@ public class ExcelHtmlOverrideExportSettings
     /// </summary>
     public int HeaderRows
     {
-        get { return this._headerRows; }
+        get => this._headerRows;
         set
         {
             if (value < 0 || value > ExcelPackage.MaxRows)

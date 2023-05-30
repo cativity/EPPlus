@@ -28,10 +28,8 @@ public class ExcelFilterCustomItem : ExcelFilterValueItem
     /// If the data is numeric, use dot (.) for decimal.</param>
     /// <param name="filterOperator">The operator to use</param>
     public ExcelFilterCustomItem(string value, eFilterOperator filterOperator = eFilterOperator.Equal)
-        : base(value)
-    {
+        : base(value) =>
         this.Operator = filterOperator;
-    }
 
     /// <summary>
     /// Operator used by the filter comparison

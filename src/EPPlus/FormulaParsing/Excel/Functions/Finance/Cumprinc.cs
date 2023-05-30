@@ -52,8 +52,5 @@ internal class Cumprinc : ExcelFunction
         return this.CreateResult(result.Result, DataType.Decimal);
     }
 
-    private static double GetInterest(double rate, double remainingAmount)
-    {
-        return remainingAmount * rate;
-    }
+    private static double GetInterest(double rate, double remainingAmount) => remainingAmount * rate;
 }

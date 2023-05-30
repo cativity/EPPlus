@@ -32,10 +32,8 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
     /// <param name="address"></param>
     /// <param name="validationType"></param>
     internal ExcelDataValidationList(string uid, string address, ExcelWorksheet ws)
-        : base(uid, address, ws)
-    {
+        : base(uid, address, ws) =>
         this.Formula = new ExcelDataValidationFormulaList(null, uid, ws.Name, this.OnFormulaChanged);
-    }
 
     /// <summary>
     /// Constructor for reading data
@@ -51,18 +49,13 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
     /// </summary>
     /// <param name="copy"></param>
     internal ExcelDataValidationList(ExcelDataValidationList copy, ExcelWorksheet ws)
-        : base(copy, ws)
-    {
+        : base(copy, ws) =>
         this.Formula = copy.Formula;
-    }
 
     /// <summary>
     /// Read-Only property for seeing if this dataValidation type has an operator.
     /// </summary>
-    public override bool AllowsOperator
-    {
-        get { return false; }
-    }
+    public override bool AllowsOperator => false;
 
     /// <summary>
     /// Property for determining type of validation
@@ -80,15 +73,9 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
     /// </remarks>
     public bool? HideDropDown { get; set; }
 
-    public override void Validate()
-    {
-        base.Validate();
-    }
+    public override void Validate() => base.Validate();
 
-    internal override IExcelDataValidationFormulaList DefineFormulaClassType(string formulaValue, string sheetName)
-    {
-        return new ExcelDataValidationFormulaList(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-    }
+    internal override IExcelDataValidationFormulaList DefineFormulaClassType(string formulaValue, string sheetName) => new ExcelDataValidationFormulaList(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
 
     internal override void LoadXML(XmlReader xr)
     {
@@ -105,18 +92,9 @@ public class ExcelDataValidationList : ExcelDataValidationWithFormula<IExcelData
         }
     }
 
-    internal override ExcelDataValidation GetClone()
-    {
-        return new ExcelDataValidationList(this, this._ws);
-    }
+    internal override ExcelDataValidation GetClone() => new ExcelDataValidationList(this, this._ws);
 
-    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-    {
-        return new ExcelDataValidationList(this, copy);
-    }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy) => new ExcelDataValidationList(this, copy);
 
-    ExcelDataValidationDecimal Clone()
-    {
-        return (ExcelDataValidationDecimal)this.GetClone();
-    }
+    ExcelDataValidationDecimal Clone() => (ExcelDataValidationDecimal)this.GetClone();
 }

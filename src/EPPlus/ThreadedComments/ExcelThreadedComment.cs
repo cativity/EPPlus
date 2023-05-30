@@ -42,7 +42,7 @@ public class ExcelThreadedComment : XmlHelper
 
     internal ExcelThreadedCommentThread Thread
     {
-        set { this._thread = value ?? throw new ArgumentNullException("Thread"); }
+        set => this._thread = value ?? throw new ArgumentNullException("Thread");
     }
 
     internal static string NewId()
@@ -56,18 +56,15 @@ public class ExcelThreadedComment : XmlHelper
     /// Indicates whether the Text contains mentions. If so the
     /// Mentions property will contain data about those mentions.
     /// </summary>
-    public bool ContainsMentions
-    {
-        get { return this.Mentions != null && this.Mentions.Any(); }
-    }
+    public bool ContainsMentions => this.Mentions != null && this.Mentions.Any();
 
     /// <summary>
     /// Address of the cell in the A1 format
     /// </summary>
     internal string Ref
     {
-        get { return this.GetXmlNodeString("@ref"); }
-        set { this.SetXmlNodeString("@ref", value); }
+        get => this.GetXmlNodeString("@ref");
+        set => this.SetXmlNodeString("@ref", value);
     }
 
     private ExcelCellAddress _cellAddress;
@@ -77,7 +74,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public ExcelCellAddress CellAddress
     {
-        get { return this._cellAddress ??= new ExcelCellAddress(this.Ref); }
+        get => this._cellAddress ??= new ExcelCellAddress(this.Ref);
         internal set
         {
             this._cellAddress = value;
@@ -101,7 +98,7 @@ public class ExcelThreadedComment : XmlHelper
 
             throw new InvalidCastException("Could not cast datetime for threaded comment");
         }
-        set { this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff")); }
+        set => this.SetXmlNodeString("@dT", value.ToString("yyyy-MM-ddTHH:mm:ss.ff"));
     }
 
     /// <summary>
@@ -109,8 +106,8 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string Id
     {
-        get { return this.GetXmlNodeString("@id"); }
-        internal set { this.SetXmlNodeString("@id", value); }
+        get => this.GetXmlNodeString("@id");
+        internal set => this.SetXmlNodeString("@id", value);
     }
 
     /// <summary>
@@ -118,7 +115,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string PersonId
     {
-        get { return this.GetXmlNodeString("@personId"); }
+        get => this.GetXmlNodeString("@personId");
         set
         {
             this.SetXmlNodeString("@personId", value);
@@ -129,17 +126,14 @@ public class ExcelThreadedComment : XmlHelper
     /// <summary>
     /// Author of the comment
     /// </summary>
-    public ExcelThreadedCommentPerson Author
-    {
-        get { return this._workbook.ThreadedCommentPersons[this.PersonId]; }
-    }
+    public ExcelThreadedCommentPerson Author => this._workbook.ThreadedCommentPersons[this.PersonId];
 
     /// <summary>
     /// Id of the first comment in the thread
     /// </summary>
     public string ParentId
     {
-        get { return this.GetXmlNodeString("@parentId"); }
+        get => this.GetXmlNodeString("@parentId");
         set
         {
             this.SetXmlNodeString("@parentId", value);
@@ -187,7 +181,7 @@ public class ExcelThreadedComment : XmlHelper
     /// </summary>
     public string Text
     {
-        get { return this.GetXmlNodeString("tc:text"); }
+        get => this.GetXmlNodeString("tc:text");
         internal set
         {
             this.SetXmlNodeString("tc:text", value);

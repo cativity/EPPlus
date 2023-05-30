@@ -15,10 +15,7 @@ public class ExcelVmlMeasurementUnit
                                                                                                 .Select(x => x.TranslateString())
                                                                                                 .ToArray();
 
-    internal ExcelVmlMeasurementUnit(string value = "")
-    {
-        this.SetValue(value);
-    }
+    internal ExcelVmlMeasurementUnit(string value = "") => this.SetValue(value);
 
     /// <summary>
     /// The value of the specified unit.
@@ -36,10 +33,7 @@ public class ExcelVmlMeasurementUnit
         this.Unit = GetUnit(value);
     }
 
-    internal string GetValueString()
-    {
-        return this.Value.ToString(CultureInfo.InvariantCulture) + this.Unit.TranslateString();
-    }
+    internal string GetValueString() => this.Value.ToString(CultureInfo.InvariantCulture) + this.Unit.TranslateString();
 
     private static double GetValue(string v)
     {
@@ -69,8 +63,5 @@ public class ExcelVmlMeasurementUnit
         return eMeasurementUnits.Pixels;
     }
 
-    internal double? ToEmu()
-    {
-        return VmlConvertUtil.ConvertToEMU(this.Value, this.Unit);
-    }
+    internal double? ToEmu() => VmlConvertUtil.ConvertToEMU(this.Value, this.Unit);
 }

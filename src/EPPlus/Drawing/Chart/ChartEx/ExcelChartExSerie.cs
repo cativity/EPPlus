@@ -95,20 +95,14 @@ public class ExcelChartExSerie : ExcelChartSerie
         }
     }
 
-    internal int DataId
-    {
-        get { return this.GetXmlNodeInt("cx:dataId/@val"); }
-    }
+    internal int DataId => this.GetXmlNodeInt("cx:dataId/@val");
 
     ExcelChartExDataCollection _dataDimensions;
 
     /// <summary>
     /// The dimensions of the serie
     /// </summary>
-    public ExcelChartExDataCollection DataDimensions
-    {
-        get { return this._dataDimensions ??= new ExcelChartExDataCollection(this, this.NameSpaceManager, this._dataNode); }
-    }
+    public ExcelChartExDataCollection DataDimensions => this._dataDimensions ??= new ExcelChartExDataCollection(this, this.NameSpaceManager, this._dataNode);
 
     const string headerAddressPath = "c:tx/c:strRef/c:f";
 
@@ -139,7 +133,7 @@ public class ExcelChartExSerie : ExcelChartSerie
                 return null;
             }
         }
-        set { this.SetXmlNodeString("cx:tx/cx:txData/cx:f", value.FullAddress); }
+        set => this.SetXmlNodeString("cx:tx/cx:txData/cx:f", value.FullAddress);
     }
 
     /// <summary>
@@ -147,8 +141,8 @@ public class ExcelChartExSerie : ExcelChartSerie
     /// </summary>
     public override string Header
     {
-        get { return this.GetXmlNodeString("cx:tx/cx:txData/cx:v"); }
-        set { this.SetXmlNodeString("cx:tx/cx:txData/cx:v", value); }
+        get => this.GetXmlNodeString("cx:tx/cx:txData/cx:v");
+        set => this.SetXmlNodeString("cx:tx/cx:txData/cx:v", value);
     }
 
     XmlHelper _catSerieHelper;
@@ -245,37 +239,28 @@ public class ExcelChartExSerie : ExcelChartSerie
     /// <summary>
     /// Data label properties
     /// </summary>
-    public ExcelChartExSerieDataLabel DataLabel
-    {
-        get { return this._dataLabels ??= new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartExSerieDataLabel DataLabel => this._dataLabels ??= new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     ExcelChartExDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of individual data points
     /// </summary>
-    public ExcelChartExDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartExDataPointCollection(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartExDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartExDataPointCollection(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the serie is hidden
     /// </summary>
     public bool Hidden
     {
-        get { return this.GetXmlNodeBool("@hidden", false); }
-        set { this.SetXmlNodeBool("@hidden", value, false); }
+        get => this.GetXmlNodeBool("@hidden", false);
+        set => this.SetXmlNodeBool("@hidden", value, false);
     }
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dataLabels", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dataLabels", this.NameSpaceManager) != null;
 
     /// <summary>
     /// Number of items. Will always return 0, as no item data is stored.
@@ -287,10 +272,7 @@ public class ExcelChartExSerie : ExcelChartSerie
     /// </summary>
     public override ExcelChartTrendlineCollection TrendLines => new ExcelChartTrendlineCollection(null);
 
-    internal override void SetID(string id)
-    {
-        throw new NotImplementedException();
-    }
+    internal override void SetID(string id) => throw new NotImplementedException();
 
     internal static XmlElement CreateSeriesAndDataElement(ExcelChartEx chart, bool hasCatSerie)
     {

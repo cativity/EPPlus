@@ -32,8 +32,8 @@ public class ExcelDrawingRgbPercentageColor : XmlHelper
     /// </summary>
     public double RedPercentage
     {
-        get { return (double)this.GetXmlNodePercentage("@r"); }
-        set { this.SetXmlNodePercentage("@r", value, false); }
+        get => (double)this.GetXmlNodePercentage("@r");
+        set => this.SetXmlNodePercentage("@r", value, false);
     }
 
     /// <summary>
@@ -41,8 +41,8 @@ public class ExcelDrawingRgbPercentageColor : XmlHelper
     /// </summary>
     public double GreenPercentage
     {
-        get { return (double)this.GetXmlNodePercentage("@g"); }
-        set { this.SetXmlNodePercentage("@g", value, false); }
+        get => (double)this.GetXmlNodePercentage("@g");
+        set => this.SetXmlNodePercentage("@g", value, false);
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public class ExcelDrawingRgbPercentageColor : XmlHelper
     /// </summary>
     public double BluePercentage
     {
-        get { return (double)this.GetXmlNodePercentage("@b"); }
-        set { this.SetXmlNodePercentage("@b", value, false); }
+        get => (double)this.GetXmlNodePercentage("@b");
+        set => this.SetXmlNodePercentage("@b", value, false);
     }
 
     internal const string NodeName = "a:scrgbClr";

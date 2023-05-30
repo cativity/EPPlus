@@ -53,8 +53,8 @@ public class ExcelChartColorsManager : XmlHelper
     /// <remarks>AcrossLinear is not implemented yet, and will use WithinLinear</remarks>
     public eChartColorStyleMethod Method
     {
-        get { return this.GetXmlNodeString("@meth").ToEnum(eChartColorStyleMethod.Cycle); }
-        set { this.SetXmlNodeString("@meth", value.ToEnumString()); }
+        get => this.GetXmlNodeString("@meth").ToEnum(eChartColorStyleMethod.Cycle);
+        set => this.SetXmlNodeString("@meth", value.ToEnumString());
     }
 
     /// <summary>

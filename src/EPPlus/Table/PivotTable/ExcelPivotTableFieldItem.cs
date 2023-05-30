@@ -125,7 +125,7 @@ public class ExcelPivotTableFieldItem
     /// </summary>
     public bool Hidden
     {
-        get { return (this.flags & eBoolFlags.Hidden) == eBoolFlags.Hidden; }
+        get => (this.flags & eBoolFlags.Hidden) == eBoolFlags.Hidden;
         set
         {
             if (this.Type != eItemType.Data)
@@ -142,44 +142,44 @@ public class ExcelPivotTableFieldItem
     /// </summary>
     public bool ShowDetails
     {
-        get { return (this.flags & eBoolFlags.ShowDetails) == eBoolFlags.ShowDetails; }
-        set { this.SetFlag(eBoolFlags.ShowDetails, value); }
+        get => (this.flags & eBoolFlags.ShowDetails) == eBoolFlags.ShowDetails;
+        set => this.SetFlag(eBoolFlags.ShowDetails, value);
     }
 
     internal bool C
     {
-        get { return (this.flags & eBoolFlags.C) == eBoolFlags.C; }
-        set { this.SetFlag(eBoolFlags.C, value); }
+        get => (this.flags & eBoolFlags.C) == eBoolFlags.C;
+        set => this.SetFlag(eBoolFlags.C, value);
     }
 
     internal bool D
     {
-        get { return (this.flags & eBoolFlags.D) == eBoolFlags.D; }
-        set { this.SetFlag(eBoolFlags.D, value); }
+        get => (this.flags & eBoolFlags.D) == eBoolFlags.D;
+        set => this.SetFlag(eBoolFlags.D, value);
     }
 
     internal bool E
     {
-        get { return (this.flags & eBoolFlags.E) == eBoolFlags.E; }
-        set { this.SetFlag(eBoolFlags.E, value); }
+        get => (this.flags & eBoolFlags.E) == eBoolFlags.E;
+        set => this.SetFlag(eBoolFlags.E, value);
     }
 
     internal bool F
     {
-        get { return (this.flags & eBoolFlags.F) == eBoolFlags.F; }
-        set { this.SetFlag(eBoolFlags.F, value); }
+        get => (this.flags & eBoolFlags.F) == eBoolFlags.F;
+        set => this.SetFlag(eBoolFlags.F, value);
     }
 
     internal bool M
     {
-        get { return (this.flags & eBoolFlags.M) == eBoolFlags.M; }
-        set { this.SetFlag(eBoolFlags.M, value); }
+        get => (this.flags & eBoolFlags.M) == eBoolFlags.M;
+        set => this.SetFlag(eBoolFlags.M, value);
     }
 
     internal bool S
     {
-        get { return (this.flags & eBoolFlags.S) == eBoolFlags.S; }
-        set { this.SetFlag(eBoolFlags.S, value); }
+        get => (this.flags & eBoolFlags.S) == eBoolFlags.S;
+        set => this.SetFlag(eBoolFlags.S, value);
     }
 
     internal int X { get; set; } = -1;

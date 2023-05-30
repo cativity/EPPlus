@@ -51,28 +51,19 @@ internal class CRC32
     /// <summary>
     ///   Indicates the total number of bytes applied to the CRC.
     /// </summary>
-    public long TotalBytesRead
-    {
-        get { return this._TotalBytesRead; }
-    }
+    public long TotalBytesRead => this._TotalBytesRead;
 
     /// <summary>
     /// Indicates the current CRC for all blocks slurped in.
     /// </summary>
-    public int Crc32Result
-    {
-        get { return unchecked((int)(~this._register)); }
-    }
+    public int Crc32Result => unchecked((int)(~this._register));
 
     /// <summary>
     /// Returns the CRC32 for the specified stream.
     /// </summary>
     /// <param name="input">The stream over which to calculate the CRC32</param>
     /// <returns>the CRC32 calculation</returns>
-    public int GetCrc32(System.IO.Stream input)
-    {
-        return this.GetCrc32AndCopy(input, null);
-    }
+    public int GetCrc32(System.IO.Stream input) => this.GetCrc32AndCopy(input, null);
 
     /// <summary>
     /// Returns the CRC32 for the specified stream, and writes the input into the
@@ -127,15 +118,9 @@ internal class CRC32
     /// <param name="W">The word to start with.</param>
     /// <param name="B">The byte to combine it with.</param>
     /// <returns>The CRC-ized result.</returns>
-    public int ComputeCrc32(int W, byte B)
-    {
-        return this._InternalComputeCrc32((uint)W, B);
-    }
+    public int ComputeCrc32(int W, byte B) => this._InternalComputeCrc32((uint)W, B);
 
-    internal int _InternalComputeCrc32(uint W, byte B)
-    {
-        return (int)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
-    }
+    internal int _InternalComputeCrc32(uint W, byte B) => (int)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
 
     /// <summary>
     /// Update the value for the running CRC32 using the given block of bytes.
@@ -482,10 +467,7 @@ internal class CRC32
     ///     multiple, distinct CRCs on multiple, distinct data blocks.
     ///   </para>
     /// </remarks>
-    public void Reset()
-    {
-        this._register = 0xFFFFFFFFU;
-    }
+    public void Reset() => this._register = 0xFFFFFFFFU;
 
     // private member vars
     private uint dwPolynomial;
@@ -654,10 +636,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     ///   This is either the total number of bytes read, or the total number of
     ///   bytes written, depending on the direction of this stream.
     /// </remarks>
-    public long TotalBytesSlurped
-    {
-        get { return this._Crc32.TotalBytesRead; }
-    }
+    public long TotalBytesSlurped => this._Crc32.TotalBytesRead;
 
     /// <summary>
     ///   Provides the current CRC for all blocks slurped in.
@@ -669,10 +648,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     ///     get an accurate CRC for the entire stream.
     ///   </para>
     /// </remarks>
-    public int Crc
-    {
-        get { return this._Crc32.Crc32Result; }
-    }
+    public int Crc => this._Crc32.Crc32Result;
 
     /// <summary>
     ///   Indicates whether the underlying stream will be left open when the
@@ -680,8 +656,8 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// </summary>
     public bool LeaveOpen
     {
-        get { return this._leaveOpen; }
-        set { this._leaveOpen = value; }
+        get => this._leaveOpen;
+        set => this._leaveOpen = value;
     }
 
     /// <summary>
@@ -747,10 +723,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// <summary>
     /// Indicates whether the stream supports reading.
     /// </summary>
-    public override bool CanRead
-    {
-        get { return this._innerStream.CanRead; }
-    }
+    public override bool CanRead => this._innerStream.CanRead;
 
     /// <summary>
     ///   Indicates whether the stream supports seeking.
@@ -760,26 +733,17 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     ///     Always returns false.
     ///   </para>
     /// </remarks>
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
     /// <summary>
     /// Indicates whether the stream supports writing.
     /// </summary>
-    public override bool CanWrite
-    {
-        get { return this._innerStream.CanWrite; }
-    }
+    public override bool CanWrite => this._innerStream.CanWrite;
 
     /// <summary>
     /// Flush the stream.
     /// </summary>
-    public override void Flush()
-    {
-        this._innerStream.Flush();
-    }
+    public override void Flush() => this._innerStream.Flush();
 
     /// <summary>
     ///   Returns the length of the underlying stream.
@@ -806,8 +770,8 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// </summary>
     public override long Position
     {
-        get { return this._Crc32.TotalBytesRead; }
-        set { throw new NotSupportedException(); }
+        get => this._Crc32.TotalBytesRead;
+        set => throw new NotSupportedException();
     }
 
     /// <summary>
@@ -817,20 +781,14 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// <param name="offset">N/A</param>
     /// <param name="origin">N/A</param>
     /// <returns>N/A</returns>
-    public override long Seek(long offset, System.IO.SeekOrigin origin)
-    {
-        throw new NotSupportedException();
-    }
+    public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new NotSupportedException();
 
     /// <summary>
     /// This method always throws
     /// <see cref="NotSupportedException"/>
     /// </summary>
     /// <param name="value">N/A</param>
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 
 #if !Core
         void IDisposable.Dispose()

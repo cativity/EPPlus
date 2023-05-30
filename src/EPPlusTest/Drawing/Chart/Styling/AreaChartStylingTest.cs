@@ -45,16 +45,10 @@ public class AreaChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("AreaChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("AreaChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void Area_Styles()
@@ -77,34 +71,34 @@ public class AreaChartStylingTest : TestBase
     private static void AreaStyle(ExcelWorksheet ws, eAreaChartType chartType)
     {
         //Style 1
-        _ = AddArea(ws, chartType, "AreaChartStyle1", 0, 5, ePresetChartStyle.AreaChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle1", 0, 5, ePresetChartStyle.AreaChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddArea(ws, chartType, "AreaChartStyle2", 0, 18, ePresetChartStyle.AreaChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddArea(ws, chartType, "AreaChartStyle2", 0, 18, ePresetChartStyle.AreaChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddArea(ws, chartType, "AreaChartStyle3", 0, 31, ePresetChartStyle.AreaChartStyle3, c => { });
 
         //Style 4
-        _ = AddArea(ws, chartType, "AreaChartStyle4", 22, 5, ePresetChartStyle.AreaChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle4", 22, 5, ePresetChartStyle.AreaChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddArea(ws, chartType, "AreaChartStyle5", 22, 18, ePresetChartStyle.AreaChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle5", 22, 18, ePresetChartStyle.AreaChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddArea(ws, chartType, "AreaChartStyle6", 22, 31, ePresetChartStyle.AreaChartStyle6, c => { });
 
         //Style 7
-        _ = AddArea(ws, chartType, "AreaChartStyle7", 44, 5, ePresetChartStyle.AreaChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle7", 44, 5, ePresetChartStyle.AreaChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
-        _ = AddArea(ws, chartType, "AreaChartStyle8", 44, 18, ePresetChartStyle.AreaChartStyle8, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddArea(ws, chartType, "AreaChartStyle8", 44, 18, ePresetChartStyle.AreaChartStyle8, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 9
-        _ = AddArea(ws, chartType, "AreaChartStyle9", 44, 31, ePresetChartStyle.AreaChartStyle9, c => { c.Legend.Remove(); });
+        _ = AddArea(ws, chartType, "AreaChartStyle9", 44, 31, ePresetChartStyle.AreaChartStyle9, c => c.Legend.Remove());
 
         //Style 10
-        _ = AddArea(ws, chartType, "AreaChartStyle10", 66, 5, ePresetChartStyle.AreaChartStyle10, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle10", 66, 5, ePresetChartStyle.AreaChartStyle10, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 11
         _ = AddArea(ws, chartType, "AreaChartStyle11", 66, 18, ePresetChartStyle.AreaChartStyle11, c => { });
@@ -113,25 +107,25 @@ public class AreaChartStylingTest : TestBase
     private static void Area3DStyle(ExcelWorksheet ws, eAreaChartType chartType)
     {
         //Style 1
-        _ = AddArea(ws, chartType, "AreaChartStyle1", 0, 5, ePresetChartStyle.Area3dChartStyle1, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle1", 0, 5, ePresetChartStyle.Area3dChartStyle1, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 2
-        _ = AddArea(ws, chartType, "AreaChartStyle2", 0, 18, ePresetChartStyle.Area3dChartStyle2, c => { c.Legend.Position = eLegendPosition.Top; });
+        _ = AddArea(ws, chartType, "AreaChartStyle2", 0, 18, ePresetChartStyle.Area3dChartStyle2, c => c.Legend.Position = eLegendPosition.Top);
 
         //Style 3
         _ = AddArea(ws, chartType, "AreaChartStyle3", 0, 31, ePresetChartStyle.Area3dChartStyle3, c => { });
 
         //Style 4
-        _ = AddArea(ws, chartType, "AreaChartStyle4", 22, 5, ePresetChartStyle.Area3dChartStyle4, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle4", 22, 5, ePresetChartStyle.Area3dChartStyle4, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 5
-        _ = AddArea(ws, chartType, "AreaChartStyle5", 22, 18, ePresetChartStyle.Area3dChartStyle5, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle5", 22, 18, ePresetChartStyle.Area3dChartStyle5, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 6
         _ = AddArea(ws, chartType, "AreaChartStyle6", 22, 31, ePresetChartStyle.Area3dChartStyle6, c => { });
 
         //Style 7
-        _ = AddArea(ws, chartType, "AreaChartStyle7", 44, 5, ePresetChartStyle.Area3dChartStyle7, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle7", 44, 5, ePresetChartStyle.Area3dChartStyle7, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Style 8
         _ = AddArea(ws, chartType, "AreaChartStyle8", 44, 18, ePresetChartStyle.Area3dChartStyle8, c => { });
@@ -140,7 +134,7 @@ public class AreaChartStylingTest : TestBase
         _ = AddArea(ws, chartType, "AreaChartStyle9", 44, 31, ePresetChartStyle.Area3dChartStyle9, c => { });
 
         //Style 10
-        _ = AddArea(ws, chartType, "AreaChartStyle10", 66, 5, ePresetChartStyle.Area3dChartStyle10, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddArea(ws, chartType, "AreaChartStyle10", 66, 5, ePresetChartStyle.Area3dChartStyle10, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelAreaChart AddArea(ExcelWorksheet ws,

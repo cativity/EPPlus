@@ -29,10 +29,8 @@ namespace OfficeOpenXml;
 public sealed class ExcelSheetProtection : XmlHelper
 {
     internal ExcelSheetProtection(XmlNamespaceManager nsm, XmlNode topNode, ExcelWorksheet ws)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this.SchemaNodeOrder = ws.SchemaNodeOrder;
-    }
 
     //bool _hasSheetProtection = false;
     private const string _isProtectedPath = "d:sheetProtection/@sheet";
@@ -42,7 +40,7 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool IsProtected
     {
-        get { return this.GetXmlNodeBool(_isProtectedPath, false); }
+        get => this.GetXmlNodeBool(_isProtectedPath, false);
         set
         {
             //this.CreatedDefaultNode();
@@ -73,12 +71,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowSelectLockedCells
     {
-        get { return !this.GetXmlNodeBool(_allowSelectLockedCellsPath, false); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowSelectLockedCellsPath, false);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSelectLockedCellsPath, !value, false);
-        }
     }
 
     private const string _allowSelectUnlockedCellsPath = "d:sheetProtection/@selectUnlockedCells";
@@ -88,12 +85,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowSelectUnlockedCells
     {
-        get { return !this.GetXmlNodeBool(_allowSelectUnlockedCellsPath, false); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowSelectUnlockedCellsPath, false);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSelectUnlockedCellsPath, !value, false);
-        }
     }
 
     private const string _allowObjectPath = "d:sheetProtection/@objects";
@@ -103,12 +99,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowEditObject
     {
-        get { return !this.GetXmlNodeBool(_allowObjectPath, false); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowObjectPath, false);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowObjectPath, !value, false);
-        }
     }
 
     private const string _allowScenariosPath = "d:sheetProtection/@scenarios";
@@ -118,12 +113,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowEditScenarios
     {
-        get { return !this.GetXmlNodeBool(_allowScenariosPath, false); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowScenariosPath, false);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowScenariosPath, !value, false);
-        }
     }
 
     private const string _allowFormatCellsPath = "d:sheetProtection/@formatCells";
@@ -133,12 +127,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowFormatCells
     {
-        get { return !this.GetXmlNodeBool(_allowFormatCellsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowFormatCellsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatCellsPath, !value, true);
-        }
     }
 
     private const string _allowFormatColumnsPath = "d:sheetProtection/@formatColumns";
@@ -148,12 +141,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowFormatColumns
     {
-        get { return !this.GetXmlNodeBool(_allowFormatColumnsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowFormatColumnsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatColumnsPath, !value, true);
-        }
     }
 
     private const string _allowFormatRowsPath = "d:sheetProtection/@formatRows";
@@ -163,12 +155,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowFormatRows
     {
-        get { return !this.GetXmlNodeBool(_allowFormatRowsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowFormatRowsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatRowsPath, !value, true);
-        }
     }
 
     private const string _allowInsertColumnsPath = "d:sheetProtection/@insertColumns";
@@ -178,12 +169,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowInsertColumns
     {
-        get { return !this.GetXmlNodeBool(_allowInsertColumnsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowInsertColumnsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertColumnsPath, !value, true);
-        }
     }
 
     private const string _allowInsertRowsPath = "d:sheetProtection/@insertRows";
@@ -193,12 +183,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowInsertRows
     {
-        get { return !this.GetXmlNodeBool(_allowInsertRowsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowInsertRowsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertRowsPath, !value, true);
-        }
     }
 
     private const string _allowInsertHyperlinksPath = "d:sheetProtection/@insertHyperlinks";
@@ -208,12 +197,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowInsertHyperlinks
     {
-        get { return !this.GetXmlNodeBool(_allowInsertHyperlinksPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowInsertHyperlinksPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertHyperlinksPath, !value, true);
-        }
     }
 
     private const string _allowDeleteColumns = "d:sheetProtection/@deleteColumns";
@@ -223,12 +211,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowDeleteColumns
     {
-        get { return !this.GetXmlNodeBool(_allowDeleteColumns, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowDeleteColumns, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowDeleteColumns, !value, true);
-        }
     }
 
     private const string _allowDeleteRowsPath = "d:sheetProtection/@deleteRows";
@@ -238,12 +225,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>  
     public bool AllowDeleteRows
     {
-        get { return !this.GetXmlNodeBool(_allowDeleteRowsPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowDeleteRowsPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowDeleteRowsPath, !value, true);
-        }
     }
 
     private const string _allowSortPath = "d:sheetProtection/@sort";
@@ -253,12 +239,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowSort
     {
-        get { return !this.GetXmlNodeBool(_allowSortPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowSortPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSortPath, !value, true);
-        }
     }
 
     private const string _allowAutoFilterPath = "d:sheetProtection/@autoFilter";
@@ -268,12 +253,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowAutoFilter
     {
-        get { return !this.GetXmlNodeBool(_allowAutoFilterPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowAutoFilterPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowAutoFilterPath, !value, true);
-        }
     }
 
     private const string _allowPivotTablesPath = "d:sheetProtection/@pivotTables";
@@ -283,12 +267,11 @@ public sealed class ExcelSheetProtection : XmlHelper
     /// </summary>
     public bool AllowPivotTables
     {
-        get { return !this.GetXmlNodeBool(_allowPivotTablesPath, true); }
-        set
-        {
+        get => !this.GetXmlNodeBool(_allowPivotTablesPath, true);
+        set =>
+
             //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowPivotTablesPath, !value, true);
-        }
     }
 
     private const string _passwordPath = "d:sheetProtection/@password";

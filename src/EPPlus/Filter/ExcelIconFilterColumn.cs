@@ -34,7 +34,7 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
     /// </summary>
     public int IconId
     {
-        get { return this.GetXmlNodeInt("d:iconId"); }
+        get => this.GetXmlNodeInt("d:iconId");
         set
         {
             if (value < 0)
@@ -76,10 +76,7 @@ public class ExcelIconFilterColumn : ExcelFilterColumn
         }
     }
 
-    internal override bool Match(object value, string valueText)
-    {
-        return true;
-    }
+    internal override bool Match(object value, string valueText) => true;
 
     internal override void Save()
     {

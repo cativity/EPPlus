@@ -37,32 +37,20 @@ public class ExcelTableNamedStyle : ExcelTableNamedStyleBase
     /// <summary>
     /// Applies to the last header cell of a table
     /// </summary>
-    public ExcelTableStyleElement LastHeaderCell
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.LastHeaderCell); }
-    }
+    public ExcelTableStyleElement LastHeaderCell => this.GetTableStyleElement(eTableStyleElement.LastHeaderCell);
 
     /// <summary>
     /// Applies to the first total cell of a table
     /// </summary>
-    public ExcelTableStyleElement FirstTotalCell
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.FirstTotalCell); }
-    }
+    public ExcelTableStyleElement FirstTotalCell => this.GetTableStyleElement(eTableStyleElement.FirstTotalCell);
 
     /// <summary>
     /// Applies to the last total cell of a table
     /// </summary>
-    public ExcelTableStyleElement LastTotalCell
-    {
-        get { return this.GetTableStyleElement(eTableStyleElement.LastTotalCell); }
-    }
+    public ExcelTableStyleElement LastTotalCell => this.GetTableStyleElement(eTableStyleElement.LastTotalCell);
 
     /// <summary>
     /// If the style applies to tables, pivot table or both
     /// </summary>
-    public override eTableNamedStyleAppliesTo AppliesTo
-    {
-        get { return eTableNamedStyleAppliesTo.Tables; }
-    }
+    public override eTableNamedStyleAppliesTo AppliesTo => eTableNamedStyleAppliesTo.Tables;
 }

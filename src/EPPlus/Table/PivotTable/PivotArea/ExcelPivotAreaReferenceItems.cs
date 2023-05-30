@@ -24,10 +24,7 @@ public class ExcelPivotAreaReferenceItems : EPPlusReadOnlyList<PivotItemReferenc
 {
     private ExcelPivotAreaReference _reference;
 
-    internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference)
-    {
-        this._reference = reference;
-    }
+    internal ExcelPivotAreaReferenceItems(ExcelPivotAreaReference reference) => this._reference = reference;
 
     /// <summary>
     /// Adds the item at the index to the condition. The index referes to the pivot cache.

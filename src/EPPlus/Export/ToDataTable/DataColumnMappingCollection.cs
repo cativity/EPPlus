@@ -39,10 +39,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// </summary>
     /// <param name="zeroBasedIndexInRange">Zero based index of the column in the source range</param>
     /// <param name="dataColumn">The destination <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
-    public void Add(int zeroBasedIndexInRange, DataColumn dataColumn)
-    {
-        this.Add(zeroBasedIndexInRange, dataColumn, null);
-    }
+    public void Add(int zeroBasedIndexInRange, DataColumn dataColumn) => this.Add(zeroBasedIndexInRange, dataColumn, null);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -68,10 +65,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// </summary>
     /// <param name="zeroBasedIndexInRange">Zero based index of the column in the source range</param>
     /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
-    public void Add(int zeroBasedIndexInRange, string columnName)
-    {
-        this.Add(zeroBasedIndexInRange, columnName, null, true, null);
-    }
+    public void Add(int zeroBasedIndexInRange, string columnName) => this.Add(zeroBasedIndexInRange, columnName, null, true, null);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -79,10 +73,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// <param name="zeroBasedIndexInRange">Zero based index of the column in the source range</param>
     /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
     /// <param name="allowNull">Indicates if values read from the source range can be null</param>
-    public void Add(int zeroBasedIndexInRange, string columnName, bool allowNull)
-    {
-        this.Add(zeroBasedIndexInRange, columnName, null, allowNull, null);
-    }
+    public void Add(int zeroBasedIndexInRange, string columnName, bool allowNull) => this.Add(zeroBasedIndexInRange, columnName, null, allowNull, null);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -90,10 +81,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// <param name="zeroBasedIndexInRange">Zero based index of the column in the source range</param>
     /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
     /// <param name="transformCellValueFunc">A function that casts/transforms the value before it is written to the <see cref="DataTable"/></param>
-    public void Add(int zeroBasedIndexInRange, string columnName, Func<object, object> transformCellValueFunc)
-    {
-        this.Add(zeroBasedIndexInRange, columnName, null, true, transformCellValueFunc);
-    }
+    public void Add(int zeroBasedIndexInRange, string columnName, Func<object, object> transformCellValueFunc) => this.Add(zeroBasedIndexInRange, columnName, null, true, transformCellValueFunc);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -101,10 +89,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// <param name="zeroBasedIndexInRange">Zero based index of the column in the source range</param>
     /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
     /// <param name="columnDataType"><see cref="Type"/> of the <see cref="DataColumn"/></param>
-    public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType)
-    {
-        this.Add(zeroBasedIndexInRange, columnName, columnDataType, true, null);
-    }
+    public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType) => this.Add(zeroBasedIndexInRange, columnName, columnDataType, true, null);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -113,10 +98,7 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
     /// <param name="columnName">Name of the <see cref="DataColumn"/> in the <see cref="DataTable"/></param>
     /// <param name="columnDataType"><see cref="Type"/> of the <see cref="DataColumn"/></param>
     /// <param name="allowNull">Indicates if values read from the source range can be null</param>
-    public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType, bool allowNull)
-    {
-        this.Add(zeroBasedIndexInRange, columnName, columnDataType, allowNull, null);
-    }
+    public void Add(int zeroBasedIndexInRange, string columnName, Type columnDataType, bool allowNull) => this.Add(zeroBasedIndexInRange, columnName, columnDataType, allowNull, null);
 
     /// <summary>
     /// Adds a <see cref="DataColumnMapping"/>
@@ -160,8 +142,5 @@ public class DataColumnMappingCollection : List<DataColumnMapping>
         return this._mappingIndexes[index];
     }
 
-    internal bool ContainsMapping(int index)
-    {
-        return this._mappingIndexes.ContainsKey(index);
-    }
+    internal bool ContainsMapping(int index) => this._mappingIndexes.ContainsKey(index);
 }

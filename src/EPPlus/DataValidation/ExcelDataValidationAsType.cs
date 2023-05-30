@@ -9,10 +9,7 @@ public class ExcelDataValidationAsType
 {
     IExcelDataValidation _validation;
 
-    internal ExcelDataValidationAsType(IExcelDataValidation validation)
-    {
-        this._validation = validation;
-    }
+    internal ExcelDataValidationAsType(IExcelDataValidation validation) => this._validation = validation;
 
     /// <summary>
     /// Converts the data validation object to it's implementing class or any of the abstract classes/interfaces inheriting the <see cref="IExcelDataValidation"/> interface.        
@@ -34,62 +31,41 @@ public class ExcelDataValidationAsType
     /// Returns the data validation object as <see cref="IExcelDataValidationList"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationList"/> or null if typecasting fails</returns>
-    public IExcelDataValidationList ListValidation
-    {
-        get { return this._validation as IExcelDataValidationList; }
-    }
+    public IExcelDataValidationList ListValidation => this._validation as IExcelDataValidationList;
 
     /// <summary>
     /// Returns the data validation object as <see cref="Contracts.IExcelDataValidationInt"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="Contracts.IExcelDataValidationInt"/> or null if typecasting fails</returns>
-    public IExcelDataValidationInt IntegerValidation
-    {
-        get { return this._validation as IExcelDataValidationInt; }
-    }
+    public IExcelDataValidationInt IntegerValidation => this._validation as IExcelDataValidationInt;
 
     /// <summary>
     /// Returns the data validation object as <see cref="IExcelDataValidationDateTime"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationDateTime"/> or null if typecasting fails</returns>
-    public IExcelDataValidationDateTime DateTimeValidation
-    {
-        get { return this._validation as IExcelDataValidationDateTime; }
-    }
+    public IExcelDataValidationDateTime DateTimeValidation => this._validation as IExcelDataValidationDateTime;
 
     /// <summary>
     /// Returns the data validation object as <see cref="IExcelDataValidationTime"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationTime"/> or null if typecasting fails</returns>
-    public IExcelDataValidationTime TimeValidation
-    {
-        get { return this._validation as IExcelDataValidationTime; }
-    }
+    public IExcelDataValidationTime TimeValidation => this._validation as IExcelDataValidationTime;
 
     /// <summary>
     /// Returns the data validation object as <see cref="IExcelDataValidationDecimal"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationDecimal"/> or null if typecasting fails</returns>
-    public IExcelDataValidationDecimal DecimalValidation
-    {
-        get { return this._validation as IExcelDataValidationDecimal; }
-    }
+    public IExcelDataValidationDecimal DecimalValidation => this._validation as IExcelDataValidationDecimal;
 
     /// <summary>
     /// Returns the data validation object as <see cref="IExcelDataValidationAny"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationAny"/> or null if typecasting fails</returns>
-    public IExcelDataValidationAny AnyValidation
-    {
-        get { return this._validation as IExcelDataValidationAny; }
-    }
+    public IExcelDataValidationAny AnyValidation => this._validation as IExcelDataValidationAny;
 
     /// <summary>
     /// Returns the data validation object as <see cref="IExcelDataValidationCustom"/>
     /// </summary>
     /// <returns>The data validation as an <see cref="IExcelDataValidationCustom"/> or null if typecasting fails</returns>
-    public IExcelDataValidationCustom CustomValidation
-    {
-        get { return this._validation as IExcelDataValidationCustom; }
-    }
+    public IExcelDataValidationCustom CustomValidation => this._validation as IExcelDataValidationCustom;
 }

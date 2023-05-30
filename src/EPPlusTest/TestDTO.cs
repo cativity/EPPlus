@@ -50,10 +50,7 @@ public class TestDTO
 
     public bool Boolean { get; set; }
 
-    public string GetNameID()
-    {
-        return this.Id + "," + this.Name;
-    }
+    public string GetNameID() => this.Id + "," + this.Name;
 }
 
 public class InheritTestDTO : TestDTO

@@ -82,25 +82,13 @@ public abstract class ZipPackagePartBase
         return rel;
     }
 
-    internal bool RelationshipExists(string id)
-    {
-        return this._rels.ContainsKey(id);
-    }
+    internal bool RelationshipExists(string id) => this._rels.ContainsKey(id);
 
-    internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema)
-    {
-        return this._rels.GetRelationshipsByType(schema);
-    }
+    internal ZipPackageRelationshipCollection GetRelationshipsByType(string schema) => this._rels.GetRelationshipsByType(schema);
 
-    internal ZipPackageRelationshipCollection GetRelationships()
-    {
-        return this._rels;
-    }
+    internal ZipPackageRelationshipCollection GetRelationships() => this._rels;
 
-    internal ZipPackageRelationship GetRelationship(string id)
-    {
-        return this._rels[id];
-    }
+    internal ZipPackageRelationship GetRelationship(string id) => this._rels[id];
 
     internal void ReadRelation(string xml, string source)
     {

@@ -305,11 +305,10 @@ public class DeflateStream : Stream
     /// <param name="mode">Indicates whether the DeflateStream will compress or decompress.</param>
     /// <param name="leaveOpen">true if the application would like the stream to remain open after inflation/deflation.</param>
     /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
-    public DeflateStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
-    {
+    public DeflateStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen) =>
+
         //this._innerStream = stream;
         this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.DEFLATE, leaveOpen);
-    }
 
     #region Zlib properties
 
@@ -320,7 +319,7 @@ public class DeflateStream : Stream
     /// </remarks>
     virtual public FlushType FlushMode
     {
-        get { return this._baseStream._flushMode; }
+        get => this._baseStream._flushMode;
         set
         {
             if (this._disposed)
@@ -351,7 +350,7 @@ public class DeflateStream : Stream
     /// </remarks>
     public int BufferSize
     {
-        get { return this._baseStream._bufferSize; }
+        get => this._baseStream._bufferSize;
         set
         {
             if (this._disposed)
@@ -385,7 +384,7 @@ public class DeflateStream : Stream
     /// </remarks>
     public CompressionStrategy Strategy
     {
-        get { return this._baseStream.Strategy; }
+        get => this._baseStream.Strategy;
         set
         {
             if (this._disposed)
@@ -398,16 +397,10 @@ public class DeflateStream : Stream
     }
 
     /// <summary> Returns the total number of bytes input so far.</summary>
-    virtual public long TotalIn
-    {
-        get { return this._baseStream._z.TotalBytesIn; }
-    }
+    virtual public long TotalIn => this._baseStream._z.TotalBytesIn;
 
     /// <summary> Returns the total number of bytes output so far.</summary>
-    virtual public long TotalOut
-    {
-        get { return this._baseStream._z.TotalBytesOut; }
-    }
+    virtual public long TotalOut => this._baseStream._z.TotalBytesOut;
 
     #endregion
 
@@ -482,10 +475,7 @@ public class DeflateStream : Stream
     /// <remarks>
     /// Always returns false.
     /// </remarks>
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
     /// <summary>
     /// Indicates whether the stream can be written.
@@ -522,10 +512,7 @@ public class DeflateStream : Stream
     /// <summary>
     /// Reading this property always throws a <see cref="NotImplementedException"/>.
     /// </summary>
-    public override long Length
-    {
-        get { throw new NotImplementedException(); }
-    }
+    public override long Length => throw new NotImplementedException();
 
     /// <summary>
     /// The position of the stream pointer.
@@ -554,7 +541,7 @@ public class DeflateStream : Stream
 
             return 0;
         }
-        set { throw new NotImplementedException(); }
+        set => throw new NotImplementedException();
     }
 
     /// <summary>
@@ -599,19 +586,13 @@ public class DeflateStream : Stream
     /// <param name="offset">this is irrelevant, since it will always throw!</param>
     /// <param name="origin">this is irrelevant, since it will always throw!</param>
     /// <returns>irrelevant!</returns>
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        throw new NotImplementedException();
-    }
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotImplementedException();
 
     /// <summary>
     /// Calling this method always throws a <see cref="NotImplementedException"/>.
     /// </summary>
     /// <param name="value">this is irrelevant, since it will always throw!</param>
-    public override void SetLength(long value)
-    {
-        throw new NotImplementedException();
-    }
+    public override void SetLength(long value) => throw new NotImplementedException();
 
     /// <summary>
     ///   Write data to the stream.

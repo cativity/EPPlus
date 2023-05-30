@@ -46,10 +46,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     internal Dictionary<string, ContentType> _contentTypes = new Dictionary<string, ContentType>(StringComparer.OrdinalIgnoreCase);
     internal char _dirSeparator = '0';
 
-    internal ZipPackage()
-    {
-        this.AddNew();
-    }
+    internal ZipPackage() => this.AddNew();
 
     private void AddNew()
     {
@@ -232,10 +229,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
 
     #region Methods
 
-    internal ZipPackagePart CreatePart(Uri partUri, string contentType)
-    {
-        return this.CreatePart(partUri, contentType, CompressionLevel.Default);
-    }
+    internal ZipPackagePart CreatePart(Uri partUri, string contentType) => this.CreatePart(partUri, contentType, CompressionLevel.Default);
 
     internal ZipPackagePart CreatePart(Uri partUri, string contentType, CompressionLevel compressionLevel, string extension = null)
     {
@@ -441,7 +435,7 @@ internal partial class ZipPackage : ZipPackagePartBase, IDisposable
     /// </summary>
     public CompressionLevel Compression
     {
-        get { return this._compression; }
+        get => this._compression;
         set
         {
             foreach (ZipPackagePart? part in this.Parts.Values)

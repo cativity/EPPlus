@@ -441,20 +441,11 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
         }
     }
 
-    internal ExcelVmlDrawingBase this[int row, int column]
-    {
-        get { return this._drawings[this._drawingsCellStore.GetValue(row, column)]; }
-    }
+    internal ExcelVmlDrawingBase this[int row, int column] => this._drawings[this._drawingsCellStore.GetValue(row, column)];
 
-    internal bool ContainsKey(int row, int column)
-    {
-        return this._drawingsCellStore.Exists(row, column);
-    }
+    internal bool ContainsKey(int row, int column) => this._drawingsCellStore.Exists(row, column);
 
-    internal int Count
-    {
-        get { return this._drawings.Count; }
-    }
+    internal int Count => this._drawings.Count;
 
     public ExcelPackage Package => this._package;
 
@@ -467,17 +458,15 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
     #region "Enumerator"
 
     //CellStoreEnumerator<ExcelVmlDrawingComment> _enum;
-    public IEnumerator<ExcelVmlDrawingBase> GetEnumerator()
-    {
-        //Reset();
-        return this._drawings.GetEnumerator();
-    }
+    public IEnumerator<ExcelVmlDrawingBase> GetEnumerator() =>
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
         //Reset();
-        return this._drawings.GetEnumerator();
-    }
+        this._drawings.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() =>
+
+        //Reset();
+        this._drawings.GetEnumerator();
 
     ///// <summary>
     ///// The current range when enumerating
@@ -511,10 +500,7 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
     //    if (_enum != null) _enum.Dispose();
     //     _enum = new CellStoreEnumerator<ExcelVmlDrawingComment>(_drawingsCellStore, 1, 1, ExcelPackage.MaxRows, ExcelPackage.MaxColumns);
     //}
-    void IDisposable.Dispose()
-    {
-        this._drawingsCellStore.Dispose();
-    }
+    void IDisposable.Dispose() => this._drawingsCellStore.Dispose();
 
     //public void Dispose()
     //{

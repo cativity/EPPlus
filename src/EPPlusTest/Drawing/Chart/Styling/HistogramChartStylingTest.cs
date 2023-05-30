@@ -47,16 +47,10 @@ public class HistogramChartStylingTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("HistogramChartStyling.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("HistogramChartStyling.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void HistogramChart_Styles()
@@ -132,10 +126,10 @@ public class HistogramChartStylingTest : TestBase
                    });
 
         //Histogram chart Style 5
-        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle5, "HistogramChartStyle5", 20, 18, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle5, "HistogramChartStyle5", 20, 18, type, c => c.Legend.Position = eLegendPosition.Bottom);
 
         //Histogram chart Style 6
-        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle6, "HistogramChartStyle6", 20, 31, type, c => { c.Legend.Position = eLegendPosition.Bottom; });
+        _ = AddChartEx(ws, ePresetChartStyle.HistogramChartStyle6, "HistogramChartStyle6", 20, 31, type, c => c.Legend.Position = eLegendPosition.Bottom);
     }
 
     private static ExcelHistogramChart AddChartEx(ExcelWorksheet ws,

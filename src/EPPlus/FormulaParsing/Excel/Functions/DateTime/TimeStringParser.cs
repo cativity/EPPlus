@@ -44,15 +44,9 @@ internal class TimeStringParser
         }
     }
 
-    public virtual double Parse(string input)
-    {
-        return InternalParse(input);
-    }
+    public virtual double Parse(string input) => InternalParse(input);
 
-    public virtual bool CanParse(string input)
-    {
-        return Regex.IsMatch(input, RegEx24) || Regex.IsMatch(input, RegEx12) || System.DateTime.TryParse(input, out System.DateTime _);
-    }
+    public virtual bool CanParse(string input) => Regex.IsMatch(input, RegEx24) || Regex.IsMatch(input, RegEx12) || System.DateTime.TryParse(input, out System.DateTime _);
 
     private static double InternalParse(string input)
     {

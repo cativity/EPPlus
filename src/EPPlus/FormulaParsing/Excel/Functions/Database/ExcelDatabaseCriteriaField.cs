@@ -20,15 +20,9 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
 
 public class ExcelDatabaseCriteriaField
 {
-    public ExcelDatabaseCriteriaField(string fieldName)
-    {
-        this.FieldName = fieldName;
-    }
+    public ExcelDatabaseCriteriaField(string fieldName) => this.FieldName = fieldName;
 
-    public ExcelDatabaseCriteriaField(int fieldIndex)
-    {
-        this.FieldIndex = fieldIndex;
-    }
+    public ExcelDatabaseCriteriaField(int fieldIndex) => this.FieldIndex = fieldIndex;
 
     public override string ToString()
     {

@@ -45,7 +45,7 @@ public class ExcelDrawing3DBevel : XmlHelper
     /// </summary>
     public double Width
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6; }
+        get => this.GetXmlNodeEmuToPtNull(this._widthPath) ?? 6;
         set
         {
             if (!this._isInit)
@@ -78,7 +78,7 @@ public class ExcelDrawing3DBevel : XmlHelper
     /// </summary>
     public double Height
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6; }
+        get => this.GetXmlNodeEmuToPtNull(this._heightPath) ?? 6;
         set
         {
             if (!this._isInit)
@@ -95,7 +95,7 @@ public class ExcelDrawing3DBevel : XmlHelper
     /// </summary>
     public eBevelPresetType BevelType
     {
-        get { return this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle); }
+        get => this.GetXmlNodeString(this._typePath).ToEnum(eBevelPresetType.Circle);
         set
         {
             if (value == eBevelPresetType.None)

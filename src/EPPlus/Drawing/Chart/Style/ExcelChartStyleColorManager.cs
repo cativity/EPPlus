@@ -44,10 +44,7 @@ public class ExcelChartStyleColorManager : ExcelDrawingColorManager
     /// Sets the style color for a chart style
     /// </summary>
     /// <param name="index">Is index, maps to the style matrix in the theme</param>
-    public void SetStyleColor(int index = 0)
-    {
-        this.SetStyleColor(false, index);
-    }
+    public void SetStyleColor(int index = 0) => this.SetStyleColor(false, index);
 
     internal const string NodeName = "a:styleClr";
 

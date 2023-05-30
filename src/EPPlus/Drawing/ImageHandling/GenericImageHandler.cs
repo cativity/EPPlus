@@ -81,8 +81,5 @@ public class GenericImageHandler : IImageHandler
     /// The generic image handler is valid in all environments, so it will always return true.
     /// </summary>
     /// <returns></returns>
-    public bool ValidForEnvironment()
-    {
-        return true;
-    }
+    public bool ValidForEnvironment() => true;
 }

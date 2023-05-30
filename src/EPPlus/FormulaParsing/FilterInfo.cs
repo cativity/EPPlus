@@ -70,8 +70,5 @@ internal class FilterInfo
     /// </summary>
     /// <param name="worksheetName"></param>
     /// <returns></returns>
-    public bool WorksheetHasFilter(string worksheetName)
-    {
-        return this._worksheetFilters.Contains(worksheetName);
-    }
+    public bool WorksheetHasFilter(string worksheetName) => this._worksheetFilters.Contains(worksheetName);
 }

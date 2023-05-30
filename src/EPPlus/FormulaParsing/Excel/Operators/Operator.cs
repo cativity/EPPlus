@@ -50,15 +50,9 @@ public class Operator : IOperator
     private readonly int _precedence;
     private readonly Operators _operator;
 
-    int IOperator.Precedence
-    {
-        get { return this._precedence; }
-    }
+    int IOperator.Precedence => this._precedence;
 
-    Operators IOperator.Operator
-    {
-        get { return this._operator; }
-    }
+    Operators IOperator.Operator => this._operator;
 
     public CompileResult Apply(CompileResult left, CompileResult right)
     {
@@ -74,156 +68,129 @@ public class Operator : IOperator
         return this._implementation(left, right);
     }
 
-    private static bool CanDoNumericOperation(CompileResult l, CompileResult r)
-    {
-        return (l.IsNumeric || l.IsNumericString || l.IsPercentageString || l.IsDateString || l.Result is IRangeInfo)
-               && (r.IsNumeric || r.IsNumericString || r.IsPercentageString || r.IsDateString || r.Result is IRangeInfo);
-    }
+    private static bool CanDoNumericOperation(CompileResult l, CompileResult r) =>
+        (l.IsNumeric || l.IsNumericString || l.IsPercentageString || l.IsDateString || l.Result is IRangeInfo)
+        && (r.IsNumeric || r.IsNumericString || r.IsPercentageString || r.IsDateString || r.Result is IRangeInfo);
 
     private static IOperator _plus;
 
-    public static IOperator Plus
-    {
-        get
-        {
-            return _plus ??= new Operator(Operators.Plus,
-                                          PrecedenceAddSubtract,
-                                          (l, r) =>
-                                          {
-                                              l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
-                                              r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
+    public static IOperator Plus =>
+        _plus ??= new Operator(Operators.Plus,
+                               PrecedenceAddSubtract,
+                               (l, r) =>
+                               {
+                                   l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
+                                   r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
 
-                                              if (EitherIsError(l, r, out ExcelErrorValue errorVal))
-                                              {
-                                                  return new CompileResult(errorVal);
-                                              }
+                                   if (EitherIsError(l, r, out ExcelErrorValue errorVal))
+                                   {
+                                       return new CompileResult(errorVal);
+                                   }
 
-                                              if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
-                                              {
-                                                  return new CompileResult(l.ResultNumeric + r.ResultNumeric, DataType.Integer);
-                                              }
-                                              else if (CanDoNumericOperation(l, r))
-                                              {
-                                                  return new CompileResult(l.ResultNumeric + r.ResultNumeric, DataType.Decimal);
-                                              }
+                                   if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
+                                   {
+                                       return new CompileResult(l.ResultNumeric + r.ResultNumeric, DataType.Integer);
+                                   }
+                                   else if (CanDoNumericOperation(l, r))
+                                   {
+                                       return new CompileResult(l.ResultNumeric + r.ResultNumeric, DataType.Decimal);
+                                   }
 
-                                              return new CompileResult(eErrorType.Value);
-                                          });
-        }
-    }
+                                   return new CompileResult(eErrorType.Value);
+                               });
 
     private static IOperator _minus;
 
-    public static IOperator Minus
-    {
-        get
-        {
-            return _minus ??= new Operator(Operators.Minus,
-                                           PrecedenceAddSubtract,
-                                           (l, r) =>
-                                           {
-                                               l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
-                                               r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
+    public static IOperator Minus =>
+        _minus ??= new Operator(Operators.Minus,
+                                PrecedenceAddSubtract,
+                                (l, r) =>
+                                {
+                                    l = l == null || l.Result == null ? CompileResult.ZeroInt : l;
+                                    r = r == null || r.Result == null ? CompileResult.ZeroInt : r;
 
-                                               if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
-                                               {
-                                                   return new CompileResult(l.ResultNumeric - r.ResultNumeric, DataType.Integer);
-                                               }
-                                               else if (CanDoNumericOperation(l, r))
-                                               {
-                                                   return new CompileResult(l.ResultNumeric - r.ResultNumeric, DataType.Decimal);
-                                               }
+                                    if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
+                                    {
+                                        return new CompileResult(l.ResultNumeric - r.ResultNumeric, DataType.Integer);
+                                    }
+                                    else if (CanDoNumericOperation(l, r))
+                                    {
+                                        return new CompileResult(l.ResultNumeric - r.ResultNumeric, DataType.Decimal);
+                                    }
 
-                                               return new CompileResult(eErrorType.Value);
-                                           });
-        }
-    }
+                                    return new CompileResult(eErrorType.Value);
+                                });
 
     private static IOperator _multiply;
 
-    public static IOperator Multiply
-    {
-        get
-        {
-            return _multiply ??= new Operator(Operators.Multiply,
-                                              PrecedenceMultiplyDevide,
-                                              (l, r) =>
-                                              {
-                                                  l ??= CompileResult.ZeroInt;
-                                                  r ??= CompileResult.ZeroInt;
+    public static IOperator Multiply =>
+        _multiply ??= new Operator(Operators.Multiply,
+                                   PrecedenceMultiplyDevide,
+                                   (l, r) =>
+                                   {
+                                       l ??= CompileResult.ZeroInt;
+                                       r ??= CompileResult.ZeroInt;
 
-                                                  if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
-                                                  {
-                                                      return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
-                                                  }
-                                                  else if (CanDoNumericOperation(l, r))
-                                                  {
-                                                      return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
-                                                  }
+                                       if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
+                                       {
+                                           return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
+                                       }
+                                       else if (CanDoNumericOperation(l, r))
+                                       {
+                                           return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
+                                       }
 
-                                                  return new CompileResult(eErrorType.Value);
-                                              });
-        }
-    }
+                                       return new CompileResult(eErrorType.Value);
+                                   });
 
     private static IOperator _divide;
 
-    public static IOperator Divide
-    {
-        get
-        {
-            return _divide ??= new Operator(Operators.Divide,
-                                            PrecedenceMultiplyDevide,
-                                            (l, r) =>
-                                            {
-                                                if (!(l.IsNumeric || l.IsNumericString || l.IsDateString || l.Result is IRangeInfo)
-                                                    || !(r.IsNumeric || r.IsNumericString || r.IsDateString || r.Result is IRangeInfo))
-                                                {
-                                                    return new CompileResult(eErrorType.Value);
-                                                }
+    public static IOperator Divide =>
+        _divide ??= new Operator(Operators.Divide,
+                                 PrecedenceMultiplyDevide,
+                                 (l, r) =>
+                                 {
+                                     if (!(l.IsNumeric || l.IsNumericString || l.IsDateString || l.Result is IRangeInfo)
+                                         || !(r.IsNumeric || r.IsNumericString || r.IsDateString || r.Result is IRangeInfo))
+                                     {
+                                         return new CompileResult(eErrorType.Value);
+                                     }
 
-                                                double left = l.ResultNumeric;
-                                                double right = r.ResultNumeric;
+                                     double left = l.ResultNumeric;
+                                     double right = r.ResultNumeric;
 
-                                                if (Math.Abs(right - 0d) < double.Epsilon)
-                                                {
-                                                    return new CompileResult(eErrorType.Div0);
-                                                }
-                                                else if (CanDoNumericOperation(l, r))
-                                                {
-                                                    return new CompileResult(left / right, DataType.Decimal);
-                                                }
+                                     if (Math.Abs(right - 0d) < double.Epsilon)
+                                     {
+                                         return new CompileResult(eErrorType.Div0);
+                                     }
+                                     else if (CanDoNumericOperation(l, r))
+                                     {
+                                         return new CompileResult(left / right, DataType.Decimal);
+                                     }
 
-                                                return new CompileResult(eErrorType.Value);
-                                            });
-        }
-    }
+                                     return new CompileResult(eErrorType.Value);
+                                 });
 
-    public static IOperator Exp
-    {
-        get
-        {
-            return new Operator(Operators.Exponentiation,
-                                PrecedenceExp,
-                                (l, r) =>
-                                {
-                                    if (l == null && r == null)
-                                    {
-                                        return new CompileResult(eErrorType.Value);
-                                    }
+    public static IOperator Exp =>
+        new Operator(Operators.Exponentiation,
+                     PrecedenceExp,
+                     (l, r) =>
+                     {
+                         if (l == null && r == null)
+                         {
+                             return new CompileResult(eErrorType.Value);
+                         }
 
-                                    l ??= CompileResult.ZeroInt;
-                                    r ??= CompileResult.ZeroInt;
+                         l ??= CompileResult.ZeroInt;
+                         r ??= CompileResult.ZeroInt;
 
-                                    if (CanDoNumericOperation(l, r))
-                                    {
-                                        return new CompileResult(Math.Pow(l.ResultNumeric, r.ResultNumeric), DataType.Decimal);
-                                    }
+                         if (CanDoNumericOperation(l, r))
+                         {
+                             return new CompileResult(Math.Pow(l.ResultNumeric, r.ResultNumeric), DataType.Decimal);
+                         }
 
-                                    return CompileResult.ZeroDecimal;
-                                });
-        }
-    }
+                         return CompileResult.ZeroDecimal;
+                     });
 
     private static string CompileResultToString(CompileResult c)
     {
@@ -238,97 +205,65 @@ public class Operator : IOperator
         return c.ResultValue.ToString();
     }
 
-    public static IOperator Concat
-    {
-        get
-        {
-            return new Operator(Operators.Concat,
-                                PrecedenceConcat,
-                                (l, r) =>
-                                {
-                                    l ??= new CompileResult(string.Empty, DataType.String);
-                                    r ??= new CompileResult(string.Empty, DataType.String);
-                                    string? lStr = l.Result != null ? CompileResultToString(l) : string.Empty;
-                                    string? rStr = r.Result != null ? CompileResultToString(r) : string.Empty;
+    public static IOperator Concat =>
+        new Operator(Operators.Concat,
+                     PrecedenceConcat,
+                     (l, r) =>
+                     {
+                         l ??= new CompileResult(string.Empty, DataType.String);
+                         r ??= new CompileResult(string.Empty, DataType.String);
+                         string? lStr = l.Result != null ? CompileResultToString(l) : string.Empty;
+                         string? rStr = r.Result != null ? CompileResultToString(r) : string.Empty;
 
-                                    return new CompileResult(string.Concat(lStr, rStr), DataType.String);
-                                });
-        }
-    }
+                         return new CompileResult(string.Concat(lStr, rStr), DataType.String);
+                     });
 
     private static IOperator _greaterThan;
 
-    public static IOperator GreaterThan
-    {
-        get { return _greaterThan ??= new Operator(Operators.GreaterThan, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes > 0)); }
-    }
+    public static IOperator GreaterThan => _greaterThan ??= new Operator(Operators.GreaterThan, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes > 0));
 
     private static IOperator _eq;
 
-    public static IOperator Eq
-    {
-        get { return _eq ??= new Operator(Operators.Equals, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes == 0)); }
-    }
+    public static IOperator Eq => _eq ??= new Operator(Operators.Equals, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes == 0));
 
     private static IOperator _notEqualsTo;
 
-    public static IOperator NotEqualsTo
-    {
-        get { return _notEqualsTo ??= new Operator(Operators.NotEqualTo, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes != 0)); }
-    }
+    public static IOperator NotEqualsTo => _notEqualsTo ??= new Operator(Operators.NotEqualTo, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes != 0));
 
     private static IOperator _greaterThanOrEqual;
 
-    public static IOperator GreaterThanOrEqual
-    {
-        get
-        {
-            return _greaterThanOrEqual ??= new Operator(Operators.GreaterThanOrEqual, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes >= 0));
-        }
-    }
+    public static IOperator GreaterThanOrEqual => _greaterThanOrEqual ??= new Operator(Operators.GreaterThanOrEqual, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes >= 0));
 
     private static IOperator _lessThan;
 
-    public static IOperator LessThan
-    {
-        get { return _lessThan ??= new Operator(Operators.LessThan, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes < 0)); }
-    }
+    public static IOperator LessThan => _lessThan ??= new Operator(Operators.LessThan, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes < 0));
 
-    public static IOperator LessThanOrEqual
-    {
-        get
-        {
-            //return new Operator(Operators.LessThanOrEqual, PrecedenceComparison, (l, r) => new CompileResult(Compare(l, r) <= 0, DataType.Boolean));
-            return new Operator(Operators.LessThanOrEqual, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes <= 0));
-        }
-    }
+    public static IOperator LessThanOrEqual =>
+
+        //return new Operator(Operators.LessThanOrEqual, PrecedenceComparison, (l, r) => new CompileResult(Compare(l, r) <= 0, DataType.Boolean));
+        new Operator(Operators.LessThanOrEqual, PrecedenceComparison, (l, r) => Compare(l, r, (compRes) => compRes <= 0));
 
     private static IOperator _percent;
 
-    public static IOperator Percent
-    {
-        get
-        {
-            return _percent ??= new Operator(Operators.Percent,
-                                             PrecedencePercent,
-                                             (l, r) =>
-                                             {
-                                                 l ??= CompileResult.ZeroInt;
-                                                 r ??= CompileResult.ZeroInt;
+    public static IOperator Percent =>
+        _percent ??= new Operator(Operators.Percent,
+                                  PrecedencePercent,
+                                  (l, r) =>
+                                  {
+                                      l ??= CompileResult.ZeroInt;
+                                      r ??= CompileResult.ZeroInt;
 
-                                                 if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
-                                                 {
-                                                     return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
-                                                 }
-                                                 else if (CanDoNumericOperation(l, r))
-                                                 {
-                                                     return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
-                                                 }
+                                      if (l.DataType == DataType.Integer && r.DataType == DataType.Integer)
+                                      {
+                                          return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Integer);
+                                      }
+                                      else if (CanDoNumericOperation(l, r))
+                                      {
+                                          return new CompileResult(l.ResultNumeric * r.ResultNumeric, DataType.Decimal);
+                                      }
 
-                                                 return new CompileResult(eErrorType.Value);
-                                             });
-        }
-    }
+                                      return new CompileResult(eErrorType.Value);
+                                  });
 
     private static object GetObjFromOther(CompileResult obj, CompileResult other)
     {

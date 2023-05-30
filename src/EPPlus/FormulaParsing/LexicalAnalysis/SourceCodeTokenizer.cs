@@ -24,34 +24,20 @@ namespace OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 
 public class SourceCodeTokenizer : ISourceCodeTokenizer
 {
-    public static ISourceCodeTokenizer Default
-    {
-        get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, false); }
-    }
+    public static ISourceCodeTokenizer Default => new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, false);
 
-    public static ISourceCodeTokenizer R1C1
-    {
-        get { return new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, true); }
-    }
+    public static ISourceCodeTokenizer R1C1 => new SourceCodeTokenizer(FunctionNameProvider.Empty, NameValueProvider.Empty, true);
 
     public SourceCodeTokenizer(IFunctionNameProvider functionRepository, INameValueProvider nameValueProvider, bool r1c1 = false)
-        : this(new TokenFactory(functionRepository, nameValueProvider, r1c1))
-    {
+        : this(new TokenFactory(functionRepository, nameValueProvider, r1c1)) =>
         this._nameValueProvider = nameValueProvider;
-    }
 
-    public SourceCodeTokenizer(ITokenFactory tokenFactory)
-    {
-        this._tokenFactory = tokenFactory;
-    }
+    public SourceCodeTokenizer(ITokenFactory tokenFactory) => this._tokenFactory = tokenFactory;
 
     private readonly ITokenFactory _tokenFactory;
     private readonly INameValueProvider _nameValueProvider;
 
-    public IEnumerable<Token> Tokenize(string input)
-    {
-        return this.Tokenize(input, null);
-    }
+    public IEnumerable<Token> Tokenize(string input) => this.Tokenize(input, null);
 
     public IEnumerable<Token> Tokenize(string input, string worksheet)
     {

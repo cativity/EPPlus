@@ -73,8 +73,5 @@ public class ParsingScope : IDisposable
     /// <summary>
     /// Disposes this instance
     /// </summary>
-    public void Dispose()
-    {
-        this._parsingScopes.KillScope(this);
-    }
+    public void Dispose() => this._parsingScopes.KillScope(this);
 }

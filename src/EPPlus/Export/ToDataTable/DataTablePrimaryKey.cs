@@ -74,8 +74,5 @@ internal class DataTablePrimaryKey
 
     internal bool HasKeys => this._keyNames.Any();
 
-    internal bool ContainsKey(string key)
-    {
-        return this._keyNames.Contains(key);
-    }
+    internal bool ContainsKey(string key) => this._keyNames.Contains(key);
 }

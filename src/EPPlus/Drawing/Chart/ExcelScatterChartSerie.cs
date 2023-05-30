@@ -59,18 +59,12 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
     /// <summary>
     /// Data label properties
     /// </summary>
-    public ExcelChartSerieDataLabel DataLabel
-    {
-        get { return this._dataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartSerieDataLabel DataLabel => this._dataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     const string smoothPath = "c:smooth/@val";
 
@@ -79,8 +73,8 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
     /// </summary>
     public int Smooth
     {
-        get { return this.GetXmlNodeInt(smoothPath); }
-        internal set { this.SetXmlNodeString(smoothPath, value.ToString()); }
+        get => this.GetXmlNodeInt(smoothPath);
+        internal set => this.SetXmlNodeString(smoothPath, value.ToString());
     }
 
     const string markerPath = "c:marker/c:symbol/@val";
@@ -133,10 +127,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// Line color.
@@ -159,7 +150,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
                 return Color.Black;
             }
         }
-        set { this.Border.Fill.Color = value; }
+        set => this.Border.Fill.Color = value;
     }
 
     /// <summary>
@@ -189,7 +180,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
                 return size;
             }
         }
-        set { this.Marker.Size = value; }
+        set => this.Marker.Size = value;
     }
 
     /// <summary>
@@ -212,7 +203,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
                 return Color.Black;
             }
         }
-        set { this.Marker.Fill.Color = value; }
+        set => this.Marker.Fill.Color = value;
     }
 
     /// <summary>
@@ -238,7 +229,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
                 return width;
             }
         }
-        set { this.Border.Width = value; }
+        set => this.Border.Width = value;
     }
 
     /// <summary>
@@ -263,6 +254,6 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
                 return Color.Black;
             }
         }
-        set { this.Marker.Border.Fill.Color = value; }
+        set => this.Marker.Border.Fill.Color = value;
     }
 }

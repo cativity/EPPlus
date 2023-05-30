@@ -40,8 +40,5 @@ internal class Sln : ExcelFunction
         return this.CreateResult((cost - salvage) / life, DataType.Decimal);
     }
 
-    private static double GetInterest(double rate, double remainingAmount)
-    {
-        return remainingAmount * rate;
-    }
+    private static double GetInterest(double rate, double remainingAmount) => remainingAmount * rate;
 }

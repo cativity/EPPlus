@@ -33,7 +33,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public double? Size
     {
-        get { return this.GetXmlNodeDoubleNull(_binSizePath); }
+        get => this.GetXmlNodeDoubleNull(_binSizePath);
         set
         {
             this.DeleteNode(ExcelHistogramChartSerie._aggregationPath);
@@ -49,7 +49,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public int? Count
     {
-        get { return this.GetXmlNodeIntNull(_binCountPath); }
+        get => this.GetXmlNodeIntNull(_binCountPath);
         set
         {
             this.DeleteNode(ExcelHistogramChartSerie._aggregationPath);
@@ -107,7 +107,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public bool UnderflowAutomatic
     {
-        get { return this.GetXmlNodeString(_underflowPath) == "auto"; }
+        get => this.GetXmlNodeString(_underflowPath) == "auto";
         set
         {
             this.DeleteNode(_intervalClosedPath);
@@ -120,7 +120,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public double? Underflow
     {
-        get { return this.GetXmlNodeDoubleNull(_underflowPath); }
+        get => this.GetXmlNodeDoubleNull(_underflowPath);
         set
         {
             this.DeleteNode(_intervalClosedPath);
@@ -135,7 +135,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public bool OverflowAutomatic
     {
-        get { return this.GetXmlNodeString(_overflowPath) == "auto"; }
+        get => this.GetXmlNodeString(_overflowPath) == "auto";
         set
         {
             this.DeleteNode(_intervalClosedPath);
@@ -148,7 +148,7 @@ public class ExcelChartExSerieBinning : XmlHelper
     /// </summary>
     public double? Overflow
     {
-        get { return this.GetXmlNodeDoubleNull(_overflowPath); }
+        get => this.GetXmlNodeDoubleNull(_overflowPath);
         set
         {
             this.DeleteNode(_intervalClosedPath);

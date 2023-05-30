@@ -167,8 +167,5 @@ public class ExcelValueFilterColumn : ExcelFilterColumn
         }
     }
 
-    private static string ConvertToString(object f)
-    {
-        return f?.ToString();
-    }
+    private static string ConvertToString(object f) => f?.ToString();
 }

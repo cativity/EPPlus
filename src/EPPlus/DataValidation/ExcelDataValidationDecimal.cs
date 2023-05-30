@@ -61,23 +61,11 @@ public class ExcelDataValidationDecimal : ExcelDataValidationWithFormula2<IExcel
     /// </summary>
     public override ExcelDataValidationType ValidationType => new ExcelDataValidationType(eDataValidationType.Decimal);
 
-    internal override IExcelDataValidationFormulaDecimal DefineFormulaClassType(string formulaValue, string sheetName)
-    {
-        return new ExcelDataValidationFormulaDecimal(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
-    }
+    internal override IExcelDataValidationFormulaDecimal DefineFormulaClassType(string formulaValue, string sheetName) => new ExcelDataValidationFormulaDecimal(formulaValue, this.Uid, sheetName, this.OnFormulaChanged);
 
-    internal override ExcelDataValidation GetClone()
-    {
-        return new ExcelDataValidationDecimal(this, this._ws);
-    }
+    internal override ExcelDataValidation GetClone() => new ExcelDataValidationDecimal(this, this._ws);
 
-    internal override ExcelDataValidation GetClone(ExcelWorksheet copy)
-    {
-        return new ExcelDataValidationDecimal(this, copy);
-    }
+    internal override ExcelDataValidation GetClone(ExcelWorksheet copy) => new ExcelDataValidationDecimal(this, copy);
 
-    ExcelDataValidationDecimal Clone()
-    {
-        return (ExcelDataValidationDecimal)this.GetClone();
-    }
+    ExcelDataValidationDecimal Clone() => (ExcelDataValidationDecimal)this.GetClone();
 }

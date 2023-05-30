@@ -32,18 +32,12 @@ public class ExcelPackageSettings
     /// <summary>
     /// Manage text settings such as measurement of text for the Autofit functions.
     /// </summary>
-    public ExcelTextSettings TextSettings
-    {
-        get { return this._textSettings ??= new ExcelTextSettings(); }
-    }
+    public ExcelTextSettings TextSettings => this._textSettings ??= new ExcelTextSettings();
 
     private ExcelImageSettings _imageSettings;
 
     /// <summary>
     /// Set the handler for getting image bounds. 
     /// </summary>
-    public ExcelImageSettings ImageSettings
-    {
-        get { return this._imageSettings ??= new ExcelImageSettings(); }
-    }
+    public ExcelImageSettings ImageSettings => this._imageSettings ??= new ExcelImageSettings();
 }

@@ -16,16 +16,10 @@ public class LoadSaveTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("LoadSaveTest.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("LoadSaveTest.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void CheckCfLfIsRetained()

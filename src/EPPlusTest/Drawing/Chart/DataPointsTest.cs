@@ -44,16 +44,10 @@ public class DataPointsTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DataPoints.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DataPoints.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void LineChart()

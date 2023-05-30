@@ -6,10 +6,7 @@ namespace OfficeOpenXml.SystemDrawing.Text;
 
 public class SystemDrawingTextMeasurer : ITextMeasurer
 {
-    public SystemDrawingTextMeasurer()
-    {
-        this._stringFormat = StringFormat.GenericDefault;
-    }
+    public SystemDrawingTextMeasurer() => this._stringFormat = StringFormat.GenericDefault;
 
     private readonly StringFormat _stringFormat;
 

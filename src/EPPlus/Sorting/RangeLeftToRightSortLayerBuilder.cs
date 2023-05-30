@@ -35,10 +35,7 @@ public class RangeLeftToRightSortLayerBuilder
     /// <summary>
     /// Adds a new <see cref="RangeLeftToRightSortLayer">sort layer</see>
     /// </summary>
-    public virtual RangeLeftToRightSortLayer ThenSortBy
-    {
-        get { return new RangeLeftToRightSortLayer(this._options); }
-    }
+    public virtual RangeLeftToRightSortLayer ThenSortBy => new(this._options);
 
     /// <summary>
     /// Use a custom list for sorting on the current Sort layer.

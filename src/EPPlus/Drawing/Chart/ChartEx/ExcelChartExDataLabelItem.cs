@@ -31,17 +31,15 @@ public class ExcelChartExDataLabelItem : ExcelChartExDataLabel
     }
 
     internal ExcelChartExDataLabelItem(ExcelChartExSerie serie, XmlNamespaceManager nsm, XmlNode node, int index)
-        : base(serie, nsm, node)
-    {
+        : base(serie, nsm, node) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// The index of the datapoint the label is attached to
     /// </summary>
     public int Index
     {
-        get { return this.GetXmlNodeInt("@idx"); }
-        private set { this.SetXmlNodeInt("@idx", value); }
+        get => this.GetXmlNodeInt("@idx");
+        private set => this.SetXmlNodeInt("@idx", value);
     }
 }

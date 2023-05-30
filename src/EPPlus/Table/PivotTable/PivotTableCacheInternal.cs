@@ -20,10 +20,8 @@ internal class PivotTableCacheInternal : XmlHelper
     internal readonly ExcelWorkbook _wb;
 
     public PivotTableCacheInternal(XmlNamespaceManager nsm, ExcelWorkbook wb)
-        : base(nsm)
-    {
+        : base(nsm) =>
         this._wb = wb;
-    }
 
     public PivotTableCacheInternal(ExcelWorkbook wb, Uri uri, int cacheId)
         : base(wb.NameSpaceManager)
@@ -55,15 +53,9 @@ internal class PivotTableCacheInternal : XmlHelper
     internal const string _sourceNamePath = "d:cacheSource/d:worksheetSource/@name";
     internal const string _sourceAddressPath = "d:cacheSource/d:worksheetSource/@ref";
 
-    internal string Ref
-    {
-        get { return this.GetXmlNodeString(_sourceAddressPath); }
-    }
+    internal string Ref => this.GetXmlNodeString(_sourceAddressPath);
 
-    internal string SourceName
-    {
-        get { return this.GetXmlNodeString(_sourceNamePath); }
-    }
+    internal string SourceName => this.GetXmlNodeString(_sourceNamePath);
 
     internal ExcelRangeBase SourceRange
     {
@@ -170,8 +162,8 @@ internal class PivotTableCacheInternal : XmlHelper
 
     internal string RecordRelationshipId
     {
-        get { return this.GetXmlNodeString("@r:id"); }
-        set { this.SetXmlNodeString("@r:id", value, true); }
+        get => this.GetXmlNodeString("@r:id");
+        set => this.SetXmlNodeString("@r:id", value, true);
     }
 
     List<ExcelPivotTableCacheField> _fields;
@@ -686,13 +678,13 @@ internal class PivotTableCacheInternal : XmlHelper
 
     internal bool RefreshOnLoad
     {
-        get { return this.GetXmlNodeBool("@refreshOnLoad"); }
-        set { this.SetXmlNodeBool("@refreshOnLoad", value); }
+        get => this.GetXmlNodeBool("@refreshOnLoad");
+        set => this.SetXmlNodeBool("@refreshOnLoad", value);
     }
 
     public bool SaveData
     {
-        get { return this.GetXmlNodeBool("@saveData", true); }
+        get => this.GetXmlNodeBool("@saveData", true);
         set
         {
             if (this.SaveData == value)

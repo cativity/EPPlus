@@ -54,17 +54,14 @@ public class ExcelDrawingScene3DCamera : XmlHelper
     /// <summary>
     /// Defines a rotation in 3D space
     /// </summary>
-    public ExcelDrawingSphereCoordinate Rotation
-    {
-        get { return this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent); }
-    }
+    public ExcelDrawingSphereCoordinate Rotation => this._rotation ??= new ExcelDrawingSphereCoordinate(this.NameSpaceManager, this.TopNode, this._rotationPath, this._initParent);
 
     /// <summary>
     /// An override for the default field of view for the camera.
     /// </summary>
     public double FieldOfViewAngle
     {
-        get { return this.GetXmlNodeAngel(this._fieldOfViewAnglePath, 0); }
+        get => this.GetXmlNodeAngel(this._fieldOfViewAnglePath, 0);
         set
         {
             this._initParent(false);
@@ -77,7 +74,7 @@ public class ExcelDrawingScene3DCamera : XmlHelper
     /// </summary>
     public ePresetCameraType CameraType
     {
-        get { return this.GetXmlNodeString(this._typePath).ToEnum(ePresetCameraType.None); }
+        get => this.GetXmlNodeString(this._typePath).ToEnum(ePresetCameraType.None);
         set
         {
             if (value == ePresetCameraType.None)
@@ -97,7 +94,7 @@ public class ExcelDrawingScene3DCamera : XmlHelper
     /// </summary>
     public double Zoom
     {
-        get { return this.GetXmlNodePercentage(this._zoomPath) ?? 100; }
+        get => this.GetXmlNodePercentage(this._zoomPath) ?? 100;
         set
         {
             this.SetXmlNodePercentage(this._zoomPath, value, false);

@@ -23,10 +23,8 @@ namespace OfficeOpenXml.Drawing.Controls;
 public class ExcelControlLabel : ExcelControlWithText
 {
     internal ExcelControlLabel(ExcelDrawings drawings, XmlElement drawNode, string name, ExcelGroupShape parent = null)
-        : base(drawings, drawNode, name, parent)
-    {
+        : base(drawings, drawNode, name, parent) =>
         this.SetSize(150, 30); //Default size
-    }
 
     internal ExcelControlLabel(ExcelDrawings drawings,
                                XmlNode drawNode,

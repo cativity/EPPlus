@@ -20,10 +20,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 public static class ConstantExpressions
 {
-    public static Expression Percent
-    {
-        get { return new ConstantExpression("Percent", () => new CompileResult(0.01, DataType.Decimal)); }
-    }
+    public static Expression Percent => new ConstantExpression("Percent", () => new CompileResult(0.01, DataType.Decimal));
 }
 
 public class ConstantExpression : AtomicExpression
@@ -31,13 +28,8 @@ public class ConstantExpression : AtomicExpression
     private readonly Func<CompileResult> _factoryMethod;
 
     public ConstantExpression(string title, Func<CompileResult> factoryMethod)
-        : base(title)
-    {
+        : base(title) =>
         this._factoryMethod = factoryMethod;
-    }
 
-    public override CompileResult Compile()
-    {
-        return this._factoryMethod();
-    }
+    public override CompileResult Compile() => this._factoryMethod();
 }

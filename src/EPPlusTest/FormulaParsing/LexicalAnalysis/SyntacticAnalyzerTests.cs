@@ -44,10 +44,7 @@ public class SyntacticAnalyzerTests
     private ISyntacticAnalyzer _analyser;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._analyser = new SyntacticAnalyzer();
-    }
+    public void Setup() => this._analyser = new SyntacticAnalyzer();
 
     [TestMethod]
     public void ShouldPassIfParenthesisAreWellformed()

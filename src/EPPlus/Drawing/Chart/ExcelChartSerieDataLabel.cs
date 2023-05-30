@@ -27,18 +27,13 @@ namespace OfficeOpenXml.Drawing.Chart;
 public sealed class ExcelChartSerieDataLabel : ExcelChartDataLabelStandard
 {
     internal ExcelChartSerieDataLabel(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string[] schemaNodeOrder)
-        : base(chart, ns, node, "dLbls", schemaNodeOrder)
-    {
+        : base(chart, ns, node, "dLbls", schemaNodeOrder) =>
         this.Position = eLabelPosition.Center;
-    }
 
     ExcelChartDataLabelCollection _dataLabels;
 
     /// <summary>
     /// Individually formatted datalabels.
     /// </summary>
-    public ExcelChartDataLabelCollection DataLabels
-    {
-        get { return this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataLabelCollection DataLabels => this._dataLabels ??= new ExcelChartDataLabelCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 }

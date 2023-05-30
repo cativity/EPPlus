@@ -26,10 +26,7 @@ internal class ColumnIndex<T> : IndexBase, IDisposable
         this.PageCount = 0;
     }
 
-    ~ColumnIndex()
-    {
-        this._pages = null;
-    }
+    ~ColumnIndex() => this._pages = null;
 
     internal int GetPagePosition(int Row)
     {

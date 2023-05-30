@@ -27,11 +27,8 @@ namespace OfficeOpenXml.Style;
 public class ExcelFill : StyleBase
 {
     internal ExcelFill(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
-        : base(styles, ChangedEvent, PositionID, address)
-
-    {
+        : base(styles, ChangedEvent, PositionID, address) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// The pattern for solid fills.

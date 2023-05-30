@@ -25,17 +25,15 @@ public abstract class ExcelChartExData : XmlHelper
     string _worksheetName;
 
     internal ExcelChartExData(string worksheetName, XmlNamespaceManager nsm, XmlNode topNode)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._worksheetName = worksheetName;
-    }
 
     /// <summary>
     /// Data formula
     /// </summary>
     public string Formula
     {
-        get { return this.GetXmlNodeString("cx:f"); }
+        get => this.GetXmlNodeString("cx:f");
         set
         {
             if (ExcelCellBase.IsValidAddress(value))
@@ -54,8 +52,8 @@ public abstract class ExcelChartExData : XmlHelper
     /// </summary>
     public eFormulaDirection FormulaDirection
     {
-        get { return this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column); }
-        set { this.SetXmlNodeString("cx:f/@dir", value.ToEnumString()); }
+        get => this.GetXmlNodeString("cx:f/@dir").ToEnum(eFormulaDirection.Column);
+        set => this.SetXmlNodeString("cx:f/@dir", value.ToEnumString());
     }
 
     /// <summary>

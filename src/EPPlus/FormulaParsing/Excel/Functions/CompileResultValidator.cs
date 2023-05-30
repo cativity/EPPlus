@@ -19,10 +19,7 @@ public abstract class CompileResultValidator
 
     private static CompileResultValidator _empty;
 
-    public static CompileResultValidator Empty
-    {
-        get { return _empty ??= new EmptyCompileResultValidator(); }
-    }
+    public static CompileResultValidator Empty => _empty ??= new EmptyCompileResultValidator();
 }
 
 internal class EmptyCompileResultValidator : CompileResultValidator

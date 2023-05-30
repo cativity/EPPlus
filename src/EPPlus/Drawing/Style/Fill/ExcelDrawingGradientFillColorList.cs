@@ -45,28 +45,19 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     /// </summary>
     /// <param name="index">The index in the collection</param>
     /// <returns>The color</returns>
-    public ExcelDrawingGradientFillColor this[int index]
-    {
-        get { return this._lst[index]; }
-    }
+    public ExcelDrawingGradientFillColor this[int index] => this._lst[index];
 
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._lst.Count; }
-    }
+    public int Count => this._lst.Count;
 
     /// <summary>
     /// Gets the first occurance with the color with the specified position
     /// </summary>
     /// <param name="position">The position in percentage</param>
     /// <returns>The color</returns>
-    public ExcelDrawingGradientFillColor this[double position]
-    {
-        get { return this._lst.Find(i => i.Position == position); }
-    }
+    public ExcelDrawingGradientFillColor this[double position] => this._lst.Find(i => i.Position == position);
 
     /// <summary>
     /// Adds a RGB color at the specified position
@@ -197,21 +188,13 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelDrawingGradientFillColor> GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    public IEnumerator<ExcelDrawingGradientFillColor> GetEnumerator() => this._lst.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._lst.GetEnumerator();
 
-    internal void Add(double position, XmlNode node)
-    {
+    internal void Add(double position, XmlNode node) =>
         this._lst.Add(new ExcelDrawingGradientFillColor()
         {
             Position = position, Color = new ExcelDrawingColorManager(this._nsm, node, "", this._schemaNodeOrder), TopNode = node
         });
-    }
 }

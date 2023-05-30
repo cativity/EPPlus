@@ -40,10 +40,7 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
     /// <summary>
     /// Number of sparklines in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._lst.Count; }
-    }
+    public int Count => this._lst.Count;
 
     private void LoadSparklines()
     {
@@ -60,24 +57,15 @@ public class ExcelSparklineCollection : IEnumerable<ExcelSparkline>
     /// </summary>
     /// <param name="index">The position of the Sparklinegroup. 0-base</param>
     /// <returns></returns>
-    public ExcelSparkline this[int index]
-    {
-        get { return this._lst[index]; }
-    }
+    public ExcelSparkline this[int index] => this._lst[index];
 
     /// <summary>
     /// Gets the enumerator for the collection
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<ExcelSparkline> GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    public IEnumerator<ExcelSparkline> GetEnumerator() => this._lst.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._lst.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._lst.GetEnumerator();
 
     internal void Add(ExcelCellAddress cell, string worksheetName, ExcelAddressBase sqref)
     {

@@ -58,10 +58,7 @@ public class ExcelChartSerieWithHorizontalErrorBars : ExcelChartSerieWithErrorBa
     /// </summary>
     /// <param name="barType">The type of error bars</param>
     /// <param name="valueType">The type of value the error bars will show</param>
-    public override void AddErrorBars(eErrorBarType barType, eErrorValueType valueType)
-    {
-        this.AddErrorBars(barType, valueType, null);
-    }
+    public override void AddErrorBars(eErrorBarType barType, eErrorValueType valueType) => this.AddErrorBars(barType, valueType, null);
 
     /// <summary>
     /// Adds error bars to the chart serie for vertical or horizontal directions.

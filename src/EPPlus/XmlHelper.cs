@@ -60,10 +60,7 @@ public abstract class XmlHelper
     /// <param name="schemaNodeOrder">The order to start from </param>
     /// <param name="newItems">The new items</param>
     /// <returns>The new order</returns>
-    internal void AddSchemaNodeOrder(string[] schemaNodeOrder, string[] newItems)
-    {
-        this.SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
-    }
+    internal void AddSchemaNodeOrder(string[] schemaNodeOrder, string[] newItems) => this.SchemaNodeOrder = CopyToSchemaNodeOrder(schemaNodeOrder, newItems);
 
     internal void SetBoolNode(string path, bool value)
     {
@@ -170,15 +167,9 @@ public abstract class XmlHelper
     /// <param name="addNew">Always add a new item at the last level.</param>
     /// <param name="exitName">Exit if after this named node has been created</param>
     /// <returns></returns>
-    internal XmlNode CreateNode(string path, bool insertFirst, bool addNew = false, string exitName = "")
-    {
-        return this.CreateNode(this.TopNode, path, insertFirst, addNew, exitName);
-    }
+    internal XmlNode CreateNode(string path, bool insertFirst, bool addNew = false, string exitName = "") => this.CreateNode(this.TopNode, path, insertFirst, addNew, exitName);
 
-    internal XmlNode CreateAlternateContentNode(string elementName, string requires)
-    {
-        return this.CreateNode(this.TopNode, elementName, false, false, "", requires);
-    }
+    internal XmlNode CreateAlternateContentNode(string elementName, string requires) => this.CreateNode(this.TopNode, elementName, false, false, "", requires);
 
     private XmlNode CreateNode(XmlNode node, string path, bool insertFirst, bool addNew, string exitName, string alternateContentRequires = null)
     {
@@ -373,10 +364,7 @@ public abstract class XmlHelper
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
-    internal XmlNode CreateComplexNode(string path)
-    {
-        return this.CreateComplexNode(this.TopNode, path, eNodeInsertOrder.SchemaOrder, null);
-    }
+    internal XmlNode CreateComplexNode(string path) => this.CreateComplexNode(this.TopNode, path, eNodeInsertOrder.SchemaOrder, null);
 
     /// <summary>
     /// Create a complex node. Insert the node according to the <paramref name="path"/>
@@ -385,10 +373,7 @@ public abstract class XmlHelper
     /// <param name="topNode"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    internal XmlNode CreateComplexNode(XmlNode topNode, string path)
-    {
-        return this.CreateComplexNode(topNode, path, eNodeInsertOrder.SchemaOrder, null);
-    }
+    internal XmlNode CreateComplexNode(XmlNode topNode, string path) => this.CreateComplexNode(topNode, path, eNodeInsertOrder.SchemaOrder, null);
 
     /// <summary>
     /// Creates complex XML nodes
@@ -622,15 +607,9 @@ public abstract class XmlHelper
         return node;
     }
 
-    internal XmlNode GetNode(string path)
-    {
-        return this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
-    }
+    internal XmlNode GetNode(string path) => this.TopNode.SelectSingleNode(path, this.NameSpaceManager);
 
-    internal XmlNodeList GetNodes(string path)
-    {
-        return this.TopNode.SelectNodes(path, this.NameSpaceManager);
-    }
+    internal XmlNodeList GetNodes(string path) => this.TopNode.SelectNodes(path, this.NameSpaceManager);
 
     internal void ClearChildren(string path)
     {
@@ -786,15 +765,9 @@ public abstract class XmlHelper
         }
     }
 
-    internal void DeleteTopNode()
-    {
-        _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
-    }
+    internal void DeleteTopNode() => _ = this.TopNode.ParentNode.RemoveChild(this.TopNode);
 
-    internal void SetXmlNodeDouble(string path, double? d, bool allowNegative)
-    {
-        this.SetXmlNodeDouble(path, d, null, "", allowNegative);
-    }
+    internal void SetXmlNodeDouble(string path, double? d, bool allowNegative) => this.SetXmlNodeDouble(path, d, null, "", allowNegative);
 
     internal void SetXmlNodeDouble(string path, double? d, CultureInfo ci = null, string suffix = "", bool allowNegative = true)
     {
@@ -872,25 +845,13 @@ public abstract class XmlHelper
         }
     }
 
-    internal void SetXmlNodeString(string path, string value)
-    {
-        this.SetXmlNodeString(this.TopNode, path, value, false, false);
-    }
+    internal void SetXmlNodeString(string path, string value) => this.SetXmlNodeString(this.TopNode, path, value, false, false);
 
-    internal void SetXmlNodeString(string path, string value, bool removeIfBlank)
-    {
-        this.SetXmlNodeString(this.TopNode, path, value, removeIfBlank, false);
-    }
+    internal void SetXmlNodeString(string path, string value, bool removeIfBlank) => this.SetXmlNodeString(this.TopNode, path, value, removeIfBlank, false);
 
-    internal void SetXmlNodeString(XmlNode node, string path, string value)
-    {
-        this.SetXmlNodeString(node, path, value, false, false);
-    }
+    internal void SetXmlNodeString(XmlNode node, string path, string value) => this.SetXmlNodeString(node, path, value, false, false);
 
-    internal void SetXmlNodeString(XmlNode node, string path, string value, bool removeIfBlank)
-    {
-        this.SetXmlNodeString(node, path, value, removeIfBlank, false);
-    }
+    internal void SetXmlNodeString(XmlNode node, string path, string value, bool removeIfBlank) => this.SetXmlNodeString(node, path, value, removeIfBlank, false);
 
     internal void SetXmlNodeString(XmlNode node, string path, string value, bool removeIfBlank, bool insertFirst)
     {
@@ -918,15 +879,9 @@ public abstract class XmlHelper
         }
     }
 
-    internal void SetXmlNodeBool(string path, bool value)
-    {
-        this.SetXmlNodeString(this.TopNode, path, value ? "1" : "0", false, false);
-    }
+    internal void SetXmlNodeBool(string path, bool value) => this.SetXmlNodeString(this.TopNode, path, value ? "1" : "0", false, false);
 
-    internal void SetXmlNodeBoolVml(string path, bool value)
-    {
-        this.SetXmlNodeString(this.TopNode, path, value ? "t" : "f", false, false);
-    }
+    internal void SetXmlNodeBoolVml(string path, bool value) => this.SetXmlNodeString(this.TopNode, path, value ? "t" : "f", false, false);
 
     internal void SetXmlNodeBool(string path, bool value, bool removeIf)
     {
@@ -1090,10 +1045,7 @@ public abstract class XmlHelper
         }
     }
 
-    internal bool GetXmlNodeBool(string path)
-    {
-        return this.GetXmlNodeBool(path, false);
-    }
+    internal bool GetXmlNodeBool(string path) => this.GetXmlNodeBool(path, false);
 
     internal bool GetXmlNodeBool(string path, bool blankValue)
     {
@@ -1113,15 +1065,9 @@ public abstract class XmlHelper
         }
     }
 
-    internal static bool GetBoolFromString(string s)
-    {
-        return s != null && (s == "1" || s == "-1" || s.Equals("true", StringComparison.OrdinalIgnoreCase));
-    }
+    internal static bool GetBoolFromString(string s) => s != null && (s == "1" || s == "-1" || s.Equals("true", StringComparison.OrdinalIgnoreCase));
 
-    internal static bool GetBoolFromNullString(string s)
-    {
-        return s != null && (s == "1" || s == "-1" || s.Equals("true", StringComparison.OrdinalIgnoreCase));
-    }
+    internal static bool GetBoolFromNullString(string s) => s != null && (s == "1" || s == "-1" || s.Equals("true", StringComparison.OrdinalIgnoreCase));
 
     internal int GetXmlNodeInt(string path, int defaultValue = int.MinValue)
     {
@@ -1305,10 +1251,7 @@ public abstract class XmlHelper
         }
     }
 
-    internal string GetXmlNodeString(string path)
-    {
-        return this.GetXmlNodeString(this.TopNode, path);
-    }
+    internal string GetXmlNodeString(string path) => this.GetXmlNodeString(this.TopNode, path);
 
     internal static Uri GetNewUri(Packaging.ZipPackage package, string sUri)
     {
@@ -1373,10 +1316,7 @@ public abstract class XmlHelper
         }
     }
 
-    internal double GetXmlNodeFontSize(string path)
-    {
-        return (this.GetXmlNodeDoubleNull(path) ?? 0) / 100;
-    }
+    internal double GetXmlNodeFontSize(string path) => (this.GetXmlNodeDoubleNull(path) ?? 0) / 100;
 
     internal void RenameNode(XmlNode node, string prefix, string newName, string[] allowedChildren = null)
     {

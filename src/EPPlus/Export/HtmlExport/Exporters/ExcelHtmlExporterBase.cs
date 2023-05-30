@@ -64,10 +64,7 @@ public abstract class ExcelHtmlExporterBase
     /// <summary>
     /// Exported ranges
     /// </summary>
-    public EPPlusReadOnlyList<ExcelRangeBase> Ranges
-    {
-        get { return this._ranges; }
-    }
+    public EPPlusReadOnlyList<ExcelRangeBase> Ranges => this._ranges;
 
     private void AddRange(ExcelRangeBase range)
     {

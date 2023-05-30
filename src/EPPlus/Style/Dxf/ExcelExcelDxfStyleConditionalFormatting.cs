@@ -41,18 +41,12 @@ public class ExcelDxfStyleConditionalFormatting : ExcelDxfStyleLimitedFont
     /// </summary>
     public ExcelDxfNumberFormat NumberFormat { get; internal set; }
 
-    internal override string Id
-    {
-        get { return base.Id + this.NumberFormat.Id; }
-    }
+    internal override string Id => base.Id + this.NumberFormat.Id;
 
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return base.HasValue || this.NumberFormat.HasValue; }
-    }
+    public override bool HasValue => base.HasValue || this.NumberFormat.HasValue;
 
     internal override DxfStyleBase Clone()
     {

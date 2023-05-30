@@ -25,8 +25,5 @@ public class DefaultCompileStrategy : CompileStrategy
     {
     }
 
-    public override Expression Compile()
-    {
-        return this._expression.MergeWithNext();
-    }
+    public override Expression Compile() => this._expression.MergeWithNext();
 }

@@ -49,10 +49,7 @@ public class TableStyleTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("TableStyle.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("TableStyle.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

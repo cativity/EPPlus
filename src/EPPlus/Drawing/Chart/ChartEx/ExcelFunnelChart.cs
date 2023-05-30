@@ -35,10 +35,8 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 public class ExcelFunnelChart : ExcelChartEx
 {
     internal ExcelFunnelChart(ExcelDrawings drawings, XmlNode drawingsNode, eChartType? type, XmlDocument chartXml = null, ExcelGroupShape parent = null)
-        : base(drawings, drawingsNode, type, chartXml, parent)
-    {
+        : base(drawings, drawingsNode, type, chartXml, parent) =>
         this.StyleManager.SetChartStyle(Chart.Style.ePresetChartStyle.FunnelChartStyle1);
-    }
 
     internal ExcelFunnelChart(ExcelDrawings drawings,
                               XmlNode node,

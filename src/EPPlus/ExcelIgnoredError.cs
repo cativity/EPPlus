@@ -24,18 +24,16 @@ namespace OfficeOpenXml;
 public class ExcelIgnoredError : XmlHelper
 {
     internal ExcelIgnoredError(XmlNamespaceManager nsm, XmlNode topNode, ExcelAddressBase address)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this.SetXmlNodeString("@sqref", address.AddressSpaceSeparated);
-    }
 
     /// <summary>
     /// Ignore errors when numbers are formatted as text or are preceded by an apostrophe
     /// </summary>
     public bool NumberStoredAsText
     {
-        get { return this.GetXmlNodeBool("@numberStoredAsText"); }
-        set { this.SetXmlNodeBool("@numberStoredAsText", value); }
+        get => this.GetXmlNodeBool("@numberStoredAsText");
+        set => this.SetXmlNodeBool("@numberStoredAsText", value);
     }
 
     /// <summary>
@@ -43,8 +41,8 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool CalculatedColumm
     {
-        get { return this.GetXmlNodeBool("@calculatedColumn"); }
-        set { this.SetXmlNodeBool("@calculatedColumn", value); }
+        get => this.GetXmlNodeBool("@calculatedColumn");
+        set => this.SetXmlNodeBool("@calculatedColumn", value);
     }
 
     /// <summary>
@@ -52,8 +50,8 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool EmptyCellReference
     {
-        get { return this.GetXmlNodeBool("@emptyCellReference"); }
-        set { this.SetXmlNodeBool("@emptyCellReference", value); }
+        get => this.GetXmlNodeBool("@emptyCellReference");
+        set => this.SetXmlNodeBool("@emptyCellReference", value);
     }
 
     /// <summary>
@@ -61,8 +59,8 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool EvaluationError
     {
-        get { return this.GetXmlNodeBool("@evalError"); }
-        set { this.SetXmlNodeBool("@evalError", value); }
+        get => this.GetXmlNodeBool("@evalError");
+        set => this.SetXmlNodeBool("@evalError", value);
     }
 
     /// <summary>
@@ -70,8 +68,8 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool Formula
     {
-        get { return this.GetXmlNodeBool("@formula"); }
-        set { this.SetXmlNodeBool("@formula", value); }
+        get => this.GetXmlNodeBool("@formula");
+        set => this.SetXmlNodeBool("@formula", value);
     }
 
     /// <summary>
@@ -79,8 +77,8 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool FormulaRange
     {
-        get { return this.GetXmlNodeBool("@formulaRange"); }
-        set { this.SetXmlNodeBool("@formulaRange", value); }
+        get => this.GetXmlNodeBool("@formulaRange");
+        set => this.SetXmlNodeBool("@formulaRange", value);
     }
 
     /// <summary>
@@ -88,25 +86,22 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool ListDataValidation
     {
-        get { return this.GetXmlNodeBool("@listDataValidation"); }
-        set { this.SetXmlNodeBool("@listDataValidation", value); }
+        get => this.GetXmlNodeBool("@listDataValidation");
+        set => this.SetXmlNodeBool("@listDataValidation", value);
     }
 
     /// <summary>
     /// The address
     /// </summary>
-    public ExcelAddressBase Address
-    {
-        get { return new ExcelAddressBase(this.GetXmlNodeString("@sqref")); }
-    }
+    public ExcelAddressBase Address => new(this.GetXmlNodeString("@sqref"));
 
     /// <summary>
     /// Ignore errors when formulas contain text formatted cells with years represented as 2 digits.
     /// </summary>
     public bool TwoDigitTextYear
     {
-        get { return this.GetXmlNodeBool("@twoDigitTextYear"); }
-        set { this.SetXmlNodeBool("@twoDigitTextYear", value); }
+        get => this.GetXmlNodeBool("@twoDigitTextYear");
+        set => this.SetXmlNodeBool("@twoDigitTextYear", value);
     }
 
     /// <summary>
@@ -114,7 +109,7 @@ public class ExcelIgnoredError : XmlHelper
     /// </summary>
     public bool UnlockedFormula
     {
-        get { return this.GetXmlNodeBool("@unlockedFormula"); }
-        set { this.SetXmlNodeBool("@unlockedFormula", value); }
+        get => this.GetXmlNodeBool("@unlockedFormula");
+        set => this.SetXmlNodeBool("@unlockedFormula", value);
     }
 }

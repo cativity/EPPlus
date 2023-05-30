@@ -150,10 +150,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// </summary>
     /// <param name="stream">The stream to load</param>
     /// <param name="clearLibrary">If true, clear the library before load.</param>
-    public static void LoadStyles(Stream stream, bool clearLibrary = true)
-    {
-        LoadStyles(stream, clearLibrary, "The stream");
-    }
+    public static void LoadStyles(Stream stream, bool clearLibrary = true) => LoadStyles(stream, clearLibrary, "The stream");
 
     private static void LoadStyles(Stream stream, bool clearLibrary, string filename)
     {
@@ -318,10 +315,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// </summary>
     /// <param name="crtxStream">A stream containing a crtx file</param>
     /// <seealso cref="ExcelDrawings.AddChartFromTemplate(Stream, string)"/>
-    public void LoadTemplateStyles(Stream crtxStream)
-    {
-        this.LoadTemplateStyles(crtxStream, "The crtx stream");
-    }
+    public void LoadTemplateStyles(Stream crtxStream) => this.LoadTemplateStyles(crtxStream, "The crtx stream");
 
     private void LoadTemplateStyles(Stream crtxStream, string name)
     {
@@ -421,20 +415,14 @@ public class ExcelChartStyleManager : XmlHelper
     /// </summary>
     /// <param name="style">The style to use</param>
     /// <seealso cref="SetChartStyle(int, int?)"/>
-    public void SetChartStyle(ePresetChartStyle style)
-    {
-        this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
-    }
+    public void SetChartStyle(ePresetChartStyle style) => this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
 
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart.
     /// </summary>
     /// <param name="style">The style to use</param>
     /// <seealso cref="SetChartStyle(int, int?)"/>
-    public void SetChartStyle(ePresetChartStyleMultiSeries style)
-    {
-        this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
-    }
+    public void SetChartStyle(ePresetChartStyleMultiSeries style) => this.SetChartStyle(style, ePresetChartColors.ColorfulPalette1);
 
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart. 
@@ -445,10 +433,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// <param name="style">The preset style to use</param>
     /// <param name="colors">The preset color scheme to use</param>
     /// <seealso cref="SetChartStyle(int, int?)"/>
-    public void SetChartStyle(ePresetChartStyle style, ePresetChartColors colors)
-    {
-        this.SetChartStyle((int)style, (int)colors);
-    }
+    public void SetChartStyle(ePresetChartStyle style, ePresetChartColors colors) => this.SetChartStyle((int)style, (int)colors);
 
     /// <summary>
     /// Applies a preset chart style loaded into the StyleLibrary to the chart.
@@ -459,10 +444,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// <param name="style">The preset style to use</param>
     /// <param name="colors">The preset color scheme to use</param>
     /// <seealso cref="SetChartStyle(int, int?)"/>
-    public void SetChartStyle(ePresetChartStyleMultiSeries style, ePresetChartColors colors)
-    {
-        this.SetChartStyle((int)style, (int)colors);
-    }
+    public void SetChartStyle(ePresetChartStyleMultiSeries style, ePresetChartColors colors) => this.SetChartStyle((int)style, (int)colors);
 
     /// <summary>
     /// Applies a chart style loaded into the StyleLibrary to the chart.
@@ -1241,31 +1223,25 @@ public class ExcelChartStyleManager : XmlHelper
         return sb.ToString();
     }
 
-    private static void AppendDefaultStyleSection(StringBuilder sb, string section)
-    {
-        _ = sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
-    }
+    private static void AppendDefaultStyleSection(StringBuilder sb, string section) => _ = sb.Append($"<cs:{section}><cs:lnRef idx=\"0\"/><cs:fillRef idx=\"0\"/><cs:effectRef idx=\"0\"/><cs:fontRef idx=\"minor\"></cs:fontRef></cs:{section}>");
 
-    private static string GetStartColorXml()
-    {
-        return
-            $"<cs:colorStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" meth=\"cycle\" id=\"10\">"
-            + "<a:schemeClr val=\"accent1\"/>"
-            + "<a:schemeClr val=\"accent2\"/>"
-            + "<a:schemeClr val=\"accent3\"/>"
-            + "<a:schemeClr val=\"accent4\"/>"
-            + "<a:schemeClr val=\"accent5\"/>"
-            + "<a:schemeClr val=\"accent6\"/>"
-            + "<cs:variation/><cs:variation><a:lumMod val=\"60000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"80000\"/><a:lumOff val=\"20000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"80000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"60000\"/><a:lumOff val=\"40000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"50000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"70000\"/><a:lumOff val=\"30000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"70000\"/></cs:variation>"
-            + "<cs:variation><a:lumMod val=\"50000\"/><a:lumOff val=\"50000\"/></cs:variation>"
-            + "</cs:colorStyle>";
-    }
+    private static string GetStartColorXml() =>
+        $"<cs:colorStyle xmlns:cs=\"http://schemas.microsoft.com/office/drawing/2012/chartStyle\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" meth=\"cycle\" id=\"10\">"
+        + "<a:schemeClr val=\"accent1\"/>"
+        + "<a:schemeClr val=\"accent2\"/>"
+        + "<a:schemeClr val=\"accent3\"/>"
+        + "<a:schemeClr val=\"accent4\"/>"
+        + "<a:schemeClr val=\"accent5\"/>"
+        + "<a:schemeClr val=\"accent6\"/>"
+        + "<cs:variation/><cs:variation><a:lumMod val=\"60000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"80000\"/><a:lumOff val=\"20000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"80000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"60000\"/><a:lumOff val=\"40000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"50000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"70000\"/><a:lumOff val=\"30000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"70000\"/></cs:variation>"
+        + "<cs:variation><a:lumMod val=\"50000\"/><a:lumOff val=\"50000\"/></cs:variation>"
+        + "</cs:colorStyle>";
 
     private static int GetIxFromChartUri(string name)
     {

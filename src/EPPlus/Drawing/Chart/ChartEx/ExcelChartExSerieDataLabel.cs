@@ -38,10 +38,7 @@ public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
     /// <summary>
     /// Individually formatted data labels.
     /// </summary>
-    public ExcelChartExDataLabelCollection DataLabels
-    {
-        get { return this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartExDataLabelCollection DataLabels => this._dataLabels ??= new ExcelChartExDataLabelCollection(this._serie, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// Adds data labels to the series.
@@ -60,8 +57,5 @@ public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
     /// <summary>
     /// Removes data labels from the series
     /// </summary>
-    public void Remove()
-    {
-        this._serie.DeleteNode("cx:dataLabels");
-    }
+    public void Remove() => this._serie.DeleteNode("cx:dataLabels");
 }

@@ -69,10 +69,7 @@ public class ExcelChartStyleEntry : XmlHelper
 
     /// Border reference. 
     /// Contains an index reference to the theme and a color to be used in border styling
-    public ExcelChartStyleReference BorderReference
-    {
-        get { return this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath); }
-    }
+    public ExcelChartStyleReference BorderReference => this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath);
 
     private ExcelChartStyleReference _fillReference;
 
@@ -80,10 +77,7 @@ public class ExcelChartStyleEntry : XmlHelper
     /// Fill reference. 
     /// Contains an index reference to the theme and a fill color to be used in fills
     /// </summary>
-    public ExcelChartStyleReference FillReference
-    {
-        get { return this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath); }
-    }
+    public ExcelChartStyleReference FillReference => this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath);
 
     private ExcelChartStyleReference _effectReference;
 
@@ -91,10 +85,7 @@ public class ExcelChartStyleEntry : XmlHelper
     /// Effect reference. 
     /// Contains an index reference to the theme and a color to be used in effects
     /// </summary>
-    public ExcelChartStyleReference EffectReference
-    {
-        get { return this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath); }
-    }
+    public ExcelChartStyleReference EffectReference => this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath);
 
     ExcelChartStyleFontReference _fontReference;
 
@@ -102,91 +93,64 @@ public class ExcelChartStyleEntry : XmlHelper
     /// Font reference. 
     /// Contains an index reference to the theme and a color to be used for font styling
     /// </summary>
-    public ExcelChartStyleFontReference FontReference
-    {
-        get { return this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath); }
-    }
+    public ExcelChartStyleFontReference FontReference => this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath);
 
     private ExcelDrawingFill _fill;
 
     /// <summary>
     /// Reference to fill settings for a chart part
     /// </summary>
-    public ExcelDrawingFill Fill
-    {
-        get
-        {
-            return this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
-                                                       this.NameSpaceManager,
-                                                       this.TopNode,
-                                                       this._fillPath,
-                                                       this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingFill Fill =>
+        this._fill ??= new ExcelDrawingFill(this._pictureRelationDocument,
+                                            this.NameSpaceManager,
+                                            this.TopNode,
+                                            this._fillPath,
+                                            this.SchemaNodeOrder);
 
     private ExcelDrawingBorder _border;
 
     /// <summary>
     /// Reference to border settings for a chart part
     /// </summary>
-    public ExcelDrawingBorder Border
-    {
-        get
-        {
-            return this._border ??= new ExcelDrawingBorder(this._pictureRelationDocument,
-                                                           this.NameSpaceManager,
-                                                           this.TopNode,
-                                                           this._borderPath,
-                                                           this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingBorder Border =>
+        this._border ??= new ExcelDrawingBorder(this._pictureRelationDocument,
+                                                this.NameSpaceManager,
+                                                this.TopNode,
+                                                this._borderPath,
+                                                this.SchemaNodeOrder);
 
     private ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Reference to border settings for a chart part
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effect ??= new ExcelDrawingEffectStyle(this._pictureRelationDocument,
-                                                                this.NameSpaceManager,
-                                                                this.TopNode,
-                                                                this._effectPath,
-                                                                this.SchemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect =>
+        this._effect ??= new ExcelDrawingEffectStyle(this._pictureRelationDocument,
+                                                     this.NameSpaceManager,
+                                                     this.TopNode,
+                                                     this._effectPath,
+                                                     this.SchemaNodeOrder);
 
     private ExcelDrawing3D _threeD;
 
     /// <summary>
     /// Reference to 3D effect settings for a chart part
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder);
 
     private ExcelTextRun _defaultTextRun;
 
     /// <summary>
     /// Reference to default text run settings for a chart part
     /// </summary>
-    public ExcelTextRun DefaultTextRun
-    {
-        get { return this._defaultTextRun ??= new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath); }
-    }
+    public ExcelTextRun DefaultTextRun => this._defaultTextRun ??= new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath);
 
     private ExcelTextBody _defaultTextBody;
 
     /// <summary>
     /// Reference to default text body run settings for a chart part
     /// </summary>
-    public ExcelTextBody DefaultTextBody
-    {
-        get { return this._defaultTextBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._defaultTextBodyPath); }
-    }
+    public ExcelTextBody DefaultTextBody => this._defaultTextBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, this._defaultTextBodyPath);
 
     /// <summary>
     /// Modifier for the chart
@@ -231,55 +195,35 @@ public class ExcelChartStyleEntry : XmlHelper
     /// <summary>
     /// True if the entry has fill styles
     /// </summary>
-    public bool HasFill
-    {
-        get
-        {
-            return this.ExistsNode($"{this._fillPath}/a:noFill")
-                   || this.ExistsNode($"{this._fillPath}/a:solidFill")
-                   || this.ExistsNode($"{this._fillPath}/a:gradFill")
-                   || this.ExistsNode($"{this._fillPath}/a:pattFill")
-                   || this.ExistsNode($"{this._fillPath}/a:blipFill");
-        }
-    }
+    public bool HasFill =>
+        this.ExistsNode($"{this._fillPath}/a:noFill")
+        || this.ExistsNode($"{this._fillPath}/a:solidFill")
+        || this.ExistsNode($"{this._fillPath}/a:gradFill")
+        || this.ExistsNode($"{this._fillPath}/a:pattFill")
+        || this.ExistsNode($"{this._fillPath}/a:blipFill");
 
     /// <summary>
     /// True if the entry has border styles
     /// </summary>
-    public bool HasBorder
-    {
-        get { return this.ExistsNode(this._borderPath); }
-    }
+    public bool HasBorder => this.ExistsNode(this._borderPath);
 
     /// <summary>
     /// True if the entry effects styles
     /// </summary>
-    public bool HasEffect
-    {
-        get { return this.ExistsNode(this._effectPath); }
-    }
+    public bool HasEffect => this.ExistsNode(this._effectPath);
 
     /// <summary>
     /// True if the entry has 3D styles
     /// </summary>
-    public bool HasThreeD
-    {
-        get { return this.ExistsNode(this._scene3DPath) || this.ExistsNode(this._sp3DPath); }
-    }
+    public bool HasThreeD => this.ExistsNode(this._scene3DPath) || this.ExistsNode(this._sp3DPath);
 
     /// <summary>
     /// True if the entry has text body styles
     /// </summary>
-    public bool HasTextBody
-    {
-        get { return this.ExistsNode(this._defaultTextBodyPath); }
-    }
+    public bool HasTextBody => this.ExistsNode(this._defaultTextBodyPath);
 
     /// <summary>
     /// True if the entry has text run styles
     /// </summary>
-    public bool HasTextRun
-    {
-        get { return this.ExistsNode(this._defaultTextRunPath); }
-    }
+    public bool HasTextRun => this.ExistsNode(this._defaultTextRunPath);
 }

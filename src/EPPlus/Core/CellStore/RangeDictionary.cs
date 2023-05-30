@@ -36,10 +36,7 @@ internal class RangeDictionary<T>
         internal long RowSpan;
         internal T Value;
 
-        public int CompareTo(RangeItem other)
-        {
-            return this.RowSpan.CompareTo(other.RowSpan);
-        }
+        public int CompareTo(RangeItem other) => this.RowSpan.CompareTo(other.RowSpan);
 
         public override string ToString()
         {

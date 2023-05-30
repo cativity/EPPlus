@@ -49,23 +49,14 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     /// <summary>
     /// A list of colors and their positions in percent used to generate the gradiant fill
     /// </summary>
-    public ExcelDrawingGradientFillColorList Colors
-    {
-        get { return this._colors ??= new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder); }
-    }
+    public ExcelDrawingGradientFillColorList Colors => this._colors ??= new ExcelDrawingGradientFillColorList(this._nsm, this._topNode, ColorsPath, this._schemaNodeOrder);
 
     /// <summary>
     /// The fill style. 
     /// </summary>
-    public override eFillStyle Style
-    {
-        get { return eFillStyle.GradientFill; }
-    }
+    public override eFillStyle Style => eFillStyle.GradientFill;
 
-    internal override string NodeName
-    {
-        get { return "a:gradFill"; }
-    }
+    internal override string NodeName => "a:gradFill";
 
     internal override void SetXml(XmlNamespaceManager nsm, XmlNode node)
     {
@@ -188,7 +179,7 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     /// </summary>
     public eShadePath ShadePath
     {
-        get { return this._shadePath; }
+        get => this._shadePath;
         set
         {
             if (value == eShadePath.Linear)

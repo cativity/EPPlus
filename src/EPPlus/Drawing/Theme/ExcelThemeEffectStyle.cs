@@ -44,25 +44,17 @@ public class ExcelThemeEffectStyle : XmlHelper
     /// <summary>
     /// Effects
     /// </summary>
-    public ExcelDrawingEffectStyle Effect
-    {
-        get
-        {
-            return this._effects ??= new ExcelDrawingEffectStyle(this._theme,
-                                                                 this.NameSpaceManager,
-                                                                 this.TopNode,
-                                                                 this._path + "a:effectLst",
-                                                                 this._schemaNodeOrder);
-        }
-    }
+    public ExcelDrawingEffectStyle Effect =>
+        this._effects ??= new ExcelDrawingEffectStyle(this._theme,
+                                                      this.NameSpaceManager,
+                                                      this.TopNode,
+                                                      this._path + "a:effectLst",
+                                                      this._schemaNodeOrder);
 
     ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D settings
     /// </summary>
-    public ExcelDrawing3D ThreeD
-    {
-        get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._path, this._schemaNodeOrder); }
-    }
+    public ExcelDrawing3D ThreeD => this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._path, this._schemaNodeOrder);
 }

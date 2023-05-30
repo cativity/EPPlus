@@ -75,10 +75,7 @@ public class FunctionRepositoryTests
     {
         public const string Name = "MyFunction";
 
-        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context) => throw new NotImplementedException();
     }
 
     public class MyFunctionCompiler : FunctionCompiler
@@ -88,10 +85,7 @@ public class FunctionRepositoryTests
         {
         }
 
-        public override CompileResult Compile(IEnumerable<Expression> children)
-        {
-            throw new NotImplementedException();
-        }
+        public override CompileResult Compile(IEnumerable<Expression> children) => throw new NotImplementedException();
     }
 
     #endregion

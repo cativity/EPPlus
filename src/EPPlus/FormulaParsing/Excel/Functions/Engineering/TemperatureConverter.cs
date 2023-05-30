@@ -6,25 +6,13 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Engineering;
 
 internal static class TemperatureConverter
 {
-    private static double Cel2Fah(double c)
-    {
-        return (c * 9 / 5) + 32;
-    }
+    private static double Cel2Fah(double c) => (c * 9 / 5) + 32;
 
-    private static double Fah2Cel(double f)
-    {
-        return (f - 32) * 5 / 9;
-    }
+    private static double Fah2Cel(double f) => (f - 32) * 5 / 9;
 
-    private static double Cel2Kel(double c)
-    {
-        return c + 273.15;
-    }
+    private static double Cel2Kel(double c) => c + 273.15;
 
-    private static double Kel2Cel(double k)
-    {
-        return k - 273.15;
-    }
+    private static double Kel2Cel(double k) => k - 273.15;
 
     private static double Fah2Kel(double f)
     {
@@ -40,10 +28,7 @@ internal static class TemperatureConverter
         return Cel2Fah(c);
     }
 
-    public static bool IsValidUnit(string candidate)
-    {
-        return new List<string> { "C", "cel", "F", "fah", "K", "kel" }.Contains(candidate);
-    }
+    public static bool IsValidUnit(string candidate) => new List<string> { "C", "cel", "F", "fah", "K", "kel" }.Contains(candidate);
 
     public static Dictionary<string, Func<double, double>> Conversions = new Dictionary<string, Func<double, double>>
     {
@@ -73,8 +58,5 @@ internal static class TemperatureConverter
         { "kel>fah", Kel2Fah }
     };
 
-    public static bool IsTempMapping(string from, string to)
-    {
-        return Conversions.ContainsKey($"{from}>{to}");
-    }
+    public static bool IsTempMapping(string from, string to) => Conversions.ContainsKey($"{from}>{to}");
 }

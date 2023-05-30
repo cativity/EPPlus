@@ -36,10 +36,8 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
     /// <param name="topNode">The topnode of the worksheet</param>
     /// <param name="workSheet">Worksheet reference</param>
     internal ExcelBackgroundImage(XmlNamespaceManager nsm, XmlNode topNode, ExcelWorksheet workSheet)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._workSheet = workSheet;
-    }
 
     ExcelImage _imageNew;
     const string BACKGROUNDPIC_PATH = "d:picture/@r:id";
@@ -101,15 +99,9 @@ public class ExcelBackgroundImage : XmlHelper, IPictureContainer
     /// <summary>
     /// Removes the background image.
     /// </summary>
-    public void Remove()
-    {
-        this.Image.RemoveImage();
-    }
+    public void Remove() => this.Image.RemoveImage();
 
-    IPictureRelationDocument IPictureContainer.RelationDocument
-    {
-        get { return this._workSheet; }
-    }
+    IPictureRelationDocument IPictureContainer.RelationDocument => this._workSheet;
 
     string IPictureContainer.ImageHash { get; set; }
 

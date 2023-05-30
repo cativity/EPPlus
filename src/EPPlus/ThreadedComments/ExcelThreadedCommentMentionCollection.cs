@@ -30,10 +30,8 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
     /// <param name="nameSpaceManager">The Namespacemangager of the package</param>
     /// <param name="topNode">The <see cref="XmlNode"/> representing the parent element of the collection</param>
     internal ExcelThreadedCommentMentionCollection(XmlNamespaceManager nameSpaceManager, XmlNode topNode)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
         this.LoadMentions();
-    }
 
     private readonly List<ExcelThreadedCommentMention> _mentionList = new List<ExcelThreadedCommentMention>();
 
@@ -49,19 +47,13 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    public IEnumerator<ExcelThreadedCommentMention> GetEnumerator()
-    {
-        return this._mentionList.GetEnumerator();
-    }
+    public IEnumerator<ExcelThreadedCommentMention> GetEnumerator() => this._mentionList.GetEnumerator();
 
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
     /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this._mentionList.GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this._mentionList.GetEnumerator();
 
     /// <summary>
     /// Adds a mention
@@ -105,8 +97,5 @@ public sealed class ExcelThreadedCommentMentionCollection : XmlHelper, IEnumerab
     ///     Returns a string that represents the current object.
     /// </summary>
     /// <returns>A string that represents the current object.</returns>
-    public override string ToString()
-    {
-        return "Count = " + this._mentionList.Count;
-    }
+    public override string ToString() => "Count = " + this._mentionList.Count;
 }

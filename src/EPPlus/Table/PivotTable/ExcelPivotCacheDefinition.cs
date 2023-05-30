@@ -96,28 +96,19 @@ public class ExcelPivotCacheDefinition
                                            ExcelPackage.schemaRelationships + "/pivotCacheDefinition");
     }
 
-    internal void Refresh()
-    {
-        this._cacheReference.RefreshFields();
-    }
+    internal void Refresh() => this._cacheReference.RefreshFields();
 
     internal ZipPackagePart Part { get; set; }
 
     /// <summary>
     /// Provides access to the XML data representing the cache definition in the package.
     /// </summary>
-    public XmlDocument CacheDefinitionXml
-    {
-        get { return this._cacheReference.CacheDefinitionXml; }
-    }
+    public XmlDocument CacheDefinitionXml => this._cacheReference.CacheDefinitionXml;
 
     /// <summary>
     /// The package internal URI to the pivottable cache definition Xml Document.
     /// </summary>
-    public Uri CacheDefinitionUri
-    {
-        get { return this._cacheReference.CacheDefinitionUri; }
-    }
+    public Uri CacheDefinitionUri => this._cacheReference.CacheDefinitionUri;
 
     internal ZipPackageRelationship Relationship { get; set; }
 
@@ -138,7 +129,7 @@ public class ExcelPivotCacheDefinition
     /// </summary>
     public ExcelRangeBase SourceRange
     {
-        get { return this._cacheReference.SourceRange; }
+        get => this._cacheReference.SourceRange;
         set
         {
             if (this.PivotTable.WorkSheet.Workbook != value.Worksheet.Workbook)
@@ -200,15 +191,12 @@ public class ExcelPivotCacheDefinition
     /// </summary>
     public bool SaveData
     {
-        get { return this._cacheReference.SaveData; }
-        set { this._cacheReference.SaveData = value; }
+        get => this._cacheReference.SaveData;
+        set => this._cacheReference.SaveData = value;
     }
 
     /// <summary>
     /// Type of source data
     /// </summary>
-    public eSourceType CacheSource
-    {
-        get { return this._cacheReference.CacheSource; }
-    }
+    public eSourceType CacheSource => this._cacheReference.CacheSource;
 }

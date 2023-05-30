@@ -30,10 +30,7 @@ public abstract class FunctionsModule : IFunctionModule
     /// <summary>
     /// Gets a dictionary of custom function implementations.
     /// </summary>
-    public IDictionary<string, ExcelFunction> Functions
-    {
-        get { return this._functions; }
-    }
+    public IDictionary<string, ExcelFunction> Functions => this._functions;
 
     /// <summary>
     /// Gets a dictionary of custom function compilers. A function compiler is not 
@@ -42,8 +39,5 @@ public abstract class FunctionsModule : IFunctionModule
     /// is created, it should be given a reference to the same function instance that exists
     /// in the Functions collection of this module.
     /// </summary>
-    public IDictionary<Type, FunctionCompiler> CustomCompilers
-    {
-        get { return this._customCompilers; }
-    }
+    public IDictionary<Type, FunctionCompiler> CustomCompilers => this._customCompilers;
 }

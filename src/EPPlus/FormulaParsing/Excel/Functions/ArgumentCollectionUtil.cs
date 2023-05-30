@@ -38,15 +38,10 @@ public class ArgumentCollectionUtil
                                                                             bool ignoreErrors,
                                                                             IEnumerable<FunctionArgument> arguments,
                                                                             ParsingContext context,
-                                                                            bool ignoreNonNumeric = false)
-    {
-        return this._doubleEnumerableArgConverter.ConvertArgs(ignoreHidden, ignoreErrors, arguments, context, ignoreNonNumeric);
-    }
+                                                                            bool ignoreNonNumeric = false) =>
+        this._doubleEnumerableArgConverter.ConvertArgs(ignoreHidden, ignoreErrors, arguments, context, ignoreNonNumeric);
 
-    public virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this._objectEnumerableArgConverter.ConvertArgs(ignoreHidden, arguments, context);
-    }
+    public virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHidden, IEnumerable<FunctionArgument> arguments, ParsingContext context) => this._objectEnumerableArgConverter.ConvertArgs(ignoreHidden, arguments, context);
 
     public virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action)
     {

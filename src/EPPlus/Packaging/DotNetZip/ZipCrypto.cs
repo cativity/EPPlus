@@ -447,44 +447,26 @@ internal class ZipCipherStream : System.IO.Stream
         this._s.Write(encrypted, 0, encrypted.Length);
     }
 
-    public override bool CanRead
-    {
-        get { return this._mode == CryptoMode.Decrypt; }
-    }
+    public override bool CanRead => this._mode == CryptoMode.Decrypt;
 
-    public override bool CanSeek
-    {
-        get { return false; }
-    }
+    public override bool CanSeek => false;
 
-    public override bool CanWrite
-    {
-        get { return this._mode == CryptoMode.Encrypt; }
-    }
+    public override bool CanWrite => this._mode == CryptoMode.Encrypt;
 
     public override void Flush()
     {
         //throw new NotSupportedException();
     }
 
-    public override long Length
-    {
-        get { throw new NotSupportedException(); }
-    }
+    public override long Length => throw new NotSupportedException();
 
     public override long Position
     {
-        get { throw new NotSupportedException(); }
-        set { throw new NotSupportedException(); }
+        get => throw new NotSupportedException();
+        set => throw new NotSupportedException();
     }
 
-    public override long Seek(long offset, System.IO.SeekOrigin origin)
-    {
-        throw new NotSupportedException();
-    }
+    public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new NotSupportedException();
 
-    public override void SetLength(long value)
-    {
-        throw new NotSupportedException();
-    }
+    public override void SetLength(long value) => throw new NotSupportedException();
 }

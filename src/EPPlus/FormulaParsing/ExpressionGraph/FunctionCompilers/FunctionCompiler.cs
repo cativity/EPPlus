@@ -65,10 +65,7 @@ public abstract class FunctionCompiler
         }
     }
 
-    protected static void BuildFunctionArguments(CompileResult result, List<FunctionArgument> args)
-    {
-        BuildFunctionArguments(result, result.DataType, args);
-    }
+    protected static void BuildFunctionArguments(CompileResult result, List<FunctionArgument> args) => BuildFunctionArguments(result, result.DataType, args);
 
     public abstract CompileResult Compile(IEnumerable<Expression> children);
 }

@@ -40,16 +40,10 @@ namespace EPPlusTest.DataValidation.Formulas;
 public class TimeFormulaTests : ValidationTestBase
 {
     [TestInitialize]
-    public void Setup()
-    {
-        this.SetupTestData();
-    }
+    public void Setup() => this.SetupTestData();
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this.CleanupTestData();
-    }
+    public void Cleanup() => this.CleanupTestData();
 
     [TestMethod]
     public void ValueIsRead()

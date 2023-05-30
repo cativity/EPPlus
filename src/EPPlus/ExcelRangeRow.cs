@@ -103,26 +103,20 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// <summary>
     /// The first row in the collection
     /// </summary>
-    public int StartRow
-    {
-        get { return this._fromRow; }
-    }
+    public int StartRow => this._fromRow;
 
     /// <summary>
     /// The last row in the collection
     /// </summary>
-    public int EndRow
-    {
-        get { return this._toRow; }
-    }
+    public int EndRow => this._toRow;
 
     /// <summary>
     /// If the row is collapsed in outline mode
     /// </summary>
     public bool Collapsed
     {
-        get { return this.GetValue(new Func<RowInternal, bool>(x => x.Collapsed), false); }
-        set { this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Collapsed = v; }), value); }
+        get => this.GetValue(new Func<RowInternal, bool>(x => x.Collapsed), false);
+        set => this.SetValue(new Action<RowInternal, bool>((x, v) => x.Collapsed = v), value);
     }
 
     /// <summary>
@@ -130,8 +124,8 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public int OutlineLevel
     {
-        get { return this.GetValue(new Func<RowInternal, int>(x => x.OutlineLevel), 0); }
-        set { this.SetValue(new Action<RowInternal, int>((x, v) => { x.OutlineLevel = (short)v; }), value); }
+        get => this.GetValue(new Func<RowInternal, int>(x => x.OutlineLevel), 0);
+        set => this.SetValue(new Action<RowInternal, int>((x, v) => x.OutlineLevel = (short)v), value);
     }
 
     /// <summary>
@@ -139,8 +133,8 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public bool Phonetic
     {
-        get { return this.GetValue(new Func<RowInternal, bool>(x => x.Phonetic), false); }
-        set { this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Phonetic = v; }), value); }
+        get => this.GetValue(new Func<RowInternal, bool>(x => x.Phonetic), false);
+        set => this.SetValue(new Action<RowInternal, bool>((x, v) => x.Phonetic = v), value);
     }
 
     /// <summary>
@@ -148,8 +142,8 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public bool Hidden
     {
-        get { return this.GetValue(new Func<RowInternal, bool>(x => x.Hidden), false); }
-        set { this.SetValue(new Action<RowInternal, bool>((x, v) => { x.Hidden = v; }), value); }
+        get => this.GetValue(new Func<RowInternal, bool>(x => x.Hidden), false);
+        set => this.SetValue(new Action<RowInternal, bool>((x, v) => x.Hidden = v), value);
     }
 
     /// <summary>
@@ -157,16 +151,14 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public double Height
     {
-        get { return this.GetValue(new Func<RowInternal, double>(x => x.Height), this._worksheet.DefaultRowHeight); }
-        set
-        {
+        get => this.GetValue(new Func<RowInternal, double>(x => x.Height), this._worksheet.DefaultRowHeight);
+        set =>
             this.SetValue(new Action<RowInternal, double>((x, v) =>
                           {
                               x.Height = v;
                               x.CustomHeight = true;
                           }),
                           value);
-        }
     }
 
     /// <summary>
@@ -174,8 +166,8 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public bool CustomHeight
     {
-        get { return this.GetValue(new Func<RowInternal, bool>(x => x.CustomHeight), false); }
-        set { this.SetValue(new Action<RowInternal, bool>((x, v) => { x.CustomHeight = v; }), value); }
+        get => this.GetValue(new Func<RowInternal, bool>(x => x.CustomHeight), false);
+        set => this.SetValue(new Action<RowInternal, bool>((x, v) => x.CustomHeight = v), value);
     }
 
     /// <summary>
@@ -183,8 +175,8 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public bool PageBreak
     {
-        get { return this.GetValue(new Func<RowInternal, bool>(x => x.PageBreak), false); }
-        set { this.SetValue(new Action<RowInternal, bool>((x, v) => { x.PageBreak = v; }), value); }
+        get => this.GetValue(new Func<RowInternal, bool>(x => x.PageBreak), false);
+        set => this.SetValue(new Action<RowInternal, bool>((x, v) => x.PageBreak = v), value);
     }
 
     #region ExcelRow Style
@@ -193,17 +185,12 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// The Style applied to the whole row(s). Only effects cells with no individual style set. 
     /// Use the Range object if you want to set specific styles.
     /// </summary>
-    public ExcelStyle Style
-    {
-        get
-        {
-            return this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID,
-                                                                  this._worksheet.PositionId,
-                                                                  this._fromRow.ToString(CultureInfo.InvariantCulture)
-                                                                  + ":"
-                                                                  + this._toRow.ToString(CultureInfo.InvariantCulture));
-        }
-    }
+    public ExcelStyle Style =>
+        this._worksheet.Workbook.Styles.GetStyleObject(this.StyleID,
+                                                       this._worksheet.PositionId,
+                                                       this._fromRow.ToString(CultureInfo.InvariantCulture)
+                                                       + ":"
+                                                       + this._toRow.ToString(CultureInfo.InvariantCulture));
 
     //internal string _styleName = "";
 
@@ -228,7 +215,7 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
 
             return "";
         }
-        set { this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value); }
+        set => this.StyleID = this._worksheet.Workbook.Styles.GetStyleIdFromName(value);
     }
 
     /// <summary>
@@ -236,7 +223,7 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// </summary>
     public int StyleID
     {
-        get { return this._worksheet.GetStyleInner(this._fromRow, 0); }
+        get => this._worksheet.GetStyleInner(this._fromRow, 0);
         set
         {
             for (int r = this._fromRow; r <= this._toRow; r++)
@@ -249,26 +236,17 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// <summary>
     /// Reference to the cell range of the row(s)
     /// </summary>
-    public ExcelRangeBase Range
-    {
-        get { return new ExcelRangeBase(this._worksheet, ExcelCellBase.GetAddress(this._fromRow, 1, this._toRow, ExcelPackage.MaxColumns)); }
-    }
+    public ExcelRangeBase Range => new(this._worksheet, ExcelCellBase.GetAddress(this._fromRow, 1, this._toRow, ExcelPackage.MaxColumns));
 
     /// <summary>
     /// The current row object in the iteration
     /// </summary>
-    public ExcelRangeRow Current
-    {
-        get { return new ExcelRangeRow(this._worksheet, this.enumRow, this.enumRow); }
-    }
+    public ExcelRangeRow Current => new(this._worksheet, this.enumRow, this.enumRow);
 
     /// <summary>
     /// The current row object in the iteration
     /// </summary>
-    object IEnumerator.Current
-    {
-        get { return new ExcelRangeRow(this._worksheet, this.enumRow, this.enumRow); }
-    }
+    object IEnumerator.Current => new ExcelRangeRow(this._worksheet, this.enumRow, this.enumRow);
 
     #endregion
 
@@ -305,18 +283,12 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// <summary>
     /// Gets the enumerator
     /// </summary>
-    public IEnumerator<ExcelRangeRow> GetEnumerator()
-    {
-        return this;
-    }
+    public IEnumerator<ExcelRangeRow> GetEnumerator() => this;
 
     /// <summary>
     /// Gets the enumerator
     /// </summary>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this;
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this;
 
     CellStoreValue _cs;
     int enumRow = -1;
@@ -368,8 +340,7 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
     /// Groups the rows using an outline. 
     /// Adds one to <see cref="OutlineLevel" /> for each row if the outline level is less than 8.
     /// </summary>
-    public void Group()
-    {
+    public void Group() =>
         this.SetValue(new Action<RowInternal, int>((x, v) =>
                       {
                           if (x.OutlineLevel < 8)
@@ -378,14 +349,12 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
                           }
                       }),
                       1);
-    }
 
     /// <summary>
     /// Ungroups the rows from the outline. 
     /// Subtracts one from <see cref="OutlineLevel" /> for each row if the outline level is larger that zero. 
     /// </summary>
-    public void Ungroup()
-    {
+    public void Ungroup() =>
         this.SetValue(new Action<RowInternal, int>((x, v) =>
                       {
                           if (x.OutlineLevel >= 0)
@@ -394,7 +363,6 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
                           }
                       }),
                       -1);
-    }
 
     /// <summary>
     /// Collapses and hides the rows's children. Children are rows immegetaly below or top of the row depending on the <see cref="ExcelWorksheet.OutLineSummaryBelow"/>

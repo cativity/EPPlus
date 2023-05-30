@@ -56,10 +56,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._cols.Count; }
-    }
+    public int Count => this._cols.Count;
 
     /// <summary>
     /// The column Index. Base 0.
@@ -99,15 +96,9 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
         }
     }
 
-    IEnumerator<ExcelTableColumn> IEnumerable<ExcelTableColumn>.GetEnumerator()
-    {
-        return this._cols.GetEnumerator();
-    }
+    IEnumerator<ExcelTableColumn> IEnumerable<ExcelTableColumn>.GetEnumerator() => this._cols.GetEnumerator();
 
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._cols.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._cols.GetEnumerator();
 
     internal string GetUniqueName(string name)
     {
@@ -132,10 +123,7 @@ public class ExcelTableColumnCollection : IEnumerable<ExcelTableColumn>
     /// </summary>
     /// <param name="columns">Number of columns to add.</param>
     /// <returns>The added range</returns>
-    public ExcelRangeBase Add(int columns = 1)
-    {
-        return this.Insert(int.MaxValue, columns);
-    }
+    public ExcelRangeBase Add(int columns = 1) => this.Insert(int.MaxValue, columns);
 
     /// <summary>
     /// Inserts one or more columns before the specified position in the table.

@@ -110,7 +110,7 @@ public class CellStoreTest : TestBase
             cellStore.SetValue(i, 2, $"Value {i + 1}");
         }
 
-        _ = Parallel.For(0, maxRow, l => { cellStore.Delete(l, 0, 1, 0); });
+        _ = Parallel.For(0, maxRow, l => cellStore.Delete(l, 0, 1, 0));
     }
 
     #endregion

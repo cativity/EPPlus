@@ -43,10 +43,7 @@ internal class ExcelDataValidationFormulaTime : ExcelDataValidationFormulaValue<
         this.Value.TimeChanged += new EventHandler(this.Value_TimeChanged);
     }
 
-    void Value_TimeChanged(object sender, EventArgs e)
-    {
-        this._formula = this.Value.ToExcelString();
-    }
+    void Value_TimeChanged(object sender, EventArgs e) => this._formula = this.Value.ToExcelString();
 
     protected override string GetValueAsString()
     {
@@ -58,8 +55,5 @@ internal class ExcelDataValidationFormulaTime : ExcelDataValidationFormulaValue<
         return string.Empty;
     }
 
-    internal override void ResetValue()
-    {
-        this.Value = new ExcelTime();
-    }
+    internal override void ResetValue() => this.Value = new ExcelTime();
 }

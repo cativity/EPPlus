@@ -29,8 +29,5 @@ internal class FlagCellStore : CellStore<byte>
         }
     }
 
-    internal bool GetFlagValue(int Row, int Col, CellFlags cellFlags)
-    {
-        return !(((byte)cellFlags & this.GetValue(Row, Col)) == 0);
-    }
+    internal bool GetFlagValue(int Row, int Col, CellFlags cellFlags) => !(((byte)cellFlags & this.GetValue(Row, Col)) == 0);
 }

@@ -37,15 +37,9 @@ internal abstract class LookupFunction : ExcelFunction
         this._compileResultFactory = compileResultFactory;
     }
 
-    public override bool IsLookupFuction
-    {
-        get { return true; }
-    }
+    public override bool IsLookupFuction => true;
 
-    protected int IsMatch(object searchedValue, object candidate)
-    {
-        return this._valueMatcher.IsMatch(searchedValue, candidate);
-    }
+    protected int IsMatch(object searchedValue, object candidate) => this._valueMatcher.IsMatch(searchedValue, candidate);
 
     protected static LookupDirection GetLookupDirection(RangeAddress rangeAddress)
     {

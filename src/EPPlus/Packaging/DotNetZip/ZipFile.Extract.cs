@@ -144,10 +144,7 @@ internal partial class ZipFile
     ///   The path can be relative or fully-qualified.
     /// </param>
     ///
-    public void ExtractAll(string path)
-    {
-        this._InternalExtractAll(path, true);
-    }
+    public void ExtractAll(string path) => this._InternalExtractAll(path, true);
 
     /// <summary>
     /// Extracts all of the items in the zip archive, to the specified path in the

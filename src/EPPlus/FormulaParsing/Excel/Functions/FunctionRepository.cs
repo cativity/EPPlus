@@ -35,10 +35,7 @@ public class FunctionRepository : IFunctionNameProvider
     /// <summary>
     /// Gets a <see cref="Dictionary{Type, FunctionCompiler}" /> of custom <see cref="FunctionCompiler"/>s.
     /// </summary>
-    public Dictionary<Type, FunctionCompiler> CustomCompilers
-    {
-        get { return this._customCompilers; }
-    }
+    public Dictionary<Type, FunctionCompiler> CustomCompilers => this._customCompilers;
 
     private FunctionRepository()
     {
@@ -85,28 +82,19 @@ public class FunctionRepository : IFunctionNameProvider
     /// <summary>
     /// Removes all functions from the repository
     /// </summary>
-    public virtual void Clear()
-    {
-        this._functions.Clear();
-    }
+    public virtual void Clear() => this._functions.Clear();
 
     /// <summary>
     /// Returns true if the the supplied <paramref name="name"/> exists in the repository.
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public bool IsFunctionName(string name)
-    {
-        return this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture));
-    }
+    public bool IsFunctionName(string name) => this._functions.ContainsKey(name.ToLower(CultureInfo.InvariantCulture));
 
     /// <summary>
     /// Returns the names of all implemented functions.
     /// </summary>
-    public IEnumerable<string> FunctionNames
-    {
-        get { return this._functions.Keys; }
-    }
+    public IEnumerable<string> FunctionNames => this._functions.Keys;
 
     /// <summary>
     /// Adds or replaces a function.

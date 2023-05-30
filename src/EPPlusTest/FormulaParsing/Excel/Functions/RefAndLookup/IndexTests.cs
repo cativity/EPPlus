@@ -53,10 +53,7 @@ public class IndexTests
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        this._package.Dispose();
-    }
+    public void Cleanup() => this._package.Dispose();
 
     [TestMethod]
     public void Index_Should_Return_Value_By_Index()

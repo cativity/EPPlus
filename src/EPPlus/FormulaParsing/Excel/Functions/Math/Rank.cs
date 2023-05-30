@@ -30,10 +30,7 @@ internal class Rank : RankFunctionBase
     {
     }
 
-    public Rank(bool isAvg)
-    {
-        this._isAvg = isAvg;
-    }
+    public Rank(bool isAvg) => this._isAvg = isAvg;
 
     private readonly bool _isAvg;
 

@@ -923,20 +923,14 @@ public sealed class ExcelStyles : XmlHelper
     internal ExcelStyleCollection<ExcelDxfStyleBase> DxfsSlicers = new ExcelStyleCollection<ExcelDxfStyleBase>();
     internal Dictionary<string, XmlNode> _slicerTableStyleNodes = new Dictionary<string, XmlNode>(StringComparer.InvariantCultureIgnoreCase);
 
-    internal static string Id
-    {
-        get { return ""; }
-    }
+    internal static string Id => "";
 
     /// <summary>
     /// Creates a named style that can be applied to cells in the worksheet.
     /// </summary>
     /// <param name="name">The name of the style</param>
     /// <returns>A named style object that can be custumized</returns>
-    public ExcelNamedStyleXml CreateNamedStyle(string name)
-    {
-        return this.CreateNamedStyle(name, null);
-    }
+    public ExcelNamedStyleXml CreateNamedStyle(string name) => this.CreateNamedStyle(name, null);
 
     /// <summary>
     /// Creates a named style that can be applied to cells in the worksheet.
@@ -1724,15 +1718,9 @@ public sealed class ExcelStyles : XmlHelper
 
     #endregion
 
-    internal int CloneStyle(ExcelStyles style, int styleID)
-    {
-        return this.CloneStyle(style, styleID, false, false, false);
-    }
+    internal int CloneStyle(ExcelStyles style, int styleID) => this.CloneStyle(style, styleID, false, false, false);
 
-    internal int CloneStyle(ExcelStyles style, int styleID, bool isNamedStyle)
-    {
-        return this.CloneStyle(style, styleID, isNamedStyle, false, isNamedStyle);
-    }
+    internal int CloneStyle(ExcelStyles style, int styleID, bool isNamedStyle) => this.CloneStyle(style, styleID, isNamedStyle, false, isNamedStyle);
 
     internal int CloneStyle(ExcelStyles style, int styleID, bool isNamedStyle, bool allwaysAddCellXfs, bool isCellStyleXfs)
     {

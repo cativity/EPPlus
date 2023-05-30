@@ -26,32 +26,24 @@ public class ExcelErrorExpression : Expression
     ExcelErrorValue _error;
 
     public ExcelErrorExpression(string expression, ExcelErrorValue error)
-        : base(expression)
-    {
+        : base(expression) =>
         this._error = error;
-    }
 
     public ExcelErrorExpression(ExcelErrorValue error)
         : this(error.ToString(), error)
     {
     }
 
-    public override bool IsGroupedExpression
-    {
-        get { return false; }
-    }
+    public override bool IsGroupedExpression => false;
 
-    public override CompileResult Compile()
-    {
-        return new CompileResult(this._error, DataType.ExcelError);
+    public override CompileResult Compile() => new(this._error, DataType.ExcelError);
 
-        //if (ParentIsLookupFunction)
-        //{
-        //    return new CompileResult(ExpressionString, DataType.ExcelError);
-        //}
-        //else
-        //{
-        //    return CompileRangeValues();
-        //}
-    }
+    //if (ParentIsLookupFunction)
+    //{
+    //    return new CompileResult(ExpressionString, DataType.ExcelError);
+    //}
+    //else
+    //{
+    //    return CompileRangeValues();
+    //}
 }

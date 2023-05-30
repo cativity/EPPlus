@@ -26,11 +26,10 @@ public class ExcelChartExValueColors : XmlHelper
     //private ExcelRegionMapChartSerie _series;
 
     internal ExcelChartExValueColors(ExcelRegionMapChartSerie series, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder)
-        : base(nameSpaceManager, topNode)
-    {
+        : base(nameSpaceManager, topNode) =>
+
         //this._series = series;
         this.SchemaNodeOrder = schemaNodeOrder;
-    }
 
     /// <summary>
     /// Number of colors to create the series gradient color scale.
@@ -51,7 +50,7 @@ public class ExcelChartExValueColors : XmlHelper
                 return eNumberOfColors.TwoColor;
             }
         }
-        set { this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture)); }
+        set => this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture));
     }
 
     ExcelChartExValueColor _minColor;
@@ -59,10 +58,7 @@ public class ExcelChartExValueColors : XmlHelper
     /// <summary>
     /// The minimum color value.
     /// </summary>
-    public ExcelChartExValueColor MinColor
-    {
-        get { return this._minColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min"); }
-    }
+    public ExcelChartExValueColor MinColor => this._minColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min");
 
     ExcelChartExValueColor _midColor;
 
@@ -87,8 +83,5 @@ public class ExcelChartExValueColors : XmlHelper
     /// <summary>
     /// The maximum color value.
     /// </summary>
-    public ExcelChartExValueColor MaxColor
-    {
-        get { return this._maxColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "max"); }
-    }
+    public ExcelChartExValueColor MaxColor => this._maxColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "max");
 }

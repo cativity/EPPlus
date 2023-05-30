@@ -54,10 +54,7 @@ public class ToCollectionRangeOptions : ToCollectionOptions
     /// <summary>
     /// A <see cref="ToCollectionRangeOptions"/> with default values.
     /// </summary>
-    public static ToCollectionRangeOptions Default
-    {
-        get { return new ToCollectionRangeOptions(); }
-    }
+    public static ToCollectionRangeOptions Default => new();
 }
 
 /// <summary>
@@ -77,10 +74,7 @@ public abstract class ToCollectionOptions
     /// Sets custom headers.  If set, used instead of the header row. 
     /// </summary>
     /// <param name="header"></param>
-    public void SetCustomHeaders(params string[] header)
-    {
-        this.Headers = header;
-    }
+    public void SetCustomHeaders(params string[] header) => this.Headers = header;
 
     /// <summary>
     /// How conversion failures should be handled when mapping properties.
@@ -97,8 +91,5 @@ public class ToCollectionTableOptions : ToCollectionOptions
     /// <summary>
     /// A <see cref="ToCollectionTableOptions"/> with default values.
     /// </summary>
-    public static ToCollectionTableOptions Default
-    {
-        get { return new ToCollectionTableOptions(); }
-    }
+    public static ToCollectionTableOptions Default => new();
 }

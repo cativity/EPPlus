@@ -46,8 +46,5 @@ internal class GroupExpression : Expression
         return result;
     }
 
-    public override bool IsGroupedExpression
-    {
-        get { return true; }
-    }
+    public override bool IsGroupedExpression => true;
 }

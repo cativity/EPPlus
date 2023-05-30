@@ -98,18 +98,12 @@ public class ExcelExternalCellCollection : IEnumerable<ExcelExternalCellValue>, 
     /// <summary>
     /// The current value of the <see cref="IEnumerable"/>
     /// </summary>
-    object IEnumerator.Current
-    {
-        get { return this.Current; }
-    }
+    object IEnumerator.Current => this.Current;
 
     /// <summary>
     /// Disposed the object
     /// </summary>
-    public void Dispose()
-    {
-        this._valuesEnum.Dispose();
-    }
+    public void Dispose() => this._valuesEnum.Dispose();
 
     /// <summary>
     /// Get the enumerator for this collection
@@ -149,18 +143,9 @@ public class ExcelExternalCellCollection : IEnumerable<ExcelExternalCellValue>, 
     /// Get the enumerator for this collection
     /// </summary>
     /// <returns></returns>
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return this;
-    }
+    IEnumerator IEnumerable.GetEnumerator() => this;
 
-    internal CellStoreEnumerator<object> GetCellStore(int fromRow, int fromCol, int toRow, int toCol)
-    {
-        return new CellStoreEnumerator<object>(this._values, fromRow, fromCol, toRow, toCol);
-    }
+    internal CellStoreEnumerator<object> GetCellStore(int fromRow, int fromCol, int toRow, int toCol) => new(this._values, fromRow, fromCol, toRow, toCol);
 
-    internal object GetValue(int row, int col)
-    {
-        return this._values.GetValue(row, col);
-    }
+    internal object GetValue(int row, int col) => this._values.GetValue(row, col);
 }

@@ -28,10 +28,7 @@ public class ArgumentInfo<T>
     /// Constructor
     /// </summary>
     /// <param name="val">The argument to validate</param>
-    public ArgumentInfo(T val)
-    {
-        this.Value = val;
-    }
+    public ArgumentInfo(T val) => this.Value = val;
 
     /// <summary>
     /// The argument to validate

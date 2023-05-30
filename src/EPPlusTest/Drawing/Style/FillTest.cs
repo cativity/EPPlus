@@ -44,10 +44,7 @@ public class FillTest : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("DrawingFill.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("DrawingFill.xlsx", true);
 
     [ClassCleanup]
     public static void Cleanup()

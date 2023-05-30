@@ -29,8 +29,5 @@ public static class Require
     /// <typeparam name="T"></typeparam>
     /// <param name="argument">The argument to validate</param>
     /// <returns></returns>
-    public static IArgument<T> Argument<T>(T argument)
-    {
-        return new Argument<T>(argument);
-    }
+    public static IArgument<T> Argument<T>(T argument) => new Argument<T>(argument);
 }

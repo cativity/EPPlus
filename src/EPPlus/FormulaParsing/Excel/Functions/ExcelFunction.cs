@@ -67,15 +67,9 @@ public abstract class ExcelFunction
     {
     }
 
-    public virtual bool IsLookupFuction
-    {
-        get { return false; }
-    }
+    public virtual bool IsLookupFuction => false;
 
-    public virtual bool IsErrorHandlingFunction
-    {
-        get { return false; }
-    }
+    public virtual bool IsErrorHandlingFunction => false;
 
     /// <summary>
     /// Used for some Lookupfunctions to indicate that function arguments should
@@ -191,10 +185,7 @@ public abstract class ExcelFunction
                                  minLength.ToString());
     }
 
-    protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index)
-    {
-        return arguments.ElementAt(index).IsExcelRange ? arguments.ElementAt(index).ValueAsRangeInfo.Address.FullAddress : ArgToString(arguments, index);
-    }
+    protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index) => arguments.ElementAt(index).IsExcelRange ? arguments.ElementAt(index).ValueAsRangeInfo.Address.FullAddress : ArgToString(arguments, index);
 
     protected static string ArgToAddress(IEnumerable<FunctionArgument> arguments, int index, ParsingContext context)
     {
@@ -293,10 +284,7 @@ public abstract class ExcelFunction
     /// <param name="obj"></param>
     /// <returns>Value of the argument as a double.</returns>
     /// <exception cref="ExcelErrorValueException"></exception>
-    protected double ArgToDecimal(object obj)
-    {
-        return (double)this._argumentParsers.GetParser(DataType.Decimal).Parse(obj);
-    }
+    protected double ArgToDecimal(object obj) => (double)this._argumentParsers.GetParser(DataType.Decimal).Parse(obj);
 
     /// <summary>
     /// Returns the value of the argument att the position of the 0-based
@@ -364,10 +352,7 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="index"></param>
     /// <returns></returns>
-    protected static IRangeInfo ArgToRangeInfo(IEnumerable<FunctionArgument> arguments, int index)
-    {
-        return arguments.ElementAt(index).Value as IRangeInfo;
-    }
+    protected static IRangeInfo ArgToRangeInfo(IEnumerable<FunctionArgument> arguments, int index) => arguments.ElementAt(index).Value as IRangeInfo;
 
     protected static double Divide(double left, double right)
     {
@@ -444,10 +429,7 @@ public abstract class ExcelFunction
     /// Throws an <see cref="ExcelErrorValueException"/> with the given <paramref name="errorType"/> set.
     /// </summary>
     /// <param name="errorType"></param>
-    protected static void ThrowExcelErrorValueException(eErrorType errorType)
-    {
-        throw new ExcelErrorValueException("An excel function error occurred", ExcelErrorValue.Create(errorType));
-    }
+    protected static void ThrowExcelErrorValueException(eErrorType errorType) => throw new ExcelErrorValueException("An excel function error occurred", ExcelErrorValue.Create(errorType));
 
     /// <summary>
     /// Throws an <see cref="ExcelErrorValueException"/> with the type of given <paramref name="value"/> set.
@@ -485,10 +467,7 @@ public abstract class ExcelFunction
         return TypeCompat.IsPrimitive(val) || val is double || val is decimal || val is System.DateTime || val is TimeSpan;
     }
 
-    protected static bool IsBool(object val)
-    {
-        return val is bool;
-    }
+    protected static bool IsBool(object val) => val is bool;
 
     protected static bool IsString(object val, bool allowNullOrEmpty = true)
     {
@@ -512,10 +491,7 @@ public abstract class ExcelFunction
     /// <param name="d1"></param>
     /// <param name="d2"></param>
     /// <returns></returns>
-    protected static bool AreEqual(double d1, double d2)
-    {
-        return System.Math.Abs(d1 - d2) < double.Epsilon;
-    }
+    protected static bool AreEqual(double d1, double d2) => System.Math.Abs(d1 - d2) < double.Epsilon;
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -523,10 +499,7 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this.ArgsToDoubleEnumerable(false, arguments, context);
-    }
+    protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(IEnumerable<FunctionArgument> arguments, ParsingContext context) => this.ArgsToDoubleEnumerable(false, arguments, context);
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -539,10 +512,8 @@ public abstract class ExcelFunction
     protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
                                                                                bool ignoreErrors,
                                                                                IEnumerable<FunctionArgument> arguments,
-                                                                               ParsingContext context)
-    {
-        return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, false);
-    }
+                                                                               ParsingContext context) =>
+        this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, false);
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -557,10 +528,8 @@ public abstract class ExcelFunction
                                                                                bool ignoreErrors,
                                                                                IEnumerable<FunctionArgument> arguments,
                                                                                ParsingContext context,
-                                                                               bool ignoreNonNumeric)
-    {
-        return this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, ignoreNonNumeric);
-    }
+                                                                               bool ignoreNonNumeric) =>
+        this._argumentCollectionUtil.ArgsToDoubleEnumerable(ignoreHiddenCells, ignoreErrors, arguments, context, ignoreNonNumeric);
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -573,10 +542,8 @@ public abstract class ExcelFunction
     protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
                                                                                IEnumerable<FunctionArgument> arguments,
                                                                                ParsingContext context,
-                                                                               bool ignoreNonNumeric)
-    {
-        return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, ignoreNonNumeric);
-    }
+                                                                               bool ignoreNonNumeric) =>
+        this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, ignoreNonNumeric);
 
     /// <summary>
     /// Will return the arguments as an enumerable of doubles.
@@ -587,10 +554,8 @@ public abstract class ExcelFunction
     /// <returns></returns>
     protected virtual IEnumerable<ExcelDoubleCellValue> ArgsToDoubleEnumerable(bool ignoreHiddenCells,
                                                                                IEnumerable<FunctionArgument> arguments,
-                                                                               ParsingContext context)
-    {
-        return this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, false);
-    }
+                                                                               ParsingContext context) =>
+        this.ArgsToDoubleEnumerable(ignoreHiddenCells, true, arguments, context, false);
 
     protected virtual IEnumerable<double> ArgsToDoubleEnumerableZeroPadded(bool ignoreHiddenCells, IRangeInfo rangeInfo, ParsingContext context)
     {
@@ -629,10 +594,7 @@ public abstract class ExcelFunction
     /// <param name="arguments"></param>
     /// <param name="context"></param>
     /// <returns></returns>
-    protected virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context)
-    {
-        return this._argumentCollectionUtil.ArgsToObjectEnumerable(ignoreHiddenCells, arguments, context);
-    }
+    protected virtual IEnumerable<object> ArgsToObjectEnumerable(bool ignoreHiddenCells, IEnumerable<FunctionArgument> arguments, ParsingContext context) => this._argumentCollectionUtil.ArgsToObjectEnumerable(ignoreHiddenCells, arguments, context);
 
     /// <summary>
     /// Use this method to create a result to return from Excel functions. 
@@ -648,10 +610,7 @@ public abstract class ExcelFunction
         return new CompileResult(result, dataType);
     }
 
-    protected CompileResult CreateResult(eErrorType errorType)
-    {
-        return this.CreateResult(ExcelErrorValue.Create(errorType), DataType.ExcelError);
-    }
+    protected CompileResult CreateResult(eErrorType errorType) => this.CreateResult(ExcelErrorValue.Create(errorType), DataType.ExcelError);
 
     /// <summary>
     /// Use this method to apply a function on a collection of arguments. The <paramref name="result"/>
@@ -662,10 +621,7 @@ public abstract class ExcelFunction
     /// <param name="result"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    protected virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action)
-    {
-        return this._argumentCollectionUtil.CalculateCollection(collection, result, action);
-    }
+    protected virtual double CalculateCollection(IEnumerable<FunctionArgument> collection, double result, Func<FunctionArgument, double, double> action) => this._argumentCollectionUtil.CalculateCollection(collection, result, action);
 
     /// <summary>
     /// if the supplied <paramref name="arg">argument</paramref> contains an Excel error

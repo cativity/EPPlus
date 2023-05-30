@@ -37,7 +37,7 @@ public sealed class ExcelParagraph : ExcelTextFont
     /// </summary>
     public string Text
     {
-        get { return this.GetXmlNodeString(TextPath); }
+        get => this.GetXmlNodeString(TextPath);
         set
         {
             this.CreateTopNode();

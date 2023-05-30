@@ -24,18 +24,15 @@ namespace OfficeOpenXml.Style;
 public sealed class ExcelFont : StyleBase
 {
     internal ExcelFont(ExcelStyles styles, XmlHelper.ChangedEventHandler ChangedEvent, int PositionID, string address, int index)
-        : base(styles, ChangedEvent, PositionID, address)
-
-    {
+        : base(styles, ChangedEvent, PositionID, address) =>
         this.Index = index;
-    }
 
     /// <summary>
     /// The name of the font
     /// </summary>
     public string Name
     {
-        get { return this._styles.Fonts[this.Index].Name; }
+        get => this._styles.Fonts[this.Index].Name;
         set
         {
             this.CheckNormalStyleChange();
@@ -61,7 +58,7 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public float Size
     {
-        get { return this._styles.Fonts[this.Index].Size; }
+        get => this._styles.Fonts[this.Index].Size;
         set
         {
             this.CheckNormalStyleChange();
@@ -74,25 +71,22 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public int Family
     {
-        get { return this._styles.Fonts[this.Index].Family; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, this._positionID, this._address)); }
+        get => this._styles.Fonts[this.Index].Family;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Family, value, this._positionID, this._address));
     }
 
     /// <summary>
     /// Cell color
     /// </summary>
-    public ExcelColor Color
-    {
-        get { return new ExcelColor(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.Font, this); }
-    }
+    public ExcelColor Color => new(this._styles, this._ChangedEvent, this._positionID, this._address, eStyleClass.Font, this);
 
     /// <summary>
     /// Scheme
     /// </summary>
     public string Scheme
     {
-        get { return this._styles.Fonts[this.Index].Scheme; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, this._positionID, this._address)); }
+        get => this._styles.Fonts[this.Index].Scheme;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Scheme, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -100,7 +94,7 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public bool Bold
     {
-        get { return this._styles.Fonts[this.Index].Bold; }
+        get => this._styles.Fonts[this.Index].Bold;
         set
         {
             this.CheckNormalStyleChange();
@@ -113,7 +107,7 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public bool Italic
     {
-        get { return this._styles.Fonts[this.Index].Italic; }
+        get => this._styles.Fonts[this.Index].Italic;
         set
         {
             this.CheckNormalStyleChange();
@@ -126,8 +120,8 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public bool Strike
     {
-        get { return this._styles.Fonts[this.Index].Strike; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, this._positionID, this._address)); }
+        get => this._styles.Fonts[this.Index].Strike;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Strike, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -135,7 +129,7 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public bool UnderLine
     {
-        get { return this._styles.Fonts[this.Index].UnderLine; }
+        get => this._styles.Fonts[this.Index].UnderLine;
         set
         {
             if (value)
@@ -156,8 +150,8 @@ public sealed class ExcelFont : StyleBase
     /// </summary>
     public ExcelUnderLineType UnderLineType
     {
-        get { return this._styles.Fonts[this.Index].UnderLineType; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, this._positionID, this._address)); }
+        get => this._styles.Fonts[this.Index].UnderLineType;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.UnderlineType, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -176,7 +170,7 @@ public sealed class ExcelFont : StyleBase
                 return (ExcelVerticalAlignmentFont)Enum.Parse(typeof(ExcelVerticalAlignmentFont), this._styles.Fonts[this.Index].VerticalAlign, true);
             }
         }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, this._positionID, this._address)); }
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.VerticalAlign, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -210,8 +204,8 @@ public sealed class ExcelFont : StyleBase
     /// </remarks>
     public int? Charset
     {
-        get { return this._styles.Fonts[this.Index].Charset; }
-        set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, this._positionID, this._address)); }
+        get => this._styles.Fonts[this.Index].Charset;
+        set => _ = this._ChangedEvent(this, new StyleChangeEventArgs(eStyleClass.Font, eStyleProperty.Charset, value, this._positionID, this._address));
     }
 
     /// <summary>
@@ -233,20 +227,15 @@ public sealed class ExcelFont : StyleBase
         this.Italic = italic;
     }
 
-    internal override string Id
-    {
-        get
-        {
-            return this.Name
-                   + this.Size.ToString()
-                   + this.Family.ToString()
-                   + this.Scheme.ToString()
-                   + this.Bold.ToString()[0]
-                   + this.Italic.ToString()[0]
-                   + this.Strike.ToString()[0]
-                   + this.UnderLine.ToString()[0]
-                   + this.VerticalAlign
-                   + this.Charset.ToString();
-        }
-    }
+    internal override string Id =>
+        this.Name
+        + this.Size.ToString()
+        + this.Family.ToString()
+        + this.Scheme.ToString()
+        + this.Bold.ToString()[0]
+        + this.Italic.ToString()[0]
+        + this.Strike.ToString()[0]
+        + this.UnderLine.ToString()[0]
+        + this.VerticalAlign
+        + this.Charset.ToString();
 }

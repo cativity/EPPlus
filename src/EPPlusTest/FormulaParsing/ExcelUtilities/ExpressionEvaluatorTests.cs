@@ -46,10 +46,7 @@ public class ExpressionEvaluatorTests
     private ExpressionEvaluator _evaluator;
 
     [TestInitialize]
-    public void Setup()
-    {
-        this._evaluator = new ExpressionEvaluator();
-    }
+    public void Setup() => this._evaluator = new ExpressionEvaluator();
 
     #region Numeric Expression Tests
 
@@ -89,10 +86,7 @@ public class ExpressionEvaluatorTests
     }
 
     [TestMethod, ExpectedException(typeof(ArgumentException))]
-    public void EvaluateShouldThrowIfOperatorIsNotBoolean()
-    {
-        _ = this._evaluator.Evaluate(1d, "+1");
-    }
+    public void EvaluateShouldThrowIfOperatorIsNotBoolean() => _ = this._evaluator.Evaluate(1d, "+1");
 
     [TestMethod]
     public void EvaluateShouldEvaluateToGreaterThanMinusOne()

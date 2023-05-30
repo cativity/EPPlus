@@ -75,10 +75,7 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
     /// <summary>
     /// If the object has any properties set
     /// </summary>
-    public override bool HasValue
-    {
-        get { return this.Font.HasValue || base.HasValue; }
-    }
+    public override bool HasValue => this.Font.HasValue || base.HasValue;
 
     internal override void SetStyle()
     {
@@ -98,8 +95,5 @@ public class ExcelDxfStyleLimitedFont : ExcelDxfStyleBase
         this.Font.Clear();
     }
 
-    internal override string Id
-    {
-        get { return base.Id + this.Font.Id; }
-    }
+    internal override string Id => base.Id + this.Font.Id;
 }

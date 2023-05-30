@@ -42,8 +42,8 @@ public class ExcelPackageConfiguration
     /// </summary>
     public string JsonConfigBasePath
     {
-        get { return this._jsonConfigBasePath; }
-        set { this._jsonConfigBasePath = value; }
+        get => this._jsonConfigBasePath;
+        set => this._jsonConfigBasePath = value;
     }
 
     private string _jsonConfigFileName = "appsettings.json";
@@ -54,17 +54,14 @@ public class ExcelPackageConfiguration
     /// </summary>
     public string JsonConfigFileName
     {
-        get { return this._jsonConfigFileName; }
-        set { this._jsonConfigFileName = value; }
+        get => this._jsonConfigFileName;
+        set => this._jsonConfigFileName = value;
     }
 
     /// <summary>
     /// Configuration with default values.
     /// </summary>
-    internal static ExcelPackageConfiguration Default
-    {
-        get { return new ExcelPackageConfiguration(); }
-    }
+    internal static ExcelPackageConfiguration Default => new();
 
     internal void CopyFrom(ExcelPackageConfiguration other)
     {
@@ -76,8 +73,5 @@ public class ExcelPackageConfiguration
     /// <summary>
     /// Resets configuration to its default values
     /// </summary>
-    public void Reset()
-    {
-        this.CopyFrom(Default);
-    }
+    public void Reset() => this.CopyFrom(Default);
 }

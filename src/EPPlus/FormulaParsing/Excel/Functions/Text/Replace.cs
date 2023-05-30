@@ -39,10 +39,7 @@ internal class Replace : ExcelFunction
         return this.CreateResult(result, DataType.String);
     }
 
-    private static string GetFirstPart(string text, int startPos)
-    {
-        return text.Substring(0, startPos - 1);
-    }
+    private static string GetFirstPart(string text, int startPos) => text.Substring(0, startPos - 1);
 
     private static string GetLastPart(string text, int startPos, int nCharactersToReplace)
     {

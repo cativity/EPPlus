@@ -25,27 +25,22 @@ public class ExcelDrawingGlowEffect : ExcelDrawingEffectBase
     private readonly string _radiusPath = "{0}/@rad";
 
     internal ExcelDrawingGlowEffect(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path)
-        : base(nameSpaceManager, topNode, schemaNodeOrder, path)
-    {
+        : base(nameSpaceManager, topNode, schemaNodeOrder, path) =>
         this._radiusPath = string.Format(this._radiusPath, path);
-    }
 
     ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the glow
     /// </summary>
-    public ExcelDrawingColorManager Color
-    {
-        get { return this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder); }
-    }
+    public ExcelDrawingColorManager Color => this._color ??= new ExcelDrawingColorManager(this.NameSpaceManager, this.TopNode, this._path, this.SchemaNodeOrder);
 
     /// <summary>
     /// The radius of the glow in pixels
     /// </summary>
     public double? Radius
     {
-        get { return this.GetXmlNodeEmuToPtNull(this._radiusPath) ?? 0; }
+        get => this.GetXmlNodeEmuToPtNull(this._radiusPath) ?? 0;
         set
         {
             this.SetXmlNodeEmuToPt(this._radiusPath, value);

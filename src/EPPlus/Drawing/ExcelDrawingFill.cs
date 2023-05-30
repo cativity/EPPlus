@@ -153,10 +153,7 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
     /// Reference pattern fill properties
     /// This property is only accessable when Type is set to PatternFill
     /// </summary>
-    public ExcelDrawingPatternFill PatternFill
-    {
-        get { return this._patternFill; }
-    }
+    public ExcelDrawingPatternFill PatternFill => this._patternFill;
 
     private ExcelDrawingBlipFill _blipFill;
 
@@ -164,10 +161,7 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
     /// Reference gradient fill properties
     /// This property is only accessable when Type is set to BlipFill
     /// </summary>
-    public ExcelDrawingBlipFill BlipFill
-    {
-        get { return this._blipFill; }
-    }
+    public ExcelDrawingBlipFill BlipFill => this._blipFill;
 
     /// <summary>
     /// Disposes the object

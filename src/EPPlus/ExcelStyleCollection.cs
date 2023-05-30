@@ -52,17 +52,11 @@ public class ExcelNamedStyleCollection<T> : ExcelStyleCollection<T>
 /// <typeparam name="T">The style type</typeparam>
 public class ExcelStyleCollection<T> : IEnumerable<T>
 {
-    internal ExcelStyleCollection()
-    {
-        this._setNextIdManual = false;
-    }
+    internal ExcelStyleCollection() => this._setNextIdManual = false;
 
     bool _setNextIdManual;
 
-    internal ExcelStyleCollection(bool SetNextIdManual)
-    {
-        this._setNextIdManual = SetNextIdManual;
-    }
+    internal ExcelStyleCollection(bool SetNextIdManual) => this._setNextIdManual = SetNextIdManual;
 
     /// <summary>
     /// The top xml node of the collection
@@ -79,10 +73,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     /// Returns an enumerator that iterates through a collection.
     /// </summary>
     /// <returns>The enumerator</returns>
-    public IEnumerator<T> GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    public IEnumerator<T> GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 
@@ -92,10 +83,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     /// Returns an enumerator that iterates through a collection.
     /// </summary>
     /// <returns>The enumerator</returns>
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-    {
-        return this._list.GetEnumerator();
-    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this._list.GetEnumerator();
 
     #endregion
 
@@ -120,10 +108,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
     /// <summary>
     /// Number of items in the collection
     /// </summary>
-    public int Count
-    {
-        get { return this._list.Count; }
-    }
+    public int Count => this._list.Count;
 
     internal int Add(string key, T item)
     {
@@ -195,13 +180,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
         return -1;
     }
 
-    internal bool ExistsKey(string key)
-    {
-        return this._dic.ContainsKey(key);
-    }
+    internal bool ExistsKey(string key) => this._dic.ContainsKey(key);
 
-    internal void Sort(Comparison<T> c)
-    {
-        this._list.Sort(c);
-    }
+    internal void Sort(Comparison<T> c) => this._list.Sort(c);
 }

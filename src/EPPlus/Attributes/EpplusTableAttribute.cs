@@ -28,10 +28,7 @@ public class EpplusTableAttribute : Attribute
     /// <summary>
     /// Constructor
     /// </summary>
-    public EpplusTableAttribute()
-    {
-        this.TableStyle = TableStyles.None;
-    }
+    public EpplusTableAttribute() => this.TableStyle = TableStyles.None;
 
     /// <summary>
     /// Table style

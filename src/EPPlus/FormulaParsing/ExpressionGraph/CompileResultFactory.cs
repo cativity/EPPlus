@@ -21,10 +21,7 @@ namespace OfficeOpenXml.FormulaParsing.ExpressionGraph;
 
 public class CompileResultFactory
 {
-    public virtual CompileResult Create(object obj)
-    {
-        return this.Create(obj, 0);
-    }
+    public virtual CompileResult Create(object obj) => this.Create(obj, 0);
 
     public virtual CompileResult Create(object obj, int excelAddressReferenceId)
     {

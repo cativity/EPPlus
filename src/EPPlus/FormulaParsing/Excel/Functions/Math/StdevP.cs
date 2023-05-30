@@ -26,10 +26,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
                   Description = "Returns the standard deviation of a supplied set of values (which represent an entire population)")]
 internal class StdevP : HiddenValuesHandlingFunction
 {
-    public StdevP()
-    {
-        this.IgnoreErrors = false;
-    }
+    public StdevP() => this.IgnoreErrors = false;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

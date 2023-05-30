@@ -101,21 +101,16 @@ public sealed class ExcelGradientFillXml : ExcelFillXml
     /// </summary>
     public double Right { get; internal set; }
 
-    internal override string Id
-    {
-        get
-        {
-            return base.Id
-                   + this.Degree.ToString()
-                   + this.GradientColor1.Id
-                   + this.GradientColor2.Id
-                   + this.Type
-                   + this.Left.ToString()
-                   + this.Right.ToString()
-                   + this.Bottom.ToString()
-                   + this.Top.ToString();
-        }
-    }
+    internal override string Id =>
+        base.Id
+        + this.Degree.ToString()
+        + this.GradientColor1.Id
+        + this.GradientColor2.Id
+        + this.Type
+        + this.Left.ToString()
+        + this.Right.ToString()
+        + this.Bottom.ToString()
+        + this.Top.ToString();
 
     #region Public Properties
 

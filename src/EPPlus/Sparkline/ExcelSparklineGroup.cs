@@ -152,8 +152,8 @@ public class ExcelSparklineGroup : XmlHelper
 
     internal bool DateAxis
     {
-        get { return this.GetXmlNodeBool(_dateAxisPath, false); }
-        set { this.SetXmlNodeBool(_dateAxisPath, value); }
+        get => this.GetXmlNodeBool(_dateAxisPath, false);
+        set => this.SetXmlNodeBool(_dateAxisPath, value);
     }
 
     const string _markersPath = "@markers";
@@ -164,8 +164,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool Markers
     {
-        get { return this.GetXmlNodeBool(_markersPath, false); }
-        set { this.SetXmlNodeBool(_markersPath, value); }
+        get => this.GetXmlNodeBool(_markersPath, false);
+        set => this.SetXmlNodeBool(_markersPath, value);
     }
 
     const string _highPath = "@high";
@@ -175,8 +175,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool High
     {
-        get { return this.GetXmlNodeBool(_highPath, false); }
-        set { this.SetXmlNodeBool(_highPath, value); }
+        get => this.GetXmlNodeBool(_highPath, false);
+        set => this.SetXmlNodeBool(_highPath, value);
     }
 
     const string _lowPath = "@low";
@@ -186,8 +186,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool Low
     {
-        get { return this.GetXmlNodeBool(_lowPath, false); }
-        set { this.SetXmlNodeBool(_lowPath, value); }
+        get => this.GetXmlNodeBool(_lowPath, false);
+        set => this.SetXmlNodeBool(_lowPath, value);
     }
 
     const string _firstPath = "@first";
@@ -197,8 +197,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool First
     {
-        get { return this.GetXmlNodeBool(_firstPath, false); }
-        set { this.SetXmlNodeBool(_firstPath, value); }
+        get => this.GetXmlNodeBool(_firstPath, false);
+        set => this.SetXmlNodeBool(_firstPath, value);
     }
 
     const string _lastPath = "@last";
@@ -208,8 +208,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool Last
     {
-        get { return this.GetXmlNodeBool(_lastPath, false); }
-        set { this.SetXmlNodeBool(_lastPath, value); }
+        get => this.GetXmlNodeBool(_lastPath, false);
+        set => this.SetXmlNodeBool(_lastPath, value);
     }
 
     const string _negativePath = "@negative";
@@ -219,8 +219,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool Negative
     {
-        get { return this.GetXmlNodeBool(_negativePath); }
-        set { this.SetXmlNodeBool(_negativePath, value); }
+        get => this.GetXmlNodeBool(_negativePath);
+        set => this.SetXmlNodeBool(_negativePath, value);
     }
 
     const string _displayXAxisPath = "@displayXAxis";
@@ -230,8 +230,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool DisplayXAxis
     {
-        get { return this.GetXmlNodeBool(_displayXAxisPath); }
-        set { this.SetXmlNodeBool(_displayXAxisPath, value); }
+        get => this.GetXmlNodeBool(_displayXAxisPath);
+        set => this.SetXmlNodeBool(_displayXAxisPath, value);
     }
 
     const string _displayHiddenPath = "@displayHidden";
@@ -241,8 +241,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool DisplayHidden
     {
-        get { return this.GetXmlNodeBool(_displayHiddenPath); }
-        set { this.SetXmlNodeBool(_displayHiddenPath, value); }
+        get => this.GetXmlNodeBool(_displayHiddenPath);
+        set => this.SetXmlNodeBool(_displayHiddenPath, value);
     }
 
     #endregion
@@ -254,8 +254,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public double LineWidth
     {
-        get { return this.GetXmlNodeDoubleNull(lineWidthPath) ?? 0.75; }
-        set { this.SetXmlNodeString(lineWidthPath, value.ToString(CultureInfo.InvariantCulture)); }
+        get => this.GetXmlNodeDoubleNull(lineWidthPath) ?? 0.75;
+        set => this.SetXmlNodeString(lineWidthPath, value.ToString(CultureInfo.InvariantCulture));
     }
 
     const string _dispBlanksAsPath = "@displayEmptyCellsAs";
@@ -278,7 +278,7 @@ public class ExcelSparklineGroup : XmlHelper
                 return (eDispBlanksAs)Enum.Parse(typeof(eDispBlanksAs), s, true);
             }
         }
-        set { this.SetXmlNodeString(_dispBlanksAsPath, value.ToString().ToLower()); }
+        set => this.SetXmlNodeString(_dispBlanksAsPath, value.ToString().ToLower());
     }
 
     const string _typePath = "@type";
@@ -301,7 +301,7 @@ public class ExcelSparklineGroup : XmlHelper
                 return (eSparklineType)Enum.Parse(typeof(eSparklineType), type, true);
             }
         }
-        set { this.SetXmlNodeString(_typePath, value.ToString().ToLower()); }
+        set => this.SetXmlNodeString(_typePath, value.ToString().ToLower());
     }
 
     #region Colors
@@ -434,7 +434,7 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public double ManualMin
     {
-        get { return this.GetXmlNodeDouble(_manualMinPath); }
+        get => this.GetXmlNodeDouble(_manualMinPath);
         set
         {
             this.SetXmlNodeString(_minAxisTypePath, "custom");
@@ -450,7 +450,7 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public double ManualMax
     {
-        get { return this.GetXmlNodeDouble(_manualMaxPath); }
+        get => this.GetXmlNodeDouble(_manualMaxPath);
         set
         {
             this.SetXmlNodeString(_maxAxisTypePath, "custom");
@@ -533,8 +533,8 @@ public class ExcelSparklineGroup : XmlHelper
     /// </summary>
     public bool RightToLeft
     {
-        get { return this.GetXmlNodeBool(_rightToLeftPath, false); }
-        set { this.SetXmlNodeBool(_rightToLeftPath, value); }
+        get => this.GetXmlNodeBool(_rightToLeftPath, false);
+        set => this.SetXmlNodeBool(_rightToLeftPath, value);
     }
 
     #endregion

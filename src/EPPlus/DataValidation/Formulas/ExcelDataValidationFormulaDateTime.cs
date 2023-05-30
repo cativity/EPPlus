@@ -36,8 +36,5 @@ internal class ExcelDataValidationFormulaDateTime : ExcelDataValidationFormulaVa
         }
     }
 
-    protected override string GetValueAsString()
-    {
-        return this.Value.HasValue ? this.Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
-    }
+    protected override string GetValueAsString() => this.Value.HasValue ? this.Value.Value.ToOADate().ToString(CultureInfo.InvariantCulture) : string.Empty;
 }

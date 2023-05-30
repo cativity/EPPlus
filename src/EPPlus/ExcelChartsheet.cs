@@ -49,16 +49,11 @@ public class ExcelChartsheet : ExcelWorksheet
                              int sheetID,
                              int positionID,
                              eWorkSheetHidden? hidden)
-        : base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden)
-    {
+        : base(ns, pck, relID, uriWorksheet, sheetName, sheetID, positionID, hidden) =>
         this.IsChartSheet = true;
-    }
 
     /// <summary>
     /// The worksheet chart object
     /// </summary>
-    public ExcelChart Chart
-    {
-        get { return (ExcelChart)this.Drawings[0]; }
-    }
+    public ExcelChart Chart => (ExcelChart)this.Drawings[0];
 }

@@ -64,17 +64,14 @@ public class ExcelCellAddress
     /// Initializes a new instance of the ExcelCellAddress class.
     /// </summary>
     ///<param name="address">The address</param>
-    public ExcelCellAddress(string address)
-    {
-        this.Address = address;
-    }
+    public ExcelCellAddress(string address) => this.Address = address;
 
     /// <summary>
     /// Row
     /// </summary>
     public int Row
     {
-        get { return this._row; }
+        get => this._row;
         private set
         {
             if (value <= 0)
@@ -100,7 +97,7 @@ public class ExcelCellAddress
     /// </summary>
     public int Column
     {
-        get { return this._column; }
+        get => this._column;
         private set
         {
             if (value <= 0)
@@ -126,7 +123,7 @@ public class ExcelCellAddress
     /// </summary>
     public string Address
     {
-        get { return this._address; }
+        get => this._address;
         internal set
         {
             this._address = value;
@@ -137,26 +134,17 @@ public class ExcelCellAddress
     /// <summary>
     /// Returns true if the row is fixed 
     /// </summary>
-    public bool IsRowFixed
-    {
-        get { return this._isRowFixed; }
-    }
+    public bool IsRowFixed => this._isRowFixed;
 
     /// <summary>
     /// Returns true if the column is fixed
     /// </summary>
-    public bool IsColumnFixed
-    {
-        get { return this._isColumnFixed; }
-    }
+    public bool IsColumnFixed => this._isColumnFixed;
 
     /// <summary>
     /// If the address is an invalid reference (#REF!)
     /// </summary>
-    public bool IsRef
-    {
-        get { return this._row <= 0; }
-    }
+    public bool IsRef => this._row <= 0;
 
     /// <summary>
     /// Returns the letter corresponding to the supplied 1-based column index.

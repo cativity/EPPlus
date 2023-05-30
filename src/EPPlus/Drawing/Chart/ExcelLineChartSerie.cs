@@ -43,44 +43,31 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     /// <summary>
     /// Datalabels
     /// </summary>
-    public ExcelChartSerieDataLabel DataLabel
-    {
-        get { return this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartSerieDataLabel DataLabel => this._DataLabel ??= new ExcelChartSerieDataLabel(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the chart has datalabel
     /// </summary>
-    public bool HasDataLabel
-    {
-        get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
-    }
+    public bool HasDataLabel => this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null;
 
     ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
     /// </summary>
-    public ExcelChartMarker Marker
-    {
-        get
-        {
-            //if (IsMarkersAllowed() == false)
-            //{
-            //    return null;
-            //}
-            return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
-        }
-    }
+    public ExcelChartMarker Marker =>
+
+        //if (IsMarkersAllowed() == false)
+        //{
+        //    return null;
+        //}
+        this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// If the serie has markers
     /// </summary>
     /// <returns>True if serie has markers</returns>
-    public bool HasMarker()
-    {
-        return this.Marker.Style != eMarkerStyle.None;
-    }
+    public bool HasMarker() => this.Marker.Style != eMarkerStyle.None;
 
     const string smoothPath = "c:smooth/@val";
 
@@ -89,8 +76,8 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     /// </summary>
     public bool Smooth
     {
-        get { return this.GetXmlNodeBool(smoothPath, false); }
-        set { this.SetXmlNodeBool(smoothPath, value); }
+        get => this.GetXmlNodeBool(smoothPath, false);
+        set => this.SetXmlNodeBool(smoothPath, value);
     }
 
     ExcelChartDataPointCollection _dataPoints;
@@ -98,10 +85,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     /// <summary>
     /// A collection of the individual datapoints
     /// </summary>
-    public ExcelChartDataPointCollection DataPoints
-    {
-        get { return this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
-    }
+    public ExcelChartDataPointCollection DataPoints => this._dataPoints ??= new ExcelChartDataPointCollection(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder);
 
     /// <summary>
     /// Line color.
@@ -124,7 +108,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return Color.Black;
             }
         }
-        set { this.Border.Fill.Color = value; }
+        set => this.Border.Fill.Color = value;
     }
 
     /// <summary>
@@ -154,7 +138,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return size;
             }
         }
-        set { this.Marker.Size = value; }
+        set => this.Marker.Size = value;
     }
 
     /// <summary>
@@ -179,7 +163,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return width;
             }
         }
-        set { this.Border.Width = value; }
+        set => this.Border.Width = value;
     }
 
     /// <summary>
@@ -203,6 +187,6 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
                 return Color.Black;
             }
         }
-        set { this.Marker.Border.Fill.Color = value; }
+        set => this.Marker.Border.Fill.Color = value;
     }
 }

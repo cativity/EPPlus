@@ -30,10 +30,7 @@ internal class ExcelDatabase
     private int _rowIndex;
     private readonly List<ExcelDatabaseField> _fields = new List<ExcelDatabaseField>();
 
-    public IEnumerable<ExcelDatabaseField> Fields
-    {
-        get { return this._fields; }
-    }
+    public IEnumerable<ExcelDatabaseField> Fields => this._fields;
 
     public ExcelDatabase(ExcelDataProvider dataProvider, string range)
     {
@@ -60,15 +57,9 @@ internal class ExcelDatabase
         }
     }
 
-    private object GetCellValue(int row, int col)
-    {
-        return this._dataProvider.GetRangeValue(this._worksheet, row, col);
-    }
+    private object GetCellValue(int row, int col) => this._dataProvider.GetRangeValue(this._worksheet, row, col);
 
-    public bool HasMoreRows
-    {
-        get { return this._rowIndex < this._endRow; }
-    }
+    public bool HasMoreRows => this._rowIndex < this._endRow;
 
     public ExcelDatabaseRow Read()
     {

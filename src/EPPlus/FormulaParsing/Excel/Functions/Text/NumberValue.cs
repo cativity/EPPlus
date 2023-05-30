@@ -114,15 +114,10 @@ internal class NumberValue : ExcelFunction
         return true;
     }
 
-    private static bool DecimalSeparatorIsValid(string separator)
-    {
-        return !string.IsNullOrEmpty(separator) && (separator == "." || separator == ",");
-    }
+    private static bool DecimalSeparatorIsValid(string separator) => !string.IsNullOrEmpty(separator) && (separator == "." || separator == ",");
 
-    private static bool GroupSeparatorIsValid(string groupSeparator, string decimalSeparator)
-    {
-        return !string.IsNullOrEmpty(groupSeparator)
-               && groupSeparator != decimalSeparator
-               && (groupSeparator == " " || groupSeparator == "," || groupSeparator == ".");
-    }
+    private static bool GroupSeparatorIsValid(string groupSeparator, string decimalSeparator) =>
+        !string.IsNullOrEmpty(groupSeparator)
+        && groupSeparator != decimalSeparator
+        && (groupSeparator == " " || groupSeparator == "," || groupSeparator == ".");
 }

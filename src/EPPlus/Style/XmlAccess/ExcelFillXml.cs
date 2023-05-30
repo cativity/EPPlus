@@ -59,10 +59,7 @@ public class ExcelFillXml : StyleXmlHelper
         }
     }
 
-    internal override string Id
-    {
-        get { return this.PatternType + this.PatternColor.Id + this.BackgroundColor.Id; }
-    }
+    internal override string Id => this.PatternType + this.PatternColor.Id + this.BackgroundColor.Id;
 
     #region Public Properties
 
@@ -74,8 +71,8 @@ public class ExcelFillXml : StyleXmlHelper
     /// </summary>
     public ExcelFillStyle PatternType
     {
-        get { return this._fillPatternType; }
-        set { this._fillPatternType = value; }
+        get => this._fillPatternType;
+        set => this._fillPatternType = value;
     }
 
     internal ExcelColorXml _patternColor;
@@ -86,8 +83,8 @@ public class ExcelFillXml : StyleXmlHelper
     /// </summary>
     public ExcelColorXml PatternColor
     {
-        get { return this._patternColor; }
-        internal set { this._patternColor = value; }
+        get => this._patternColor;
+        internal set => this._patternColor = value;
     }
 
     internal ExcelColorXml _backgroundColor;
@@ -98,8 +95,8 @@ public class ExcelFillXml : StyleXmlHelper
     /// </summary>
     public ExcelColorXml BackgroundColor
     {
-        get { return this._backgroundColor; }
-        internal set { this._backgroundColor = value; }
+        get => this._backgroundColor;
+        internal set => this._backgroundColor = value;
     }
 
     #endregion

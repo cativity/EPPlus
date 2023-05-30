@@ -30,32 +30,25 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     internal XmlHelper _slicerXmlHelper;
 
     internal ExcelSlicer(ExcelDrawings drawings, XmlNode node, ExcelGroupShape parent = null)
-        : base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent)
-    {
+        : base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent) =>
         this._ws = drawings.Worksheet;
-    }
 
     internal ExcelSlicer(ExcelDrawings drawings, XmlNode node, XmlDocument slicerXml, ExcelGroupShape parent = null)
-        : base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent)
-    {
+        : base(drawings, node, "mc:AlternateContent/mc:Choice/xdr:graphicFrame", "xdr:nvGraphicFramePr/xdr:cNvPr", parent) =>
         this._ws = drawings.Worksheet;
-    }
 
     /// <summary>
     /// The type of drawing
     /// </summary>
-    public override eDrawingType DrawingType
-    {
-        get { return eDrawingType.Slicer; }
-    }
+    public override eDrawingType DrawingType => eDrawingType.Slicer;
 
     /// <summary>
     /// The caption text of the slicer.
     /// </summary>
     public string Caption
     {
-        get { return this._slicerXmlHelper.GetXmlNodeString("@caption"); }
-        set { this._slicerXmlHelper.SetXmlNodeString("@caption", value); }
+        get => this._slicerXmlHelper.GetXmlNodeString("@caption");
+        set => this._slicerXmlHelper.SetXmlNodeString("@caption", value);
     }
 
     /// <summary>
@@ -63,8 +56,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public bool ShowCaption
     {
-        get { return this._slicerXmlHelper.GetXmlNodeBool("@showCaption", true); }
-        set { this._slicerXmlHelper.SetXmlNodeBool("@showCaption", value, true); }
+        get => this._slicerXmlHelper.GetXmlNodeBool("@showCaption", true);
+        set => this._slicerXmlHelper.SetXmlNodeBool("@showCaption", value, true);
     }
 
     /// <summary>
@@ -72,7 +65,7 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public string SlicerName
     {
-        get { return this._slicerXmlHelper.GetXmlNodeString("@name"); }
+        get => this._slicerXmlHelper.GetXmlNodeString("@name");
         set
         {
             if (!this.CheckSlicerNameIsUnique(value))
@@ -99,8 +92,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public double RowHeight
     {
-        get { return this._slicerXmlHelper.GetXmlNodeEmuToPt("@rowHeight"); }
-        set { this._slicerXmlHelper.SetXmlNodeEmuToPt("@rowHeight", value); }
+        get => this._slicerXmlHelper.GetXmlNodeEmuToPt("@rowHeight");
+        set => this._slicerXmlHelper.SetXmlNodeEmuToPt("@rowHeight", value);
     }
 
     /// <summary>
@@ -108,8 +101,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public int StartItem
     {
-        get { return this._slicerXmlHelper.GetXmlNodeInt("@startItem", 0); }
-        set { this._slicerXmlHelper.SetXmlNodeInt("@startItem", value, null, false); }
+        get => this._slicerXmlHelper.GetXmlNodeInt("@startItem", 0);
+        set => this._slicerXmlHelper.SetXmlNodeInt("@startItem", value, null, false);
     }
 
     /// <summary>
@@ -117,8 +110,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public int ColumnCount
     {
-        get { return this._slicerXmlHelper.GetXmlNodeInt("@columnCount", 1); }
-        set { this._slicerXmlHelper.SetXmlNodeInt("@columnCount", value, null, false); }
+        get => this._slicerXmlHelper.GetXmlNodeInt("@columnCount", 1);
+        set => this._slicerXmlHelper.SetXmlNodeInt("@columnCount", value, null, false);
     }
 
     /// <summary>
@@ -126,8 +119,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public bool LockedPosition
     {
-        get { return this._slicerXmlHelper.GetXmlNodeBool("@lockedPosition", false); }
-        set { this._slicerXmlHelper.SetXmlNodeBool("@lockedPosition", value, false); }
+        get => this._slicerXmlHelper.GetXmlNodeBool("@lockedPosition", false);
+        set => this._slicerXmlHelper.SetXmlNodeBool("@lockedPosition", value, false);
     }
 
     /// <summary>
@@ -136,7 +129,7 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public eSlicerStyle Style
     {
-        get { return this.StyleName.TranslateSlicerStyle(); }
+        get => this.StyleName.TranslateSlicerStyle();
         set
         {
             if (value == eSlicerStyle.None)
@@ -156,7 +149,7 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
     /// </summary>
     public string StyleName
     {
-        get { return this._slicerXmlHelper.GetXmlNodeString("@style"); }
+        get => this._slicerXmlHelper.GetXmlNodeString("@style");
         set
         {
             if (string.IsNullOrEmpty(value))
@@ -185,8 +178,8 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
 
     internal string CacheName
     {
-        get { return this._slicerXmlHelper.GetXmlNodeString("@cache"); }
-        set { this._slicerXmlHelper.SetXmlNodeString("@cache", value); }
+        get => this._slicerXmlHelper.GetXmlNodeString("@cache");
+        set => this._slicerXmlHelper.SetXmlNodeString("@cache", value);
     }
 
     internal ExcelSlicerCache _cache;

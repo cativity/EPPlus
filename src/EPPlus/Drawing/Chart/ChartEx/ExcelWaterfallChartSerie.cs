@@ -33,7 +33,7 @@ public class ExcelWaterfallChartSerie : ExcelChartExSerie
     /// </summary>
     public bool ShowConnectorLines
     {
-        get { return this.GetXmlNodeBool($"{_connectorLinesPath}"); }
-        set { this.SetXmlNodeBool($"{_connectorLinesPath}", value); }
+        get => this.GetXmlNodeBool($"{_connectorLinesPath}");
+        set => this.SetXmlNodeBool($"{_connectorLinesPath}", value);
     }
 }

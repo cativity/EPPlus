@@ -142,10 +142,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// <summary>
     /// Get the &lt;cfRule&gt; node
     /// </summary>
-    public XmlNode Node
-    {
-        get { return this.TopNode; }
-    }
+    public XmlNode Node => this.TopNode;
 
     /// <summary>
     /// The address of the conditional formatting rule
@@ -156,7 +153,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </remarks>
     public ExcelAddress Address
     {
-        get { return new ExcelAddress(this.Node.ParentNode.Attributes[ExcelConditionalFormattingConstants.Attributes.Sqref].Value.Replace(" ", ",")); }
+        get => new(this.Node.ParentNode.Attributes[ExcelConditionalFormattingConstants.Attributes.Sqref].Value.Replace(" ", ","));
         set
         {
             // Check if the address is to be changed
@@ -196,8 +193,8 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public bool PivotTable
     {
-        get { return this.GetXmlNodeBool("../@pivot"); }
-        set { this.SetXmlNodeBool("../@pivot", value, false); }
+        get => this.GetXmlNodeBool("../@pivot");
+        set => this.SetXmlNodeBool("../@pivot", value, false);
     }
 
     /// <summary>
@@ -229,7 +226,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public int Priority
     {
-        get { return this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.PriorityAttribute); }
+        get => this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.PriorityAttribute);
         set
         {
             // Save the current CF rule priority
@@ -291,8 +288,8 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public bool StopIfTrue
     {
-        get { return this.GetXmlNodeBool(ExcelConditionalFormattingConstants.Paths.StopIfTrueAttribute); }
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.StopIfTrueAttribute, value == true ? "1" : string.Empty, true); }
+        get => this.GetXmlNodeBool(ExcelConditionalFormattingConstants.Paths.StopIfTrueAttribute);
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.StopIfTrueAttribute, value == true ? "1" : string.Empty, true);
     }
 
     /// <summary>
@@ -300,8 +297,8 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     internal int DxfId
     {
-        get { return this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.DxfIdAttribute); }
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.DxfIdAttribute, value == int.MinValue ? string.Empty : value.ToString(), true); }
+        get => this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.DxfIdAttribute);
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.DxfIdAttribute, value == int.MinValue ? string.Empty : value.ToString(), true);
     }
 
     internal ExcelDxfStyleConditionalFormatting _style;
@@ -309,18 +306,15 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// <summary>
     /// The style
     /// </summary>
-    public ExcelDxfStyleConditionalFormatting Style
-    {
-        get { return this._style ??= new ExcelDxfStyleConditionalFormatting(this.NameSpaceManager, null, this._worksheet.Workbook.Styles, null); }
-    }
+    public ExcelDxfStyleConditionalFormatting Style => this._style ??= new ExcelDxfStyleConditionalFormatting(this.NameSpaceManager, null, this._worksheet.Workbook.Styles, null);
 
     /// <summary>
     /// StdDev (zero is not allowed and will be converted to 1)
     /// </summary>
     public ushort StdDev
     {
-        get { return Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.StdDevAttribute)); }
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.StdDevAttribute, value == 0 ? "1" : value.ToString(), true); }
+        get => Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.StdDevAttribute));
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.StdDevAttribute, value == 0 ? "1" : value.ToString(), true);
     }
 
     /// <summary>
@@ -328,8 +322,8 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public ushort Rank
     {
-        get { return Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.RankAttribute)); }
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.RankAttribute, value == 0 ? "1" : value.ToString(), true); }
+        get => Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.RankAttribute));
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.RankAttribute, value == 0 ? "1" : value.ToString(), true);
     }
 
     #endregion Exposed Properties
@@ -449,17 +443,13 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     internal protected eExcelConditionalFormattingTimePeriodType TimePeriod
     {
-        get
-        {
-            return ExcelConditionalFormattingTimePeriodType.GetTypeByAttribute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths
-                                                                                                         .TimePeriodAttribute));
-        }
-        set
-        {
+        get =>
+            ExcelConditionalFormattingTimePeriodType.GetTypeByAttribute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths
+                                                                                                  .TimePeriodAttribute));
+        set =>
             this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TimePeriodAttribute,
                                   ExcelConditionalFormattingTimePeriodType.GetAttributeByType(value),
                                   true);
-        }
     }
 
     /// <summary>
@@ -467,17 +457,13 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     internal protected eExcelConditionalFormattingOperatorType Operator
     {
-        get
-        {
-            return ExcelConditionalFormattingOperatorType.GetTypeByAttribute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths
-                                                                                                       .OperatorAttribute));
-        }
-        set
-        {
+        get =>
+            ExcelConditionalFormattingOperatorType.GetTypeByAttribute(this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths
+                                                                                                .OperatorAttribute));
+        set =>
             this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.OperatorAttribute,
                                   ExcelConditionalFormattingOperatorType.GetAttributeByType(value),
                                   true);
-        }
     }
 
     /// <summary>
@@ -485,8 +471,8 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public string Formula
     {
-        get { return this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.Formula); }
-        set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.Formula, value); }
+        get => this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.Formula);
+        set => this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.Formula, value);
     }
 
     /// <summary>
@@ -494,13 +480,11 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// </summary>
     public string Formula2
     {
-        get
-        {
-            return this.GetXmlNodeString(string.Format("{0}[position()=2]",
+        get =>
+            this.GetXmlNodeString(string.Format("{0}[position()=2]",
 
-                                                       // {0}
-                                                       ExcelConditionalFormattingConstants.Paths.Formula));
-        }
+                                                // {0}
+                                                ExcelConditionalFormattingConstants.Paths.Formula));
         set
         {
             // Create/Get the first <formula> node (ensure that it exists)
@@ -527,10 +511,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// <summary>
     /// Provides access to type conversion for all conditional formatting rules.
     /// </summary>
-    public ExcelConditionalFormattingAsType As
-    {
-        get { return this._as ??= new ExcelConditionalFormattingAsType(this); }
-    }
+    public ExcelConditionalFormattingAsType As => this._as ??= new ExcelConditionalFormattingAsType(this);
 
     #endregion Internal Properties
 

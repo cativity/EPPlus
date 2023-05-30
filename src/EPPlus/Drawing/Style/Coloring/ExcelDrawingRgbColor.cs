@@ -40,7 +40,7 @@ public class ExcelDrawingRgbColor : XmlHelper
 
             return GetColorFromString(s);
         }
-        set { this.SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0')); }
+        set => this.SetXmlNodeString("@val", (value.ToArgb() & 0xFFFFFF).ToString("X").PadLeft(6, '0'));
     }
 
     internal static Color GetColorFromString(string s)
@@ -70,15 +70,9 @@ public class ExcelDrawingRgbColor : XmlHelper
     {
     }
 
-    internal void GetHsl(out double hue, out double saturation, out double luminance)
-    {
-        GetHslColor(this.Color.R, this.Color.G, this.Color.B, out hue, out saturation, out luminance);
-    }
+    internal void GetHsl(out double hue, out double saturation, out double luminance) => GetHslColor(this.Color.R, this.Color.G, this.Color.B, out hue, out saturation, out luminance);
 
-    internal static void GetHslColor(Color c, out double hue, out double saturation, out double luminance)
-    {
-        GetHslColor(c.R, c.G, c.B, out hue, out saturation, out luminance);
-    }
+    internal static void GetHslColor(Color c, out double hue, out double saturation, out double luminance) => GetHslColor(c.R, c.G, c.B, out hue, out saturation, out luminance);
 
     internal static void GetHslColor(byte red, byte green, byte blue, out double hue, out double saturation, out double luminance)
     {

@@ -91,7 +91,7 @@ public class ExcelConditionalFormattingContainsText : ExcelConditionalFormatting
     /// </summary>
     public string Text
     {
-        get { return this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TextAttribute); }
+        get => this.GetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TextAttribute);
         set
         {
             this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.TextAttribute, value);

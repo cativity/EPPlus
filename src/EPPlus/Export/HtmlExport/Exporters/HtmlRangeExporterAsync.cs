@@ -28,16 +28,12 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
     internal class HtmlRangeExporterAsync : HtmlRangeExporterAsyncBase
     {
         internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, ExcelRangeBase range)
-            : base(settings, range)
-        {
+            : base(settings, range) =>
             this._settings = settings;
-        }
 
         internal HtmlRangeExporterAsync(HtmlRangeExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
-            : base(settings, ranges)
-        {
+            : base(settings, ranges) =>
             this._settings = settings;
-        }
 
         private readonly HtmlRangeExportSettings _settings;
 
@@ -90,10 +86,7 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         /// </summary>
         /// <param name="stream">The stream to write to</param>
         /// <returns>A html table</returns>
-        public async Task RenderHtmlAsync(Stream stream)
-        {
-            await this.RenderHtmlAsync(stream, 0);
-        }
+        public async Task RenderHtmlAsync(Stream stream) => await this.RenderHtmlAsync(stream, 0);
 
         /// <summary>
         /// Exports the html part of the html export, without the styles.

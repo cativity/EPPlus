@@ -9,10 +9,7 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.Finance.Implementations;
 
 internal class YearFracProvider : IYearFracProvider
 {
-    public YearFracProvider(ParsingContext context)
-    {
-        this._context = context;
-    }
+    public YearFracProvider(ParsingContext context) => this._context = context;
 
     private readonly ParsingContext _context;
 

@@ -13,16 +13,10 @@ public class RangeColumnRowTests : TestBase
     static ExcelPackage _pck;
 
     [ClassInitialize]
-    public static void Init(TestContext context)
-    {
-        _pck = OpenPackage("Range_RowColumn.xlsx", true);
-    }
+    public static void Init(TestContext context) => _pck = OpenPackage("Range_RowColumn.xlsx", true);
 
     [ClassCleanup]
-    public static void Cleanup()
-    {
-        SaveAndCleanup(_pck);
-    }
+    public static void Cleanup() => SaveAndCleanup(_pck);
 
     [TestMethod]
     public void Column_SetWidthBestFitAndStyle()

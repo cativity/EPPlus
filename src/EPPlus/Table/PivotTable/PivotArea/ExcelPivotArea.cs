@@ -24,17 +24,15 @@ public class ExcelPivotArea : XmlHelper
     ExcelPivotTable _pt;
 
     internal ExcelPivotArea(XmlNamespaceManager nsm, XmlNode topNode, ExcelPivotTable pt)
-        : base(nsm, topNode)
-    {
+        : base(nsm, topNode) =>
         this._pt = pt;
-    }
 
     /// <summary>
     /// The field referenced. -2 means refers to values.
     /// </summary>
     public int? FieldIndex
     {
-        get { return this.GetXmlNodeInt("@field"); }
+        get => this.GetXmlNodeInt("@field");
         set
         {
             if (value != null && !(value >= -2 && value < this._pt.Fields.Count))
@@ -52,7 +50,7 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public int? FieldPosition
     {
-        get { return this.GetXmlNodeIntNull("@fieldPosition"); }
+        get => this.GetXmlNodeIntNull("@fieldPosition");
         set
         {
             if (value != null && (value < 0 || value > 255))
@@ -69,8 +67,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool IsValuesField
     {
-        get { return this.FieldIndex == -2; }
-        set { this.FieldIndex = -2; }
+        get => this.FieldIndex == -2;
+        set => this.FieldIndex = -2;
     }
 
     /// <summary>
@@ -78,7 +76,7 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public ePivotAreaType PivotAreaType
     {
-        get { return this.GetXmlNodeString("@type").ToPivotAreaType(); }
+        get => this.GetXmlNodeString("@type").ToPivotAreaType();
         internal set
         {
             if (value == ePivotAreaType.Normal)
@@ -97,8 +95,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public ePivotTableAxis Axis
     {
-        get { return this.GetXmlNodeString("@axis").ToPivotTableAxis(); }
-        set { this.SetXmlNodeString("@axis", value.ToPivotTableAxisString(), true); }
+        get => this.GetXmlNodeString("@axis").ToPivotTableAxis();
+        set => this.SetXmlNodeString("@axis", value.ToPivotTableAxisString(), true);
     }
 
     /// <summary>
@@ -107,7 +105,7 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool DataOnly
     {
-        get { return this.GetXmlNodeBool("@dataOnly", true); }
+        get => this.GetXmlNodeBool("@dataOnly", true);
         set
         {
             if (value
@@ -134,7 +132,7 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool LabelOnly
     {
-        get { return this.GetXmlNodeBool("@labelOnly"); }
+        get => this.GetXmlNodeBool("@labelOnly");
         set
         {
             if (value && this.DataOnly)
@@ -151,8 +149,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool GrandRow
     {
-        get { return this.GetXmlNodeBool("@grandRow"); }
-        set { this.SetXmlNodeBool("@grandRow", value); }
+        get => this.GetXmlNodeBool("@grandRow");
+        set => this.SetXmlNodeBool("@grandRow", value);
     }
 
     /// <summary>
@@ -160,8 +158,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool GrandColumn
     {
-        get { return this.GetXmlNodeBool("@grandCol"); }
-        set { this.SetXmlNodeBool("@grandCol", value); }
+        get => this.GetXmlNodeBool("@grandCol");
+        set => this.SetXmlNodeBool("@grandCol", value);
     }
 
     /// <summary>
@@ -169,8 +167,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool CacheIndex
     {
-        get { return this.GetXmlNodeBool("@cacheIndex", true); }
-        set { this.SetXmlNodeBool("@cacheIndex", value, true); }
+        get => this.GetXmlNodeBool("@cacheIndex", true);
+        set => this.SetXmlNodeBool("@cacheIndex", value, true);
     }
 
     /// <summary>
@@ -178,8 +176,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool Outline
     {
-        get { return this.GetXmlNodeBool("@outline", true); }
-        set { this.SetXmlNodeBool("@outline", value, true); }
+        get => this.GetXmlNodeBool("@outline", true);
+        set => this.SetXmlNodeBool("@outline", value, true);
     }
 
     /// <summary>
@@ -188,8 +186,8 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public string Offset
     {
-        get { return this.GetXmlNodeString("@offset"); }
-        internal set { this.SetXmlNodeString("@offset", value, true); }
+        get => this.GetXmlNodeString("@offset");
+        internal set => this.SetXmlNodeString("@offset", value, true);
     }
 
     /// <summary>
@@ -197,7 +195,7 @@ public class ExcelPivotArea : XmlHelper
     /// </summary>
     public bool CollapsedLevelsAreSubtotals
     {
-        get { return this.GetXmlNodeBool("@collapsedLevelsAreSubtotals"); }
-        set { this.SetXmlNodeBool("@collapsedLevelsAreSubtotals", value, false); }
+        get => this.GetXmlNodeBool("@collapsedLevelsAreSubtotals");
+        set => this.SetXmlNodeBool("@collapsedLevelsAreSubtotals", value, false);
     }
 }

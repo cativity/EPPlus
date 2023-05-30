@@ -55,7 +55,7 @@ public class DataColumnMapping
     /// </summary>
     public string DataColumnName
     {
-        get { return this.HasDataColumn ? this.DataColumn.ColumnName : this._dataColumnName; }
+        get => this.HasDataColumn ? this.DataColumn.ColumnName : this._dataColumnName;
         set
         {
             if (this.HasDataColumn)

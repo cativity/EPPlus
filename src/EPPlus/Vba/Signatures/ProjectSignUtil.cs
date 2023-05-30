@@ -137,16 +137,14 @@ internal static class ProjectSignUtil
         }
     }
 
-    private static int GetByteSize(int length)
-    {
-        return length < 0xFF
-                   ? 1
-                   : length < 0xFFFF
-                       ? 2
-                       : length < 0xFFFFFF
-                           ? 3
-                           : 4;
-    }
+    private static int GetByteSize(int length) =>
+        length < 0xFF
+            ? 1
+            : length < 0xFFFF
+                ? 2
+                : length < 0xFFFFFF
+                    ? 3
+                    : 4;
 
     private static byte[] GetHashContent(EPPlusSignatureContext ctx, byte[] hash)
     {
@@ -182,10 +180,7 @@ internal static class ProjectSignUtil
         return ms.ToArray();
     }
 
-    private static byte GetContentInfoTotalSize()
-    {
-        return (byte)0x65;
-    }
+    private static byte GetContentInfoTotalSize() => (byte)0x65;
 
     private static void WriteOid(BinaryWriter bw, byte[] bytes)
     {

@@ -159,8 +159,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Title
     {
-        get { return this._coreHelper.GetXmlNodeString(TitlePath); }
-        set { this._coreHelper.SetXmlNodeString(TitlePath, value); }
+        get => this._coreHelper.GetXmlNodeString(TitlePath);
+        set => this._coreHelper.SetXmlNodeString(TitlePath, value);
     }
 
     const string SubjectPath = "dc:subject";
@@ -170,8 +170,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Subject
     {
-        get { return this._coreHelper.GetXmlNodeString(SubjectPath); }
-        set { this._coreHelper.SetXmlNodeString(SubjectPath, value); }
+        get => this._coreHelper.GetXmlNodeString(SubjectPath);
+        set => this._coreHelper.SetXmlNodeString(SubjectPath, value);
     }
 
     const string AuthorPath = "dc:creator";
@@ -181,8 +181,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Author
     {
-        get { return this._coreHelper.GetXmlNodeString(AuthorPath); }
-        set { this._coreHelper.SetXmlNodeString(AuthorPath, value); }
+        get => this._coreHelper.GetXmlNodeString(AuthorPath);
+        set => this._coreHelper.SetXmlNodeString(AuthorPath, value);
     }
 
     const string CommentsPath = "dc:description";
@@ -192,8 +192,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Comments
     {
-        get { return this._coreHelper.GetXmlNodeString(CommentsPath); }
-        set { this._coreHelper.SetXmlNodeString(CommentsPath, value); }
+        get => this._coreHelper.GetXmlNodeString(CommentsPath);
+        set => this._coreHelper.SetXmlNodeString(CommentsPath, value);
     }
 
     const string KeywordsPath = "cp:keywords";
@@ -203,8 +203,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Keywords
     {
-        get { return this._coreHelper.GetXmlNodeString(KeywordsPath); }
-        set { this._coreHelper.SetXmlNodeString(KeywordsPath, value); }
+        get => this._coreHelper.GetXmlNodeString(KeywordsPath);
+        set => this._coreHelper.SetXmlNodeString(KeywordsPath, value);
     }
 
     const string LastModifiedByPath = "cp:lastModifiedBy";
@@ -214,8 +214,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string LastModifiedBy
     {
-        get { return this._coreHelper.GetXmlNodeString(LastModifiedByPath); }
-        set { this._coreHelper.SetXmlNodeString(LastModifiedByPath, value); }
+        get => this._coreHelper.GetXmlNodeString(LastModifiedByPath);
+        set => this._coreHelper.SetXmlNodeString(LastModifiedByPath, value);
     }
 
     const string LastPrintedPath = "cp:lastPrinted";
@@ -225,8 +225,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string LastPrinted
     {
-        get { return this._coreHelper.GetXmlNodeString(LastPrintedPath); }
-        set { this._coreHelper.SetXmlNodeString(LastPrintedPath, value); }
+        get => this._coreHelper.GetXmlNodeString(LastPrintedPath);
+        set => this._coreHelper.SetXmlNodeString(LastPrintedPath, value);
     }
 
     const string CreatedPath = "dcterms:created";
@@ -236,7 +236,7 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public DateTime Created
     {
-        get { return DateTime.TryParse(this._coreHelper.GetXmlNodeString(CreatedPath), out DateTime date) ? date : DateTime.MinValue; }
+        get => DateTime.TryParse(this._coreHelper.GetXmlNodeString(CreatedPath), out DateTime date) ? date : DateTime.MinValue;
         set
         {
             string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
@@ -252,8 +252,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Category
     {
-        get { return this._coreHelper.GetXmlNodeString(CategoryPath); }
-        set { this._coreHelper.SetXmlNodeString(CategoryPath, value); }
+        get => this._coreHelper.GetXmlNodeString(CategoryPath);
+        set => this._coreHelper.SetXmlNodeString(CategoryPath, value);
     }
 
     const string ContentStatusPath = "cp:contentStatus";
@@ -263,8 +263,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Status
     {
-        get { return this._coreHelper.GetXmlNodeString(ContentStatusPath); }
-        set { this._coreHelper.SetXmlNodeString(ContentStatusPath, value); }
+        get => this._coreHelper.GetXmlNodeString(ContentStatusPath);
+        set => this._coreHelper.SetXmlNodeString(ContentStatusPath, value);
     }
 
     #endregion
@@ -276,19 +276,14 @@ public sealed class OfficeProperties : XmlHelper
     /// <summary>
     /// Provides access to the XML document that holds the extended properties of the document (app.xml)
     /// </summary>
-    public XmlDocument ExtendedPropertiesXml
-    {
-        get
-        {
-            return this._xmlPropertiesExtended ??=
-                       this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                                                         ExcelPackage.schemaVt,
-                                                         ExcelPackage.schemaExtended),
-                                           this._uriPropertiesExtended,
-                                           @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
-                                           @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
-        }
-    }
+    public XmlDocument ExtendedPropertiesXml =>
+        this._xmlPropertiesExtended ??=
+            this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                              ExcelPackage.schemaVt,
+                                              ExcelPackage.schemaExtended),
+                                this._uriPropertiesExtended,
+                                @"application/vnd.openxmlformats-officedocument.extended-properties+xml",
+                                @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
 
     #endregion
 
@@ -299,8 +294,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Application
     {
-        get { return this._extendedHelper.GetXmlNodeString(ApplicationPath); }
-        set { this._extendedHelper.SetXmlNodeString(ApplicationPath, value); }
+        get => this._extendedHelper.GetXmlNodeString(ApplicationPath);
+        set => this._extendedHelper.SetXmlNodeString(ApplicationPath, value);
     }
 
     const string HyperlinkBasePath = "xp:Properties/xp:HyperlinkBase";
@@ -310,8 +305,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public Uri HyperlinkBase
     {
-        get { return new Uri(this._extendedHelper.GetXmlNodeString(HyperlinkBasePath), UriKind.Absolute); }
-        set { this._extendedHelper.SetXmlNodeString(HyperlinkBasePath, value.AbsoluteUri); }
+        get => new(this._extendedHelper.GetXmlNodeString(HyperlinkBasePath), UriKind.Absolute);
+        set => this._extendedHelper.SetXmlNodeString(HyperlinkBasePath, value.AbsoluteUri);
     }
 
     const string AppVersionPath = "xp:Properties/xp:AppVersion";
@@ -321,7 +316,7 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string AppVersion
     {
-        get { return this._extendedHelper.GetXmlNodeString(AppVersionPath); }
+        get => this._extendedHelper.GetXmlNodeString(AppVersionPath);
         set
         {
             string[]? versions = value.Split('.');
@@ -342,8 +337,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Company
     {
-        get { return this._extendedHelper.GetXmlNodeString(CompanyPath); }
-        set { this._extendedHelper.SetXmlNodeString(CompanyPath, value); }
+        get => this._extendedHelper.GetXmlNodeString(CompanyPath);
+        set => this._extendedHelper.SetXmlNodeString(CompanyPath, value);
     }
 
     const string ManagerPath = "xp:Properties/xp:Manager";
@@ -353,8 +348,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public string Manager
     {
-        get { return this._extendedHelper.GetXmlNodeString(ManagerPath); }
-        set { this._extendedHelper.SetXmlNodeString(ManagerPath, value); }
+        get => this._extendedHelper.GetXmlNodeString(ManagerPath);
+        set => this._extendedHelper.SetXmlNodeString(ManagerPath, value);
     }
 
     const string ModifiedPath = "dcterms:modified";
@@ -364,7 +359,7 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public DateTime Modified
     {
-        get { return DateTime.TryParse(this._coreHelper.GetXmlNodeString(ModifiedPath), out DateTime date) ? date : DateTime.MinValue; }
+        get => DateTime.TryParse(this._coreHelper.GetXmlNodeString(ModifiedPath), out DateTime date) ? date : DateTime.MinValue;
         set
         {
             string? dateString = value.ToUniversalTime().ToString("s", CultureInfo.InvariantCulture) + "Z";
@@ -380,8 +375,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public bool LinksUpToDate
     {
-        get { return this._extendedHelper.GetXmlNodeBool(LinksUpToDatePath); }
-        set { this._extendedHelper.SetXmlNodeBool(LinksUpToDatePath, value); }
+        get => this._extendedHelper.GetXmlNodeBool(LinksUpToDatePath);
+        set => this._extendedHelper.SetXmlNodeBool(LinksUpToDatePath, value);
     }
 
     const string HyperlinksChangedPath = "xp:Properties/xp:HyperlinksChanged";
@@ -391,8 +386,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public bool HyperlinksChanged
     {
-        get { return this._extendedHelper.GetXmlNodeBool(HyperlinksChangedPath); }
-        set { this._extendedHelper.SetXmlNodeBool(HyperlinksChangedPath, value); }
+        get => this._extendedHelper.GetXmlNodeBool(HyperlinksChangedPath);
+        set => this._extendedHelper.SetXmlNodeBool(HyperlinksChangedPath, value);
     }
 
     const string ScaleCropPath = "xp:Properties/xp:ScaleCrop";
@@ -402,8 +397,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public bool ScaleCrop
     {
-        get { return this._extendedHelper.GetXmlNodeBool(ScaleCropPath); }
-        set { this._extendedHelper.SetXmlNodeBool(ScaleCropPath, value); }
+        get => this._extendedHelper.GetXmlNodeBool(ScaleCropPath);
+        set => this._extendedHelper.SetXmlNodeBool(ScaleCropPath, value);
     }
 
     const string SharedDocPath = "xp:Properties/xp:SharedDoc";
@@ -413,8 +408,8 @@ public sealed class OfficeProperties : XmlHelper
     /// </summary>
     public bool SharedDoc
     {
-        get { return this._extendedHelper.GetXmlNodeBool(SharedDocPath); }
-        set { this._extendedHelper.SetXmlNodeBool(SharedDocPath, value); }
+        get => this._extendedHelper.GetXmlNodeBool(SharedDocPath);
+        set => this._extendedHelper.SetXmlNodeBool(SharedDocPath, value);
     }
 
     #region Get and Set Extended Properties
@@ -460,19 +455,14 @@ public sealed class OfficeProperties : XmlHelper
     /// <summary>
     /// Provides access to the XML document which holds the document's custom properties
     /// </summary>
-    public XmlDocument CustomPropertiesXml
-    {
-        get
-        {
-            return this._xmlPropertiesCustom ??=
-                       this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
-                                                         ExcelPackage.schemaVt,
-                                                         ExcelPackage.schemaCustom),
-                                           this._uriPropertiesCustom,
-                                           @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
-                                           @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
-        }
-    }
+    public XmlDocument CustomPropertiesXml =>
+        this._xmlPropertiesCustom ??=
+            this.GetXmlDocument(string.Format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?><Properties xmlns:vt=\"{0}\" xmlns=\"{1}\"></Properties>",
+                                              ExcelPackage.schemaVt,
+                                              ExcelPackage.schemaCustom),
+                                this._uriPropertiesCustom,
+                                @"application/vnd.openxmlformats-officedocument.custom-properties+xml",
+                                @"http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties");
 
     #endregion
 

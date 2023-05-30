@@ -28,7 +28,7 @@ public class ExcelDrawingPoint3D : XmlHelper
     private readonly string _yPath = "{0}/@{1}y";
     private readonly string _zPath = "{0}/@{1}z";
     private readonly Action<bool> _initParent;
-    bool isInit = false;
+    bool isInit;
 
     internal ExcelDrawingPoint3D(XmlNamespaceManager nameSpaceManager,
                                  XmlNode topNode,

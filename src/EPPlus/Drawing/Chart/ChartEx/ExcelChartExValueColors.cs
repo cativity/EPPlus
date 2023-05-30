@@ -23,12 +23,12 @@ namespace OfficeOpenXml.Drawing.Chart.ChartEx;
 /// </summary>
 public class ExcelChartExValueColors : XmlHelper
 {
-    private ExcelRegionMapChartSerie _series;
+    //private ExcelRegionMapChartSerie _series;
 
     internal ExcelChartExValueColors(ExcelRegionMapChartSerie series, XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder)
         : base(nameSpaceManager, topNode)
     {
-        this._series = series;
+        //this._series = series;
         this.SchemaNodeOrder = schemaNodeOrder;
     }
 
@@ -54,7 +54,7 @@ public class ExcelChartExValueColors : XmlHelper
         set { this.SetXmlNodeString("cx:valueColorPositions/@count", ((int)value).ToString(CultureInfo.InvariantCulture)); }
     }
 
-    ExcelChartExValueColor _minColor = null;
+    ExcelChartExValueColor _minColor;
 
     /// <summary>
     /// The minimum color value.
@@ -64,7 +64,7 @@ public class ExcelChartExValueColors : XmlHelper
         get { return this._minColor ??= new ExcelChartExValueColor(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, "min"); }
     }
 
-    ExcelChartExValueColor _midColor = null;
+    ExcelChartExValueColor _midColor;
 
     /// <summary>
     /// The mid color value. Null if NumberOfcolors is set to TwoColors
@@ -82,7 +82,7 @@ public class ExcelChartExValueColors : XmlHelper
         }
     }
 
-    ExcelChartExValueColor _maxColor = null;
+    ExcelChartExValueColor _maxColor;
 
     /// <summary>
     /// The maximum color value.

@@ -20,11 +20,11 @@ namespace OfficeOpenXml.VBA;
 /// </summary>
 public class ExcelVbaModuleCollection : ExcelVBACollectionBase<ExcelVBAModule>
 {
-    ExcelVbaProject _project;
+    //ExcelVbaProject _project;
 
     internal ExcelVbaModuleCollection(ExcelVbaProject project)
     {
-        this._project = project;
+        //this._project = project;
     }
 
     internal void Add(ExcelVBAModule Item)

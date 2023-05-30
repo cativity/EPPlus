@@ -476,8 +476,8 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     internal Dictionary<int, Formulas> _sharedFormulas = new Dictionary<int, Formulas>();
     internal RangeSorter _rangeSorter;
-    internal int _minCol = ExcelPackage.MaxColumns;
-    internal int _maxCol = 0;
+    //internal int _minCol = ExcelPackage.MaxColumns;
+    //internal int _maxCol = 0;
     internal int _nextControlId;
 
     #region Worksheet Private Properties
@@ -605,7 +605,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         set { this._sheetID = value; }
     }
 
-    internal bool IsChartSheet { get; set; } = false;
+    internal bool IsChartSheet { get; set; }
 
     internal static bool NameNeedsApostrophes(string ws)
     {
@@ -742,7 +742,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    ExcelAutoFilter _autoFilter = null;
+    ExcelAutoFilter _autoFilter;
 
     /// <summary>
     /// Autofilter settings
@@ -768,7 +768,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    SortState _sortState = null;
+    SortState _sortState;
 
     /// <summary>
     /// Sets the sort state
@@ -1326,7 +1326,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         get { return this._worksheetXml; }
     }
 
-    internal ExcelVmlDrawingCollection _vmlDrawings = null;
+    internal ExcelVmlDrawingCollection _vmlDrawings;
 
     /// <summary>
     /// Vml drawings. underlaying object for comments
@@ -1344,7 +1344,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal ExcelCommentCollection _comments = null;
+    internal ExcelCommentCollection _comments;
 
     /// <summary>
     /// Collection of comments
@@ -1359,7 +1359,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal ExcelWorksheetThreadedComments _threadedComments = null;
+    internal ExcelWorksheetThreadedComments _threadedComments;
 
     /// <summary>
     /// A collection of threaded comments referenced in the worksheet.
@@ -1850,7 +1850,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         return hl;
     }
 
-    internal ExcelDataValidationCollection _dataValidations = null;
+    internal ExcelDataValidationCollection _dataValidations;
 
     /// <summary>
     /// DataValidation defined in the worksheet. Use the Add methods to create DataValidations and add them to the worksheet. Then
@@ -2333,7 +2333,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     #endregion // END Worksheet Public Properties
 
-    ExcelSlicerXmlSources _slicerXmlSources = null;
+    ExcelSlicerXmlSources _slicerXmlSources;
 
     internal ExcelSlicerXmlSources SlicerXmlSources
     {
@@ -3137,7 +3137,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
                 foreach (ExcelTableColumn? col in tbl.Columns)
                 {
-                    string n = col.Name.ToLowerInvariant();
+                    string n;
 
                     if (tbl.ShowHeader)
                     {
@@ -3456,7 +3456,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    ExcelSheetProtection _protection = null;
+    ExcelSheetProtection _protection;
 
     /// <summary>
     /// Access to sheet protection properties
@@ -3466,7 +3466,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         get { return this._protection ??= new ExcelSheetProtection(this.NameSpaceManager, this.TopNode, this); }
     }
 
-    private ExcelProtectedRangeCollection _protectedRanges = null;
+    private ExcelProtectedRangeCollection _protectedRanges;
 
     /// <summary>
     /// Access to protected ranges in the worksheet
@@ -3485,7 +3485,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     internal Dictionary<int, double> RowHeightCache { get; set; } = new Dictionary<int, double>();
 
-    internal ExcelDrawings _drawings = null;
+    internal ExcelDrawings _drawings;
 
     /// <summary>
     /// Collection of drawing-objects like shapes, images and charts
@@ -3509,7 +3509,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     #region SparklineGroups
 
-    ExcelSparklineGroupCollection _sparklineGroups = null;
+    ExcelSparklineGroupCollection _sparklineGroups;
 
     /// <summary>
     /// Collection of Sparkline-objects. 
@@ -3522,7 +3522,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
 
     #endregion
 
-    ExcelTableCollection _tables = null;
+    ExcelTableCollection _tables;
 
     /// <summary>
     /// Tables defined in the worksheet.
@@ -3542,7 +3542,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    internal ExcelPivotTableCollection _pivotTables = null;
+    internal ExcelPivotTableCollection _pivotTables;
 
     /// <summary>
     /// Pivottables defined in the worksheet.
@@ -3572,7 +3572,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         get { return this._pivotTables != null; }
     }
 
-    private ExcelConditionalFormattingCollection _conditionalFormatting = null;
+    private ExcelConditionalFormattingCollection _conditionalFormatting;
 
     /// <summary>
     /// ConditionalFormatting defined in the worksheet. Use the Add methods to create ConditionalFormatting and add them to the worksheet. Then
@@ -3589,7 +3589,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         }
     }
 
-    ExcelIgnoredErrorCollection _ignoredErrors = null;
+    ExcelIgnoredErrorCollection _ignoredErrors;
 
     /// <summary>
     /// Ignore Errors for the specified ranges and error types.
@@ -3609,7 +3609,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         this._dataValidations = null;
     }
 
-    ExcelBackgroundImage _backgroundImage = null;
+    ExcelBackgroundImage _backgroundImage;
 
     /// <summary>
     /// An image displayed as the background of the worksheet.
@@ -3832,7 +3832,7 @@ public class ExcelWorksheet : XmlHelper, IEqualityComparer<ExcelWorksheet>, IDis
         return obj.WorksheetXml.OuterXml.GetHashCode();
     }
 
-    ControlsCollectionInternal _controls = null;
+    ControlsCollectionInternal _controls;
 
     internal ControlsCollectionInternal Controls
     {

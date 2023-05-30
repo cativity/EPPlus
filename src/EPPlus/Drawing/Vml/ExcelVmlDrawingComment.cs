@@ -366,7 +366,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
         set { this.SetXmlNodeBool(LOCK_TEXT_PATH, value, false); }
     }
 
-    ExcelVmlDrawingPosition _from = null;
+    ExcelVmlDrawingPosition _from;
 
     /// <summary>
     /// From position. For comments only when Visible=true.
@@ -379,7 +379,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
         }
     }
 
-    ExcelVmlDrawingPosition _to = null;
+    ExcelVmlDrawingPosition _to;
 
     /// <summary>
     /// To position. For comments only when Visible=true.
@@ -419,7 +419,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
         set { this.SetXmlNodeString(STYLE_PATH, value); }
     }
 
-    internal ExcelVmlDrawingFill _fill = null;
+    internal ExcelVmlDrawingFill _fill;
 
     /// <summary>
     /// Fill properties for the comment

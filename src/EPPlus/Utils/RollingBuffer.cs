@@ -20,9 +20,9 @@ namespace EPPlusTest.Utils;
 /// </summary>
 internal class RollingBuffer
 {
-    bool _isRolling = false;
+    bool _isRolling;
     byte[] _buffer;
-    int _index = 0;
+    int _index;
 
     internal RollingBuffer(int size)
     {

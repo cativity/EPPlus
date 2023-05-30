@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using OfficeOpenXml.Utils;
 using System.Threading;
 using OfficeOpenXml.Packaging.Ionic.Zlib;
@@ -33,6 +34,7 @@ namespace OfficeOpenXml.Drawing
         private const float MM_TO_INCH = CM_TO_INCH * 0.1F;
         private const float HUNDREDTH_TH_MM_TO_INCH = MM_TO_INCH * 0.01F;
 
+        [SuppressMessage("ReSharper", "NotAccessedField.Global")]
         internal struct TifIfd
         {
             public short Tag;
@@ -236,7 +238,7 @@ namespace OfficeOpenXml.Drawing
                     const int bufferSize = 4096;
                     byte[]? buffer = new byte[bufferSize];
                     using GZipStream? z = new GZipStream(ms, CompressionMode.Decompress);
-                    int size = 0;
+                    int size;
 
                     do
                     {
@@ -318,7 +320,7 @@ namespace OfficeOpenXml.Drawing
 
                         case 0xFFE1:
                             long pos = ms.Position;
-                            identifier = br.ReadBytes(6); //EXIF\0\0 or //EXIF\FF\FF
+                            _ = br.ReadBytes(6); //EXIF\0\0 or //EXIF\FF\FF
 
                             double w = 0,
                                    h = 0;
@@ -504,19 +506,19 @@ namespace OfficeOpenXml.Drawing
                     switch (vp8)
                     {
                         case "VP8 ":
-                            byte[]? b = br.ReadBytes(10);
+                            _ = br.ReadBytes(10);
                             short w = br.ReadInt16();
                             width = w & 0x3FFF;
-                            int hScale = w >> 14;
+                            //int hScale = w >> 14;
                             short h = br.ReadInt16();
                             height = h & 0x3FFF;
-                            hScale = h >> 14;
+                            //hScale = h >> 14;
 
                             break;
 
                         case "VP8X":
                             _ = br.ReadBytes(8);
-                            b = br.ReadBytes(6);
+                            byte[] b = br.ReadBytes(6);
                             width = BitConverter.ToInt32(new byte[] { b[0], b[1], b[2], 0 }, 0) + 1;
                             height = BitConverter.ToInt32(new byte[] { b[3], b[4], b[5], 0 }, 0) + 1;
 

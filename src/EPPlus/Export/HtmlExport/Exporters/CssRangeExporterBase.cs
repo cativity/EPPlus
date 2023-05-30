@@ -49,7 +49,7 @@ internal abstract class CssRangeExporterBase : AbstractHtmlExporter
     }
 
     protected HtmlExportSettings Settings;
-    protected EPPlusReadOnlyList<ExcelRangeBase> _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+    protected EPPlusReadOnlyList<ExcelRangeBase> _ranges;
 
     private void AddRange(ExcelRangeBase range)
     {

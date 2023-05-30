@@ -65,7 +65,7 @@ public class ExcelChartStyleEntry : XmlHelper
         this._pictureRelationDocument = pictureRelationDocument;
     }
 
-    private ExcelChartStyleReference _borderReference = null;
+    private ExcelChartStyleReference _borderReference;
 
     /// Border reference. 
     /// Contains an index reference to the theme and a color to be used in border styling
@@ -74,7 +74,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._borderReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._borderReferencePath); }
     }
 
-    private ExcelChartStyleReference _fillReference = null;
+    private ExcelChartStyleReference _fillReference;
 
     /// <summary>
     /// Fill reference. 
@@ -85,7 +85,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._fillReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._fillReferencePath); }
     }
 
-    private ExcelChartStyleReference _effectReference = null;
+    private ExcelChartStyleReference _effectReference;
 
     /// <summary>
     /// Effect reference. 
@@ -96,7 +96,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._effectReference ??= new ExcelChartStyleReference(this.NameSpaceManager, this.TopNode, this._effectReferencePath); }
     }
 
-    ExcelChartStyleFontReference _fontReference = null;
+    ExcelChartStyleFontReference _fontReference;
 
     /// <summary>
     /// Font reference. 
@@ -107,7 +107,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._fontReference ??= new ExcelChartStyleFontReference(this.NameSpaceManager, this.TopNode, this._fontReferencePath); }
     }
 
-    private ExcelDrawingFill _fill = null;
+    private ExcelDrawingFill _fill;
 
     /// <summary>
     /// Reference to fill settings for a chart part
@@ -124,7 +124,7 @@ public class ExcelChartStyleEntry : XmlHelper
         }
     }
 
-    private ExcelDrawingBorder _border = null;
+    private ExcelDrawingBorder _border;
 
     /// <summary>
     /// Reference to border settings for a chart part
@@ -141,7 +141,7 @@ public class ExcelChartStyleEntry : XmlHelper
         }
     }
 
-    private ExcelDrawingEffectStyle _effect = null;
+    private ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Reference to border settings for a chart part
@@ -158,7 +158,7 @@ public class ExcelChartStyleEntry : XmlHelper
         }
     }
 
-    private ExcelDrawing3D _threeD = null;
+    private ExcelDrawing3D _threeD;
 
     /// <summary>
     /// Reference to 3D effect settings for a chart part
@@ -168,7 +168,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
 
-    private ExcelTextRun _defaultTextRun = null;
+    private ExcelTextRun _defaultTextRun;
 
     /// <summary>
     /// Reference to default text run settings for a chart part
@@ -178,7 +178,7 @@ public class ExcelChartStyleEntry : XmlHelper
         get { return this._defaultTextRun ??= new ExcelTextRun(this.NameSpaceManager, this.TopNode, this._defaultTextRunPath); }
     }
 
-    private ExcelTextBody _defaultTextBody = null;
+    private ExcelTextBody _defaultTextBody;
 
     /// <summary>
     /// Reference to default text body run settings for a chart part

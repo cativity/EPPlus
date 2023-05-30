@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing.Style.Fill;
 /// </summary>
 public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
 {
-    string[] _schemaNodeOrder;
+    //string[] _schemaNodeOrder;
     private readonly IPictureRelationDocument _pictureRelationDocument;
 
     internal ExcelDrawingBlipFill(IPictureRelationDocument pictureRelationDocument,
@@ -37,7 +37,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
                                   Action initXml)
         : base(nsm, topNode, fillPath, initXml)
     {
-        this._schemaNodeOrder = schemaNodeOrder;
+        //this._schemaNodeOrder = schemaNodeOrder;
         this._pictureRelationDocument = pictureRelationDocument;
         this.Image = new ExcelImage(this);
         this.GetXml();
@@ -51,7 +51,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
     /// <summary>
     /// The image should be stretched to fill the target.
     /// </summary>
-    public bool Stretch { get; set; } = false;
+    public bool Stretch { get; set; }
 
     /// <summary>
     /// Offset in percentage from the edge of the shapes bounding box. This property only apply when Stretch is set to true.        
@@ -78,7 +78,7 @@ public class ExcelDrawingBlipFill : ExcelDrawingFillBase, IPictureContainer
         get { return eFillStyle.BlipFill; }
     }
 
-    ExcelDrawingBlipEffects _effects = null;
+    ExcelDrawingBlipEffects _effects;
 
     /// <summary>
     /// Blip fill effects

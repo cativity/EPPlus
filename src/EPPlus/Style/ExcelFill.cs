@@ -60,7 +60,7 @@ public class ExcelFill : StyleBase
         }
     }
 
-    ExcelColor _patternColor = null;
+    ExcelColor _patternColor;
 
     /// <summary>
     /// The color of the pattern
@@ -83,7 +83,7 @@ public class ExcelFill : StyleBase
         }
     }
 
-    ExcelColor _backgroundColor = null;
+    ExcelColor _backgroundColor;
 
     /// <summary>
     /// The background color
@@ -107,7 +107,7 @@ public class ExcelFill : StyleBase
         }
     }
 
-    ExcelGradientFill _gradient = null;
+    ExcelGradientFill _gradient;
 
     /// <summary>
     /// Access to properties for gradient fill.

@@ -76,10 +76,10 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
     //string _chartTopPath="c:chartSpace/c:chart/c:plotArea/{0}";
     private void SetChartNodeText(string chartNodeText)
     {
-        if (string.IsNullOrEmpty(chartNodeText))
-        {
-            chartNodeText = this.GetChartNodeText();
-        }
+        //if (string.IsNullOrEmpty(chartNodeText))
+        //{
+        //    chartNodeText = this.GetChartNodeText();
+        //}
 
         //_chartTopPath = string.Format(_chartTopPath, chartNodeText);
         //_directionPath = string.Format(_directionPath, _chartTopPath);
@@ -206,7 +206,7 @@ public sealed class ExcelBarChart : ExcelChartStandard, IDrawingDataLabel
         internal set { this._chartXmlHelper.SetXmlNodeString(this._shapePath, GetShapeText(value)); }
     }
 
-    ExcelChartDataLabel _DataLabel = null;
+    ExcelChartDataLabel _DataLabel;
 
     /// <summary>
     /// Access to datalabel properties

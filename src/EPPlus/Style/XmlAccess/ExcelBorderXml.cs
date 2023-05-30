@@ -49,7 +49,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string leftPath = "d:left";
-    ExcelBorderItemXml _left = null;
+    ExcelBorderItemXml _left;
 
     /// <summary>
     /// Left border style properties
@@ -61,7 +61,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string rightPath = "d:right";
-    ExcelBorderItemXml _right = null;
+    ExcelBorderItemXml _right;
 
     /// <summary>
     /// Right border style properties
@@ -73,7 +73,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string topPath = "d:top";
-    ExcelBorderItemXml _top = null;
+    ExcelBorderItemXml _top;
 
     /// <summary>
     /// Top border style properties
@@ -85,7 +85,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string bottomPath = "d:bottom";
-    ExcelBorderItemXml _bottom = null;
+    ExcelBorderItemXml _bottom;
 
     /// <summary>
     /// Bottom border style properties
@@ -97,7 +97,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string diagonalPath = "d:diagonal";
-    ExcelBorderItemXml _diagonal = null;
+    ExcelBorderItemXml _diagonal;
 
     /// <summary>
     /// Diagonal border style properties
@@ -109,7 +109,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string diagonalUpPath = "@diagonalUp";
-    bool _diagonalUp = false;
+    bool _diagonalUp;
 
     /// <summary>
     /// Diagonal up border
@@ -121,7 +121,7 @@ public sealed class ExcelBorderXml : StyleXmlHelper
     }
 
     const string diagonalDownPath = "@diagonalDown";
-    bool _diagonalDown = false;
+    bool _diagonalDown;
 
     /// <summary>
     /// Diagonal down border

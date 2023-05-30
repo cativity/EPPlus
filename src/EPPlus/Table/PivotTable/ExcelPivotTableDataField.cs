@@ -184,7 +184,7 @@ public class ExcelPivotTableDataField : XmlHelper
         }
     }
 
-    ExcelPivotTableDataFieldShowDataAs _showDataAs = null;
+    ExcelPivotTableDataFieldShowDataAs _showDataAs;
 
     /// <summary>
     /// Represents a pivot fields Show As properties.

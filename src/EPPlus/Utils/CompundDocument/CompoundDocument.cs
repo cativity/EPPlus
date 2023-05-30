@@ -37,7 +37,7 @@ internal class CompoundDocument
     /// <summary>
     /// The root storage part of the compound document.
     /// </summary>
-    internal StoragePart Storage = null;
+    internal StoragePart Storage;
 
     /// <summary>
     /// Directories in the order they are saved.

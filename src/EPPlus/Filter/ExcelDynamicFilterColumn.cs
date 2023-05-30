@@ -73,12 +73,12 @@ public class ExcelDynamicFilterColumn : ExcelFilterColumn
     {
         XmlElement? node = (XmlElement)this.CreateNode("d:dynamicFilter");
         node.RemoveAll();
-        string? type = this.Type.ToEnumString();
+        //string? type = this.Type.ToEnumString();
 
-        if (type.Length <= 3)
-        {
-            type = type.ToUpper(); //For M1, M12, Q1 etc
-        }
+        //if (type.Length <= 3)
+        //{
+        //    type = type.ToUpper(); //For M1, M12, Q1 etc
+        //}
 
         node.SetAttribute("type", GetTypeForXml(this.Type));
 

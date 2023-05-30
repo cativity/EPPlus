@@ -1489,7 +1489,7 @@ internal sealed class DeflateManager
 
         if (this.match_available != 0)
         {
-            bflush = this._tr_tally(0, this.window[this.strstart - 1] & 0xff);
+            _ = this._tr_tally(0, this.window[this.strstart - 1] & 0xff);
             this.match_available = 0;
         }
 
@@ -1606,7 +1606,7 @@ internal sealed class DeflateManager
         return this.lookahead;
     }
 
-    private bool Rfc1950BytesEmitted = false;
+    private bool Rfc1950BytesEmitted;
     private bool _WantRfc1950HeaderBytes = true;
 
     internal bool WantRfc1950HeaderBytes

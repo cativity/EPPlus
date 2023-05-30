@@ -29,7 +29,7 @@ public class ExcelChartExParetoLine : ExcelDrawingBorder
         this._chart = chart;
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects

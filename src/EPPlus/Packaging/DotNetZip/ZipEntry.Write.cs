@@ -457,7 +457,7 @@ internal partial class ZipEntry
             i += 8;
             z = this._Ctime.ToFileTime();
             Array.Copy(BitConverter.GetBytes(z), 0, block, i, 8);
-            i += 8;
+            //i += 8;
 
             listOfBlocks.Add(block);
         }
@@ -514,7 +514,6 @@ internal partial class ZipEntry
                 i += 4;
                 z = unchecked((int)(this._Ctime - _unixEpoch).TotalSeconds);
                 Array.Copy(BitConverter.GetBytes(z), 0, block, i, 4);
-                i += 4;
             }
 
             listOfBlocks.Add(block);
@@ -1717,7 +1716,7 @@ internal partial class ZipEntry
                 // copy the updated bitfield value into the header
                 int j = 6;
                 this._EntryHeader[j++] = (byte)(this._BitField & 0x00FF);
-                this._EntryHeader[j++] = (byte)((this._BitField & 0xFF00) >> 8);
+                this._EntryHeader[j] = (byte)((this._BitField & 0xFF00) >> 8);
 
 #if AESCRYPTO
                     if (Encryption == EncryptionAlgorithm.WinZipAes128 ||
@@ -1766,7 +1765,7 @@ internal partial class ZipEntry
 
         int i = 8;
         this._EntryHeader[i++] = (byte)(this._CompressionMethod & 0x00FF);
-        this._EntryHeader[i++] = (byte)((this._CompressionMethod & 0xFF00) >> 8);
+        this._EntryHeader[i] = (byte)((this._CompressionMethod & 0xFF00) >> 8);
 
         i = 14;
 
@@ -1832,7 +1831,7 @@ internal partial class ZipEntry
             this._EntryHeader[i++] = (byte)(this._UncompressedSize & 0x000000FF);
             this._EntryHeader[i++] = (byte)((this._UncompressedSize & 0x0000FF00) >> 8);
             this._EntryHeader[i++] = (byte)((this._UncompressedSize & 0x00FF0000) >> 16);
-            this._EntryHeader[i++] = (byte)((this._UncompressedSize & 0xFF000000) >> 24);
+            this._EntryHeader[i] = (byte)((this._UncompressedSize & 0xFF000000) >> 24);
 
             // The HeaderId in the extra field header, is already dummied out.
             if (extraFieldLength != 0)
@@ -1852,7 +1851,7 @@ internal partial class ZipEntry
                 {
                     // reset to Header Id to dummy value, effectively dummy-ing out the zip64 metadata
                     this._EntryHeader[i++] = 0x99;
-                    this._EntryHeader[i++] = 0x99;
+                    this._EntryHeader[i] = 0x99;
                 }
             }
         }
@@ -1961,7 +1960,6 @@ internal partial class ZipEntry
 
                 // UncompressedSize - the correct value now
                 Array.Copy(BitConverter.GetBytes(this._UncompressedSize), 0, Descriptor, i, 8);
-                i += 8;
             }
             else
             {
@@ -1975,7 +1973,7 @@ internal partial class ZipEntry
                 Descriptor[i++] = (byte)(this._UncompressedSize & 0x000000FF);
                 Descriptor[i++] = (byte)((this._UncompressedSize & 0x0000FF00) >> 8);
                 Descriptor[i++] = (byte)((this._UncompressedSize & 0x00FF0000) >> 16);
-                Descriptor[i++] = (byte)((this._UncompressedSize & 0xFF000000) >> 24);
+                Descriptor[i] = (byte)((this._UncompressedSize & 0xFF000000) >> 24);
             }
 
             // finally, write the trailing descriptor to the output stream
@@ -2245,7 +2243,7 @@ internal partial class ZipEntry
                 // causes the bytestream to inflate in size, and if compression was
                 // on, then we turn off compression and do it again.
 
-                bool readAgain = true;
+                bool readAgain;
                 int nCycles = 0;
 
                 do

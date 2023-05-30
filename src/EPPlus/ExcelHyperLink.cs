@@ -67,7 +67,7 @@ public class ExcelHyperLink : Uri
         this._display = display;
     }
 
-    string _referenceAddress = null;
+    string _referenceAddress;
 
     /// <summary>
     /// The Excel address for internal links.
@@ -94,7 +94,7 @@ public class ExcelHyperLink : Uri
     /// </summary>
     public string ToolTip { get; set; }
 
-    int _colSpann = 0;
+    int _colSpann;
 
     /// <summary>
     /// If the hyperlink spans multiple columns
@@ -105,7 +105,7 @@ public class ExcelHyperLink : Uri
         set { this._colSpann = value; }
     }
 
-    int _rowSpann = 0;
+    int _rowSpann;
 
     /// <summary>
     /// If the hyperlink spans multiple rows

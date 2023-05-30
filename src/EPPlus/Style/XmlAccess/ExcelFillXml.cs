@@ -78,7 +78,7 @@ public class ExcelFillXml : StyleXmlHelper
         set { this._fillPatternType = value; }
     }
 
-    internal ExcelColorXml _patternColor = null;
+    internal ExcelColorXml _patternColor;
     const string _patternColorPath = "d:patternFill/d:bgColor";
 
     /// <summary>
@@ -90,7 +90,7 @@ public class ExcelFillXml : StyleXmlHelper
         internal set { this._patternColor = value; }
     }
 
-    internal ExcelColorXml _backgroundColor = null;
+    internal ExcelColorXml _backgroundColor;
     const string _backgroundColorPath = "d:patternFill/d:fgColor";
 
     /// <summary>

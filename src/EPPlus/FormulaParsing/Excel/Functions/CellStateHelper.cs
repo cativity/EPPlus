@@ -49,14 +49,9 @@ internal static class CellStateHelper
 
     internal static bool ShouldIgnore(bool ignoreHiddenValues, FunctionArgument arg, ParsingContext context)
     {
-        bool hasFilter = false;
-
-        if (context.Parser != null
-            && context.Parser.FilterInfo != null
-            && context.Parser.FilterInfo.WorksheetHasFilter(context.Scopes.Current.Address.Worksheet))
-        {
-            hasFilter = true;
-        }
+        bool hasFilter = context.Parser != null
+                         && context.Parser.FilterInfo != null
+                         && context.Parser.FilterInfo.WorksheetHasFilter(context.Scopes.Current.Address.Worksheet);
 
         return (ignoreHiddenValues || hasFilter) && arg.ExcelStateFlagIsSet(ExcelCellState.HiddenCell);
     }

@@ -1044,7 +1044,7 @@ internal partial class ZipEntry
 
     private Int32 ExtractOne(Stream output)
     {
-        Int32 CrcResult = 0;
+        Int32 CrcResult;
         Stream input = this.ArchiveStream;
 
         try
@@ -1144,7 +1144,7 @@ internal partial class ZipEntry
 
     internal Stream GetExtractDecryptor(Stream input)
     {
-        Stream input2 = null;
+        Stream input2;
 
         if (this._Encryption_FromZipFile == EncryptionAlgorithm.PkzipWeak)
         {

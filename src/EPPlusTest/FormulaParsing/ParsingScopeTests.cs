@@ -41,7 +41,7 @@ namespace EPPlusTest.FormulaParsing;
 [TestClass]
 public class ParsingScopeTests
 {
-    private IParsingLifetimeEventHandler _lifeTimeEventHandler;
+    //private IParsingLifetimeEventHandler _lifeTimeEventHandler;
     private ParsingScopes _parsingScopes;
     private RangeAddressFactory _factory;
 
@@ -50,7 +50,7 @@ public class ParsingScopeTests
     {
         ExcelDataProvider? provider = A.Fake<ExcelDataProvider>();
         this._factory = new RangeAddressFactory(provider);
-        this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
+        //this._lifeTimeEventHandler = A.Fake<IParsingLifetimeEventHandler>();
         this._parsingScopes = A.Fake<ParsingScopes>();
     }
 

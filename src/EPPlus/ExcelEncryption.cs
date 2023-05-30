@@ -86,7 +86,7 @@ public class ExcelEncryption
         this.Algorithm = encryptionAlgorithm;
     }
 
-    bool _isEncrypted = false;
+    bool _isEncrypted;
 
     /// <summary>
     /// Is the package encrypted
@@ -109,7 +109,7 @@ public class ExcelEncryption
         }
     }
 
-    string _password = null;
+    string _password;
 
     /// <summary>
     /// The password used to encrypt the workbook.

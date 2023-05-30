@@ -47,17 +47,17 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
     /// <summary>
     /// Literals for the Y serie, if the literal values are numeric
     /// </summary>
-    public double[] NumberLiteralsY { get; protected set; } = null;
+    public double[] NumberLiteralsY { get; protected set; }
 
     /// <summary>
     /// Literals for the X serie, if the literal values are numeric
     /// </summary>
-    public double[] NumberLiteralsX { get; protected set; } = null;
+    public double[] NumberLiteralsX { get; protected set; }
 
     /// <summary>
     /// Literals for the X serie, if the literal values are strings
     /// </summary>
-    public string[] StringLiteralsX { get; protected set; } = null;
+    public string[] StringLiteralsX { get; protected set; }
 
     void IDrawingStyleBase.CreatespPr()
     {
@@ -79,7 +79,7 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
     /// </summary>
     public abstract string XSeries { get; set; }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -89,7 +89,7 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._prefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -102,7 +102,7 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -119,7 +119,7 @@ public abstract class ExcelChartSerie : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

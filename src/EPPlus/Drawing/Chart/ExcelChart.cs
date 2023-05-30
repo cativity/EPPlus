@@ -94,7 +94,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
 
     #endregion
 
-    internal ExcelChartStyleManager _styleManager = null;
+    internal ExcelChartStyleManager _styleManager;
 
     /// <summary>
     /// Manage style settings for the chart
@@ -127,7 +127,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
 
     internal abstract void AddAxis();
 
-    bool _secondaryAxis = false;
+    bool _secondaryAxis;
 
     /// <summary>
     /// If true the charttype will use the secondary axis.
@@ -278,7 +278,7 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// </summary>
     public abstract ExcelChartPlotArea PlotArea { get; }
 
-    internal ExcelChartLegend _legend = null;
+    internal ExcelChartLegend _legend;
 
     /// <summary>
     /// Legend
@@ -685,19 +685,19 @@ public abstract class ExcelChart : ExcelDrawing, IDrawingStyle, IStyleMandatoryP
     /// Formatting for the floor of a 3D chart. 
     /// <note type="note">This property is null for non 3D charts</note>
     /// </summary>
-    public ExcelChartSurface Floor { get; protected set; } = null;
+    public ExcelChartSurface Floor { get; protected set; }
 
     /// <summary>
     /// Formatting for the sidewall of a 3D chart. 
     /// <note type="note">This property is null for non 3D charts</note>
     /// </summary>
-    public ExcelChartSurface SideWall { get; protected set; } = null;
+    public ExcelChartSurface SideWall { get; protected set; }
 
     /// <summary>
     /// Formatting for the backwall of a 3D chart. 
     /// <note type="note">This property is null for non 3D charts</note>
     /// </summary>
-    public ExcelChartSurface BackWall { get; protected set; } = null;
+    public ExcelChartSurface BackWall { get; protected set; }
 
     internal override void DeleteMe()
     {

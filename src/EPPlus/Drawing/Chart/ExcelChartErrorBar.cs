@@ -174,7 +174,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
     }
 
     string _plusNodePath = "c:plus";
-    ExcelChartNumericSource _plus = null;
+    ExcelChartNumericSource _plus;
 
     /// <summary>
     /// Numeric Source for plus errorbars when <c>ValueType</c> is set to Custom
@@ -190,7 +190,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
     }
 
     string _minusNodePath = "c:minus";
-    ExcelChartNumericSource _minus = null;
+    ExcelChartNumericSource _minus;
 
     /// <summary>
     /// Numeric Source for minus errorbars when <c>ValueType</c> is set to Custom
@@ -205,7 +205,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Fill style
@@ -220,7 +220,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Border style
@@ -235,7 +235,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -254,7 +254,7 @@ public class ExcelChartErrorBars : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

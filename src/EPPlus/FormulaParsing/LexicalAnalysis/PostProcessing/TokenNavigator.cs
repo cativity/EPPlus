@@ -58,7 +58,7 @@ public class TokenNavigator
     /// <summary>
     /// The index of the current token.
     /// </summary>
-    public int Index { get; private set; } = 0;
+    public int Index { get; private set; }
 
     /// <summary>
     /// Remaining number of tokens

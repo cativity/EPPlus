@@ -1193,7 +1193,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         break;
 
                     case ")":
-                        state = stateStack.Pop();
+                        _ = stateStack.Pop();
 
                         if (stateStack.Peek() != ParseState.OpenParen)
                         {
@@ -1266,7 +1266,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                             throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
                         }
 
-                        Int64 sz = 0;
+                        Int64 sz;
                         string v = tokens[i + 2];
 
                         if (v.EndsWith("K", StringComparison.OrdinalIgnoreCase))

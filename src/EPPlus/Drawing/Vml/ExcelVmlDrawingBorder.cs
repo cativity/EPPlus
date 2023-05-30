@@ -72,7 +72,7 @@ public class ExcelVmlDrawingBorder : XmlHelper
         set { this.SetXmlNodeString("v:stroke/@dashstyle", value); }
     }
 
-    ExcelVmlMeasurementUnit _width = null;
+    ExcelVmlMeasurementUnit _width;
 
     /// <summary>
     /// The width of the border

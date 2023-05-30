@@ -59,7 +59,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// </summary>
     internal protected ExcelWorksheet _worksheet;
 
-    internal ExcelWorkbook _workbook = null;
+    internal ExcelWorkbook _workbook;
 
     private delegate void _changeProp(ExcelRangeBase range, _setValue method, object value);
 
@@ -135,10 +135,10 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
     #region Set Value Delegates
 
-    private static _changeProp _setUnknownProp = SetUnknown;
-    private static _changeProp _setSingleProp = SetSingle;
-    private static _changeProp _setRangeProp = SetRange;
-    private static _changeProp _setMultiProp = SetMultiRange;
+    //private static _changeProp _setUnknownProp = SetUnknown;
+    //private static _changeProp _setSingleProp = SetSingle;
+    //private static _changeProp _setRangeProp = SetRange;
+    //private static _changeProp _setMultiProp = SetMultiRange;
 
     private void SetDelegate()
     {
@@ -1520,7 +1520,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
     /// <summary>
     /// The richtext collection
     /// </summary>
-    protected internal ExcelRichTextCollection _rtc = null;
+    protected internal ExcelRichTextCollection _rtc;
 
     /// <summary>
     /// The cell value is rich text formatted. 
@@ -2507,7 +2507,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
 
     //public object FormatedText { get; private set; }
 
-    int _enumAddressIx = 0;
+    int _enumAddressIx;
 
     /// <summary>
     /// Iterate to the next cell
@@ -2727,7 +2727,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         return null;
     }
 
-    ExcelRangeColumn _entireColumn = null;
+    ExcelRangeColumn _entireColumn;
 
     /// <summary>
     /// A reference to the column properties for column(s= referenced by this range.
@@ -2746,7 +2746,7 @@ public partial class ExcelRangeBase : ExcelAddress, IExcelCell, IDisposable, IEn
         }
     }
 
-    ExcelRangeRow _entireRow = null;
+    ExcelRangeRow _entireRow;
 
     /// <summary>
     /// A reference to the row properties for row(s) referenced by this range.

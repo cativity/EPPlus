@@ -26,7 +26,7 @@ public class ExcelAutoFilter : XmlHelper
 {
     private const string AutoFilterGuid = "71E0E44A-7884-43F4-9E11-E314B2584A5E";
     private ExcelWorksheet _worksheet;
-    private ExcelTable _table;
+    //private ExcelTable _table;
 
     internal ExcelAutoFilter(XmlNamespaceManager namespaceManager, XmlNode topNode, ExcelWorksheet worksheet)
         : base(namespaceManager, topNode)
@@ -40,7 +40,7 @@ public class ExcelAutoFilter : XmlHelper
     {
         this._columns = new ExcelFilterColumnCollection(namespaceManager, topNode, this);
         this._worksheet = table.WorkSheet;
-        this._table = table;
+        //this._table = table;
     }
 
     internal void Save()
@@ -89,7 +89,7 @@ public class ExcelAutoFilter : XmlHelper
         }
     }
 
-    ExcelAddressBase _address = null;
+    ExcelAddressBase _address;
 
     /// <summary>
     /// The range of the autofilter

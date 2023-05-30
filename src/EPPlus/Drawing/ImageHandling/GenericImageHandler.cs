@@ -33,7 +33,7 @@ public class GenericImageHandler : IImageHandler
     /// <summary>
     /// The last exception that occured when calling <see cref="GetImageBounds(MemoryStream, ePictureType, out double, out double, out double, out double)"/>
     /// </summary>
-    public Exception LastException { get; private set; } = null;
+    public Exception LastException { get; private set; }
 
     /// <summary>
     /// Retreives the image bounds and resolution for an image

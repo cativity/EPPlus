@@ -495,7 +495,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
         * to prevent the deletion of the image file, 
         * when referenced more than once
         */
-        foreach (ExcelWorksheet? ws in this._worksheets)
+        foreach (ExcelWorksheet? _ in this._worksheets)
         {
         }
 

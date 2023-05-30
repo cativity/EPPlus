@@ -216,7 +216,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         set { this.SetXmlNodeBool(DISPLAYEQUATIONPATH, value, true); }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -226,7 +226,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         get { return this._fill ??= new ExcelDrawingFill(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -236,7 +236,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         get { return this._border ??= new ExcelDrawingBorder(this._serie._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -253,7 +253,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -268,7 +268,7 @@ public class ExcelChartTrendline : XmlHelper, IDrawingStyleBase
         this.CreatespPrNode();
     }
 
-    ExcelChartTrendlineLabel _label = null;
+    ExcelChartTrendlineLabel _label;
 
     /// <summary>
     /// Trendline labels

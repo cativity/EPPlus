@@ -310,7 +310,7 @@ public class ExcelRangeColumn : IExcelColumn, IEnumerable<ExcelRangeColumn>, IEn
         }
     }
 
-    internal string _styleName = "";
+    //internal string _styleName = "";
 
     /// <summary>
     /// Sets the style for the entire column using a style name.

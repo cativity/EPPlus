@@ -37,7 +37,7 @@ public class ExcelFontScheme : XmlHelper
         set { this.SetXmlNodeString("@name", value); }
     }
 
-    ExcelThemeFontCollection _majorFont = null;
+    ExcelThemeFontCollection _majorFont;
 
     /// <summary>
     /// A collection of major fonts
@@ -52,7 +52,7 @@ public class ExcelFontScheme : XmlHelper
         }
     }
 
-    ExcelThemeFontCollection _minorFont = null;
+    ExcelThemeFontCollection _minorFont;
 
     /// <summary>
     /// A collection of minor fonts

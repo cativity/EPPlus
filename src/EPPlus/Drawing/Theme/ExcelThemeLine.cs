@@ -82,7 +82,7 @@ public class ExcelThemeLine : XmlHelper
         set { this.SetXmlNodeString(PenAlignmentPath, EnumTransl.FromPenAlignment(value)); }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties

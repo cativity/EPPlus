@@ -116,11 +116,11 @@ public class ExcelChartPlotArea : XmlHelper, IDrawingStyleBase
     /// <see cref="CreateDataTable"/>
     /// <see cref="RemoveDataTable"/>
     /// </summary>
-    public ExcelChartDataTable DataTable { get; private set; } = null;
+    public ExcelChartDataTable DataTable { get; private set; }
 
     #endregion
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -133,7 +133,7 @@ public class ExcelChartPlotArea : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -150,7 +150,7 @@ public class ExcelChartPlotArea : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -167,7 +167,7 @@ public class ExcelChartPlotArea : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

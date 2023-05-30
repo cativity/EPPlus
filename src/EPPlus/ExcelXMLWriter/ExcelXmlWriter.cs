@@ -40,7 +40,7 @@ internal class ExcelXmlWriter
 {
     ExcelWorksheet _ws;
     ExcelPackage _package;
-    private Dictionary<int, int> columnStyles = null;
+    private Dictionary<int, int> columnStyles;
 
     /// <summary>
     /// Constructor

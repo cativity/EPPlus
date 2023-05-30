@@ -38,5 +38,5 @@ public abstract class LoadFunctionFunctionParamsBase
     /// If set to another value than TableStyles.None the data will be added to a
     /// table with the specified style
     /// </summary>
-    public TableStyles? TableStyle { get; set; } = null;
+    public TableStyles? TableStyle { get; set; }
 }

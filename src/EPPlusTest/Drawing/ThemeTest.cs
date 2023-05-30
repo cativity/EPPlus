@@ -143,13 +143,13 @@ public class ThemeTest : TestBase
 
         Assert.AreEqual(eFillStyle.GradientFill, f2.Style);
 
-        foreach (ExcelDrawingGradientFillColor? f in f2.GradientFill.Colors)
+        foreach (ExcelDrawingGradientFillColor? _ in f2.GradientFill.Colors)
         {
         }
 
         Assert.AreEqual(eFillStyle.GradientFill, f3.Style);
 
-        foreach (ExcelDrawingGradientFillColor? f in f3.GradientFill.Colors)
+        foreach (ExcelDrawingGradientFillColor? _ in f3.GradientFill.Colors)
         {
         }
 

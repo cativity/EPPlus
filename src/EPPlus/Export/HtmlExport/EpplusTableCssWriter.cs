@@ -34,7 +34,7 @@ namespace OfficeOpenXml.Export.HtmlExport;
 internal partial class EpplusTableCssWriter : HtmlWriterBase
 {
     protected HtmlTableExportSettings _settings;
-    private readonly List<EpplusHtmlAttribute> _attributes = new List<EpplusHtmlAttribute>();
+    //private readonly List<EpplusHtmlAttribute> _attributes = new List<EpplusHtmlAttribute>();
     ExcelTable _table;
     ExcelTheme _theme;
 

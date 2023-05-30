@@ -129,7 +129,7 @@ public sealed class ExcelScatterChart : ExcelChartStandard, IDrawingDataLabel
         set { this.SetXmlNodeBool(this.MARKER_PATH, value, false); }
     }
 
-    ExcelChartDataLabel _dataLabel = null;
+    ExcelChartDataLabel _dataLabel;
 
     /// <summary>
     /// Access to datalabel properties

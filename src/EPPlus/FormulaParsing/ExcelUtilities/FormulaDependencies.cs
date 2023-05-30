@@ -19,48 +19,48 @@ using OfficeOpenXml.FormulaParsing.Exceptions;
 
 namespace OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
-public class FormulaDependencies
-{
-    public FormulaDependencies()
-        : this(new FormulaDependencyFactory())
-    {
-    }
+//public class FormulaDependencies
+//{
+//    public FormulaDependencies()
+//        : this(new FormulaDependencyFactory())
+//    {
+//    }
 
-    public FormulaDependencies(FormulaDependencyFactory formulaDependencyFactory)
-    {
-        this._formulaDependencyFactory = formulaDependencyFactory;
-    }
+//    public FormulaDependencies(FormulaDependencyFactory formulaDependencyFactory)
+//    {
+//        this._formulaDependencyFactory = formulaDependencyFactory;
+//    }
 
-    private readonly FormulaDependencyFactory _formulaDependencyFactory;
-    private readonly Dictionary<string, FormulaDependency> _dependencies = new Dictionary<string, FormulaDependency>();
+//    private readonly FormulaDependencyFactory _formulaDependencyFactory;
+//    private readonly Dictionary<string, FormulaDependency> _dependencies = new Dictionary<string, FormulaDependency>();
 
-    public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies
-    {
-        get { return this._dependencies; }
-    }
+//    public IEnumerable<KeyValuePair<string, FormulaDependency>> Dependencies
+//    {
+//        get { return this._dependencies; }
+//    }
 
-    public static void AddFormulaScope(ParsingScope parsingScope)
-    {
-        //var dependency = _formulaDependencyFactory.Create(parsingScope);
-        //var address = parsingScope.Address.ToString();
-        //if (!_dependencies.ContainsKey(address))
-        //{
-        //    _dependencies.Add(address, dependency);
-        //}
-        //if (parsingScope.Parent != null)
-        //{
-        //    var parentAddress = parsingScope.Parent.Address.ToString();
-        //    if (_dependencies.ContainsKey(parentAddress))
-        //    {
-        //        var parent = _dependencies[parentAddress];
-        //        parent.AddReferenceTo(parsingScope.Address);
-        //        dependency.AddReferenceFrom(parent.Address);
-        //    }
-        //}
-    }
+//    public static void AddFormulaScope(ParsingScope parsingScope)
+//    {
+//        //var dependency = _formulaDependencyFactory.Create(parsingScope);
+//        //var address = parsingScope.Address.ToString();
+//        //if (!_dependencies.ContainsKey(address))
+//        //{
+//        //    _dependencies.Add(address, dependency);
+//        //}
+//        //if (parsingScope.Parent != null)
+//        //{
+//        //    var parentAddress = parsingScope.Parent.Address.ToString();
+//        //    if (_dependencies.ContainsKey(parentAddress))
+//        //    {
+//        //        var parent = _dependencies[parentAddress];
+//        //        parent.AddReferenceTo(parsingScope.Address);
+//        //        dependency.AddReferenceFrom(parent.Address);
+//        //    }
+//        //}
+//    }
 
-    public void Clear()
-    {
-        this._dependencies.Clear();
-    }
-}
+//    public void Clear()
+//    {
+//        this._dependencies.Clear();
+//    }
+//}

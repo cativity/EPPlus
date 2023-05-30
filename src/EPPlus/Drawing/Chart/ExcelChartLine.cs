@@ -28,20 +28,20 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
 {
     ExcelChart _chart;
-    string _path;
+    //string _path;
     Action _removeMe;
 
     internal ExcelChartStyleItem(XmlNamespaceManager nsm, XmlNode topNode, ExcelChart chart, string path, Action removeMe)
         : base(nsm, topNode)
     {
         this._chart = chart;
-        this._path = path;
+        //this._path = path;
         this.AddSchemaNodeOrder(chart._chartXmlHelper.SchemaNodeOrder, ExcelDrawing._schemaNodeOrderSpPr);
         this.TopNode = this.CreateNode(path);
         this._removeMe = removeMe;
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -51,7 +51,7 @@ public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -61,7 +61,7 @@ public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
         get { return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -74,7 +74,7 @@ public class ExcelChartStyleItem : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

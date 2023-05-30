@@ -172,7 +172,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
         DateTime = 2,
     }
 
-    ExcelFormatTranslator _translator = null;
+    ExcelFormatTranslator _translator;
 
     internal ExcelFormatTranslator FormatTranslator
     {
@@ -202,7 +202,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
             internal eSystemDateFormat SpecialDateFormat { get; set; }
 
-            internal bool ContainsTextPlaceholder { get; set; } = false;
+            internal bool ContainsTextPlaceholder { get; set; }
 
             internal void SetFormat(string format, bool containsAmPm, bool forColWidth)
             {
@@ -247,7 +247,7 @@ public sealed class ExcelNumberFormatXml : StyleXmlHelper
 
         internal List<FormatPart> Formats { get; private set; } = new List<FormatPart>();
 
-        CultureInfo _ci = null;
+        CultureInfo _ci;
 
         internal CultureInfo Culture
         {

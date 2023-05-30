@@ -36,7 +36,7 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
     {
     }
 
-    ExcelChartSerieDataLabel _dataLabel = null;
+    ExcelChartSerieDataLabel _dataLabel;
 
     /// <summary>
     /// Datalabel
@@ -137,7 +137,7 @@ public sealed class ExcelBubbleChartSerie : ExcelChartSerieWithHorizontalErrorBa
         lit.InnerXml = string.Format("<c:formatCode>General</c:formatCode><c:ptCount val=\"{0}\"/>{1}", ix, sb.ToString());
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

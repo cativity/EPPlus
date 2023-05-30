@@ -31,7 +31,7 @@ public class ExcelVbaSignature
 {
     internal ExcelVbaSignature(ZipPackagePart vbaPart)
     {
-        this._vbaPart = vbaPart;
+        //this._vbaPart = vbaPart;
         this.LegacySignature = new ExcelSignatureVersion(new EPPlusVbaSignatureLegacy(vbaPart), VbaSignatureHashAlgorithm.MD5);
         this.AgileSignature = new ExcelSignatureVersion(new EPPlusVbaSignatureAgile(vbaPart), VbaSignatureHashAlgorithm.SHA1);
         this.V3Signature = new ExcelSignatureVersion(new EPPlusVbaSignatureV3(vbaPart), VbaSignatureHashAlgorithm.SHA1);
@@ -52,7 +52,7 @@ public class ExcelVbaSignature
         }
     }
 
-    internal readonly ZipPackagePart _vbaPart = null;
+    //internal readonly ZipPackagePart _vbaPart = null;
     private X509Certificate2 _certificate;
 
     /// <summary>

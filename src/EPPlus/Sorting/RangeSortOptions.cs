@@ -24,8 +24,8 @@ namespace OfficeOpenXml.Sorting;
 /// </summary>
 public class RangeSortOptions : SortOptionsBase
 {
-    private RangeSortLayer _sortLayer = null;
-    private RangeLeftToRightSortLayer _sortLayerLeftToRight = null;
+    private RangeSortLayer _sortLayer;
+    private RangeLeftToRightSortLayer _sortLayerLeftToRight;
 
     internal RangeSortOptions()
     {

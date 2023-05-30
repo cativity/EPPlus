@@ -144,11 +144,11 @@ public class DrawingGroupingTests : TestBase
         ExcelControlRadioButton? r1 = _ws.Drawings.AddRadioButtonControl("Option Button 1");
         r1.SetPosition(500, 100);
         r1.SetSize(100, 25);
-        ExcelGroupShape? g = ctrl.Group(r1);
+        _ = ctrl.Group(r1);
         ExcelControlRadioButton? r2 = _ws.Drawings.AddRadioButtonControl("Option Button 2");
         r2.SetPosition(530, 100);
         r2.SetSize(100, 25);
-        g = ctrl.Group(r2);
+        ExcelGroupShape g = ctrl.Group(r2);
         ExcelControlRadioButton? r3 = _ws.Drawings.AddRadioButtonControl("Option Button 3");
         r3.SetPosition(560, 100);
         r3.SetSize(100, 25);

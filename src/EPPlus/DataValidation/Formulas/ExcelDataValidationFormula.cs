@@ -55,12 +55,12 @@ internal abstract class ExcelDataValidationFormula : IExcelDataValidationFormula
     public ExcelDataValidationFormula(string validationUid, string workSheetName, Action<OnFormulaChangedEventArgs> extListHandler)
     {
         Require.Argument(validationUid).IsNotNullOrEmpty("validationUid");
-        this._validationUid = validationUid;
+        //this._validationUid = validationUid;
         this._workSheetName = workSheetName;
         this._handler = extListHandler;
     }
 
-    private string _validationUid;
+    //private string _validationUid;
     protected string _formula;
     private string _workSheetName;
 

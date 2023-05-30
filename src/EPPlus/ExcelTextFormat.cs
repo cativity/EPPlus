@@ -88,12 +88,12 @@ public class ExcelTextFormatBase
     /// <summary>
     /// Number of lines skipped in the begining of the file. Default 0.
     /// </summary>
-    public int SkipLinesBeginning { get; set; } = 0;
+    public int SkipLinesBeginning { get; set; }
 
     /// <summary>
     /// Number of lines skipped at the end of the file. Default 0.
     /// </summary>
-    public int SkipLinesEnd { get; set; } = 0;
+    public int SkipLinesEnd { get; set; }
 
     /// <summary>
     /// Only used when reading/writing files from disk using a FileInfo object. Default AscII
@@ -195,17 +195,17 @@ public class ExcelOutputTextFormat : ExcelTextFormatBase
     /// Format is applied with the used culture.
     /// For a text column use $ as format
     /// </summary>        
-    public string[] Formats { get; set; } = null;
+    public string[] Formats { get; set; }
 
     /// <summary>
     /// Decimal separator, if other than the used culture.
     /// </summary>
-    public string DecimalSeparator { get; set; } = null;
+    public string DecimalSeparator { get; set; }
 
     /// <summary>
     /// Thousands separator, if other than the used culture.
     /// </summary>
-    public string ThousandsSeparator { get; set; } = null;
+    public string ThousandsSeparator { get; set; }
 
     /// <summary>
     /// What to replace Text Qualifiers inside a text, when Text Qualifiers is set.

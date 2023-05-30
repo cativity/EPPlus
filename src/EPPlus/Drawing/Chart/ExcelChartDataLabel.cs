@@ -26,7 +26,7 @@ namespace OfficeOpenXml.Drawing.Chart;
 public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
 {
     internal ExcelChart _chart;
-    internal string _nodeName;
+    //internal string _nodeName;
     private string _nsPrefix;
     private readonly string _formatPath;
     private readonly string _sourceLinkedPath;
@@ -34,7 +34,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
     internal ExcelChartDataLabel(ExcelChart chart, XmlNamespaceManager ns, XmlNode node, string nodeName, string nsPrefix)
         : base(ns, node)
     {
-        this._nodeName = nodeName;
+        //this._nodeName = nodeName;
         this._chart = chart;
         this._nsPrefix = nsPrefix;
         this._formatPath = $"{nsPrefix}:numFmt/@formatCode";
@@ -118,7 +118,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         set { this.SetXmlNodeBool(this._sourceLinkedPath, value); }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access fill properties
@@ -128,7 +128,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access border properties
@@ -145,7 +145,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -162,7 +162,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -172,7 +172,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access font properties
@@ -212,7 +212,7 @@ public abstract class ExcelChartDataLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties

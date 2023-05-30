@@ -40,7 +40,7 @@ public class TableSortOptions : SortOptionsBase
         }
     }
 
-    private TableSortLayer _sortLayer = null;
+    private TableSortLayer _sortLayer;
     private readonly ExcelTable _table;
     private readonly Dictionary<string, int> _columnNameIndexes;
 

@@ -84,7 +84,7 @@ public class ExcelProtection : XmlHelper
         set { this.SetXmlNodeBool(lockRevisionPath, value, false); }
     }
 
-    ExcelWriteProtection _writeProtection = null;
+    ExcelWriteProtection _writeProtection;
 
     /// <summary>
     /// File sharing settings for the workbook.

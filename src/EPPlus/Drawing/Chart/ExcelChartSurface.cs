@@ -54,7 +54,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access fill properties
@@ -64,7 +64,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access border properties
@@ -74,7 +74,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
         get { return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -87,7 +87,7 @@ public class ExcelChartSurface : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

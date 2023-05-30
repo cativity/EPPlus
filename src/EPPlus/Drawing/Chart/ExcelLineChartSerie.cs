@@ -38,7 +38,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
     {
     }
 
-    ExcelChartSerieDataLabel _DataLabel = null;
+    ExcelChartSerieDataLabel _DataLabel;
 
     /// <summary>
     /// Datalabels
@@ -56,7 +56,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
         get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
 
-    ExcelChartMarker _chartMarker = null;
+    ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
@@ -93,7 +93,7 @@ public sealed class ExcelLineChartSerie : ExcelChartSerieWithErrorBars, IDrawing
         set { this.SetXmlNodeBool(smoothPath, value); }
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

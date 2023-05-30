@@ -407,7 +407,7 @@ public class ExcelRichText : XmlHelper
         }
     }
 
-    ExcelRichTextColor _colorSettings = null;
+    ExcelRichTextColor _colorSettings;
 
     /// <summary>
     /// Color settings.

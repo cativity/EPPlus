@@ -35,7 +35,7 @@ public class ExcelDxfColor : DxfStyleBase
         this._styleClass = styleClass;
     }
 
-    eThemeSchemeColor? _theme = null;
+    eThemeSchemeColor? _theme;
 
     /// <summary>
     /// Gets or sets a theme color

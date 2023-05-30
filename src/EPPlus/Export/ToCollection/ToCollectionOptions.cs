@@ -43,7 +43,7 @@ public class ToCollectionRangeOptions : ToCollectionOptions
     /// See also: <seealso cref="ToCollectionOptions.SetCustomHeaders(string[])"/>
     /// <seealso cref="DataStartRow"/>
     /// </summary>
-    public int? HeaderRow { get; set; } = null;
+    public int? HeaderRow { get; set; }
 
     /// <summary>
     /// The data start row in the range.
@@ -71,7 +71,7 @@ public abstract class ToCollectionOptions
     /// An array of column headers. If set, used instead of the header row. 
     /// <see cref="SetCustomHeaders(string[])"/>
     /// </summary>
-    internal string[] Headers { get; private set; } = null;
+    internal string[] Headers { get; private set; }
 
     /// <summary>
     /// Sets custom headers.  If set, used instead of the header row. 

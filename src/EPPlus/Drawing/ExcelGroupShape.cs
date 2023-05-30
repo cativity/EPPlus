@@ -315,7 +315,7 @@ public class ExcelGroupShape : ExcelDrawing
         }
     }
 
-    ExcelDrawingsGroup _groupDrawings = null;
+    ExcelDrawingsGroup _groupDrawings;
 
     /// <summary>
     /// A collection of shapes
@@ -438,28 +438,28 @@ public class ExcelGroupShape : ExcelDrawing
         this.xFrmChildSize.Height = (long)(this._height * EMU_PER_PIXEL);
     }
 
-    ExcelDrawingCoordinate _xFrmPosition = null;
+    ExcelDrawingCoordinate _xFrmPosition;
 
     internal ExcelDrawingCoordinate xFrmPosition
     {
         get { return this._xFrmPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:off")); }
     }
 
-    ExcelDrawingSize _xFrmSize = null;
+    ExcelDrawingSize _xFrmSize;
 
     internal ExcelDrawingSize xFrmSize
     {
         get { return this._xFrmSize ??= new ExcelDrawingSize(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:ext")); }
     }
 
-    ExcelDrawingCoordinate _xFrmChildPosition = null;
+    ExcelDrawingCoordinate _xFrmChildPosition;
 
     internal ExcelDrawingCoordinate xFrmChildPosition
     {
         get { return this._xFrmChildPosition ??= new ExcelDrawingCoordinate(this.NameSpaceManager, this.GetNode("xdr:grpSp/xdr:grpSpPr/a:xfrm/a:chOff")); }
     }
 
-    ExcelDrawingSize _xFrmChildSize = null;
+    ExcelDrawingSize _xFrmChildSize;
 
     internal ExcelDrawingSize xFrmChildSize
     {

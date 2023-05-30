@@ -398,7 +398,7 @@ public enum ePageOrder
 public sealed class ExcelPrinterSettings : XmlHelper
 {
     ExcelWorksheet _ws;
-    bool _marginsCreated = false;
+    bool _marginsCreated;
 
     internal ExcelPrinterSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws)
         : base(ns, topNode)

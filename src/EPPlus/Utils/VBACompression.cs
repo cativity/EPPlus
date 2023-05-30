@@ -47,7 +47,7 @@ internal static class VBACompression
 
             if (chunk == null || chunk.Length == 0)
             {
-                header = 4096 | 0x600; //B=011 A=0
+                //header = 4096 | 0x600; //B=011 A=0
             }
             else
             {

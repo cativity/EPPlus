@@ -44,7 +44,7 @@ public class ExcelProtectedRange : XmlHelper
         set { this.SetXmlNodeString("@name", value); }
     }
 
-    ExcelAddress _address = null;
+    ExcelAddress _address;
 
     /// <summary>
     /// The address of the protected range

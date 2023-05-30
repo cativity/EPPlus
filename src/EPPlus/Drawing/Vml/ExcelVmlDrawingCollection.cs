@@ -398,7 +398,7 @@ internal class ExcelVmlDrawingCollection : ExcelVmlDrawingBaseCollection, IEnume
         }
     }
 
-    int _nextID = 0;
+    int _nextID;
 
     /// <summary>
     /// returns the next drawing id.

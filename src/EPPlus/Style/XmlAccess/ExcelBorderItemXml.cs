@@ -81,7 +81,7 @@ public sealed class ExcelBorderItemXml : StyleXmlHelper
         }
     }
 
-    ExcelColorXml _color = null;
+    ExcelColorXml _color;
     const string _colorPath = "d:color";
 
     /// <summary>

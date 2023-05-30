@@ -29,11 +29,11 @@ public class ExcelThreadedCommentCollection : XmlHelper, IEnumerable<ExcelThread
     internal ExcelThreadedCommentCollection(ExcelWorksheet worksheet, XmlNode topNode)
         : base(worksheet.NameSpaceManager, topNode)
     {
-        this._package = worksheet._package;
+        //this._package = worksheet._package;
         this.Worksheet = worksheet;
     }
 
-    private readonly ExcelPackage _package;
+    //private readonly ExcelPackage _package;
 
     internal Uri Uri { get; set; }
 

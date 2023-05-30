@@ -559,7 +559,7 @@ public class ParallelDeflateOutputStream : Stream
             mustWait = false;
 
             // use current buffer, or get a new buffer to fill
-            int ix = -1;
+            int ix;
 
             if (this._currentlyFilling >= 0)
             {
@@ -644,14 +644,14 @@ public class ParallelDeflateOutputStream : Stream
         // and then stop.
         byte[] buffer = new byte[128];
         ZlibCodec? compressor = new ZlibCodec();
-        int rc = compressor.InitializeDeflate(this._compressLevel, false);
+        _ = compressor.InitializeDeflate(this._compressLevel, false);
         compressor.InputBuffer = null;
         compressor.NextIn = 0;
         compressor.AvailableBytesIn = 0;
         compressor.OutputBuffer = buffer;
         compressor.NextOut = 0;
         compressor.AvailableBytesOut = buffer.Length;
-        rc = compressor.Deflate(FlushType.Finish);
+        int rc = compressor.Deflate(FlushType.Finish);
 
         if (rc != ZlibConstants.Z_STREAM_END && rc != ZlibConstants.Z_OK)
         {

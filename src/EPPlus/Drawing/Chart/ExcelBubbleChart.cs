@@ -136,7 +136,7 @@ public sealed class ExcelBubbleChart : ExcelChartStandard, IDrawingDataLabel
         set { this._chartXmlHelper.SetXmlNodeString(this.SIZEREPRESENTS_PATH, value == eSizeRepresents.Width ? "w" : "area"); }
     }
 
-    ExcelChartDataLabel _dataLabel = null;
+    ExcelChartDataLabel _dataLabel;
 
     /// <summary>
     /// Access to datalabel properties

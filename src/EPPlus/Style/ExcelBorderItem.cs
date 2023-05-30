@@ -42,7 +42,7 @@ public sealed class ExcelBorderItem : StyleBase
         set { _ = this._ChangedEvent(this, new StyleChangeEventArgs(this._cls, eStyleProperty.Style, value, this._positionID, this._address)); }
     }
 
-    ExcelColor _color = null;
+    ExcelColor _color;
 
     /// <summary>
     /// The color of the border

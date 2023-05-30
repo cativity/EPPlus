@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -699,7 +700,7 @@ public class ExcelAddressBase : ExcelCellBase
 
     #endregion
 
-    internal ExcelCellAddress _start = null;
+    internal ExcelCellAddress _start;
 
     /// <summary>
     /// Gets the row and column of the top left cell.
@@ -710,7 +711,7 @@ public class ExcelAddressBase : ExcelCellBase
         get { return this._start ??= new ExcelCellAddress(this._fromRow, this._fromCol, this._fromRowFixed, this._fromColFixed); }
     }
 
-    internal ExcelCellAddress _end = null;
+    internal ExcelCellAddress _end;
 
     /// <summary>
     /// Gets the row and column of the bottom right cell.
@@ -746,7 +747,7 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
-    internal ExcelTableAddress _table = null;
+    internal ExcelTableAddress _table;
 
     /// <summary>
     /// If the address is refering a table, this property contains additional information 
@@ -878,7 +879,7 @@ public class ExcelAddressBase : ExcelCellBase
         get { return this._ws; }
     }
 
-    internal List<ExcelAddressBase> _addresses = null;
+    internal List<ExcelAddressBase> _addresses;
 
     internal virtual List<ExcelAddressBase> Addresses
     {
@@ -1460,6 +1461,9 @@ public class ExcelAddressBase : ExcelCellBase
         }
     }
 
+    [SuppressMessage("ReSharper", "NotAccessedVariable", Justification = "Under development")]
+    [SuppressMessage("ReSharper", "RedundantAssignment", Justification = "Under development")]
+    [SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "Under development")]
     internal ExcelAddressBase Insert(ExcelAddressBase address, eShiftTypeInsert Shift)
     {
         //Before or after, no change
@@ -1470,8 +1474,8 @@ public class ExcelAddressBase : ExcelCellBase
 
         if (Shift == eShiftTypeInsert.Right)
         {
-
             string retAddress;
+
             if (address._fromRow > this._fromRow)
             {
                 retAddress = GetAddress(this._fromRow,

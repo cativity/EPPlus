@@ -35,7 +35,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Dk1Path = "a:dk1";
-    ExcelDrawingThemeColorManager _dk1 = null;
+    ExcelDrawingThemeColorManager _dk1;
 
     /// <summary>
     /// Dark 1 theme color
@@ -90,7 +90,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Dk2Path = "a:dk2";
-    ExcelDrawingThemeColorManager _dk2 = null;
+    ExcelDrawingThemeColorManager _dk2;
 
     /// <summary>
     /// Dark 2 theme color
@@ -101,7 +101,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string lt1Path = "a:lt1";
-    ExcelDrawingThemeColorManager _lt1 = null;
+    ExcelDrawingThemeColorManager _lt1;
 
     /// <summary>
     /// Light 1 theme color
@@ -112,7 +112,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string lt2Path = "a:lt2";
-    ExcelDrawingThemeColorManager _lt2 = null;
+    ExcelDrawingThemeColorManager _lt2;
 
     /// <summary>
     /// Light 2 theme color
@@ -123,7 +123,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent1Path = "a:accent1";
-    ExcelDrawingThemeColorManager _accent1 = null;
+    ExcelDrawingThemeColorManager _accent1;
 
     /// <summary>
     /// Accent 1 theme color
@@ -134,7 +134,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent2Path = "a:accent2";
-    ExcelDrawingThemeColorManager _accent2 = null;
+    ExcelDrawingThemeColorManager _accent2;
 
     /// <summary>
     /// Accent 2 theme color
@@ -145,7 +145,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent3Path = "a:accent3";
-    ExcelDrawingThemeColorManager _accent3 = null;
+    ExcelDrawingThemeColorManager _accent3;
 
     /// <summary>
     /// Accent 3 theme color
@@ -156,7 +156,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent4Path = "a:accent4";
-    ExcelDrawingThemeColorManager _accent4 = null;
+    ExcelDrawingThemeColorManager _accent4;
 
     /// <summary>
     /// Accent 4 theme color
@@ -167,7 +167,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent5Path = "a:accent5";
-    ExcelDrawingThemeColorManager _accent5 = null;
+    ExcelDrawingThemeColorManager _accent5;
 
     /// <summary>
     /// Accent 5 theme color
@@ -178,7 +178,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string Accent6Path = "a:accent6";
-    ExcelDrawingThemeColorManager _accent6 = null;
+    ExcelDrawingThemeColorManager _accent6;
 
     /// <summary>
     /// Accent 6 theme color
@@ -189,7 +189,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string HlinkPath = "a:hlink";
-    ExcelDrawingThemeColorManager _hlink = null;
+    ExcelDrawingThemeColorManager _hlink;
 
     /// <summary>
     /// Hyperlink theme color
@@ -200,7 +200,7 @@ public class ExcelColorScheme : XmlHelper
     }
 
     const string FolHlinkPath = "a:folHlink";
-    ExcelDrawingThemeColorManager _folHlink = null;
+    ExcelDrawingThemeColorManager _folHlink;
 
     /// <summary>
     /// Followed hyperlink theme color

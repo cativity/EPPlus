@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Theme;
 /// </summary>
 public class ExcelTheme : ExcelThemeBase
 {
-    ExcelWorkbook _workbook;
+    //ExcelWorkbook _workbook;
 
     /// <summary>
     /// The name of the theme
@@ -43,6 +43,6 @@ public class ExcelTheme : ExcelThemeBase
     internal ExcelTheme(ExcelWorkbook workbook, ZipPackageRelationship rel)
         : base(workbook._package, workbook.NameSpaceManager, rel, "a:themeElements/")
     {
-        this._workbook = workbook;
+        //this._workbook = workbook;
     }
 }

@@ -30,14 +30,14 @@ public class ExcelChartSeries<T> : IEnumerable<T>
 {
     internal List<ExcelChartSerie> _list;
     internal ExcelChart _chart;
-    XmlNode _node;
+    //XmlNode _node;
     XmlNamespaceManager _ns;
 
     internal void Init(ExcelChart chart, XmlNamespaceManager ns, XmlNode chartNode, bool isPivot, List<ExcelChartSerie> list = null)
     {
         this._ns = ns;
         this._chart = chart;
-        this._node = chartNode;
+        //this._node = chartNode;
         this._isPivot = isPivot;
 
         if (list == null)

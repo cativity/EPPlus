@@ -33,7 +33,7 @@ public class ExcelChartExSerieDataLabel : ExcelChartExDataLabel
         this.Position = eLabelPosition.Center;
     }
 
-    ExcelChartExDataLabelCollection _dataLabels = null;
+    ExcelChartExDataLabelCollection _dataLabels;
 
     /// <summary>
     /// Individually formatted data labels.

@@ -40,7 +40,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// Sinalize that we are in a Cnaging Priorities opeartion so that we won't enter
     /// a recursive loop.
     /// </summary>
-    private static bool _changingPriority = false;
+    private static bool _changingPriority;
 
     #endregion Private Properties
 
@@ -304,7 +304,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
         set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.DxfIdAttribute, value == int.MinValue ? string.Empty : value.ToString(), true); }
     }
 
-    internal ExcelDxfStyleConditionalFormatting _style = null;
+    internal ExcelDxfStyleConditionalFormatting _style;
 
     /// <summary>
     /// The style
@@ -522,7 +522,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
         }
     }
 
-    private ExcelConditionalFormattingAsType _as = null;
+    private ExcelConditionalFormattingAsType _as;
 
     /// <summary>
     /// Provides access to type conversion for all conditional formatting rules.

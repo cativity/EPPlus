@@ -22,5 +22,5 @@ public class FillListParams : FillParams
     /// The start index in the list. 
     /// <seealso cref="FillParams.Direction"/>
     /// </summary>
-    public int StartIndex { get; set; } = 0;
+    public int StartIndex { get; set; }
 }

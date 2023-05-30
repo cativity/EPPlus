@@ -80,7 +80,7 @@ public abstract class Expression
 
     public virtual Expression MergeWithNext()
     {
-        Expression? expression = this;
+        Expression? expression;
 
         if (this.Next != null && this.Operator != null)
         {

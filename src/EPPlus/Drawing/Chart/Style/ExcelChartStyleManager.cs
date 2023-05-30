@@ -1339,7 +1339,7 @@ public class ExcelChartStyleManager : XmlHelper
     /// <summary>
     /// If the chart has a different theme than the theme in the workbook, this property defines that theme.
     /// </summary>
-    public ExcelThemeOverride ThemeOverride { get; private set; } = null;
+    public ExcelThemeOverride ThemeOverride { get; private set; }
 
     /// <summary>
     /// The chart style xml document

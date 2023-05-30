@@ -97,14 +97,13 @@ public class ExcelPackageAsyncTest : TestBase
     {
         AssertIfNotExists("AsyncRead.xlsx");
         using ExcelPackage? pck = await OpenPackageAsync("AsyncRead.xlsx").ConfigureAwait(false);
-        ExcelWorksheet? ws = TryGetWorksheet(pck, "AsyncSave");
 
         byte[]? b = await pck.GetAsByteArrayAsync();
         MemoryStream? ms = new MemoryStream(b);
 
         ExcelPackage? pck2 = new ExcelPackage();
         await pck2.LoadAsync(ms);
-        ws = TryGetWorksheet(pck2, "AsyncSave");
+        ExcelWorksheet? ws = TryGetWorksheet(pck2, "AsyncSave");
         Assert.AreEqual($"A1:D{noRows}", ws.Dimension.Address);
     }
 

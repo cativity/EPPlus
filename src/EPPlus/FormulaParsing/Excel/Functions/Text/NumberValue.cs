@@ -31,7 +31,7 @@ internal class NumberValue : ExcelFunction
     private string _decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
     private string _groupSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator;
     private string _arg = string.Empty;
-    private int _nPercentage = 0;
+    private int _nPercentage;
 
     public override CompileResult Execute(IEnumerable<FunctionArgument> arguments, ParsingContext context)
     {

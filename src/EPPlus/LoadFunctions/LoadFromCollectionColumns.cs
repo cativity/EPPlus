@@ -212,7 +212,7 @@ internal class LoadFromCollectionColumns<T>
             result.AddRange(members.Where(x => !x.HasPropertyOfType<EpplusIgnore>())
                                    .Select(member =>
                                    {
-                                       string? h = default(string);
+                                       string? h;
                                        string? mp = default(string);
 
                                        if (!string.IsNullOrEmpty(path))

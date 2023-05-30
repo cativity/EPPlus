@@ -71,7 +71,7 @@ public class ExcelStyleCollection<T> : IEnumerable<T>
 
     internal List<T> _list = new List<T>();
     internal Dictionary<string, int> _dic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-    internal int NextId = 0;
+    internal int NextId;
 
     #region IEnumerable<T> Members
 

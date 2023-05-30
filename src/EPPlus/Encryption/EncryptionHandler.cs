@@ -144,8 +144,8 @@ internal class EncryptedPackageHandler
         //Get the password key.
         HashAlgorithm? hashProvider = GetHashProvider(encryptionInfo.KeyEncryptors[0]);
         byte[]? baseHash = GetPasswordHashSpinPrepending(hashProvider, encr.SaltValue, encryption.Password, encr.SpinCount, encr.HashSize);
-        byte[]? hashFinal = GetFinalHash(hashProvider, this.BlockKey_KeyValue, baseHash);
-        hashFinal = FixHashSize(hashFinal, encr.KeyBits / 8);
+        //byte[]? hashFinal = GetFinalHash(hashProvider, this.BlockKey_KeyValue, baseHash);
+        //hashFinal = FixHashSize(hashFinal, encr.KeyBits / 8);
 
         byte[]? encrData = EncryptDataAgile(package, encryptionInfo, hashProvider);
 

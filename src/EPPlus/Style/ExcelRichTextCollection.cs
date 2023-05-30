@@ -27,7 +27,7 @@ namespace OfficeOpenXml.Style;
 public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
 {
     List<ExcelRichText> _list = new List<ExcelRichText>();
-    internal ExcelRangeBase _cells = null;
+    internal ExcelRangeBase _cells;
     internal ExcelWorksheet _ws;
 
     internal ExcelRichTextCollection(XmlNamespaceManager ns, XmlNode topNode, ExcelWorksheet ws)

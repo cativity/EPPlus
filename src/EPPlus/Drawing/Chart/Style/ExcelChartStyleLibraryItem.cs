@@ -31,7 +31,7 @@ public class ExcelChartStyleLibraryItem
     /// </summary>
     public string XmlString { get; set; }
 
-    XmlDocument _xmlDoc = null;
+    XmlDocument _xmlDoc;
 
     /// <summary>
     /// The style xml document

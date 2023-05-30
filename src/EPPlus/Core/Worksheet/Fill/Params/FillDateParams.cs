@@ -25,12 +25,12 @@ public class FillDateParams : FillParams
     /// The start value. If null, the first value in the row/column is used. 
     /// <seealso cref="FillParams.Direction"/>
     /// </summary>
-    public DateTime? StartValue { get; set; } = null;
+    public DateTime? StartValue { get; set; }
 
     /// <summary>
     /// When this value is exceeded the fill stops
     /// </summary>
-    public DateTime? EndValue { get; set; } = null;
+    public DateTime? EndValue { get; set; }
 
     /// <summary>
     /// The value to add for each step. 

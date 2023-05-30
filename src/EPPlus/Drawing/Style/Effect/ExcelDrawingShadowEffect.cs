@@ -30,7 +30,7 @@ public abstract class ExcelDrawingShadowEffect : ExcelDrawingShadowEffectBase
         this._directionPath = string.Format(this._directionPath, path);
     }
 
-    ExcelDrawingColorManager _color = null;
+    ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the shadow effect

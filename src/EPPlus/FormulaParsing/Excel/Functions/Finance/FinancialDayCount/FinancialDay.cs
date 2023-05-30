@@ -138,7 +138,7 @@ internal abstract class FinancialDay
     {
         short year = this.Year;
         short actualDay = day;
-        short month = this.Month;
+        short month;
 
         if (this.Month - months < 1)
         {

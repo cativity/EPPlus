@@ -27,7 +27,7 @@ public class ExcelPackageSettings
     /// </summary>
     public bool DoGarbageCollectOnDispose { get; set; } = true;
 
-    private ExcelTextSettings _textSettings = null;
+    private ExcelTextSettings _textSettings;
 
     /// <summary>
     /// Manage text settings such as measurement of text for the Autofit functions.
@@ -37,7 +37,7 @@ public class ExcelPackageSettings
         get { return this._textSettings ??= new ExcelTextSettings(); }
     }
 
-    private ExcelImageSettings _imageSettings = null;
+    private ExcelImageSettings _imageSettings;
 
     /// <summary>
     /// Set the handler for getting image bounds. 

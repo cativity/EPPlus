@@ -25,8 +25,8 @@ namespace OfficeOpenXml.Attributes;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
 public class EpplusFormulaTableColumnAttribute : EpplusTableColumnAttributeBase
 {
-    private string _formula = null;
-    private string _formulaR1C1 = null;
+    private string _formula;
+    private string _formulaR1C1;
 
     /// <summary>
     /// The spreadsheet formula (don't include the leading '='). If you use the {row} placeholder in the formula it will be replaced with the actual row of each cell in the column.

@@ -82,7 +82,7 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
         set { this.SetXmlNodeString("c:invertIfNegative", value.GetStringValueForXml()); }
     }
 
-    ExcelChartMarker _chartMarker = null;
+    ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
@@ -92,7 +92,7 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
         get { return this._chartMarker ??= new ExcelChartMarker(this._chart, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to fill properties
@@ -102,7 +102,7 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _line = null;
+    ExcelDrawingBorder _line;
 
     /// <summary>
     /// A reference to line properties
@@ -112,7 +112,7 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
         get { return this._line ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
 
-    private ExcelDrawingEffectStyle _effect = null;
+    private ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// A reference to line properties
@@ -125,7 +125,7 @@ public class ExcelChartDataPoint : XmlHelper, IDisposable, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

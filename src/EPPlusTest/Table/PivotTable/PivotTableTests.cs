@@ -84,7 +84,7 @@ public class PivotTableTests : TestBase
         p1.Save();
 
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
-        wsData = p2.Workbook.Worksheets[0];
+        _ = p2.Workbook.Worksheets[0];
         wsPivot = p2.Workbook.Worksheets[1];
 
         pivotTable1 = wsPivot.PivotTables[0];
@@ -120,7 +120,7 @@ public class PivotTableTests : TestBase
         p1.Save();
 
         using ExcelPackage? p2 = new ExcelPackage(p1.Stream);
-        wsData = p2.Workbook.Worksheets[0];
+        _ = p2.Workbook.Worksheets[0];
         wsPivot = p2.Workbook.Worksheets[1];
 
         pivotTable1 = wsPivot.PivotTables[0];

@@ -28,7 +28,7 @@ public class ExcelDrawingScene3DCamera : XmlHelper
     /// <summary>
     /// The XPath
     /// </summary>
-    internal protected string _path;
+    //internal protected string _path;
 
     private readonly string _fieldOfViewAnglePath = "{0}/@pov";
     private readonly string _typePath = "{0}/@prst";
@@ -40,7 +40,7 @@ public class ExcelDrawingScene3DCamera : XmlHelper
     internal ExcelDrawingScene3DCamera(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent)
         : base(nameSpaceManager, topNode)
     {
-        this._path = path;
+        //this._path = path;
         this.SchemaNodeOrder = schemaNodeOrder;
         this._initParent = initParent;
         this._rotationPath = string.Format(this._rotationPath, path);
@@ -49,7 +49,7 @@ public class ExcelDrawingScene3DCamera : XmlHelper
         this._zoomPath = string.Format(this._zoomPath, path);
     }
 
-    ExcelDrawingSphereCoordinate _rotation = null;
+    ExcelDrawingSphereCoordinate _rotation;
 
     /// <summary>
     /// Defines a rotation in 3D space

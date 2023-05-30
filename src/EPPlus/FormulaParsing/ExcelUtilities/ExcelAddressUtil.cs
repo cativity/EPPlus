@@ -45,7 +45,7 @@ public static class ExcelAddressUtil
                 return false;
             }
         }
-        else if ((ix = token.IndexOf('!')) > 1)
+        else if (token.IndexOf('!') > 1)
         {
             if (token.IndexOfAny(SheetNameInvalidChars, 0, token.IndexOf('!')) > 0)
             {

@@ -70,7 +70,7 @@ public class ExcelThreadedComment : XmlHelper
         set { this.SetXmlNodeString("@ref", value); }
     }
 
-    private ExcelCellAddress _cellAddress = null;
+    private ExcelCellAddress _cellAddress;
 
     /// <summary>
     /// The location of the threaded comment

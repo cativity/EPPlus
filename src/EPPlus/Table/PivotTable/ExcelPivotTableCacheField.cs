@@ -91,7 +91,7 @@ public class ExcelPivotTableCacheField : XmlHelper
     /// </summary>
     public EPPlusReadOnlyList<object> GroupItems { get; set; } = new EPPlusReadOnlyList<object>();
 
-    internal Dictionary<object, int> _cacheLookup = null;
+    internal Dictionary<object, int> _cacheLookup;
 
     /// <summary>
     /// The type of date grouping

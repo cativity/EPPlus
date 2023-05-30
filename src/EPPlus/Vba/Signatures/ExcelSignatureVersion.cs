@@ -36,7 +36,7 @@ public class ExcelSignatureVersion
     /// A boolean indicating if a signature for the VBA project will be created when the package is saved.
     /// Default is true
     /// </summary>
-    public bool CreateSignatureOnSave { get; set; } = true;
+    public bool CreateSignatureOnSave { get; set; }
 
     /// <summary>
     /// The verifyer

@@ -1189,7 +1189,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Border
@@ -1206,7 +1206,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to Fill properties
@@ -1223,7 +1223,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -1240,7 +1240,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -1256,7 +1256,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
@@ -1273,7 +1273,7 @@ public class ExcelChartStandard : ExcelChart
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -1397,7 +1397,7 @@ public class ExcelChartStandard : ExcelChart
         this.Series.AddPivotSerie(pivotTableSource);
     }
 
-    ExcelChartAxisStandard[] _axisStandard = null;
+    ExcelChartAxisStandard[] _axisStandard;
 
     public new ExcelChartAxisStandard[] Axis
     {

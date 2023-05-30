@@ -164,7 +164,7 @@ public class LoadSaveTests : TestBase
             ws.Cells["B2:D4"].SaveToText(ms, new ExcelOutputTextFormat() { TextQualifier = '\"' });
         }
 
-        string? result = "";
+        string? result;
         ms.Position = 0;
 
         using (StreamReader? reader = new StreamReader(ms))

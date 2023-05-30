@@ -174,7 +174,7 @@ internal class PivotTableCacheInternal : XmlHelper
         set { this.SetXmlNodeString("@r:id", value, true); }
     }
 
-    List<ExcelPivotTableCacheField> _fields = null;
+    List<ExcelPivotTableCacheField> _fields;
 
     internal List<ExcelPivotTableCacheField> Fields
     {
@@ -448,7 +448,7 @@ internal class PivotTableCacheInternal : XmlHelper
                 if (fld.PageFieldSettings != null)
                 {
                     fld.PageFieldSettings.Index = ix;
-                    fld.PageFieldSettings._field = fld;
+                    //fld.PageFieldSettings._field = fld;
                 }
 
                 foreach (ExcelPivotTableAreaStyle s in f._pivotTable.Styles)

@@ -29,16 +29,16 @@ namespace OfficeOpenXml.Export.HtmlExport.Exporters
         internal HtmlRangeExporterAsyncBase(HtmlExportSettings settings, ExcelRangeBase range)
             : base(settings, range)
         {
-            this._settings = settings;
+            //this._settings = settings;
         }
 
         internal HtmlRangeExporterAsyncBase(HtmlExportSettings settings, EPPlusReadOnlyList<ExcelRangeBase> ranges)
             : base(settings, ranges)
         {
-            this._settings = settings;
+            //this._settings = settings;
         }
 
-        private readonly HtmlExportSettings _settings;
+        //private readonly HtmlExportSettings _settings;
 
         protected async Task RenderTableRowsAsync(ExcelRangeBase range,
                                                   EpplusHtmlWriter writer,

@@ -39,7 +39,7 @@ public class ExcelThemeEffectStyle : XmlHelper
         this._theme = theme;
     }
 
-    ExcelDrawingEffectStyle _effects = null;
+    ExcelDrawingEffectStyle _effects;
 
     /// <summary>
     /// Effects
@@ -56,7 +56,7 @@ public class ExcelThemeEffectStyle : XmlHelper
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D settings

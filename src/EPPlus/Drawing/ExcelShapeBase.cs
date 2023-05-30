@@ -114,7 +114,7 @@ public class ExcelShapeBase : ExcelDrawing
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access Fill properties
@@ -124,7 +124,7 @@ public class ExcelShapeBase : ExcelDrawing
         get { return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to Border propesties
@@ -134,7 +134,7 @@ public class ExcelShapeBase : ExcelDrawing
         get { return this._border ??= new ExcelDrawingBorder(this._drawings, this.NameSpaceManager, this.TopNode, this._borderPath, this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Drawing effect properties
@@ -147,7 +147,7 @@ public class ExcelShapeBase : ExcelDrawing
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// Defines 3D properties to apply to an object
@@ -157,7 +157,7 @@ public class ExcelShapeBase : ExcelDrawing
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, this._fillPath, this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingLineEnd _headEnd = null;
+    ExcelDrawingLineEnd _headEnd;
 
     /// <summary>
     /// Head line end
@@ -167,7 +167,7 @@ public class ExcelShapeBase : ExcelDrawing
         get { return this._headEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._headEndPath, this.InitSpPr); }
     }
 
-    ExcelDrawingLineEnd _tailEnd = null;
+    ExcelDrawingLineEnd _tailEnd;
 
     /// <summary>
     /// Tail line end
@@ -177,7 +177,7 @@ public class ExcelShapeBase : ExcelDrawing
         get { return this._tailEnd ??= new ExcelDrawingLineEnd(this.NameSpaceManager, this.TopNode, this._tailEndPath, this.InitSpPr); }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Font properties
@@ -193,7 +193,7 @@ public class ExcelShapeBase : ExcelDrawing
                 if (node == null)
                 {
                     this.Text = ""; //Creates the node p element
-                    node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
+                    //node = this.TopNode.SelectSingleNode(this._paragraphPath, this.NameSpaceManager);
                 }
 
                 this._font = new ExcelTextFont(this._drawings, this.NameSpaceManager, this.TopNode, this._fontPath, this.SchemaNodeOrder);
@@ -203,7 +203,7 @@ public class ExcelShapeBase : ExcelDrawing
         }
     }
 
-    bool isSpInit = false;
+    bool isSpInit;
 
     private void InitSpPr()
     {
@@ -236,7 +236,7 @@ public class ExcelShapeBase : ExcelDrawing
         set { this.SetXmlNodeBool(this._lockTextPath, value); }
     }
 
-    ExcelParagraphCollection _richText = null;
+    ExcelParagraphCollection _richText;
 
     internal static string[] _shapeNodeOrder = new string[]
     {
@@ -379,7 +379,7 @@ public class ExcelShapeBase : ExcelDrawing
         set { this.SetXmlNodeString(this._textVerticalPath, value.TranslateTextVerticalText()); }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties.

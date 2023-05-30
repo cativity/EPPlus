@@ -43,7 +43,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
     /// <summary>
     /// The fill type node.
     /// </summary>
-    internal protected XmlNode _fillTypeNode = null;
+    internal protected XmlNode _fillTypeNode;
 
     internal Action _initXml;
 
@@ -222,7 +222,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
         }
     }
 
-    bool isSpInit = false;
+    bool isSpInit;
 
     private void InitSpPr(eFillStyle style)
     {
@@ -258,7 +258,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
         this.isSpInit = true;
     }
 
-    internal eFillStyle? _style = null;
+    internal eFillStyle? _style;
 
     /// <summary>
     /// Fill style
@@ -329,7 +329,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
         }
     }
 
-    private ExcelDrawingSolidFill _solidFill = null;
+    private ExcelDrawingSolidFill _solidFill;
 
     /// <summary>
     /// Reference solid fill properties
@@ -348,7 +348,7 @@ public class ExcelDrawingFillBasic : XmlHelper, IDisposable
         }
     }
 
-    private ExcelDrawingGradientFill _gradientFill = null;
+    private ExcelDrawingGradientFill _gradientFill;
 
     /// <summary>
     /// Reference gradient fill properties

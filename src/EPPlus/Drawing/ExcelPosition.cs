@@ -22,15 +22,15 @@ public class ExcelPosition : XmlHelper
 {
     internal delegate void SetWidthCallback();
 
-    XmlNode _node;
-    XmlNamespaceManager _ns;
+    //XmlNode _node;
+    //XmlNamespaceManager _ns;
     SetWidthCallback _setWidthCallback;
 
     internal ExcelPosition(XmlNamespaceManager ns, XmlNode node, SetWidthCallback setWidthCallback)
         : base(ns, node)
     {
-        this._node = node;
-        this._ns = ns;
+        //this._node = node;
+        //this._ns = ns;
         this._setWidthCallback = setWidthCallback;
         this.Load();
     }

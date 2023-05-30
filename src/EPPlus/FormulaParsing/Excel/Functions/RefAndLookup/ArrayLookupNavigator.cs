@@ -23,8 +23,8 @@ namespace OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 internal class ArrayLookupNavigator : LookupNavigator
 {
     private readonly FunctionArgument[] _arrayData;
-    private int _index = 0;
-    private object _currentValue;
+    private int _index;
+    //private object _currentValue;
 
     public ArrayLookupNavigator(LookupDirection direction, LookupArguments arguments, ParsingContext parsingContext)
         : base(direction, arguments, parsingContext)
@@ -42,7 +42,7 @@ internal class ArrayLookupNavigator : LookupNavigator
             throw new ExcelErrorValueException(eErrorType.Ref);
         }
 
-        this.SetCurrentValue();
+        //this.SetCurrentValue();
     }
 
     public override int Index
@@ -50,10 +50,10 @@ internal class ArrayLookupNavigator : LookupNavigator
         get { return this._index; }
     }
 
-    private void SetCurrentValue()
-    {
-        this._currentValue = this._arrayData[this._index];
-    }
+    //private void SetCurrentValue()
+    //{
+    //    this._currentValue = this._arrayData[this._index];
+    //}
 
     private bool HasNext()
     {
@@ -79,7 +79,7 @@ internal class ArrayLookupNavigator : LookupNavigator
             this._index++;
         }
 
-        this.SetCurrentValue();
+        //this.SetCurrentValue();
 
         return true;
     }

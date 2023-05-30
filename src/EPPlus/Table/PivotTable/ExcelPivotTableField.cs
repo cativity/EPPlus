@@ -35,7 +35,7 @@ namespace OfficeOpenXml.Table.PivotTable;
 public class ExcelPivotTableField : XmlHelper
 {
     internal ExcelPivotTable _pivotTable;
-    internal ExcelPivotTableCacheField _cacheField = null;
+    internal ExcelPivotTableCacheField _cacheField;
 
     internal ExcelPivotTableField(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTable table, int index, int baseIndex)
         : base(ns, topNode)
@@ -555,7 +555,7 @@ public class ExcelPivotTableField : XmlHelper
     //{
 
     //}
-    internal ExcelPivotTablePageFieldSettings _pageFieldSettings = null;
+    internal ExcelPivotTablePageFieldSettings _pageFieldSettings;
 
     /// <summary>
     /// Page field settings
@@ -617,7 +617,7 @@ public class ExcelPivotTableField : XmlHelper
 
     #endregion
 
-    internal ExcelPivotTableFieldItemsCollection _items = null;
+    internal ExcelPivotTableFieldItemsCollection _items;
 
     /// <summary>
     /// Pivottable field Items. Used for grouping.
@@ -706,7 +706,7 @@ public class ExcelPivotTableField : XmlHelper
         return this._slicer;
     }
 
-    ExcelPivotTableSlicer _slicer = null;
+    ExcelPivotTableSlicer _slicer;
 
     /// <summary>
     /// A slicer attached to the pivot table field.
@@ -1037,7 +1037,7 @@ public class ExcelPivotTableField : XmlHelper
         return sb.ToString();
     }
 
-    ExcelPivotTableFieldFilterCollection _filters = null;
+    ExcelPivotTableFieldFilterCollection _filters;
 
     /// <summary>
     /// Filters used on the pivot table field.

@@ -356,7 +356,7 @@ internal class CellStore<T> : IDisposable
         lock (this._columnIndex)
         {
             int colPos = this.GetColumnPosition(column);
-            colPos = this.SetValueColumn(row, column, value, colPos);
+            _ = this.SetValueColumn(row, column, value, colPos);
         }
     }
 
@@ -598,7 +598,7 @@ internal class CellStore<T> : IDisposable
             if (page.StartsWithin(fromRow, toRow))
             {
                 //The deleted range starts within the page
-                pagePos = DeleteRows(column, pagePos, fromRow, rows, shift);
+                _ = DeleteRows(column, pagePos, fromRow, rows, shift);
             }
             else if (column.PageCount > pagePos + 1)
             {
@@ -606,7 +606,7 @@ internal class CellStore<T> : IDisposable
 
                 if (nextPage.StartsWithin(fromRow, toRow))
                 {
-                    pagePos = DeleteRows(column, pagePos + 1, fromRow, rows, shift);
+                    _ = DeleteRows(column, pagePos + 1, fromRow, rows, shift);
                 }
                 else if (shift)
                 {

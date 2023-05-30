@@ -87,7 +87,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to the fill properties
@@ -105,7 +105,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// A reference to border properties
@@ -123,7 +123,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -145,7 +145,7 @@ public class ExcelChartMarker : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

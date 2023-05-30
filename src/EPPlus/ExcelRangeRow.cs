@@ -205,7 +205,7 @@ public class ExcelRangeRow : IExcelRow, IEnumerable<ExcelRangeRow>, IEnumerator<
         }
     }
 
-    internal string _styleName = "";
+    //internal string _styleName = "";
 
     /// <summary>
     /// Sets the style for the entire row using a style name.

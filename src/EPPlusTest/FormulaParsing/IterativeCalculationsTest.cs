@@ -13,19 +13,19 @@ namespace EPPlusTest.FormulaParsing;
 public class IterativeCalculationsTest
 {
     private ExcelPackage _package;
-    private ExcelWorksheet _sheet;
+    //private ExcelWorksheet _sheet;
 
     [TestInitialize]
     public void Initialize()
     {
         this._package = new ExcelPackage();
-        this._sheet = this._package.Workbook.Worksheets.Add("test");
+        //this._sheet = this._package.Workbook.Worksheets.Add("test");
     }
 
     [TestCleanup]
     public void Cleanup()
     {
-        this._sheet = null;
+        //this._sheet = null;
         this._package.Dispose();
     }
 

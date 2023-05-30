@@ -21,7 +21,7 @@ namespace OfficeOpenXml.Export.HtmlExport;
 
 internal static class ColumnDataTypeManager
 {
-    private static CompileResultFactory _compileResultFactory = new CompileResultFactory();
+    //private static CompileResultFactory _compileResultFactory = new CompileResultFactory();
 
     public static class HtmlDataTypes
     {

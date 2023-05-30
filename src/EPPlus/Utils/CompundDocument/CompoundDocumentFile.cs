@@ -29,8 +29,8 @@ internal partial class CompoundDocumentFile : IDisposable
     internal CompoundDocumentFile()
     {
         this.RootItem = new CompoundDocumentItem() { Name = "<Root>", Children = new List<CompoundDocumentItem>(), ObjectType = 5 };
-        this.minorVersion = 0x3E;
-        this.majorVersion = 3;
+        //this.minorVersion = 0x3E;
+        //this.majorVersion = 3;
         this.sectorShif = 9;
         this.minSectorShift = 6;
 
@@ -57,9 +57,11 @@ internal partial class CompoundDocumentFile : IDisposable
 
     private struct DocWriteInfo
     {
-        internal List<int> DIFAT,
-                           FAT,
-                           miniFAT;
+        internal List<int> DIFAT;
+
+        internal List<int> FAT;
+
+        internal List<int> miniFAT;
     }
 
     #region Constants
@@ -79,46 +81,34 @@ internal partial class CompoundDocumentFile : IDisposable
 
     #region Private Fields
 
-    short minorVersion;
-    short majorVersion;
-    int numberOfDirectorySector;
-
-    short sectorShif,
-          minSectorShift; //Bits for sector size
-
+    //short minorVersion;
+    //short majorVersion;
+    //int numberOfDirectorySector;
+    short sectorShif;
+    short minSectorShift; //Bits for sector size
     int _numberOfFATSectors; // (4 bytes): This integer field contains the count of the number of FAT sectors in the compound file.
     int _firstDirectorySectorLocation; // (4 bytes): This integer field contains the starting sector number for the directory stream.            
-
-    int
-        _transactionSignatureNumber; // (4 bytes): This integer field MAY contain a sequence number that is incremented every time the compound file is saved by an implementation that supports file transactions.This is the field that MUST be set to all zeroes if file transactions are not implemented.<1> 
-
-    int
-        _miniStreamCutoffSize; // (4 bytes): This integer field MUST be set to 0x00001000. This field specifies the maximum size of a user-defined data stream that is allocated from the mini FAT and mini stream, and that cutoff is 4,096 bytes.Any user-defined data stream that is larger than or equal to this cutoff size must be allocated as normal sectors from the FAT.
-
+    //int _transactionSignatureNumber; // (4 bytes): This integer field MAY contain a sequence number that is incremented every time the compound file is saved by an implementation that supports file transactions.This is the field that MUST be set to all zeroes if file transactions are not implemented.<1> 
+    int _miniStreamCutoffSize; // (4 bytes): This integer field MUST be set to 0x00001000. This field specifies the maximum size of a user-defined data stream that is allocated from the mini FAT and mini stream, and that cutoff is 4,096 bytes.Any user-defined data stream that is larger than or equal to this cutoff size must be allocated as normal sectors from the FAT.
     int _firstMiniFATSectorLocation; // (4 bytes): This integer field contains the starting sector number for the mini FAT. 
     int _numberofMiniFATSectors; // (4 bytes): This integer field contains the count of the number of mini FAT sectors in the compound file. 
     int _firstDIFATSectorLocation; // (4 bytes): This integer field contains the starting sector number for the DIFAT. 
     int _numberofDIFATSectors; // (4 bytes): This integer field contains the count of the number of DIFAT sectors in the compound file. 
-
-    List<byte[]> _sectors,
-                 _miniSectors;
-
-    int _sectorSize,
-        _miniSectorSize;
-
+    List<byte[]> _sectors;
+    List<byte[]> _miniSectors;
+    int _sectorSize;
+    int _miniSectorSize;
     int _sectorSizeInt;
-
-    int _currentDIFATSectorPos,
-        _currentFATSectorPos,
-        _currentDirSectorPos;
-
-    int _prevDirFATSectorPos;
+    int _currentDIFATSectorPos;
+    int _currentFATSectorPos;
+    //int _currentDirSectorPos;
+    //int _prevDirFATSectorPos;
 
     #endregion
 
     public CompoundDocumentItem RootItem { get; set; }
 
-    List<CompoundDocumentItem> _directories = null;
+    List<CompoundDocumentItem> _directories;
 
     internal List<CompoundDocumentItem> Directories
     {
@@ -182,8 +172,8 @@ internal partial class CompoundDocumentFile : IDisposable
     {
         _ = br.ReadBytes(8); //Read header
         _ = br.ReadBytes(16); //Header CLSID (16 bytes): Reserved and unused class ID that MUST be set to all zeroes (CLSID_NULL). 
-        this.minorVersion = br.ReadInt16();
-        this.majorVersion = br.ReadInt16();
+        _ = br.ReadInt16(); //minorVersion
+        _ = br.ReadInt16(); //majorVersion
         _ = br.ReadInt16(); //Byte order
         this.sectorShif = br.ReadInt16();
         this.minSectorShift = br.ReadInt16();
@@ -192,10 +182,10 @@ internal partial class CompoundDocumentFile : IDisposable
         this._miniSectorSize = 1 << this.minSectorShift;
         this._sectorSizeInt = this._sectorSize / 4;
         _ = br.ReadBytes(6); //Reserved
-        this.numberOfDirectorySector = br.ReadInt32();
+        _ = br.ReadInt32(); //numberOfDirectorySector
         this._numberOfFATSectors = br.ReadInt32();
         this._firstDirectorySectorLocation = br.ReadInt32();
-        this._transactionSignatureNumber = br.ReadInt32();
+        _ = br.ReadInt32(); //_transactionSignatureNumber
         this._miniStreamCutoffSize = br.ReadInt32();
         this._firstMiniFATSectorLocation = br.ReadInt32();
         this._numberofMiniFATSectors = br.ReadInt32();
@@ -476,12 +466,12 @@ internal partial class CompoundDocumentFile : IDisposable
         BinaryWriter? bw = new BinaryWriter(ms);
 
         //InitValues
-        this.minorVersion = 62;
-        this.majorVersion = 3;
+        //this.minorVersion = 62;
+        //this.majorVersion = 3;
         this.sectorShif = 9; //2^9=512 bytes for version 3 documents 
         this.minSectorShift = 6; //2^6=64 bytes
         this._miniStreamCutoffSize = 4096;
-        this._transactionSignatureNumber = 0;
+        //this._transactionSignatureNumber = 0;
         this._firstDIFATSectorLocation = END_OF_CHAIN;
         this._firstDirectorySectorLocation = 1;
         this._firstMiniFATSectorLocation = 2;
@@ -489,8 +479,8 @@ internal partial class CompoundDocumentFile : IDisposable
 
         this._currentDIFATSectorPos = 76; //DIFAT Position in the header
         this._currentFATSectorPos = this._sectorSize; //First FAT sector starts at Sector 0
-        this._currentDirSectorPos = this._sectorSize * 2; //First FAT sector starts at Sector 1
-        this._prevDirFATSectorPos = this._sectorSize + 4; //Dir sector starts FAT position 1 (4 for int size)
+        //this._currentDirSectorPos = this._sectorSize * 2; //First FAT sector starts at Sector 1
+        //this._prevDirFATSectorPos = this._sectorSize + 4; //Dir sector starts FAT position 1 (4 for int size)
 
         bw.Write(new byte[512 * 4]); //Allocate for Header and first FAT, Directory och MiniFAT sectors
         this.WritePosition(bw, 0, ref this._currentDIFATSectorPos, false);

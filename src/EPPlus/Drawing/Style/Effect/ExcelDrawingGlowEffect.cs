@@ -30,7 +30,7 @@ public class ExcelDrawingGlowEffect : ExcelDrawingEffectBase
         this._radiusPath = string.Format(this._radiusPath, path);
     }
 
-    ExcelDrawingColorManager _color = null;
+    ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the glow

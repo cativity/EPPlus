@@ -32,7 +32,7 @@ public sealed class ExcelChartSerieDataLabel : ExcelChartDataLabelStandard
         this.Position = eLabelPosition.Center;
     }
 
-    ExcelChartDataLabelCollection _dataLabels = null;
+    ExcelChartDataLabelCollection _dataLabels;
 
     /// <summary>
     /// Individually formatted datalabels.

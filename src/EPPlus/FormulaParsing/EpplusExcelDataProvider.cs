@@ -37,14 +37,14 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     public class RangeInfo : IRangeInfo
     {
         internal ExcelWorksheet _ws;
-        CellStoreEnumerator<ExcelValue> _values = null;
+        CellStoreEnumerator<ExcelValue> _values;
 
         int _fromRow,
             _toRow,
             _fromCol,
             _toCol;
 
-        int _cellCount = 0;
+        int _cellCount;
         ExcelAddressBase _address;
         ICellInfo _cell;
 
@@ -413,7 +413,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
 
     private readonly ExcelPackage _package;
     private ExcelWorksheet _currentWorksheet;
-    private RangeAddressFactory _rangeAddressFactory;
+    //private RangeAddressFactory _rangeAddressFactory;
     private Dictionary<ulong, INameInfo> _names = new Dictionary<ulong, INameInfo>();
 
     internal EpplusExcelDataProvider()
@@ -425,7 +425,7 @@ internal class EpplusExcelDataProvider : ExcelDataProvider
     {
         this._package = package;
 
-        this._rangeAddressFactory = new RangeAddressFactory(this);
+        //this._rangeAddressFactory = new RangeAddressFactory(this);
     }
 
     public override IEnumerable<string> GetWorksheets()

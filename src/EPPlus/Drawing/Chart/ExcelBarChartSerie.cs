@@ -36,7 +36,7 @@ public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingS
     {
     }
 
-    ExcelChartSerieDataLabel _dataLabel = null;
+    ExcelChartSerieDataLabel _dataLabel;
 
     /// <summary>
     /// Datalabel
@@ -73,7 +73,7 @@ public sealed class ExcelBarChartSerie : ExcelChartSerieWithErrorBars, IDrawingS
         set { this.SetXmlNodeBool(INVERTIFNEGATIVE_PATH, value); }
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

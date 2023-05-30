@@ -63,7 +63,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
         this.AddSchemaNodeOrder(schemaNodeOrder, ExcelShapeBase._shapeNodeOrder);
     }
 
-    ExcelDrawingBlurEffect _blur = null;
+    ExcelDrawingBlurEffect _blur;
 
     /// <summary>
     /// The blur effect
@@ -73,7 +73,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
         get { return this._blur ??= new ExcelDrawingBlurEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._blurPath); }
     }
 
-    ExcelDrawingFillOverlayEffect _fillOverlay = null;
+    ExcelDrawingFillOverlayEffect _fillOverlay;
 
     /// <summary>
     /// The fill overlay effect. A fill overlay can be used to specify an additional fill for a drawing and blend the two together.
@@ -90,7 +90,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
         }
     }
 
-    ExcelDrawingGlowEffect _glow = null;
+    ExcelDrawingGlowEffect _glow;
 
     /// <summary>
     /// The glow effect. A color blurred outline is added outside the edges of the drawing
@@ -100,7 +100,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
         get { return this._glow ??= new ExcelDrawingGlowEffect(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._glowPath); }
     }
 
-    ExcelDrawingInnerShadowEffect _innerShadowEffect = null;
+    ExcelDrawingInnerShadowEffect _innerShadowEffect;
 
     /// <summary>
     /// The inner shadow effect. A shadow is applied within the edges of the drawing.
@@ -114,7 +114,7 @@ public class ExcelDrawingEffectStyle : XmlHelper
         }
     }
 
-    ExcelDrawingOuterShadowEffect _outerShadow = null;
+    ExcelDrawingOuterShadowEffect _outerShadow;
 
     /// <summary>
     /// The outer shadow effect. A shadow is applied outside the edges of the drawing.

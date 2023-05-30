@@ -521,7 +521,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
 
     internal System.IO.Stream _innerStream;
     private CRC32 _Crc32;
-    private Int64 _lengthLimit = -99;
+    private Int64 _lengthLimit;
     private bool _leaveOpen;
 
     /// <summary>

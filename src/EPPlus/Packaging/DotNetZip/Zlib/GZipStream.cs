@@ -968,7 +968,7 @@ public class GZipStream : Stream
         {
             Array.Copy(commentBytes, 0, header, i, cbLength - 1);
             i += cbLength - 1;
-            header[i++] = 0; // terminate
+            header[i] = 0; // terminate
         }
 
         this._baseStream._stream.Write(header, 0, header.Length);

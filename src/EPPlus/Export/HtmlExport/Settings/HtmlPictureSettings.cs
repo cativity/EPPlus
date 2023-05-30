@@ -37,20 +37,20 @@ public class HtmlPictureSettings
     /// If this property is set to true, the cells vertical alignment will be set to 'top', 
     /// otherwise alignment will be set to middle.
     /// </summary>
-    public bool AddMarginTop { get; set; } = false;
+    public bool AddMarginTop { get; set; }
 
     /// <summary>
     /// If the margin in pixels from the left corner should be used.
     /// If this property is set to true, the cells text alignment will be set to 'left', 
     /// otherwise alignment will be set to center.
     /// </summary>
-    public bool AddMarginLeft { get; set; } = false;
+    public bool AddMarginLeft { get; set; }
 
     /// <summary>
     /// If set to true the original size of the image is used, 
     /// otherwise the size in the workbook is used. Default is false.
     /// </summary>
-    public bool KeepOriginalSize { get; set; } = false;
+    public bool KeepOriginalSize { get; set; }
 
     /// <summary>
     /// Exclude settings 

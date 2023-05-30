@@ -91,7 +91,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to fill properties
@@ -110,7 +110,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawingBorder _line = null;
+    ExcelDrawingBorder _line;
 
     /// <summary>
     /// A reference to line properties
@@ -129,7 +129,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
         }
     }
 
-    private ExcelDrawingEffectStyle _effect = null;
+    private ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// A reference to line properties
@@ -153,7 +153,7 @@ public class ExcelChartExDataPoint : XmlHelper, IDrawingStyleBase
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

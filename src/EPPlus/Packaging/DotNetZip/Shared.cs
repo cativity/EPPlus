@@ -45,7 +45,7 @@ internal static class SharedUtilities
             throw new FileNotFoundException(fileName);
         }
 
-        long fileLength = 0L;
+        long fileLength;
         FileShare fs = FileShare.ReadWrite;
 #if !NETCF
 
@@ -709,8 +709,8 @@ internal static class SharedUtilities
     /// </remarks>
     internal static int ReadWithRetry(Stream s, byte[] buffer, int offset, int count, string FileName)
     {
-        int n = 0;
-        bool done = false;
+        int n;
+        bool done;
 
         //#if !NETCF && !SILVERLIGHT
         //            int retries = 0;

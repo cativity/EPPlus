@@ -65,7 +65,7 @@ public abstract class ExcelControlWithText : ExcelControl
         }
     }
 
-    ExcelParagraphCollection _richText = null;
+    ExcelParagraphCollection _richText;
 
     /// <summary>
     /// Richtext collection. Used to format specific parts of the text
@@ -88,7 +88,7 @@ public abstract class ExcelControlWithText : ExcelControl
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties.

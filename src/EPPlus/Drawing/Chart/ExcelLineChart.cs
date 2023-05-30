@@ -84,7 +84,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
     }
 
     //string _chartTopPath = "c:chartSpace/c:chart/c:plotArea/{0}";
-    ExcelChartDataLabel _dataLabel = null;
+    ExcelChartDataLabel _dataLabel;
 
     /// <summary>
     /// Access to datalabel properties
@@ -130,7 +130,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         }
     }
 
-    ExcelChartStyleItem _upBar = null;
+    ExcelChartStyleItem _upBar;
     const string _upBarPath = "c:upDownBars/c:upBars";
 
     /// <summary>
@@ -141,7 +141,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         get { return this._upBar; }
     }
 
-    ExcelChartStyleItem _downBar = null;
+    ExcelChartStyleItem _downBar;
     const string _downBarPath = "c:upDownBars/c:downBars";
 
     /// <summary>
@@ -152,7 +152,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         get { return this._downBar; }
     }
 
-    ExcelChartStyleItem _hiLowLines = null;
+    ExcelChartStyleItem _hiLowLines;
     const string _hiLowLinesPath = "c:hiLowLines";
 
     /// <summary>
@@ -163,7 +163,7 @@ public abstract class ExcelStandardChartWithLines : ExcelChartStandard, IDrawing
         get { return this._hiLowLines; }
     }
 
-    ExcelChartStyleItem _dropLines = null;
+    ExcelChartStyleItem _dropLines;
     const string _dropLinesPath = "c:dropLines";
 
     /// <summary>

@@ -129,7 +129,7 @@ public class ExcelPivotCacheDefinition
     const string _sourceWorksheetPath = "d:cacheSource/d:worksheetSource/@sheet";
     internal const string _sourceNamePath = "d:cacheSource/d:worksheetSource/@name";
     internal const string _sourceAddressPath = "d:cacheSource/d:worksheetSource/@ref";
-    internal ExcelRangeBase _sourceRange = null;
+    //internal ExcelRangeBase _sourceRange = null;
 
     /// <summary>
     /// The source data range when the pivottable has a worksheet datasource. 
@@ -180,7 +180,7 @@ public class ExcelPivotCacheDefinition
                     this._cacheReference.SetXmlNodeString(_sourceNamePath, sourceName);
                 }
 
-                this._sourceRange = value;
+                //this._sourceRange = value;
             }
             else
             {

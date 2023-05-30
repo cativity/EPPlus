@@ -138,11 +138,11 @@ namespace OfficeOpenXml
     /// </remarks>
     public sealed partial class ExcelPackage : IDisposable
     {
-        internal bool _isDisposed = false;
+        internal bool _isDisposed;
         internal const bool preserveWhitespace = false;
-        Stream _stream = null;
-        private bool _isExternalStream = false;
-        internal ExcelPackage _loadedPackage = null;
+        Stream _stream;
+        private bool _isExternalStream;
+        //internal ExcelPackage _loadedPackage = null;
 
         #region Properties
 
@@ -642,7 +642,7 @@ namespace OfficeOpenXml
                                                 schemaRelationships + "/officeDocument");
         }
 
-        PictureStore _pictureStore = null;
+        PictureStore _pictureStore;
 
         internal PictureStore PictureStore
         {
@@ -657,7 +657,7 @@ namespace OfficeOpenXml
             get { return this._zipPackage; }
         }
 
-        ExcelEncryption _encryption = null;
+        ExcelEncryption _encryption;
 
         /// <summary>
         /// Information how and if the package is encrypted
@@ -667,8 +667,8 @@ namespace OfficeOpenXml
             get { return this._encryption ??= new ExcelEncryption(); }
         }
 
-        private static LicenseContext? _licenseType = null;
-        internal static bool _licenseSet = false;
+        private static LicenseContext? _licenseType;
+        internal static bool _licenseSet;
 
         /// <summary>
         /// To use the EPPlus library in debug mode a Licensetype must be specified.
@@ -731,8 +731,6 @@ namespace OfficeOpenXml
 
                 if (string.IsNullOrEmpty(v))
                 {
-                    inEnvironment = false;
-
                     return false;
                 }
                 else
@@ -1157,7 +1155,7 @@ namespace OfficeOpenXml
         /// <summary>
         /// The output file. Null if no file is used
         /// </summary>
-        public FileInfo File { get; set; } = null;
+        public FileInfo File { get; set; }
 
         /// <summary>
         /// Close the internal stream
@@ -1194,7 +1192,7 @@ namespace OfficeOpenXml
             set { this.ZipPackage.Compression = value; }
         }
 
-        CompatibilitySettings _compatibility = null;
+        CompatibilitySettings _compatibility;
 
         /// <summary>
         /// Compatibility settings for older versions of EPPlus.

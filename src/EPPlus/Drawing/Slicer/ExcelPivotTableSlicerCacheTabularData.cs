@@ -79,7 +79,7 @@ public class ExcelPivotTableSlicerCacheTabularData : XmlHelper
         set { this.SetXmlNodeBool(_showMissingPath, value, true); }
     }
 
-    private ExcelPivotTableSlicerItemCollection _items = null;
+    private ExcelPivotTableSlicerItemCollection _items;
 
     /// <summary>
     /// The items of the slicer. 

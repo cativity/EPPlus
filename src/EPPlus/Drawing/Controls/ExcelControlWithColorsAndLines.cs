@@ -46,7 +46,7 @@ public abstract class ExcelControlWithColorsAndLines : ExcelControlWithText
         get { return this._vml.GetFill(); }
     }
 
-    ExcelVmlDrawingBorder _border = null;
+    ExcelVmlDrawingBorder _border;
 
     /// <summary>
     /// Border settings for the control

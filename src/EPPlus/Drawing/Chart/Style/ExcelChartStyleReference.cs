@@ -48,7 +48,7 @@ public class ExcelChartStyleReference : XmlHelper
         }
     }
 
-    ExcelChartStyleColorManager _color = null;
+    ExcelChartStyleColorManager _color;
 
     /// <summary>
     /// The color to be used for the reference. 

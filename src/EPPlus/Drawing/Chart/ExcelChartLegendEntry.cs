@@ -94,7 +94,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// The Font properties
@@ -147,7 +147,7 @@ public class ExcelChartLegendEntry : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties

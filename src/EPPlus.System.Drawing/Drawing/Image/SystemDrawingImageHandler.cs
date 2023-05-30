@@ -83,7 +83,7 @@ public class SystemDrawingImageHandler : IImageHandler
         }
     }
 
-    bool? _validForEnvironment = null;
+    bool? _validForEnvironment;
 
     public bool ValidForEnvironment()
     {

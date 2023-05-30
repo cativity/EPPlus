@@ -53,7 +53,7 @@ public class ExcelConditionalFormattingCollection : XmlHelper, IEnumerable<IExce
     #region Private Properties
 
     private List<IExcelConditionalFormattingRule> _rules = new List<IExcelConditionalFormattingRule>();
-    private ExcelWorksheet _worksheet = null;
+    private ExcelWorksheet _worksheet;
 
     #endregion Private Properties
 

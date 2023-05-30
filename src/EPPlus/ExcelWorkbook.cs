@@ -77,7 +77,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     {
         internal int pos;
         internal string Text;
-        internal bool isRichText = false;
+        internal bool isRichText;
     }
 
     #region Private Properties
@@ -89,7 +89,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     private ExcelStyles _styles;
 
     //internal HashSet<string> _tableSlicerNames = new HashSet<string>();
-    internal HashSet<string> _slicerNames = null;
+    internal HashSet<string> _slicerNames;
     internal Dictionary<string, ImageInfo> _images = new Dictionary<string, ImageInfo>();
 
     internal bool GetPivotCacheFromAddress(string fullAddress, out PivotTableCacheInternal cacheReference)
@@ -310,8 +310,8 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
     internal int _nextPivotTableID = int.MinValue;
     internal XmlNamespaceManager _namespaceManager;
 
-    internal FormulaParser _formulaParser = null;
-    internal ExcelThreadedCommentPersonCollection _threadedCommentPersons = null;
+    internal FormulaParser _formulaParser;
+    internal ExcelThreadedCommentPersonCollection _threadedCommentPersons;
     internal FormulaParserManager _parserManager;
     internal CellStore<List<Token>> _formulaTokens;
 
@@ -675,7 +675,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         get { return this._names; }
     }
 
-    internal ExcelExternalLinksCollection _externalLinks = null;
+    internal ExcelExternalLinksCollection _externalLinks;
 
     /// <summary>
     /// A collection of links to external workbooks and it's cached data.
@@ -791,7 +791,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         }
     }
 
-    ExcelProtection _protection = null;
+    ExcelProtection _protection;
 
     /// <summary>
     /// Access properties to protect or unprotect a workbook
@@ -810,7 +810,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         }
     }
 
-    ExcelWorkbookView _view = null;
+    ExcelWorkbookView _view;
 
     /// <summary>
     /// Access to workbook view properties
@@ -820,7 +820,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         get { return this._view ??= new ExcelWorkbookView(this.NameSpaceManager, this.TopNode, this); }
     }
 
-    ExcelVbaProject _vba = null;
+    ExcelVbaProject _vba;
 
     /// <summary>
     /// A reference to the VBA project.
@@ -957,7 +957,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
 
     const string date1904Path = "d:workbookPr/@date1904";
     internal const double date1904Offset = 365.5 * 4; // offset to fix 1900 and 1904 differences, 4 OLE years
-    private bool? date1904Cache = null;
+    private bool? date1904Cache;
 
     internal bool ExistsPivotCache(int cacheID, ref int newID)
     {
@@ -1220,7 +1220,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         set { this.SetXmlNodeBool(FULL_CALC_ON_LOAD_PATH, value); }
     }
 
-    ExcelThemeManager _theme = null;
+    ExcelThemeManager _theme;
 
     /// <summary>
     /// Create and manage the theme for the workbook.
@@ -1965,7 +1965,7 @@ public sealed class ExcelWorkbook : XmlHelper, IDisposable
         }
     }
 
-    internal Dictionary<string, ExcelSlicerCache> _slicerCaches = null;
+    internal Dictionary<string, ExcelSlicerCache> _slicerCaches;
 
     internal Dictionary<string, ExcelSlicerCache> SlicerCaches
     {

@@ -122,7 +122,7 @@ public class ExcelVmlDrawingPictureCollection : ExcelVmlDrawingBaseCollection, I
         get { return this._images.Count; }
     }
 
-    int _nextID = 0;
+    int _nextID;
 
     /// <summary>
     /// returns the next drawing id.

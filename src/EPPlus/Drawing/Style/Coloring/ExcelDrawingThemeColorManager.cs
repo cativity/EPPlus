@@ -35,12 +35,12 @@ public class ExcelDrawingThemeColorManager
     /// <summary>
     /// The node of the supplied path
     /// </summary>
-    internal protected XmlNode _pathNode = null;
+    internal protected XmlNode _pathNode;
 
     /// <summary>
     /// The node of the color object
     /// </summary>
-    internal protected XmlNode _colorNode = null;
+    internal protected XmlNode _colorNode;
 
     /// <summary>
     /// Init method
@@ -150,7 +150,7 @@ public class ExcelDrawingThemeColorManager
     {
     }
 
-    ExcelColorTransformCollection _transforms = null;
+    ExcelColorTransformCollection _transforms;
 
     /// <summary>
     /// Color transformations

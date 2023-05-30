@@ -31,5 +31,5 @@ public class FillParams
     /// <summary>
     /// The number format to be appled to the range.
     /// </summary>
-    public string NumberFormat { get; set; } = null;
+    public string NumberFormat { get; set; }
 }

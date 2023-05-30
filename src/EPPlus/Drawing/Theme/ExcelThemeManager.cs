@@ -35,7 +35,7 @@ public class ExcelThemeManager
         this._wb = wb;
     }
 
-    ExcelTheme _theme = null;
+    ExcelTheme _theme;
 
     /// <summary>
     /// The current theme. Null if not theme exists.

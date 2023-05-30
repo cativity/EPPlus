@@ -37,9 +37,9 @@ public static class FontSize
     /// </summary>
     public const string NonExistingFont = "Arial";
 
-    internal static bool _isLoaded = false;
+    internal static bool _isLoaded;
     internal static object _lockObj = new object();
-    internal static MemoryStream _fontStream = null;
+    internal static MemoryStream _fontStream;
 
     /// <summary>
     /// Dictionary containing Font Width in pixels.
@@ -2944,7 +2944,7 @@ public static class FontSize
                     break;
                 }
 
-                min = min = size;
+                min = size;
             }
 
             if (min > fontSize && fontName.Equals(DefaultFont, StringComparison.OrdinalIgnoreCase))

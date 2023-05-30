@@ -639,7 +639,7 @@ public class Issues : TestBase
         _ = ws.Names.Add("Name2", ws.Cells["A1"]);
         pck.Save();
         using ExcelPackage? pck2 = new ExcelPackage(pck.Stream);
-        ws = pck2.Workbook.Worksheets["Test!"];
+        _ = pck2.Workbook.Worksheets["Test!"];
     }
 
     /// <summary>
@@ -745,7 +745,7 @@ public class Issues : TestBase
     {
         ExcelPackage? pck = OpenPackage("sheetname_pbl.xlsx", true);
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Deal's History");
-        ExcelRange? a = ws.Cells["A:B"];
+        _ = ws.Cells["A:B"];
         ws.AutoFilterAddress = ws.Cells["A1:C3"];
         _ = pck.Workbook.Names.Add("Test", ws.Cells["B1:D2"]);
 
@@ -1866,7 +1866,7 @@ public class Issues : TestBase
         int dummy = c.Count; // to load!
 
         //ws.DeleteRow(2);
-        dummy = c.Count; // to load!
+        //dummy = c.Count; // to load!
         p.Workbook.Worksheets.Delete(ws);
         SaveAndCleanup(p);
     }

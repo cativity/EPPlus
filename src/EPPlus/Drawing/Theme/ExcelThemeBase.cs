@@ -63,7 +63,7 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
 
     internal string RelationshipId { get; set; }
 
-    internal ExcelColorScheme _colorScheme = null;
+    internal ExcelColorScheme _colorScheme;
 
     /// <summary>
     /// Defines the color scheme
@@ -78,7 +78,7 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
         }
     }
 
-    internal ExcelFontScheme _fontScheme = null;
+    internal ExcelFontScheme _fontScheme;
 
     /// <summary>
     /// Defines the font scheme
@@ -94,7 +94,7 @@ public class ExcelThemeBase : XmlHelper, IPictureRelationDocument
         }
     }
 
-    private ExcelFormatScheme _formatScheme = null;
+    private ExcelFormatScheme _formatScheme;
 
     /// <summary>
     /// The background fill styles, effect styles, fill styles, and line styles which define the style matrix for a theme

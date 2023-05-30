@@ -96,7 +96,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// </summary>
     public virtual ExcelDataValidationType ValidationType { get; }
 
-    string errorStyleString = null;
+    string errorStyleString;
 
     /// <summary>
     /// Warning style
@@ -125,7 +125,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
         }
     }
 
-    string imeModeString = null;
+    string imeModeString;
 
     public ExcelDataValidationImeMode ImeMode
     {
@@ -154,37 +154,37 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     /// <summary>
     /// True if blanks should be allowed
     /// </summary>
-    public bool? AllowBlank { get; set; } = null;
+    public bool? AllowBlank { get; set; }
 
     /// <summary>
     /// True if input message should be shown
     /// </summary>
-    public bool? ShowInputMessage { get; set; } = null;
+    public bool? ShowInputMessage { get; set; }
 
     /// <summary>
     /// True if error message should be shown
     /// </summary>
-    public bool? ShowErrorMessage { get; set; } = null;
+    public bool? ShowErrorMessage { get; set; }
 
     /// <summary>
     /// Title of error message box
     /// </summary>
-    public string ErrorTitle { get; set; } = null;
+    public string ErrorTitle { get; set; }
 
     /// <summary>
     /// Error message box text
     /// </summary>
-    public string Error { get; set; } = null;
+    public string Error { get; set; }
 
     /// <summary>
     /// Title of the validation message box.
     /// </summary>
-    public string PromptTitle { get; set; } = null;
+    public string PromptTitle { get; set; }
 
     /// <summary>
     /// Text of the validation message box.
     /// </summary>
-    public string Prompt { get; set; } = null;
+    public string Prompt { get; set; }
 
     /// <summary>
     /// True if the current validation type allows operator.
@@ -202,7 +202,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     {
     }
 
-    ExcelDataValidationAsType _as = null;
+    ExcelDataValidationAsType _as;
 
     /// <summary>
     /// Us this property to case <see cref="IExcelDataValidation"/>s to its subtypes
@@ -220,7 +220,7 @@ public abstract class ExcelDataValidation : IExcelDataValidation
     [Obsolete]
     public bool IsStale { get; } = false;
 
-    string operatorString = null;
+    string operatorString;
 
     /// <summary>
     /// Operator for comparison between the entered value and Formula/Formulas.

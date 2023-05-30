@@ -55,7 +55,7 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
         }
     }
 
-    ExcelChartSerieDataLabel _DataLabel = null;
+    ExcelChartSerieDataLabel _DataLabel;
 
     /// <summary>
     /// DataLabels
@@ -73,7 +73,7 @@ public sealed class ExcelPieChartSerie : ExcelChartStandardSerie, IDrawingSerieD
         get { return this.TopNode.SelectSingleNode("c:dLbls", this.NameSpaceManager) != null; }
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

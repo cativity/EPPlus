@@ -169,7 +169,7 @@ public class ExcelWorksheetView : XmlHelper
     /// </summary>
     public class ExcelWorksheetPanes : XmlHelper
     {
-        XmlElement _selectionNode = null;
+        XmlElement _selectionNode;
 
         internal ExcelWorksheetPanes(XmlNamespaceManager ns, XmlNode topNode)
             : base(ns, topNode)
@@ -294,7 +294,7 @@ public class ExcelWorksheetView : XmlHelper
     {
         this._worksheet = xlWorksheet;
         this.SchemaNodeOrder = new string[] { "sheetViews", "sheetView", "pane", "selection" };
-        this._paneSettings ??= new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, this.TopNode);
+        //this._paneSettings ??= new ExcelWorksheetViewPaneSettings(this.NameSpaceManager, this.TopNode);
 
         this.SetPaneSettings();
         this.Panes = this.LoadPanes();
@@ -435,7 +435,7 @@ public class ExcelWorksheetView : XmlHelper
         }
     }
 
-    ExcelWorksheetViewPaneSettings _paneSettings = null;
+    //ExcelWorksheetViewPaneSettings _paneSettings;
 
     /// <summary>
     /// Contains settings for the active pane

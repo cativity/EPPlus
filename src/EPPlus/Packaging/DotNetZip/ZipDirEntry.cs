@@ -120,7 +120,7 @@ partial class ZipEntry
     {
         private static System.Text.RegularExpressions.Regex re = new System.Text.RegularExpressions.Regex(" \\(copy (\\d+)\\)$");
 
-        private static int callCount = 0;
+        private static int callCount;
 
         internal static string AppendCopyToFileName(string f)
         {
@@ -222,7 +222,6 @@ partial class ZipEntry
             return null;
         }
 
-        int bytesRead = 42 + 4;
         byte[] block = new byte[42];
         int n = s.Read(block, 0, block.Length);
 
@@ -263,14 +262,14 @@ partial class ZipEntry
         zde._InternalFileAttrs = (short)(block[i++] + (block[i++] * 256));
         zde._ExternalFileAttrs = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
 
-        zde._RelativeOffsetOfLocalHeader = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+        zde._RelativeOffsetOfLocalHeader = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i] * 256 * 256 * 256));
 
         // workitem 7801
         zde.IsText = (zde._InternalFileAttrs & 0x01) == 0x01;
 
         block = new byte[zde._filenameLength];
         n = s.Read(block, 0, block.Length);
-        bytesRead += n;
+        //bytesRead += n;
 
         if ((zde._BitField & 0x0800) == 0x0800)
         {
@@ -316,7 +315,7 @@ partial class ZipEntry
 
             // Console.WriteLine("  Input uses Z64?:      {0}", zde._InputUsesZip64);
 
-            bytesRead += zde.ProcessExtraField(s, zde._extraFieldLength);
+            zde.ProcessExtraField(s, zde._extraFieldLength);
             zde._CompressedFileDataSize = zde._CompressedSize;
         }
 
@@ -358,8 +357,8 @@ partial class ZipEntry
         if (zde._commentLength > 0)
         {
             block = new byte[zde._commentLength];
-            n = s.Read(block, 0, block.Length);
-            bytesRead += n;
+            _ = s.Read(block, 0, block.Length);
+            //bytesRead += n;
 
             if ((zde._BitField & 0x0800) == 0x0800)
             {

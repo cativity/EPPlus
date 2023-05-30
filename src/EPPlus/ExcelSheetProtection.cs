@@ -34,7 +34,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         this.SchemaNodeOrder = ws.SchemaNodeOrder;
     }
 
-    bool _hasSheetProtection = false;
+    //bool _hasSheetProtection = false;
     private const string _isProtectedPath = "d:sheetProtection/@sheet";
 
     /// <summary>
@@ -45,26 +45,26 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return this.GetXmlNodeBool(_isProtectedPath, false); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_isProtectedPath, value, false);
 
             if (!value)
             {
                 this.DeleteAllNode(_isProtectedPath); //delete the whole sheetprotection node
-                this._hasSheetProtection = false;
+                //this._hasSheetProtection = false;
             }
         }
     }
 
-    private void CreatedDefaultNode()
-    {
-        if (this._hasSheetProtection = false && !this.ExistsNode("d:sheetProtection"))
-        {
-            this.AllowEditObject = true;
-            this.AllowEditScenarios = true;
-            this._hasSheetProtection = true;
-        }
-    }
+    //private void CreatedDefaultNode()
+    //{
+    //    if (this._hasSheetProtection = false && !this.ExistsNode("d:sheetProtection"))
+    //    {
+    //        this.AllowEditObject = true;
+    //        this.AllowEditScenarios = true;
+    //        this._hasSheetProtection = true;
+    //    }
+    //}
 
     private const string _allowSelectLockedCellsPath = "d:sheetProtection/@selectLockedCells";
 
@@ -76,7 +76,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowSelectLockedCellsPath, false); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSelectLockedCellsPath, !value, false);
         }
     }
@@ -91,7 +91,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowSelectUnlockedCellsPath, false); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSelectUnlockedCellsPath, !value, false);
         }
     }
@@ -106,7 +106,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowObjectPath, false); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowObjectPath, !value, false);
         }
     }
@@ -121,7 +121,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowScenariosPath, false); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowScenariosPath, !value, false);
         }
     }
@@ -136,7 +136,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowFormatCellsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatCellsPath, !value, true);
         }
     }
@@ -151,7 +151,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowFormatColumnsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatColumnsPath, !value, true);
         }
     }
@@ -166,7 +166,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowFormatRowsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowFormatRowsPath, !value, true);
         }
     }
@@ -181,7 +181,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowInsertColumnsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertColumnsPath, !value, true);
         }
     }
@@ -196,7 +196,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowInsertRowsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertRowsPath, !value, true);
         }
     }
@@ -211,7 +211,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowInsertHyperlinksPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowInsertHyperlinksPath, !value, true);
         }
     }
@@ -226,7 +226,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowDeleteColumns, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowDeleteColumns, !value, true);
         }
     }
@@ -241,7 +241,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowDeleteRowsPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowDeleteRowsPath, !value, true);
         }
     }
@@ -256,7 +256,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowSortPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowSortPath, !value, true);
         }
     }
@@ -271,7 +271,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowAutoFilterPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowAutoFilterPath, !value, true);
         }
     }
@@ -286,7 +286,7 @@ public sealed class ExcelSheetProtection : XmlHelper
         get { return !this.GetXmlNodeBool(_allowPivotTablesPath, true); }
         set
         {
-            this.CreatedDefaultNode();
+            //this.CreatedDefaultNode();
             this.SetXmlNodeBool(_allowPivotTablesPath, !value, true);
         }
     }

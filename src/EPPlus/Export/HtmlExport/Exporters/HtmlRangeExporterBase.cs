@@ -86,7 +86,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         }
     }
 
-    protected EPPlusReadOnlyList<ExcelRangeBase> _ranges = new EPPlusReadOnlyList<ExcelRangeBase>();
+    protected EPPlusReadOnlyList<ExcelRangeBase> _ranges;
 
     private void AddRange(ExcelRangeBase range)
     {
@@ -243,7 +243,7 @@ internal abstract class HtmlRangeExporterBase : AbstractHtmlExporter
         }
     }
 
-    bool? _isMultiSheet = null;
+    bool? _isMultiSheet;
 
     protected bool IsMultiSheet
     {

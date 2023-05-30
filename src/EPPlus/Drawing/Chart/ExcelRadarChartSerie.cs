@@ -43,7 +43,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
         }
     }
 
-    ExcelChartSerieDataLabel _DataLabel = null;
+    ExcelChartSerieDataLabel _DataLabel;
 
     /// <summary>
     /// Datalabel
@@ -62,7 +62,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
     }
 
     const string markerPath = "c:marker/c:symbol/@val";
-    ExcelChartMarker _chartMarker = null;
+    ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
@@ -100,7 +100,7 @@ public sealed class ExcelRadarChartSerie : ExcelChartStandardSerie, IDrawingSeri
         return false;
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

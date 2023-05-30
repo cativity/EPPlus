@@ -153,14 +153,14 @@ public class SlicerStyleTests : TestBase
     [TestMethod]
     public void AddSlicerStyleFromOtherNewPackage()
     {
-        ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOtherPck");
+        _ = _pck.Workbook.Worksheets.Add("SlicerStyleCopyOtherPck");
         ExcelSlicerNamedStyle? s = _pck.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleToCopyOther", eSlicerStyle.Other2);
 
         s.WholeTable.Style.Font.Name = "Arial";
 
         using ExcelPackage? p = new ExcelPackage();
         _ = p.Workbook.Styles.CreateSlicerStyle("CustomSlicerStyleCopyPck", s);
-        ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
+        ExcelWorksheet ws = p.Workbook.Worksheets.Add("CopiedSlicerStyle");
         LoadTestdata(ws);
         ExcelTable? tbl = ws.Tables.Add(ws.Cells["A1:D100"], "Table3");
         ExcelTableSlicer? slicer = tbl.Columns[0].AddSlicer();

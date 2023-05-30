@@ -39,7 +39,7 @@ internal static class VarMethods
     public static double Var(IEnumerable<double> args)
     {
         double avg = args.Select(x => (double)x).Average();
-        double d = args.Aggregate(0.0, (total, next) => total += System.Math.Pow(next - avg, 2));
+        double d = args.Aggregate(0.0, (total, next) => total + System.Math.Pow(next - avg, 2));
 
         return Divide(d, args.Count() - 1);
     }
@@ -52,7 +52,7 @@ internal static class VarMethods
     public static double VarP(IEnumerable<double> args)
     {
         double avg = args.Select(x => (double)x).Average();
-        double d = args.Aggregate(0.0, (total, next) => total += System.Math.Pow(next - avg, 2));
+        double d = args.Aggregate(0.0, (total, next) => total + System.Math.Pow(next - avg, 2));
 
         return Divide(d, args.Count());
     }

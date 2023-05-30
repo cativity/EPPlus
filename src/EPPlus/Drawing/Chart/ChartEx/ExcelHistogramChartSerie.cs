@@ -45,7 +45,7 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
         this.AddParetoLineFromSerie(serElement);
     }
 
-    ExcelChartExSerieBinning _binning = null;
+    ExcelChartExSerieBinning _binning;
 
     /// <summary>
     /// The data binning properties
@@ -97,5 +97,5 @@ public class ExcelHistogramChartSerie : ExcelChartExSerie
     /// <summary>
     /// Properties for the pareto line.
     /// </summary>
-    public ExcelChartExParetoLine ParetoLine { get; private set; } = null;
+    public ExcelChartExParetoLine ParetoLine { get; private set; }
 }

@@ -99,7 +99,7 @@ public class ExcelColumn : IRangeID
     /// <summary>
     /// Allows the column to be hidden in the worksheet
     /// </summary>
-    internal bool _hidden = false;
+    internal bool _hidden;
 
     /// <summary>
     /// Defines if the column is visible or hidden

@@ -279,7 +279,7 @@ namespace OfficeOpenXml.Drawing
             get { return this.Name; }
         }
 
-        ExcelDrawingFill _fill = null;
+        ExcelDrawingFill _fill;
 
         /// <summary>
         /// Access to Fill properties
@@ -289,7 +289,7 @@ namespace OfficeOpenXml.Drawing
             get { return this._fill ??= new ExcelDrawingFill(this._drawings, this.NameSpaceManager, this.TopNode, "xdr:pic/xdr:spPr", this.SchemaNodeOrder); }
         }
 
-        ExcelDrawingBorder _border = null;
+        ExcelDrawingBorder _border;
 
         /// <summary>
         /// Access to Fill properties
@@ -306,7 +306,7 @@ namespace OfficeOpenXml.Drawing
             }
         }
 
-        ExcelDrawingEffectStyle _effect = null;
+        ExcelDrawingEffectStyle _effect;
 
         /// <summary>
         /// Effects

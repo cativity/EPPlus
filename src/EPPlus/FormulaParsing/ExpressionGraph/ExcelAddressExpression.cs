@@ -32,7 +32,7 @@ internal class ExcelAddressExpression : AtomicExpression
 
     private readonly ExcelDataProvider _excelDataProvider;
     private readonly ParsingContext _parsingContext;
-    private readonly RangeAddressFactory _rangeAddressFactory;
+    //private readonly RangeAddressFactory _rangeAddressFactory;
     private readonly bool _negate;
 
     internal ExcelAddressExpression(string expression, ExcelDataProvider excelDataProvider, ParsingContext parsingContext)
@@ -57,7 +57,7 @@ internal class ExcelAddressExpression : AtomicExpression
         Require.That(rangeAddressFactory).Named("rangeAddressFactory").IsNotNull();
         this._excelDataProvider = excelDataProvider;
         this._parsingContext = parsingContext;
-        this._rangeAddressFactory = rangeAddressFactory;
+        //this._rangeAddressFactory = rangeAddressFactory;
         this._negate = negate;
     }
 

@@ -43,7 +43,7 @@ public class ExcelDrawingSolidFill : ExcelDrawingFillBase
         get { return eFillStyle.SolidFill; }
     }
 
-    ExcelDrawingColorManager _color = null;
+    ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color of the fill

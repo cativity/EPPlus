@@ -65,7 +65,7 @@ public sealed class ExcelAreaChart : ExcelChartStandard, IDrawingDataLabel
 
     #region DataLabel
 
-    ExcelChartDataLabel _DataLabel = null;
+    ExcelChartDataLabel _DataLabel;
 
     /// <summary>
     /// Access to datalabel properties

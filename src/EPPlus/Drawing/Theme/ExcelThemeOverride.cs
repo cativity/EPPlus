@@ -21,11 +21,11 @@ namespace OfficeOpenXml.Drawing.Theme;
 /// </summary>
 public class ExcelThemeOverride : ExcelThemeBase
 {
-    ExcelChart _chart;
+    //ExcelChart _chart;
 
     internal ExcelThemeOverride(ExcelChart chart, ZipPackageRelationship rel)
         : base(chart._drawings._package, chart.NameSpaceManager, rel, "")
     {
-        this._chart = chart;
+        //this._chart = chart;
     }
 }

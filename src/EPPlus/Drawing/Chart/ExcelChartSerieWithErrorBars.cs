@@ -43,7 +43,7 @@ public class ExcelChartSerieWithErrorBars : ExcelChartStandardSerie, IDrawingCha
     /// A collection of error bars
     /// <seealso cref="AddErrorBars(eErrorBarType, eErrorValueType)"/>
     /// </summary>
-    public ExcelChartErrorBars ErrorBars { get; internal set; } = null;
+    public ExcelChartErrorBars ErrorBars { get; internal set; }
 
     /// <summary>
     /// Adds a errorbars to the chart serie

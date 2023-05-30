@@ -28,7 +28,7 @@ namespace OfficeOpenXml;
 /// </summary>
 public abstract class XmlHelper
 {
-    int[] _levels = null;
+    int[] _levels;
 
     internal delegate int ChangedEventHandler(StyleBase sender, StyleChangeEventArgs e);
 
@@ -52,7 +52,7 @@ public abstract class XmlHelper
     /// <summary>
     /// Schema order list
     /// </summary>
-    internal string[] SchemaNodeOrder { get; set; } = null;
+    internal string[] SchemaNodeOrder { get; set; }
 
     /// <summary>
     /// Adds a new array to the end of SchemaNodeOrder
@@ -517,7 +517,7 @@ public abstract class XmlHelper
                         string nodeName;
                         string nodePrefix;
                         string[] nameSplit = subPath.Split(':');
-                        string nameSpaceURI = string.Empty;
+                        string nameSpaceURI;
 
                         // Check if the name has a prefix like "d:nodeName"
                         if (nameSplit.Length > 1)

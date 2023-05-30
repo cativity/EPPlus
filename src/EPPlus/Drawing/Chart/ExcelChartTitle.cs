@@ -29,7 +29,7 @@ namespace OfficeOpenXml.Drawing.Chart;
 public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandatoryProperties
 {
     internal ExcelChart _chart;
-    internal string _nsPrefix = "";
+    internal string _nsPrefix;
     private readonly string titlePath = "{0}:tx/{0}:rich/a:p/a:r/a:t";
 
     internal ExcelChartTitle(ExcelChart chart, XmlNamespaceManager nameSpaceManager, XmlNode node, string nsPrefix)
@@ -84,7 +84,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
     /// </summary>
     public abstract string Text { get; set; }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// A reference to the border properties
@@ -101,7 +101,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// A reference to the fill properties
@@ -111,7 +111,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// A reference to the font properties
@@ -138,7 +138,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -154,7 +154,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -171,7 +171,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -186,7 +186,7 @@ public abstract class ExcelChartTitle : XmlHelper, IDrawingStyle, IStyleMandator
         this.CreatespPrNode($"{this._nsPrefix}:spPr");
     }
 
-    ExcelParagraphCollection _richText = null;
+    ExcelParagraphCollection _richText;
 
     /// <summary>
     /// Richtext

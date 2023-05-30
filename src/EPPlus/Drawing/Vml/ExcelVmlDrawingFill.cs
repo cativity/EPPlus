@@ -40,7 +40,7 @@ public class ExcelVmlDrawingFill : XmlHelper
         }
     }
 
-    ExcelVmlDrawingColor _fillColor = null;
+    ExcelVmlDrawingColor _fillColor;
 
     /// <summary>
     /// The primary color used for filling the drawing.
@@ -96,7 +96,7 @@ public class ExcelVmlDrawingFill : XmlHelper
         }
     }
 
-    ExcelVmlDrawingGradientFill _gradientSettings = null;
+    ExcelVmlDrawingGradientFill _gradientSettings;
 
     /// <summary>
     /// Gradient specific settings used when <see cref="Style"/> is set to Gradient or GradientRadial.
@@ -106,7 +106,7 @@ public class ExcelVmlDrawingFill : XmlHelper
         get { return this._gradientSettings ??= new ExcelVmlDrawingGradientFill(this, this.NameSpaceManager, this.TopNode); }
     }
 
-    internal ExcelVmlDrawingPictureFill _patternPictureSettings = null;
+    internal ExcelVmlDrawingPictureFill _patternPictureSettings;
 
     /// <summary>
     /// Image and pattern specific settings used when <see cref="Style"/> is set to Pattern, Tile or Frame.

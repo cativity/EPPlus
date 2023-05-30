@@ -104,7 +104,7 @@ public class ExcelRadarChart : ExcelChartStandard, IDrawingDataLabel
         set { this._chartXmlHelper.SetXmlNodeString(this.STYLE_PATH, value.ToString().ToLower(CultureInfo.InvariantCulture)); }
     }
 
-    ExcelChartDataLabel _DataLabel = null;
+    ExcelChartDataLabel _DataLabel;
 
     /// <summary>
     /// Access to datalabel properties

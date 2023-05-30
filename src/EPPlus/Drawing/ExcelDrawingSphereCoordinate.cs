@@ -24,7 +24,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     /// <summary>
     /// XPath 
     /// </summary>
-    internal protected string _path;
+    //internal protected string _path;
 
     private readonly string _latPath = "{0}/@lat";
     private readonly string _lonPath = "{0}/@lon";
@@ -34,7 +34,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
     internal ExcelDrawingSphereCoordinate(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, Action<bool> initParent)
         : base(nameSpaceManager, topNode)
     {
-        this._path = path;
+        //this._path = path;
         this._latPath = string.Format(this._latPath, path);
         this._lonPath = string.Format(this._lonPath, path);
         this._revPath = string.Format(this._revPath, path);
@@ -80,7 +80,7 @@ public class ExcelDrawingSphereCoordinate : XmlHelper
         }
     }
 
-    bool isInit = false;
+    bool isInit;
 
     /// <summary>
     /// All values are required, so init them on any set.

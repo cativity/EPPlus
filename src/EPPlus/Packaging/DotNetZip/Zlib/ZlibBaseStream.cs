@@ -42,7 +42,7 @@ internal enum ZlibStreamFlavor
 
 internal class ZlibBaseStream : Stream
 {
-    protected internal ZlibCodec _z = null; // deferred init... new ZlibCodec();
+    protected internal ZlibCodec _z; // deferred init... new ZlibCodec();
 
     protected internal StreamMode _streamMode = StreamMode.Undefined;
     protected internal FlushType _flushMode;
@@ -61,7 +61,7 @@ internal class ZlibBaseStream : Stream
     CRC32 crc;
     protected internal string _GzipFileName;
     protected internal string _GzipComment;
-    protected internal DateTime _GzipMtime;
+    //protected internal DateTime _GzipMtime;
     protected internal int _gzipHeaderByteCount;
 
     internal int Crc32
@@ -379,7 +379,7 @@ internal class ZlibBaseStream : Stream
         }
 #endif
 
-    private bool nomoreinput = false;
+    private bool nomoreinput;
 
     private string ReadZeroTerminatedString()
     {
@@ -438,7 +438,7 @@ internal class ZlibBaseStream : Stream
         }
 
         Int32 timet = BitConverter.ToInt32(header, 4);
-        this._GzipMtime = GZipStream._unixEpoch.AddSeconds(timet);
+        _ = GZipStream._unixEpoch.AddSeconds(timet);
         totalBytesRead += n;
 
         if ((header[3] & 0x04) == 0x04)

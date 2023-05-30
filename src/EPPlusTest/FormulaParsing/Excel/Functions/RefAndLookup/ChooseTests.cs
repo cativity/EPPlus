@@ -41,14 +41,14 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions.RefAndLookup;
 [TestClass]
 public class ChooseTests
 {
-    private ParsingContext _parsingContext;
+    //private ParsingContext _parsingContext;
     private ExcelPackage _package;
     private ExcelWorksheet _worksheet;
 
     [TestInitialize]
     public void Initialize()
     {
-        this._parsingContext = ParsingContext.Create();
+        //this._parsingContext = ParsingContext.Create();
         this._package = new ExcelPackage(new MemoryStream());
         this._worksheet = this._package.Workbook.Worksheets.Add("test");
     }

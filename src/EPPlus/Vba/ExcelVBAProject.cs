@@ -129,7 +129,7 @@ public class ExcelVbaProject
     public ExcelVbaModuleCollection Modules { get; set; }
 
     internal List<string> _HostExtenders = new List<string>();
-    ExcelVbaSignature _signature = null;
+    ExcelVbaSignature _signature;
 
     /// <summary>
     /// The digital signature
@@ -139,7 +139,7 @@ public class ExcelVbaProject
         get { return this._signature ??= new ExcelVbaSignature(this.Part); }
     }
 
-    ExcelVbaProtection _protection = null;
+    ExcelVbaProtection _protection;
 
     /// <summary>
     /// VBA protection 
@@ -1267,8 +1267,7 @@ public class ExcelVbaProject
     {
         if (size > 0)
         {
-            byte[] byteTemp = new byte[size];
-            byteTemp = br.ReadBytes((int)size);
+            byte[] byteTemp = br.ReadBytes((int)size);
 
             return enc.GetString(byteTemp);
         }

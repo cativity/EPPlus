@@ -26,10 +26,10 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD;
 /// </summary>
 public class ExcelDrawingScene3DLightRig : XmlHelper
 {
-    /// <summary>
-    /// The xpath
-    /// </summary>
-    internal protected string _path;
+    ///// <summary>
+    ///// The xpath
+    ///// </summary>
+    //internal protected string _path;
 
     private readonly string _directionPath = "{0}/@dir";
     private readonly string _typePath = "{0}/@rig";
@@ -39,7 +39,7 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
     internal ExcelDrawingScene3DLightRig(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string[] schemaNodeOrder, string path, Action<bool> initParent)
         : base(nameSpaceManager, topNode)
     {
-        this._path = path;
+        //this._path = path;
         this.SchemaNodeOrder = schemaNodeOrder;
 
         this._rotationPath = string.Format(this._rotationPath, path);
@@ -48,7 +48,7 @@ public class ExcelDrawingScene3DLightRig : XmlHelper
         this._initParent = initParent;
     }
 
-    ExcelDrawingSphereCoordinate _rotation = null;
+    ExcelDrawingSphereCoordinate _rotation;
 
     /// <summary>
     /// Defines a rotation in 3D space

@@ -36,7 +36,7 @@ internal class Devsq : ExcelFunction
         }
 
         double mean = arr.Select(x => (double)x).Average();
-        double result = arr.Aggregate(0d, (val, x) => val += System.Math.Pow(x - mean, 2));
+        double result = arr.Aggregate(0d, (val, x) => val + System.Math.Pow(x - mean, 2));
 
         return this.CreateResult(result, DataType.Decimal);
     }

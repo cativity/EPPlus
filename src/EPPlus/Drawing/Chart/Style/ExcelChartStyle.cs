@@ -35,7 +35,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         this._manager = manager;
     }
 
-    ExcelChartStyleEntry _axisTitle = null;
+    ExcelChartStyleEntry _axisTitle;
 
     /// <summary>
     /// Default formatting for an axis title.
@@ -45,7 +45,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._axisTitle ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:axisTitle", this); }
     }
 
-    ExcelChartStyleEntry _categoryAxis = null;
+    ExcelChartStyleEntry _categoryAxis;
 
     /// <summary>
     /// Default formatting for a category axis
@@ -55,7 +55,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._categoryAxis ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:categoryAxis", this); }
     }
 
-    ExcelChartStyleEntry _chartArea = null;
+    ExcelChartStyleEntry _chartArea;
 
     /// <summary>
     /// Default formatting for a chart area
@@ -65,7 +65,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._chartArea ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:chartArea", this); }
     }
 
-    ExcelChartStyleEntry _dataLabel = null;
+    ExcelChartStyleEntry _dataLabel;
 
     /// <summary>
     /// Default formatting for a data label
@@ -75,7 +75,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataLabel ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataLabel", this); }
     }
 
-    ExcelChartStyleEntry _dataLabelCallout = null;
+    ExcelChartStyleEntry _dataLabelCallout;
 
     /// <summary>
     /// Default formatting for a data label callout
@@ -85,7 +85,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataLabelCallout ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataLabelCallout", this); }
     }
 
-    ExcelChartStyleEntry _dataPoint = null;
+    ExcelChartStyleEntry _dataPoint;
 
     /// <summary>
     /// Default formatting for a data point on a 2-D chart of type column, bar, filled radar, stock, bubble, pie, doughnut, area and 3-D bubble.
@@ -95,7 +95,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataPoint ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPoint", this); }
     }
 
-    ExcelChartStyleEntry _dataPoint3D = null;
+    ExcelChartStyleEntry _dataPoint3D;
 
     /// <summary>
     /// Default formatting for a data point on a 3-D chart of type column, bar, line, pie, area and surface.
@@ -105,7 +105,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataPoint3D ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPoint3D", this); }
     }
 
-    ExcelChartStyleEntry _dataPointLine = null;
+    ExcelChartStyleEntry _dataPointLine;
 
     /// <summary>
     /// Default formatting for a data point on a 2-D chart of type line, scatter and radar
@@ -115,7 +115,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataPointLine ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointLine", this); }
     }
 
-    ExcelChartStyleEntry _dataPointMarker = null;
+    ExcelChartStyleEntry _dataPointMarker;
 
     /// <summary>
     /// Default formatting for a datapoint marker
@@ -125,7 +125,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataPointMarker ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointMarker", this); }
     }
 
-    ExcelChartStyleMarkerLayout _dataPointMarkerLayout = null;
+    ExcelChartStyleMarkerLayout _dataPointMarkerLayout;
 
     /// <summary>
     /// Extended marker properties for a datapoint 
@@ -150,7 +150,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         }
     }
 
-    ExcelChartStyleEntry _dataPointWireframe = null;
+    ExcelChartStyleEntry _dataPointWireframe;
 
     /// <summary>
     /// Default formatting for a datapoint on a surface wireframe chart
@@ -160,7 +160,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataPointWireframe ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataPointWireframe", this); }
     }
 
-    ExcelChartStyleEntry _dataTable = null;
+    ExcelChartStyleEntry _dataTable;
 
     /// <summary>
     /// Default formatting for a Data table
@@ -170,7 +170,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dataTable ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dataTable", this); }
     }
 
-    ExcelChartStyleEntry _downBar = null;
+    ExcelChartStyleEntry _downBar;
 
     /// <summary>
     /// Default formatting for a downbar
@@ -180,7 +180,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._downBar ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:downBar", this); }
     }
 
-    ExcelChartStyleEntry _dropLine = null;
+    ExcelChartStyleEntry _dropLine;
 
     /// <summary>
     /// Default formatting for a dropline
@@ -190,7 +190,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._dropLine ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:dropLine", this); }
     }
 
-    ExcelChartStyleEntry _errorBar = null;
+    ExcelChartStyleEntry _errorBar;
 
     /// <summary>
     /// Default formatting for an errorbar
@@ -200,7 +200,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._errorBar ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:errorBar", this); }
     }
 
-    ExcelChartStyleEntry _floor = null;
+    ExcelChartStyleEntry _floor;
 
     /// <summary>
     /// Default formatting for a floor
@@ -210,7 +210,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._floor ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:floor", this); }
     }
 
-    ExcelChartStyleEntry _gridlineMajor = null;
+    ExcelChartStyleEntry _gridlineMajor;
 
     /// <summary>
     /// Default formatting for a major gridline
@@ -220,7 +220,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._gridlineMajor ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:gridlineMajor", this); }
     }
 
-    ExcelChartStyleEntry _gridlineMinor = null;
+    ExcelChartStyleEntry _gridlineMinor;
 
     /// <summary>
     /// Default formatting for a minor gridline
@@ -230,7 +230,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._gridlineMinor ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:gridlineMinor", this); }
     }
 
-    ExcelChartStyleEntry _hiLoLine = null;
+    ExcelChartStyleEntry _hiLoLine;
 
     /// <summary>
     /// Default formatting for a high low line
@@ -240,7 +240,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._hiLoLine ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:hiLoLine", this); }
     }
 
-    ExcelChartStyleEntry _leaderLine = null;
+    ExcelChartStyleEntry _leaderLine;
 
     /// <summary>
     /// Default formatting for a leader line
@@ -253,7 +253,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
     /// <summary>
     /// Default formatting for a legend
     /// </summary>
-    ExcelChartStyleEntry _legend = null;
+    ExcelChartStyleEntry _legend;
 
     /// <summary>
     /// Default formatting for a chart legend
@@ -263,7 +263,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._legend ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:legend", this); }
     }
 
-    ExcelChartStyleEntry _plotArea = null;
+    ExcelChartStyleEntry _plotArea;
 
     /// <summary>
     /// Default formatting for a plot area in a 2D chart
@@ -273,7 +273,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._plotArea ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:plotArea", this); }
     }
 
-    ExcelChartStyleEntry _plotArea3D = null;
+    ExcelChartStyleEntry _plotArea3D;
 
     /// <summary>
     /// Default formatting for a plot area in a 3D chart
@@ -283,7 +283,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._plotArea3D ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:plotArea3D", this); }
     }
 
-    ExcelChartStyleEntry _seriesAxis = null;
+    ExcelChartStyleEntry _seriesAxis;
 
     /// <summary>
     /// Default formatting for a series axis
@@ -293,7 +293,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._seriesAxis ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:seriesAxis", this); }
     }
 
-    ExcelChartStyleEntry _seriesLine = null;
+    ExcelChartStyleEntry _seriesLine;
 
     /// <summary>
     /// Default formatting for a series line
@@ -303,7 +303,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._seriesLine ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:seriesLine", this); }
     }
 
-    ExcelChartStyleEntry _title = null;
+    ExcelChartStyleEntry _title;
 
     /// <summary>
     /// Default formatting for a chart title
@@ -313,7 +313,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._title ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:title", this); }
     }
 
-    ExcelChartStyleEntry _trendline = null;
+    ExcelChartStyleEntry _trendline;
 
     /// <summary>
     /// Default formatting for a trend line
@@ -323,7 +323,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._trendline ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:trendline", this); }
     }
 
-    ExcelChartStyleEntry _trendlineLabel = null;
+    ExcelChartStyleEntry _trendlineLabel;
 
     /// <summary>
     /// Default formatting for a trend line label
@@ -333,7 +333,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._trendlineLabel ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:trendlineLabel", this); }
     }
 
-    ExcelChartStyleEntry _upBar = null;
+    ExcelChartStyleEntry _upBar;
 
     /// <summary>
     /// Default formatting for a up bar
@@ -343,7 +343,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._upBar ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:upBar", this); }
     }
 
-    ExcelChartStyleEntry _valueAxis = null;
+    ExcelChartStyleEntry _valueAxis;
 
     /// <summary>
     /// Default formatting for a value axis
@@ -353,7 +353,7 @@ public class ExcelChartStyle : XmlHelper, IPictureRelationDocument
         get { return this._valueAxis ??= new ExcelChartStyleEntry(this.NameSpaceManager, this.TopNode, "cs:valueAxis", this); }
     }
 
-    ExcelChartStyleEntry _wall = null;
+    ExcelChartStyleEntry _wall;
 
     /// <summary>
     /// Default formatting for a wall

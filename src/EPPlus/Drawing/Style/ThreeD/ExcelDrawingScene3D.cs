@@ -44,7 +44,7 @@ public class ExcelDrawingScene3D : XmlHelper
         this._backDropPath = string.Format(this._backDropPath, this._path);
     }
 
-    ExcelDrawingScene3DCamera _camera = null;
+    ExcelDrawingScene3DCamera _camera;
 
     /// <summary>
     /// The placement and properties of the camera in the 3D scene
@@ -57,7 +57,7 @@ public class ExcelDrawingScene3D : XmlHelper
         }
     }
 
-    ExcelDrawingScene3DLightRig _lightRig = null;
+    ExcelDrawingScene3DLightRig _lightRig;
 
     /// <summary>
     /// The light rig.
@@ -72,7 +72,7 @@ public class ExcelDrawingScene3D : XmlHelper
         }
     }
 
-    ExcelDrawingScene3DBackDrop _backDropPlane = null;
+    ExcelDrawingScene3DBackDrop _backDropPlane;
 
     /// <summary>
     /// The points and vectors contained within the backdrop define a plane in 3D space
@@ -86,7 +86,7 @@ public class ExcelDrawingScene3D : XmlHelper
         }
     }
 
-    bool hasInit = false;
+    bool hasInit;
 
     internal void InitXml(bool delete)
     {

@@ -25,7 +25,7 @@ internal delegate void ModuleNameChange(string value);
 public class ExcelVBAModule
 {
     string _name = "";
-    ModuleNameChange _nameChangeCallback = null;
+    ModuleNameChange _nameChangeCallback;
 
     private static readonly char[] _nonValidChars = new char[]
     {

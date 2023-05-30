@@ -49,7 +49,7 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
         get { return this.Name; }
     }
 
-    int _styleXfId = 0;
+    int _styleXfId;
     const string idPath = "@xfId";
 
     /// <summary>
@@ -98,7 +98,7 @@ public sealed class ExcelNamedStyleXml : StyleXmlHelper
         internal set { this._name = value; }
     }
 
-    ExcelStyle _style = null;
+    ExcelStyle _style;
 
     /// <summary>
     /// The style object

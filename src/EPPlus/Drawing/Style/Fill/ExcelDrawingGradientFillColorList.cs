@@ -28,7 +28,7 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
     List<ExcelDrawingGradientFillColor> _lst = new List<ExcelDrawingGradientFillColor>();
     private XmlNamespaceManager _nsm;
     private XmlNode _topNode;
-    private XmlNode _gsLst = null;
+    private XmlNode _gsLst;
     private string _path;
     private string[] _schemaNodeOrder;
 
@@ -151,16 +151,15 @@ public class ExcelDrawingGradientFillColorList : IEnumerable<ExcelDrawingGradien
             throw new ArgumentOutOfRangeException("Position must be between 0 and 100");
         }
 
-        XmlNode node;
         for (int i = 0; i < this._lst.Count; i++)
         {
             if (this._lst[i].Position > position)
             {
-                node = this.AddGs(position, this._lst[i].TopNode);
+                _ = this.AddGs(position, this._lst[i].TopNode);
             }
         }
 
-        node = this.AddGs(position, null);
+        XmlNode node = this.AddGs(position, null);
 
         ExcelDrawingGradientFillColor? tc = new ExcelDrawingGradientFillColor()
         {

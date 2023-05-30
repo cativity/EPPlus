@@ -22,12 +22,12 @@ public class FillNumberParams : FillParams
     /// The start value. If null, the first value in the row/column is used. 
     /// <seealso cref="FillParams.Direction"/>
     /// </summary>
-    public double? StartValue { get; set; } = null;
+    public double? StartValue { get; set; }
 
     /// <summary>
     /// When this value is exceeded the fill stops
     /// </summary>
-    public double? EndValue { get; set; } = null;
+    public double? EndValue { get; set; }
 
     /// <summary>
     /// The value to use in the calculation for each step. 

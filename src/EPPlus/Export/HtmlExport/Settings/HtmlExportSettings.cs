@@ -75,14 +75,14 @@ public abstract class HtmlExportSettings
     /// Columns with the default width will have the default column width class set, ({Settings.StyleClassPrefix}dcw). 
     /// Columns with custom column width will have the width set directly via the style attribute.
     /// </summary>
-    public bool SetColumnWidth { get; set; } = false;
+    public bool SetColumnWidth { get; set; }
 
     /// <summary>
     /// Set the row height for rows in the table.
     /// Rows with the default height will have the default row height class set, ({Settings.StyleClassPrefix}drh). 
     /// Rows with custom row height will have the height set directly via the style attribute.
     /// </summary>
-    public bool SetRowHeight { get; set; } = false;
+    public bool SetRowHeight { get; set; }
 
     /// <summary>
     /// Prefix for style classes added by EPPlus. 

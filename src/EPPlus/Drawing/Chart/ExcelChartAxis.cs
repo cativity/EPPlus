@@ -123,7 +123,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
     /// </summary>
     public abstract eTickLabelPosition LabelPosition { get; set; }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -133,7 +133,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -150,7 +150,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -167,7 +167,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -177,7 +177,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         get { return this._threeD ??= new ExcelDrawing3D(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
@@ -194,7 +194,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -292,7 +292,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
 
     #region GridLines
 
-    ExcelDrawingBorder _majorGridlines = null;
+    ExcelDrawingBorder _majorGridlines;
 
     /// <summary> 
     /// Major gridlines for the axis 
@@ -309,7 +309,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelDrawingEffectStyle _majorGridlineEffects = null;
+    ExcelDrawingEffectStyle _majorGridlineEffects;
 
     /// <summary> 
     /// Effects for major gridlines for the axis 
@@ -326,7 +326,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelDrawingBorder _minorGridlines = null;
+    ExcelDrawingBorder _minorGridlines;
 
     /// <summary> 
     /// Minor gridlines for the axis 
@@ -343,7 +343,7 @@ public abstract class ExcelChartAxis : XmlHelper, IDrawingStyle, IStyleMandatory
         }
     }
 
-    ExcelDrawingEffectStyle _minorGridlineEffects = null;
+    ExcelDrawingEffectStyle _minorGridlineEffects;
 
     /// <summary> 
     /// Effects for minor gridlines for the axis 

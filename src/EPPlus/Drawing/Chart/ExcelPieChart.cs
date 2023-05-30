@@ -62,7 +62,7 @@ public class ExcelPieChart : ExcelChartStandard, IDrawingDataLabel
         this.Series.Init(chart, ns, node, isPivot, base.Series._list);
     }
 
-    ExcelChartDataLabel _dataLabel = null;
+    ExcelChartDataLabel _dataLabel;
 
     /// <summary>
     /// Access to datalabel properties

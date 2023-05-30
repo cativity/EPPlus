@@ -35,7 +35,7 @@ public class ExcelPivotTableAreaStyle : ExcelPivotArea
     /// </summary>
     public ExcelPivotAreaStyleConditions Conditions { get; }
 
-    ExcelDxfStyle _style = null;
+    ExcelDxfStyle _style;
 
     /// <summary>
     /// Access to the style property for the pivot area

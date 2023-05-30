@@ -42,7 +42,7 @@ public sealed class ExcelStockChartSerie : ExcelChartSerieWithErrorBars, IDrawin
         this.Border.Fill.Style = eFillStyle.NoFill;
     }
 
-    ExcelChartSerieDataLabel _dataLabel = null;
+    ExcelChartSerieDataLabel _dataLabel;
 
     /// <summary>
     /// Data label properties
@@ -72,7 +72,7 @@ public sealed class ExcelStockChartSerie : ExcelChartSerieWithErrorBars, IDrawin
     }
 
     const string markerPath = "c:marker/c:symbol/@val";
-    ExcelChartMarker _chartMarker = null;
+    ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
@@ -113,7 +113,7 @@ public sealed class ExcelStockChartSerie : ExcelChartSerieWithErrorBars, IDrawin
         return true;
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

@@ -148,7 +148,7 @@ internal static class WorksheetCopyHelper
 
             if (attr != null)
             {
-                relID = attr.Value;
+                //relID = attr.Value;
 
                 // first delete the attribute from the XML
                 _ = pageSetup.Attributes.Remove(attr);

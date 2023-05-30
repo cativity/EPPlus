@@ -30,7 +30,7 @@ namespace OfficeOpenXml.Drawing.Slicer;
 /// </summary>
 public class ExcelPivotTableSlicerCache : ExcelSlicerCache
 {
-    internal ExcelPivotTableField _field = null;
+    internal ExcelPivotTableField _field;
 
     internal ExcelPivotTableSlicerCache(XmlNamespaceManager nameSpaceManager)
         : base(nameSpaceManager)
@@ -102,7 +102,7 @@ public class ExcelPivotTableSlicerCache : ExcelSlicerCache
     /// </summary>
     public ExcelSlicerPivotTableCollection PivotTables { get; }
 
-    ExcelPivotTableSlicerCacheTabularData _data = null;
+    ExcelPivotTableSlicerCacheTabularData _data;
 
     /// <summary>
     /// Tabular data for a pivot table slicer cache.

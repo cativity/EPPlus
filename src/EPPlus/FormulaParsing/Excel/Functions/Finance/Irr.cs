@@ -30,7 +30,7 @@ internal class Irr : ExcelFunction
     {
         ValidateArguments(arguments, 1);
         IEnumerable<ExcelDoubleCellValue>? values = this.ArgsToDoubleEnumerable(new List<FunctionArgument> { arguments.ElementAt(0) }, context);
-        FinanceCalcResult<double>? result = default(FinanceCalcResult<double>);
+        FinanceCalcResult<double>? result;
 
         if (arguments.Count() == 1)
         {

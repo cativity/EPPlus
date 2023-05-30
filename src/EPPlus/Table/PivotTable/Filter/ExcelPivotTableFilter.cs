@@ -560,7 +560,7 @@ public class ExcelPivotTableFilter : XmlHelper
         set { this.SetXmlNodeString("@stringValue2", value, true); }
     }
 
-    ExcelFilterColumn _filter = null;
+    ExcelFilterColumn _filter;
 
     internal ExcelFilterColumn Filter
     {

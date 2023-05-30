@@ -67,7 +67,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zlib;
 public class DeflateStream : Stream
 {
     internal ZlibBaseStream _baseStream;
-    internal Stream _innerStream;
+    //internal Stream _innerStream;
     bool _disposed;
 
     /// <summary>
@@ -307,7 +307,7 @@ public class DeflateStream : Stream
     /// <param name="level">A tuning knob to trade speed for effectiveness.</param>
     public DeflateStream(Stream stream, CompressionMode mode, CompressionLevel level, bool leaveOpen)
     {
-        this._innerStream = stream;
+        //this._innerStream = stream;
         this._baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.DEFLATE, leaveOpen);
     }
 

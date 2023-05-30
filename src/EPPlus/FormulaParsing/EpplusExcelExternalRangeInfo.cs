@@ -32,14 +32,14 @@ namespace OfficeOpenXml.FormulaParsing;
 public class EpplusExcelExternalRangeInfo : IRangeInfo
 {
     internal ExcelExternalWorksheet _externalWs;
-    internal CellStoreEnumerator<object> _values = null;
+    internal CellStoreEnumerator<object> _values;
 
     int _fromRow,
         _toRow,
         _fromCol,
         _toCol;
 
-    int _cellCount = 0;
+    int _cellCount;
     ExcelAddressBase _address;
     ICellInfo _cell;
 

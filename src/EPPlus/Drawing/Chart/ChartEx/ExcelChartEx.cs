@@ -271,7 +271,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    internal ExcelChartExAxis[] _exAxis = null;
+    internal ExcelChartExAxis[] _exAxis;
 
     /// <summary>
     /// An array containg all axis of all Charttypes
@@ -315,7 +315,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Border
@@ -332,7 +332,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to Fill properties
@@ -349,7 +349,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -366,7 +366,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -382,7 +382,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
@@ -399,7 +399,7 @@ public abstract class ExcelChartEx : ExcelChart
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties

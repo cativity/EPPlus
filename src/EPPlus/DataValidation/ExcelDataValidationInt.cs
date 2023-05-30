@@ -22,7 +22,7 @@ namespace OfficeOpenXml.DataValidation;
 /// </summary>
 public class ExcelDataValidationInt : ExcelDataValidationWithFormula2<IExcelDataValidationFormulaInt>, Contracts.IExcelDataValidationInt
 {
-    bool _isTextLength = false;
+    bool _isTextLength;
 
     /// <summary>
     /// Constructor for reading data

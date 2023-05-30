@@ -37,7 +37,7 @@ public class ExcelDrawingScene3DBackDrop : XmlHelper
         this._initParent = initParent;
     }
 
-    ExcelDrawingPoint3D _anchorPoint = null;
+    ExcelDrawingPoint3D _anchorPoint;
 
     /// <summary>
     /// The anchor point
@@ -50,7 +50,7 @@ public class ExcelDrawingScene3DBackDrop : XmlHelper
         }
     }
 
-    ExcelDrawingPoint3D _upVector = null;
+    ExcelDrawingPoint3D _upVector;
 
     /// <summary>
     /// The up vector
@@ -60,7 +60,7 @@ public class ExcelDrawingScene3DBackDrop : XmlHelper
         get { return this._upVector ??= new ExcelDrawingPoint3D(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._upPath, "d", this.InitXml); }
     }
 
-    ExcelDrawingPoint3D _normalVector = null;
+    ExcelDrawingPoint3D _normalVector;
 
     /// <summary>
     /// The normal vector

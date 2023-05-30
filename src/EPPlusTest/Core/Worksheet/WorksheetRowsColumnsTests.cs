@@ -67,7 +67,7 @@ public class WorksheetRowsColumnsTests : TestBase
         ws.Cells["A1"].Value = 1;
         ws.Cells["A11"].Value = 11;
 
-        foreach (ExcelRangeRow? row in ws.Rows[2, 10])
+        foreach (ExcelRangeRow? _ in ws.Rows[2, 10])
         {
             Assert.Fail("No rows should be in the Rows collection.");
         }

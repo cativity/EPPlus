@@ -23,14 +23,14 @@ namespace OfficeOpenXml;
 /// </summary>
 public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisposable
 {
-    private ExcelPackage _package;
+    //private ExcelPackage _package;
     private ExcelWorksheet _excelWorksheet;
     private XmlNamespaceManager _nameSpaceManager;
     private List<ExcelIgnoredError> _list = new List<ExcelIgnoredError>();
 
     internal ExcelIgnoredErrorCollection(ExcelPackage package, ExcelWorksheet excelWorksheet, XmlNamespaceManager nameSpaceManager)
     {
-        this._package = package;
+        //this._package = package;
         this._excelWorksheet = excelWorksheet;
         this._nameSpaceManager = nameSpaceManager;
     }
@@ -85,7 +85,7 @@ public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisp
         return item;
     }
 
-    XmlNode _topNode = null;
+    XmlNode _topNode;
 
     internal XmlNode TopNode
     {

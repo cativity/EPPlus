@@ -96,7 +96,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         set { this.SetXmlNodeString(showKeysPath, value ? "1" : "0"); }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access fill properties
@@ -106,7 +106,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access border properties
@@ -116,7 +116,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         get { return this._border ??= new ExcelDrawingBorder(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr/a:ln", this.SchemaNodeOrder); }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access font properties
@@ -140,7 +140,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -150,7 +150,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -163,7 +163,7 @@ public class ExcelChartDataTable : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

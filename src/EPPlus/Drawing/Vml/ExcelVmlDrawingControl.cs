@@ -45,7 +45,7 @@ public class ExcelVmlDrawingControl : ExcelVmlDrawingBase
         set { this.SetXmlNodeInt("x:ClientData/x:Page", value); }
     }
 
-    internal ExcelVmlDrawingFill _fill = null;
+    internal ExcelVmlDrawingFill _fill;
 
     internal ExcelVmlDrawingFill GetFill()
     {

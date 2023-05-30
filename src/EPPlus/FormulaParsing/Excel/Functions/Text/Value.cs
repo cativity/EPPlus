@@ -32,14 +32,14 @@ internal class Value : ExcelFunction
         this._groupSeparator = this._cultureInfo.NumberFormat.NumberGroupSeparator;
         this._decimalSeparator = this._cultureInfo.NumberFormat.NumberDecimalSeparator;
         this._timeSeparator = this._cultureInfo.DateTimeFormat.TimeSeparator;
-        this._shortTimePattern = this._cultureInfo.DateTimeFormat.ShortTimePattern;
+        //this._shortTimePattern = this._cultureInfo.DateTimeFormat.ShortTimePattern;
     }
 
     private readonly CultureInfo _cultureInfo;
     private readonly string _groupSeparator;
     private readonly string _decimalSeparator;
     private readonly string _timeSeparator;
-    private readonly string _shortTimePattern;
+    //private readonly string _shortTimePattern;
     private readonly DateValue _dateValueFunc = new DateValue();
     private readonly TimeValue _timeValueFunc = new TimeValue();
 

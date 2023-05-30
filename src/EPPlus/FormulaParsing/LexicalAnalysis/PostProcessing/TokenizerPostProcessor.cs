@@ -36,7 +36,7 @@ internal class TokenizerPostProcessor
 
     private readonly TokenizerContext _context;
     private readonly TokenNavigator _navigator;
-    private readonly Token PlusToken = TokenSeparatorProvider.Instance.GetToken("+").Value;
+    //private readonly Token PlusToken = TokenSeparatorProvider.Instance.GetToken("+").Value;
     private readonly Token MinusToken = TokenSeparatorProvider.Instance.GetToken("-").Value;
 
     /// <summary>

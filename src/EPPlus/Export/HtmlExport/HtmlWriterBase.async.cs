@@ -22,7 +22,7 @@ namespace OfficeOpenXml.Export.HtmlExport;
 
 internal abstract partial class HtmlWriterBase
 {
-    protected readonly Stream _stream;
+    //protected readonly Stream _stream;
     protected readonly StreamWriter _writer;
 
     protected const string IndentWhiteSpace = "  ";
@@ -33,14 +33,14 @@ internal abstract partial class HtmlWriterBase
 
     internal HtmlWriterBase(Stream stream, Encoding encoding, Dictionary<string, int> styleCache)
     {
-        this._stream = stream;
+        //this._stream = stream;
         this._writer = new StreamWriter(stream, encoding);
         this._styleCache = styleCache;
     }
 
     public HtmlWriterBase(StreamWriter writer, Dictionary<string, int> styleCache)
     {
-        this._stream = writer.BaseStream;
+        //this._stream = writer.BaseStream;
         this._writer = writer;
         this._styleCache = styleCache;
     }

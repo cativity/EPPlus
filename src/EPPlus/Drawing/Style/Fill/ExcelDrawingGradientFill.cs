@@ -43,7 +43,7 @@ public class ExcelDrawingGradientFill : ExcelDrawingFillBase
     /// </summary>
     public bool RotateWithShape { get; set; }
 
-    ExcelDrawingGradientFillColorList _colors = null;
+    ExcelDrawingGradientFillColorList _colors;
     const string ColorsPath = "a:gsLst";
 
     /// <summary>

@@ -144,7 +144,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
         set { this._family = value; }
     }
 
-    ExcelColorXml _color = null;
+    ExcelColorXml _color;
     const string _colorPath = "d:color";
 
     /// <summary>
@@ -157,7 +157,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
     }
 
     const string schemePath = "d:scheme/@val";
-    string _scheme = "";
+    string _scheme;
 
     /// <summary>
     /// Font Scheme
@@ -240,7 +240,7 @@ public sealed class ExcelFontXml : StyleXmlHelper
     }
 
     const string _charsetPath = "d:charset/@val";
-    int? _charset = null;
+    int? _charset;
 
     /// <summary>
     /// The character set for the font

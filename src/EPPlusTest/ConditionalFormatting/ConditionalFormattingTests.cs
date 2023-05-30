@@ -194,13 +194,12 @@ public class ConditionalFormattingTests : TestBase
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
 
-        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf =
-            ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
+        _ = ws.Cells["A1"].ConditionalFormatting.AddThreeIconSet(eExcelconditionalFormatting3IconsSetType.TrafficLights2);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
         ws = p2.Workbook.Worksheets[0];
-        cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
+        IExcelConditionalFormattingThreeIconSet<eExcelconditionalFormatting3IconsSetType> cf = ws.ConditionalFormatting[0].As.ThreeIconSet;
         Assert.AreEqual(eExcelconditionalFormatting3IconsSetType.TrafficLights2, cf.IconSet);
     }
 
@@ -210,13 +209,12 @@ public class ConditionalFormattingTests : TestBase
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("FourIcon");
 
-        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf =
-            ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
+        _ = ws.Cells["A1"].ConditionalFormatting.AddFourIconSet(eExcelconditionalFormatting4IconsSetType.ArrowsGray);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
         ws = p2.Workbook.Worksheets[0];
-        cf = ws.ConditionalFormatting[0].As.FourIconSet;
+        IExcelConditionalFormattingFourIconSet<eExcelconditionalFormatting4IconsSetType> cf = ws.ConditionalFormatting[0].As.FourIconSet;
         Assert.AreEqual(eExcelconditionalFormatting4IconsSetType.ArrowsGray, cf.IconSet);
     }
 
@@ -225,12 +223,12 @@ public class ConditionalFormattingTests : TestBase
     {
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("FiveIcon");
-        IExcelConditionalFormattingFiveIconSet cf = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
+        _ = ws.Cells["A1"].ConditionalFormatting.AddFiveIconSet(eExcelconditionalFormatting5IconsSetType.Arrows);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
         ws = p2.Workbook.Worksheets[0];
-        cf = ws.ConditionalFormatting[0].As.FiveIconSet;
+        IExcelConditionalFormattingFiveIconSet cf = ws.ConditionalFormatting[0].As.FiveIconSet;
         Assert.AreEqual(eExcelconditionalFormatting5IconsSetType.Arrows, cf.IconSet);
     }
 
@@ -239,12 +237,12 @@ public class ConditionalFormattingTests : TestBase
     {
         using ExcelPackage p = new ExcelPackage();
         ExcelWorksheet ws = p.Workbook.Worksheets.Add("DataBar");
-        IExcelConditionalFormattingDataBarGroup cf = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
+        _ = ws.Cells["A1"].ConditionalFormatting.AddDatabar(Color.Red);
 
         p.Save();
         using ExcelPackage p2 = new ExcelPackage(p.Stream);
         ws = p2.Workbook.Worksheets[0];
-        cf = ws.ConditionalFormatting[0].As.DataBar;
+        IExcelConditionalFormattingDataBarGroup cf = ws.ConditionalFormatting[0].As.DataBar;
         Assert.AreEqual(Color.Red.ToArgb(), cf.Color.ToArgb());
     }
 

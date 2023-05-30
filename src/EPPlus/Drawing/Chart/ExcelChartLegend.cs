@@ -111,7 +111,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         return -1;
     }
 
-    internal EPPlusReadOnlyList<ExcelChartLegendEntry> _entries = null;
+    internal EPPlusReadOnlyList<ExcelChartLegendEntry> _entries;
 
     /// <summary>
     /// A list of individual settings for legend entries.
@@ -233,7 +233,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         }
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// The Fill style
@@ -243,7 +243,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         get { return this._fill ??= new ExcelDrawingFill(this._chart, this.NameSpaceManager, this.TopNode, "c:spPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// The Border style
@@ -260,7 +260,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// The Font properties
@@ -277,7 +277,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -287,7 +287,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, $"{this._nsPrefix}:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -304,7 +304,7 @@ public class ExcelChartLegend : XmlHelper, IDrawingStyle, IStyleMandatoryPropert
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties

@@ -23,14 +23,14 @@ namespace OfficeOpenXml.Drawing.Chart;
 public class ExcelChartNumericSource : XmlHelper
 {
     string _path;
-    XmlElement _sourceElement = null;
-    string _formatCodePath;
+    XmlElement _sourceElement;
+    //string _formatCodePath;
 
     internal ExcelChartNumericSource(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder)
         : base(nameSpaceManager, topNode)
     {
         this._path = path;
-        this._formatCodePath = $"{this._path}/c:numLit/c:formatCode";
+        //this._formatCodePath = $"{this._path}/c:numLit/c:formatCode";
         this.AddSchemaNodeOrder(schemaNodeOrder, new string[] { "formatCode", "ptCount", "pt" });
         this.SetSourceElement();
 
@@ -100,10 +100,10 @@ public class ExcelChartNumericSource : XmlHelper
                 this.SetXmlNodeString($"{this._path}/c:numRef/c:f", value);
             }
 
-            if (!string.IsNullOrEmpty(this._formatCode))
-            {
-                this.FormatCode = this.FormatCode;
-            }
+            //if (!string.IsNullOrEmpty(this._formatCode))
+            //{
+            //    this.FormatCode = this.FormatCode;
+            //}
 
             this.SetSourceElement();
         }

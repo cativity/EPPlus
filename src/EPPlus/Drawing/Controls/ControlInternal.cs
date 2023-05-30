@@ -132,14 +132,14 @@ internal class ControlInternal : XmlHelper
         set { this.SetXmlNodeString("d:controlPr/@linkedCell", value); }
     }
 
-    ExcelPosition _from = null;
+    ExcelPosition _from;
 
     public ExcelPosition From
     {
         get { return this._from ?? (this._from = new ExcelPosition(this.NameSpaceManager, this.GetNode("d:controlPr/d:anchor/d:from"), null)); }
     }
 
-    ExcelPosition _to = null;
+    ExcelPosition _to;
 
     public ExcelPosition To
     {

@@ -54,7 +54,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
         }
     }
 
-    ExcelChartSerieDataLabel _dataLabel = null;
+    ExcelChartSerieDataLabel _dataLabel;
 
     /// <summary>
     /// Data label properties
@@ -84,7 +84,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
     }
 
     const string markerPath = "c:marker/c:symbol/@val";
-    ExcelChartMarker _chartMarker = null;
+    ExcelChartMarker _chartMarker;
 
     /// <summary>
     /// A reference to marker properties
@@ -128,7 +128,7 @@ public sealed class ExcelScatterChartSerie : ExcelChartSerieWithHorizontalErrorB
         return true;
     }
 
-    ExcelChartDataPointCollection _dataPoints = null;
+    ExcelChartDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of the individual datapoints

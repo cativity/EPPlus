@@ -16,7 +16,7 @@ namespace EPPlusTest.FormulaParsing.Excel.Functions;
 public class FinanceFunctionsTests
 {
     private ExcelPackage _package;
-    private EpplusExcelDataProvider _provider;
+    //private EpplusExcelDataProvider _provider;
     private ParsingContext _parsingContext;
     private ExcelWorksheet _worksheet;
 
@@ -24,7 +24,7 @@ public class FinanceFunctionsTests
     public void Initialize()
     {
         this._package = new ExcelPackage();
-        this._provider = new EpplusExcelDataProvider(this._package);
+        //this._provider = new EpplusExcelDataProvider(this._package);
         this._parsingContext = ParsingContext.Create();
         _ = this._parsingContext.Scopes.NewScope(RangeAddress.Empty);
         this._worksheet = this._package.Workbook.Worksheets.Add("testsheet");

@@ -12,8 +12,8 @@ public static class RecyclableMemory
 {
 #if !NET35
     private static RecyclableMemoryStreamManager _memoryManager;
-    private static bool _dataInitialized = false;
-    private static bool _lazyInitializeFailed = false;
+    private static bool _dataInitialized;
+    private static bool _lazyInitializeFailed;
     private static object _dataLock = new object();
 
     private static RecyclableMemoryStreamManager MemoryManager

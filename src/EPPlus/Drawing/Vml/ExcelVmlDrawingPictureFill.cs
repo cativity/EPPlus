@@ -93,7 +93,7 @@ public class ExcelVmlDrawingPictureFill : XmlHelper, IPictureContainer
         set { this.SetXmlNodeString("v:fill/@o:title", value, true); }
     }
 
-    ExcelImage _image = null;
+    ExcelImage _image;
 
     /// <summary>
     /// The image is used when <see cref="ExcelVmlDrawingFill.Style"/> is set to  Pattern, Tile or Frame.

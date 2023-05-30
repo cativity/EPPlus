@@ -22,8 +22,8 @@ namespace OfficeOpenXml.Drawing.Style.ThreeD;
 /// </summary>
 public class ExcelDrawing3DBevel : XmlHelper
 {
-    bool _isInit = false;
-    private string _path;
+    bool _isInit;
+    //private string _path;
     private readonly string _widthPath = "{0}/@w";
     private readonly string _heightPath = "{0}/@h";
     private readonly string _typePath = "{0}/@prst";
@@ -33,7 +33,7 @@ public class ExcelDrawing3DBevel : XmlHelper
         : base(nameSpaceManager, topNode)
     {
         this.SchemaNodeOrder = schemaNodeOrder;
-        this._path = path;
+        //this._path = path;
         this._widthPath = string.Format(this._widthPath, path);
         this._heightPath = string.Format(this._heightPath, path);
         this._typePath = string.Format(this._typePath, path);

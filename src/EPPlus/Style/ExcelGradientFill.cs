@@ -176,7 +176,7 @@ public class ExcelGradientFill : StyleBase
         }
     }
 
-    ExcelColor _gradientColor1 = null;
+    ExcelColor _gradientColor1;
 
     /// <summary>
     /// Gradient Color 1
@@ -194,7 +194,7 @@ public class ExcelGradientFill : StyleBase
         }
     }
 
-    ExcelColor _gradientColor2 = null;
+    ExcelColor _gradientColor2;
 
     /// <summary>
     /// Gradient Color 2

@@ -46,7 +46,7 @@ internal class ZipPackagePart : ZipPackagePartBase, IDisposable
     internal ZipEntry Entry { get; set; }
 
     internal CompressionLevel CompressionLevel;
-    Stream _stream = null;
+    Stream _stream;
 
     internal Stream Stream
     {

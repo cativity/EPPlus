@@ -58,7 +58,7 @@ public class ExcelDrawingConnectionPoint : XmlHelper
         }
     }
 
-    ExcelShape _shape = null;
+    ExcelShape _shape;
 
     /// <summary>
     /// The shape to connect

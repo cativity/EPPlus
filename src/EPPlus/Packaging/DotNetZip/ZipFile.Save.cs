@@ -644,7 +644,7 @@ internal static class ZipOutput
 
         // write to a memory stream in order to keep the
         // CDR contiguous
-        Int64 aLength = 0;
+        Int64 aLength;
 
         using (MemoryStream? ms = RecyclableMemory.GetStream())
         {
@@ -691,7 +691,7 @@ internal static class ZipOutput
 
         bool needZip64CentralDirectory = zip64 == Zip64Option.Always || countOfEntries >= 0xFFFF || SizeOfCentralDirectory > 0xFFFFFFFF || Start > 0xFFFFFFFF;
 
-        byte[] a2 = null;
+        byte[] a2;
 
         // emit ZIP64 extensions as required
         if (needZip64CentralDirectory)
@@ -761,7 +761,6 @@ internal static class ZipOutput
             // number of the disk with the start of the central directory
             //Array.Copy(BitConverter.GetBytes((UInt16)startSegment), 0, a2, i, 2);
             Array.Copy(BitConverter.GetBytes(thisSegment), 0, a2, i, 2);
-            i += 2;
         }
 
         s.Write(a2, 0, a2.Length);
@@ -896,7 +895,7 @@ internal static class ZipOutput
         {
             // no comment!
             bytes[i++] = (byte)0;
-            bytes[i++] = (byte)0;
+            bytes[i] = (byte)0;
         }
         else
         {

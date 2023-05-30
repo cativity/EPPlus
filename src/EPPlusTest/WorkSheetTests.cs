@@ -103,7 +103,7 @@ public class WorkSheetTest : TestBase
     {
         _ = _pck.Workbook.Worksheets.AddChart("ChartSheet", eChartType.ColumnClustered);
 
-        foreach (ExcelNamedRange? _n in _pck.Workbook.Names)
+        foreach (ExcelNamedRange? _ in _pck.Workbook.Names)
         {
         }
 
@@ -151,7 +151,7 @@ public class WorkSheetTest : TestBase
 
         Assert.AreNotEqual(comment, null);
         Assert.AreEqual(comment.Author, "Jan Källman");
-        ws = TryGetWorksheet(pck, "Hidden");
+        _ = TryGetWorksheet(pck, "Hidden");
         ws = pck.Workbook.Worksheets["Hidden"];
         Assert.AreEqual<eWorkSheetHidden>(ws.Hidden, eWorkSheetHidden.Hidden);
 
@@ -161,7 +161,7 @@ public class WorkSheetTest : TestBase
         ws = TryGetWorksheet(pck, "RichText");
         Assert.AreEqual("Room 02 & 03", ws.Cells["G1"].RichText.Text);
 
-        ws = TryGetWorksheet(pck, "HeaderImage");
+        _ = TryGetWorksheet(pck, "HeaderImage");
 
         //Assert.AreEqual(ws.HeaderFooter.Pictures.Count, 3);
 
@@ -619,7 +619,8 @@ public class WorkSheetTest : TestBase
 
         //ws.Cells.Value = 0;
         ws.Cells["A1:C5"].Value = 1;
-        Assert.AreEqual(((object[,])ws.Cells["A1:C5"].Value)[1, 1], 1);
+        object v = ((object[,])ws.Cells["A1:C5"].Value)[1, 1];
+        Assert.AreEqual(v, 1);
         ws.Cells["A1:B3"].Merge = true;
         ws.Cells["D3"].Formula = "A2+C5";
         ws.InsertRow(2, 1);
@@ -795,13 +796,13 @@ public class WorkSheetTest : TestBase
         comment.RichText[0].PreserveSpace = true;
         _ = comment.RichText.Add("Test comment");
         comment.VerticalAlignment = eTextAlignVerticalVml.Center;
-        comment = ws.Comments.Add(ws.Cells["A2"], "Jan Källman\r\nAuthor\r\n1", "JK");
+        _ = ws.Comments.Add(ws.Cells["A2"], "Jan Källman\r\nAuthor\r\n1", "JK");
 
         comment = ws.Comments.Add(ws.Cells["A1"], "Jan Källman\r\nAuthor\r\n2", "JK");
         comment.AlternativeText = "Test of AlternetiveText2";
-        comment = ws.Comments.Add(ws.Cells["C2"], "Jan Källman\r\nAuthor\r\n3", "JK");
-        comment = ws.Comments.Add(ws.Cells["C1"], "Jan Källman\r\nAuthor\r\n5", "JK");
-        comment = ws.Comments.Add(ws.Cells["B1"], "Jan Källman\r\nAuthor\r\n7", "JK");
+        _ = ws.Comments.Add(ws.Cells["C2"], "Jan Källman\r\nAuthor\r\n3", "JK");
+        _ = ws.Comments.Add(ws.Cells["C1"], "Jan Källman\r\nAuthor\r\n5", "JK");
+        _ = ws.Comments.Add(ws.Cells["B1"], "Jan Källman\r\nAuthor\r\n7", "JK");
 
         ws.Comments.Remove(ws.Cells["A2"].Comment);
 
@@ -881,7 +882,6 @@ public class WorkSheetTest : TestBase
         _ = pck2.Workbook.Worksheets.Add("Copy From other pck", pck.Workbook.Worksheets["Address"]);
         pck2.SaveAs(new FileInfo(_worksheetPath + "copy.xlsx"));
         pck2.Dispose();
-        pck2 = null;
         Assert.AreEqual(6, ws.Comments.Count);
     }
 
@@ -1183,7 +1183,7 @@ public class WorkSheetTest : TestBase
         ws.Cells["C8"].Style.Fill.PatternType = ExcelFillStyle.Solid;
         ws.Cells["C8"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
-        tbl = ws.Tables.Add(ws.Cells["a12:a13"], "");
+        _ = ws.Tables.Add(ws.Cells["a12:a13"], "");
 
         tbl = ws.Tables.Add(ws.Cells["C16:Y35"], "");
         tbl.TableStyle = TableStyles.Medium14;
@@ -1253,9 +1253,9 @@ public class WorkSheetTest : TestBase
     public void CopyPivotTable()
     {
         using ExcelPackage? pck = OpenPackage("worksheetRead.xlsx");
-        ExcelWorksheet? ws = TryGetWorksheet(pck, "Pivot-Group Date");
+        _ = TryGetWorksheet(pck, "Pivot-Group Date");
         _ = pck.Workbook.Worksheets.Copy("Pivot-Group Date", "Copied Pivottable 1");
-        ws = TryGetWorksheet(pck, "Pivot-Group Number");
+        _ = TryGetWorksheet(pck, "Pivot-Group Number");
         _ = pck.Workbook.Worksheets.Copy("Pivot-Group Number", "Copied Pivottable 2");
 
         SaveWorkbook("WorksheetCopyPivot.xlsx", pck);

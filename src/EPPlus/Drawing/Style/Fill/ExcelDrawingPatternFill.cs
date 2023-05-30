@@ -54,7 +54,7 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
         set { this._pattern = value; }
     }
 
-    ExcelDrawingColorManager _fgColor = null;
+    ExcelDrawingColorManager _fgColor;
 
     /// <summary>
     /// Foreground color
@@ -64,7 +64,7 @@ public class ExcelDrawingPatternFill : ExcelDrawingFillBase
         get { return this._fgColor ??= new ExcelDrawingColorManager(this._nsm, this._topNode, "a:fgClr", this._schemaNodeOrder, this._initXml); }
     }
 
-    ExcelDrawingColorManager _bgColor = null;
+    ExcelDrawingColorManager _bgColor;
 
     /// <summary>
     /// Background color

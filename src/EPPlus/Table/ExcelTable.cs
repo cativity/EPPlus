@@ -212,7 +212,7 @@ namespace OfficeOpenXml.Table
         /// </summary>
         public ExcelWorksheet WorkSheet { get; set; }
 
-        private ExcelAddressBase _address = null;
+        private ExcelAddressBase _address;
 
         /// <summary>
         /// The address of the table
@@ -609,7 +609,7 @@ namespace OfficeOpenXml.Table
             }
         }
 
-        internal ExcelTableColumnCollection _cols = null;
+        internal ExcelTableColumnCollection _cols;
 
         /// <summary>
         /// Collection of the columns in the table
@@ -707,7 +707,7 @@ namespace OfficeOpenXml.Table
             }
         }
 
-        ExcelAutoFilter _autoFilter = null;
+        ExcelAutoFilter _autoFilter;
 
         /// <summary>
         /// Autofilter settings for the table
@@ -1320,9 +1320,9 @@ namespace OfficeOpenXml.Table
 
         #region Sorting
 
-        private TableSorter _tableSorter = null;
+        private TableSorter _tableSorter;
         const string SortStatePath = "d:sortState";
-        SortState _sortState = null;
+        SortState _sortState;
 
         /// <summary>
         /// Gets the sort state of the table.

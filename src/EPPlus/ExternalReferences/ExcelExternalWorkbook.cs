@@ -259,7 +259,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         }
     }
 
-    FileInfo _file = null;
+    FileInfo _file;
 
     /// <summary>
     /// If the external reference is a file in the filesystem
@@ -347,7 +347,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
         }
     }
 
-    ExcelPackage _package = null;
+    ExcelPackage _package;
 
     /// <summary>
     /// A reference to the external package, it it has been loaded.
@@ -422,7 +422,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
     private void SetPackage(ExcelPackage package, bool setTarget)
     {
         this._package = package;
-        this._package._loadedPackage = this._wb._package;
+        //this._package._loadedPackage = this._wb._package;
         this._file = this._package.File;
 
         if (setTarget)
@@ -445,7 +445,7 @@ public class ExcelExternalWorkbook : ExcelExternalLink
             this._package = new ExcelPackage(file);
         }
 
-        this._package._loadedPackage = this._wb._package;
+        //this._package._loadedPackage = this._wb._package;
         this._file = file;
         this.SetTarget(file);
     }

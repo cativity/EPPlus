@@ -62,7 +62,7 @@ public class SystemDrawingTextMeasurer : ITextMeasurer
         return new TextMeasurement(size.Width * dpiCorrectX, size.Height * dpiCorrectY);
     }
 
-    bool? _validForEnvironment = null;
+    bool? _validForEnvironment;
 
     public bool ValidForEnvironment()
     {

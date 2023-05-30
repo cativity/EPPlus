@@ -189,7 +189,7 @@ public abstract class ExcelSlicer<T> : ExcelDrawing
         set { this._slicerXmlHelper.SetXmlNodeString("@cache", value); }
     }
 
-    internal ExcelSlicerCache _cache = null;
+    internal ExcelSlicerCache _cache;
 
     /// <summary>
     /// A reference to the slicer cache.

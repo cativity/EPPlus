@@ -135,7 +135,7 @@ public class DrawingTest : TestBase
 
         if (fi.Exists)
         {
-            pic = ws2.Drawings.AddPicture("Pic7", fi);
+            _ = ws2.Drawings.AddPicture("Pic7", fi);
         }
         else
         {
@@ -604,7 +604,7 @@ public class DrawingTest : TestBase
         tl.Intercept = 6;
         tl.Order = 5;
 
-        tl = chrt.Series[0].TrendLines.Add(eTrendLine.MovingAvgerage);
+        _ = chrt.Series[0].TrendLines.Add(eTrendLine.MovingAvgerage);
         chrt.Fill.Color = Color.LightSteelBlue;
         chrt.Border.LineStyle = eLineStyle.Dot;
         chrt.Border.Fill.Color = Color.Black;
@@ -889,27 +889,30 @@ public class DrawingTest : TestBase
     public void DeleteDrawing()
     {
         ExcelWorksheet? ws = _pck.Workbook.Worksheets.Add("DeleteDrawing1");
-        ExcelChart? chart1 = ws.Drawings.AddChart("Chart1", eChartType.Line);
+
+        _ = ws.Drawings.AddChart("Chart1", eChartType.Line);
         ExcelChart? chart2 = ws.Drawings.AddChart("Chart2", eChartType.Line);
-        ExcelShape? shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
-        ExcelPicture? pic1 = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+
+        _ = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
+
+        _ = ws.Drawings.AddPicture("Pic1", Resources.Test1);
         ws.Drawings.Remove(2);
         ws.Drawings.Remove(chart2);
         ws.Drawings.Remove("Pic1");
 
         ws = _pck.Workbook.Worksheets.Add("DeleteDrawing2");
-        chart1 = ws.Drawings.AddChart("Chart1", eChartType.Line);
-        chart2 = ws.Drawings.AddChart("Chart2", eChartType.Line);
-        shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
-        pic1 = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+        _ = ws.Drawings.AddChart("Chart1", eChartType.Line);
+        _ = ws.Drawings.AddChart("Chart2", eChartType.Line);
+        _ = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
+        _ = ws.Drawings.AddPicture("Pic1", Resources.Test1);
 
         ws.Drawings.Remove("chart1");
 
         ws = _pck.Workbook.Worksheets.Add("ClearDrawing2");
-        chart1 = ws.Drawings.AddChart("Chart1", eChartType.Line);
-        chart2 = ws.Drawings.AddChart("Chart2", eChartType.Line);
-        shape1 = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
-        pic1 = ws.Drawings.AddPicture("Pic1", Resources.Test1);
+        _ = ws.Drawings.AddChart("Chart1", eChartType.Line);
+        _ = ws.Drawings.AddChart("Chart2", eChartType.Line);
+        _ = ws.Drawings.AddShape("Shape1", eShapeStyle.ActionButtonBackPrevious);
+        _ = ws.Drawings.AddPicture("Pic1", Resources.Test1);
         ws.Drawings.Clear();
     }
 

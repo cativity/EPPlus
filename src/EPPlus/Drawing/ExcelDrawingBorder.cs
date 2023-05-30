@@ -24,7 +24,7 @@ public class ExcelDrawingBorder : XmlHelper
 {
     string _linePath;
     IPictureRelationDocument _pictureRelationDocument;
-    bool isSpInit = false;
+    bool isSpInit;
 
     internal ExcelDrawingBorder(IPictureRelationDocument pictureRelationDocument,
                                 XmlNamespaceManager nameSpaceManager,
@@ -57,7 +57,7 @@ public class ExcelDrawingBorder : XmlHelper
 
     #region "Public properties"
 
-    ExcelDrawingFillBasic _fill = null;
+    ExcelDrawingFillBasic _fill;
 
     /// <summary>
     /// Access to fill properties

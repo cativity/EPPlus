@@ -32,7 +32,7 @@ public class ExcelSlicerStyleElement : XmlHelper
         this.Type = type;
     }
 
-    ExcelDxfSlicerStyle _style = null;
+    ExcelDxfSlicerStyle _style;
 
     /// <summary>
     /// Access to style settings

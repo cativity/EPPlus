@@ -36,7 +36,7 @@ public class ExcelDrawing3D : XmlHelper
     private readonly string _extrusionHeightPath = "{0}/@extrusionH";
     private readonly string _shapeDepthPath = "{0}/@z";
     private readonly string _materialTypePath = "{0}/@prstMaterial";
-    private readonly string _path;
+    //private readonly string _path;
 
     internal ExcelDrawing3D(XmlNamespaceManager nameSpaceManager, XmlNode topNode, string path, string[] schemaNodeOrder)
         : base(nameSpaceManager, topNode)
@@ -46,7 +46,7 @@ public class ExcelDrawing3D : XmlHelper
             path += "/";
         }
 
-        this._path = path;
+        //this._path = path;
         this._sp3dPath = string.Format(this._sp3dPath, path);
         this._scene3dPath = string.Format(this._scene3dPath, path);
         this._bevelTPath = string.Format(this._bevelTPath, this._sp3dPath);
@@ -66,7 +66,7 @@ public class ExcelDrawing3D : XmlHelper
             new ExcelDrawingColorManager(nameSpaceManager, this.TopNode, this._extrusionColorPath, this.SchemaNodeOrder, this.InitExtrusionColor);
     }
 
-    ExcelDrawingScene3D _scene3D = null;
+    ExcelDrawingScene3D _scene3D;
 
     /// <summary>
     /// Defines scene-level 3D properties to apply to an object
@@ -94,7 +94,7 @@ public class ExcelDrawing3D : XmlHelper
         set { this.SetXmlNodeEmuToPt(this._contourWidthPath, value); }
     }
 
-    ExcelDrawing3DBevel _topBevel = null;
+    ExcelDrawing3DBevel _topBevel;
 
     /// <summary>
     /// The bevel on the top or front face of a shape
@@ -104,7 +104,7 @@ public class ExcelDrawing3D : XmlHelper
         get { return this._topBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelTPath, this.InitXml); }
     }
 
-    ExcelDrawing3DBevel _bottomBevel = null;
+    ExcelDrawing3DBevel _bottomBevel;
 
     /// <summary>
     /// The bevel on the top or front face of a shape
@@ -114,7 +114,7 @@ public class ExcelDrawing3D : XmlHelper
         get { return this._bottomBevel ??= new ExcelDrawing3DBevel(this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder, this._bevelBPath, this.InitXml); }
     }
 
-    ExcelDrawingColorManager _extrusionColor = null;
+    ExcelDrawingColorManager _extrusionColor;
 
     /// <summary>
     /// The color of the extrusion applied to a shape
@@ -124,7 +124,7 @@ public class ExcelDrawing3D : XmlHelper
         get { return this._extrusionColor; }
     }
 
-    ExcelDrawingColorManager _contourColor = null;
+    ExcelDrawingColorManager _contourColor;
 
     /// <summary>
     /// The color for the contour on a shape

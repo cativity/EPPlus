@@ -196,7 +196,7 @@ public class ExcelTableColumn : ExcelTableDxfBase
 
     internal const string CALCULATEDCOLUMNFORMULA_PATH = "d:calculatedColumnFormula";
 
-    ExcelTableSlicer _slicer = null;
+    ExcelTableSlicer _slicer;
 
     /// <summary>
     /// Returns the slicer attached to a column.

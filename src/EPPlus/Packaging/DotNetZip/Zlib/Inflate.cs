@@ -684,7 +684,7 @@ sealed class InflateBlocks
                     this.writeAt = q;
                     r = this.Flush(r);
                     q = this.writeAt;
-                    m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
+                    //m = (int)(q < this.readAt ? this.readAt - q - 1 : this.end - q);
 
                     if (this.readAt != this.writeAt)
                     {
@@ -867,7 +867,7 @@ sealed class InflateCodes
     internal int len;
 
     internal int[] tree; // pointer into tree
-    internal int tree_index = 0;
+    internal int tree_index;
     internal int need; // bits needed
 
     internal int lit;
@@ -1291,7 +1291,7 @@ sealed class InflateCodes
                     blocks.writeAt = q;
                     r = blocks.Flush(r);
                     q = blocks.writeAt;
-                    m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
+                    //m = q < blocks.readAt ? blocks.readAt - q - 1 : blocks.end - q;
 
                     if (blocks.readAt != blocks.writeAt)
                     {

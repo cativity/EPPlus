@@ -28,7 +28,7 @@ internal abstract class AbstractHtmlExporter
     }
 
     internal const string TableClass = "epplus-table";
-    internal List<HtmlImage> _rangePictures = null;
+    internal List<HtmlImage> _rangePictures;
     protected List<string> _dataTypes = new List<string>();
     protected readonly CellDataWriter _cellDataWriter = new CellDataWriter();
     protected Dictionary<string, int> _styleCache;

@@ -45,7 +45,7 @@ public class ExcelFormatScheme : XmlHelper
     }
 
     const string fillStylePath = "a:fillStyleLst";
-    ExcelThemeFillStyles _fillStyle = null;
+    ExcelThemeFillStyles _fillStyle;
 
     /// <summary>
     ///  Defines the fill styles for the theme
@@ -61,7 +61,7 @@ public class ExcelFormatScheme : XmlHelper
     }
 
     const string lineStylePath = "a:lnStyleLst";
-    ExcelThemeLineStyles _lineStyle = null;
+    ExcelThemeLineStyles _lineStyle;
 
     /// <summary>
     ///  Defines the line styles for the theme
@@ -76,7 +76,7 @@ public class ExcelFormatScheme : XmlHelper
     }
 
     const string effectStylePath = "a:effectStyleLst";
-    ExcelThemeEffectStyles _effectStyle = null;
+    ExcelThemeEffectStyles _effectStyle;
 
     /// <summary>
     ///  Defines the effect styles for the theme
@@ -93,7 +93,7 @@ public class ExcelFormatScheme : XmlHelper
     }
 
     const string backgroundFillStylePath = "a:bgFillStyleLst";
-    ExcelThemeFillStyles _backgroundFillStyle = null;
+    ExcelThemeFillStyles _backgroundFillStyle;
 
     /// <summary>
     /// Define background fill styles for the theme

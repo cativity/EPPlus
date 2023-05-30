@@ -71,7 +71,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     }
 
     internal ExcelPackage _package;
-    internal ZipPackageRelationship _drawingRelation = null;
+    internal ZipPackageRelationship _drawingRelation;
     internal string _seriesTemplateXml;
 
     internal ExcelDrawings(ExcelPackage xlPackage, ExcelWorksheet sheet)
@@ -175,7 +175,7 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         this.NameSpaceManager.AddNamespace("asvg", "http://schemas.microsoft.com/office/drawing/2016/SVG/main");
     }
 
-    internal XmlNamespaceManager NameSpaceManager { get; private set; } = null;
+    internal XmlNamespaceManager NameSpaceManager { get; private set; }
 
     #endregion
 
@@ -247,14 +247,14 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
         }
     }
 
-    ZipPackagePart _part = null;
+    ZipPackagePart _part;
 
     internal ZipPackagePart Part
     {
         get { return this._part; }
     }
 
-    Uri _uriDrawing = null;
+    Uri _uriDrawing;
     internal int _nextChartStyleId = 100;
 
     /// <summary>

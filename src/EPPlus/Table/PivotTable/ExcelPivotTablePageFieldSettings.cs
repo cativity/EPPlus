@@ -23,7 +23,7 @@ namespace OfficeOpenXml.Table.PivotTable;
 /// </summary>
 public class ExcelPivotTablePageFieldSettings : XmlHelper
 {
-    internal ExcelPivotTableField _field;
+    //internal ExcelPivotTableField _field;
 
     internal ExcelPivotTablePageFieldSettings(XmlNamespaceManager ns, XmlNode topNode, ExcelPivotTableField field, int index)
         : base(ns, topNode)
@@ -33,7 +33,7 @@ public class ExcelPivotTablePageFieldSettings : XmlHelper
             this.Hier = -1;
         }
 
-        this._field = field;
+        //this._field = field;
     }
 
     internal int Index

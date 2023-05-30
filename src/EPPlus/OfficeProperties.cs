@@ -39,7 +39,7 @@ public sealed class OfficeProperties : XmlHelper
 
     XmlHelper _coreHelper;
     XmlHelper _extendedHelper;
-    XmlHelper _customHelper;
+    //XmlHelper _customHelper;
     private readonly Dictionary<string, XmlElement> _customProperties;
     private ExcelPackage _package;
 
@@ -61,7 +61,7 @@ public sealed class OfficeProperties : XmlHelper
 
         this._coreHelper = XmlHelperFactory.Create(ns, this.CorePropertiesXml.SelectSingleNode("cp:coreProperties", this.NameSpaceManager));
         this._extendedHelper = XmlHelperFactory.Create(ns, this.ExtendedPropertiesXml);
-        this._customHelper = XmlHelperFactory.Create(ns, this.CustomPropertiesXml);
+        //this._customHelper = XmlHelperFactory.Create(ns, this.CustomPropertiesXml);
         this._customProperties = new Dictionary<string, XmlElement>(StringComparer.CurrentCultureIgnoreCase);
         this.LoadCustomProperties();
     }

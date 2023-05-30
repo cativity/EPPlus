@@ -48,7 +48,7 @@ internal partial class ZipEntry
         _ = this.ArchiveStream.Read(block, 0, block.Length);
         int i = 26;
         Int16 filenameLength = (short)(block[i++] + (block[i++] * 256));
-        Int16 extraFieldLength = (short)(block[i++] + (block[i++] * 256));
+        Int16 extraFieldLength = (short)(block[i++] + (block[i] * 256));
 
         // workitem 8098: ok (relative)
         _ = this.ArchiveStream.Seek(filenameLength, SeekOrigin.Current);
@@ -143,7 +143,7 @@ internal partial class ZipEntry
         }
 
         Int16 filenameLength = (short)(block[i++] + (block[i++] * 256));
-        Int16 extraFieldLength = (short)(block[i++] + (block[i++] * 256));
+        Int16 extraFieldLength = (short)(block[i++] + (block[i] * 256));
 
         block = new byte[filenameLength];
         n = ze.ArchiveStream.Read(block, 0, block.Length);
@@ -193,11 +193,11 @@ internal partial class ZipEntry
             // indicate the length of the entry data.
             bool wantMore = true;
             long SizeOfDataRead = 0;
-            int tries = 0;
+            //int tries = 0;
 
             while (wantMore)
             {
-                tries++;
+                //tries++;
 
                 // We call the FindSignature shared routine to find the specified signature
                 // in the already-opened zip archive, starting from the current cursor
@@ -243,7 +243,7 @@ internal partial class ZipEntry
                     ze._CompressedSize = BitConverter.ToInt64(block, i);
                     i += 8;
                     ze._UncompressedSize = BitConverter.ToInt64(block, i);
-                    i += 8;
+                    //i += 8;
 
                     ze._LengthOfTrailer += 24; // bytes including sig, CRC, Comp and Uncomp sizes
                 }
@@ -265,7 +265,7 @@ internal partial class ZipEntry
                     i = 0;
                     ze._Crc32 = (Int32)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
                     ze._CompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
-                    ze._UncompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256));
+                    ze._UncompressedSize = (uint)(block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i] * 256 * 256 * 256));
 
                     ze._LengthOfTrailer += 16; // bytes including sig, CRC, Comp and Uncomp sizes
                 }
@@ -554,19 +554,19 @@ internal partial class ZipEntry
                 switch (headerId)
                 {
                     case 0x000a: // NTFS ctime, atime, mtime
-                        j = this.ProcessExtraFieldWindowsTimes(buffer, j, dataSize, posn);
+                        this.ProcessExtraFieldWindowsTimes(buffer, j, dataSize, posn);
 
                         break;
 
                     case 0x5455: // Unix ctime, atime, mtime
-                        j = this.ProcessExtraFieldUnixTimes(buffer, j, dataSize, posn);
+                        this.ProcessExtraFieldUnixTimes(buffer, j, dataSize, posn);
 
                         break;
 
                     case 0x5855: // Info-zip Extra field (outdated)
                         // This is outdated, so the field is supported on
                         // read only.
-                        j = this.ProcessExtraFieldInfoZipTimes(buffer, j, dataSize, posn);
+                        this.ProcessExtraFieldInfoZipTimes(buffer, j, dataSize, posn);
 
                         break;
 
@@ -580,7 +580,7 @@ internal partial class ZipEntry
                         break;
 
                     case 0x0001: // ZIP64
-                        j = this.ProcessExtraFieldZip64(buffer, j, dataSize, posn);
+                        this.ProcessExtraFieldZip64(buffer, j, dataSize, posn);
 
                         break;
 
@@ -591,7 +591,7 @@ internal partial class ZipEntry
                             break;
 #endif
                     case 0x0017: // workitem 7968: handle PKWare Strong encryption header
-                        j = this.ProcessExtraFieldPkwareStrongEncryption(buffer, j);
+                        this.ProcessExtraFieldPkwareStrongEncryption(buffer, j);
 
                         break;
                 }

@@ -16,21 +16,21 @@ public class EmptyCellCalculationTests
 {
     private ExcelWorksheet _sheet;
     private ExcelPackage _package;
-    private FormulaParser _parser;
+    //private FormulaParser _parser;
 
     [TestInitialize]
     public void Setup()
     {
         this._package = new ExcelPackage();
         this._sheet = this._package.Workbook.Worksheets.Add("Test");
-        this._parser = this._package.Workbook.FormulaParser;
+        //this._parser = this._package.Workbook.FormulaParser;
     }
 
     [TestCleanup]
     public void Cleanup()
     {
         this._package.Dispose();
-        this._parser = null;
+        //this._parser = null;
     }
 
     [TestMethod]

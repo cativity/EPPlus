@@ -60,7 +60,7 @@ public class ExcelImageSettings
     /// <summary>
     /// If the secondary handler fails to measure the image, this one will be used.
     /// </summary>
-    public IImageHandler TertiaryImageHandler { get; set; } = null;
+    public IImageHandler TertiaryImageHandler { get; set; }
 
     internal bool GetImageBounds(MemoryStream ms,
                                  ePictureType type,

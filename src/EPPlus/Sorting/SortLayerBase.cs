@@ -30,7 +30,7 @@ public abstract class SortLayerBase
 
     private readonly SortOptionsBase _options;
     private int _column = -1;
-    private int _row = -1;
+    //private int _row = -1;
 
     /// <summary>
     /// Sets the column
@@ -61,7 +61,7 @@ public abstract class SortLayerBase
     /// <param name="row"></param>
     protected void SetRow(int row)
     {
-        this._row = row;
+        //this._row = row;
         this._options.RowIndexes.Add(row);
         this._options.Descending.Add(false);
     }
@@ -73,7 +73,7 @@ public abstract class SortLayerBase
     /// <param name="sortOrder"></param>
     protected void SetRow(int row, eSortOrder sortOrder)
     {
-        this._row = row;
+        //this._row = row;
         this._options.RowIndexes.Add(row);
         this._options.Descending.Add(sortOrder == eSortOrder.Descending);
     }

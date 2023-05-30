@@ -169,7 +169,7 @@ public class TableTests : TestBase
         ws.Cells["C8"].Style.Fill.PatternType = ExcelFillStyle.Solid;
         ws.Cells["C8"].Style.Fill.BackgroundColor.SetColor(Color.Red);
 
-        tbl = ws.Tables.Add(ws.Cells["a12:a13"], "");
+        _ = ws.Tables.Add(ws.Cells["a12:a13"], "");
 
         tbl = ws.Tables.Add(ws.Cells["C16:Y35"], "");
         tbl.TableStyle = TableStyles.Medium14;

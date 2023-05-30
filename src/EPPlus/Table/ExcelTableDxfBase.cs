@@ -12,8 +12,8 @@ namespace OfficeOpenXml.Table;
 /// </summary>
 public class ExcelTableDxfBase : XmlHelper
 {
-    private ExcelTable _table = null;
-    private ExcelTableColumn _tableColumn = null;
+    private ExcelTable _table;
+    private ExcelTableColumn _tableColumn;
 
     internal ExcelTableDxfBase(XmlNamespaceManager nsm)
         : base(nsm)

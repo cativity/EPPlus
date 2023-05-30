@@ -37,7 +37,7 @@ internal class Avedev : ExcelFunction
 
         IEnumerable<double>? dArr = arr.Select(x => (double)x);
         double mean = dArr.Average();
-        double result = dArr.Aggregate(0d, (val, x) => val += System.Math.Abs(x - mean)) / dArr.Count();
+        double result = dArr.Aggregate(0d, (val, x) => val + System.Math.Abs(x - mean)) / dArr.Count();
 
         return this.CreateResult(result, DataType.Decimal);
     }

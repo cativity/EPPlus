@@ -91,7 +91,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
         "sp3d"
     };
 
-    internal bool _doNotAdjust = false;
+    internal bool _doNotAdjust;
 
     internal ExcelDrawing(ExcelDrawings drawings, XmlNode node, string topPath, string nvPrPath, ExcelGroupShape parent = null)
         : base(drawings.NameSpaceManager, node)
@@ -533,9 +533,9 @@ public class ExcelDrawing : XmlHelper, IDisposable
     /// <summary>
     /// Bottom right position
     /// </summary>
-    public ExcelPosition To { get; private set; } = null;
+    public ExcelPosition To { get; private set; }
 
-    Uri _hyperLink = null;
+    Uri _hyperLink;
 
     /// <summary>
     /// Hyperlink
@@ -580,7 +580,7 @@ public class ExcelDrawing : XmlHelper, IDisposable
         }
     }
 
-    ExcelDrawingAsType _as = null;
+    ExcelDrawingAsType _as;
 
     /// <summary>
     /// Provides access to type conversion for all top-level drawing classes.

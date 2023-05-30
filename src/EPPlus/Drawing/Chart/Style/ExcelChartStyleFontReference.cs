@@ -40,7 +40,7 @@ public class ExcelChartStyleFontReference : XmlHelper
         set { this.SetXmlNodeString($"{this._path}/@idx", value.ToEnumString()); }
     }
 
-    ExcelChartStyleColorManager _color = null;
+    ExcelChartStyleColorManager _color;
 
     /// <summary>
     /// The color of the font

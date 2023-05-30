@@ -66,17 +66,17 @@ public abstract class ExcelDrawingFillBase
     /// <summary>
     /// The Xml helper
     /// </summary>
-    internal protected XmlHelper _xml = null;
+    internal protected XmlHelper _xml;
 
     /// <summary>
     /// The top node
     /// </summary>
-    internal protected XmlNode _topNode = null;
+    internal protected XmlNode _topNode;
 
     /// <summary>
     /// The name space manager
     /// </summary>
-    internal protected XmlNamespaceManager _nsm = null;
+    internal protected XmlNamespaceManager _nsm;
 
     /// <summary>
     /// The XPath

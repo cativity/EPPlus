@@ -27,7 +27,7 @@ internal class AutofitHelper
     private ExcelRangeBase _range;
     ITextMeasurer _genericMeasurer = new GenericFontMetricsTextMeasurer();
     MeasurementFont _nonExistingFont = new MeasurementFont() { FontFamily = FontSize.NonExistingFont };
-    Dictionary<float, short> _fontWidthDefault = null;
+    Dictionary<float, short> _fontWidthDefault;
     Dictionary<int, MeasurementFont> _fontCache;
 
     public AutofitHelper(ExcelRangeBase range)
@@ -162,7 +162,7 @@ internal class AutofitHelper
 
             if (this._fontCache.ContainsKey(fntID))
             {
-                f = this._fontCache[fntID];
+                //f = this._fontCache[fntID];
             }
             else
             {

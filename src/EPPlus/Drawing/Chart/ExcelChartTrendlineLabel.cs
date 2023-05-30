@@ -34,7 +34,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         this.AddSchemaNodeOrder(new string[] { "layout", "tx", "numFmt", "spPr", "txPr" }, ExcelDrawing._schemaNodeOrderSpPr);
     }
 
-    ExcelDrawingFill _fill = null;
+    ExcelDrawingFill _fill;
 
     /// <summary>
     /// Access to fill properties
@@ -47,7 +47,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelDrawingBorder _border = null;
+    ExcelDrawingBorder _border;
 
     /// <summary>
     /// Access to border properties
@@ -64,7 +64,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextFont _font = null;
+    ExcelTextFont _font;
 
     /// <summary>
     /// Access to font properties
@@ -81,7 +81,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelTextBody _textBody = null;
+    ExcelTextBody _textBody;
 
     /// <summary>
     /// Access to text body properties
@@ -91,7 +91,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         get { return this._textBody ??= new ExcelTextBody(this.NameSpaceManager, this.TopNode, "c:trendlineLbl/c:txPr/a:bodyPr", this.SchemaNodeOrder); }
     }
 
-    ExcelDrawingEffectStyle _effect = null;
+    ExcelDrawingEffectStyle _effect;
 
     /// <summary>
     /// Effects
@@ -108,7 +108,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         }
     }
 
-    ExcelDrawing3D _threeD = null;
+    ExcelDrawing3D _threeD;
 
     /// <summary>
     /// 3D properties
@@ -123,7 +123,7 @@ public class ExcelChartTrendlineLabel : XmlHelper, IDrawingStyle
         this.CreatespPrNode("c:trendlineLbl/c:spPr");
     }
 
-    ExcelParagraphCollection _richText = null;
+    ExcelParagraphCollection _richText;
 
     /// <summary>
     /// Richtext

@@ -189,7 +189,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         }
     }
 
-    string _xSeries = null;
+    string _xSeries;
     string _xSeriesTopPath;
     string _xSeriesPath = "{0}/{1}/c:f";
 
@@ -430,7 +430,7 @@ public class ExcelChartStandardSerie : ExcelChartSerie
         _ = lit.InsertBefore(ct, lit.FirstChild);
     }
 
-    ExcelChartTrendlineCollection _trendLines = null;
+    ExcelChartTrendlineCollection _trendLines;
 
     /// <summary>
     /// Access to the trendline collection

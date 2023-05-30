@@ -18,7 +18,7 @@ namespace OfficeOpenXml.Utils;
 
 internal class InvariantObjectComparer : IEqualityComparer<object>
 {
-    static Comparer<object> c = Comparer<object>.Default;
+    //static Comparer<object> c = Comparer<object>.Default;
     static StringComparer sc = StringComparer.OrdinalIgnoreCase;
 
     public new bool Equals(object x, object y)

@@ -129,7 +129,7 @@ public class ExcelRegionMapChartSerie : ExcelChartExSerie
         }
     }
 
-    ExcelChartExValueColors _colors = null;
+    ExcelChartExValueColors _colors;
 
     /// <summary>
     /// Colors for the gradient scale of the region map series. 

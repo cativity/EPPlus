@@ -28,8 +28,8 @@ internal class ExpressionGraphBuilder : IExpressionGraphBuilder
     private readonly ExpressionGraph _graph = new ExpressionGraph();
     private readonly IExpressionFactory _expressionFactory;
     private readonly ParsingContext _parsingContext;
-    private int _tokenIndex = 0;
-    private int _nRangeOffsetTokens = 0;
+    private int _tokenIndex;
+    private int _nRangeOffsetTokens;
     private RangeOffsetExpression _rangeOffsetExpression;
     private bool _negateNextExpression;
 

@@ -147,7 +147,7 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
         }
     }
 
-    private ExcelDrawingPatternFill _patternFill = null;
+    private ExcelDrawingPatternFill _patternFill;
 
     /// <summary>
     /// Reference pattern fill properties
@@ -158,7 +158,7 @@ public class ExcelDrawingFill : ExcelDrawingFillBasic
         get { return this._patternFill; }
     }
 
-    private ExcelDrawingBlipFill _blipFill = null;
+    private ExcelDrawingBlipFill _blipFill;
 
     /// <summary>
     /// Reference gradient fill properties

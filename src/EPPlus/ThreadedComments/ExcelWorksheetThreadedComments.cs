@@ -41,7 +41,7 @@ public class ExcelWorksheetThreadedComments
     private readonly ExcelPackage _package;
     internal readonly List<ExcelThreadedCommentThread> _threads = new List<ExcelThreadedCommentThread>();
     private readonly List<int> _threadsIndex = new List<int>();
-    internal int _nextId = 0;
+    //internal int _nextId = 0;
 
     /// <summary>
     /// A collection of persons referenced by the threaded comments.

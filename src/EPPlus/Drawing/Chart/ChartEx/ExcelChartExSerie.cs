@@ -100,7 +100,7 @@ public class ExcelChartExSerie : ExcelChartSerie
         get { return this.GetXmlNodeInt("cx:dataId/@val"); }
     }
 
-    ExcelChartExDataCollection _dataDimensions = null;
+    ExcelChartExDataCollection _dataDimensions;
 
     /// <summary>
     /// The dimensions of the serie
@@ -151,8 +151,8 @@ public class ExcelChartExSerie : ExcelChartSerie
         set { this.SetXmlNodeString("cx:tx/cx:txData/cx:v", value); }
     }
 
-    XmlHelper _catSerieHelper = null;
-    XmlHelper _valSerieHelper = null;
+    XmlHelper _catSerieHelper;
+    XmlHelper _valSerieHelper;
 
     /// <summary>
     /// Set this to a valid address or the drawing will be invalid.
@@ -240,7 +240,7 @@ public class ExcelChartExSerie : ExcelChartSerie
         return this._catSerieHelper;
     }
 
-    ExcelChartExSerieDataLabel _dataLabels = null;
+    ExcelChartExSerieDataLabel _dataLabels;
 
     /// <summary>
     /// Data label properties
@@ -250,7 +250,7 @@ public class ExcelChartExSerie : ExcelChartSerie
         get { return this._dataLabels ??= new ExcelChartExSerieDataLabel(this, this.NameSpaceManager, this.TopNode, this.SchemaNodeOrder); }
     }
 
-    ExcelChartExDataPointCollection _dataPoints = null;
+    ExcelChartExDataPointCollection _dataPoints;
 
     /// <summary>
     /// A collection of individual data points

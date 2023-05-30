@@ -216,17 +216,17 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// <summary>
     /// If the cells justified or distributed alignment should be used on the last line of text
     /// </summary>
-    public bool JustifyLastLine { get; set; } = false;
+    public bool JustifyLastLine { get; set; }
 
     const string wrapTextPath = "d:alignment/@wrapText";
 
     /// <summary>
     /// Wraped text
     /// </summary>
-    public bool WrapText { get; set; } = false;
+    public bool WrapText { get; set; }
 
     string textRotationPath = "d:alignment/@textRotation";
-    int _textRotation = 0;
+    int _textRotation;
 
     /// <summary>
     /// Text rotation angle
@@ -249,14 +249,14 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// <summary>
     /// Hide formulas when sheet is protected
     /// </summary>
-    public bool Hidden { get; set; } = false;
+    public bool Hidden { get; set; }
 
     const string quotePrefixPath = "@quotePrefix";
 
     /// <summary>
     /// Prefix the formula with a quote.
     /// </summary>
-    public bool QuotePrefix { get; set; } = false;
+    public bool QuotePrefix { get; set; }
 
     const string readingOrderPath = "d:alignment/@readingOrder";
     ExcelReadingOrder _readingOrder = ExcelReadingOrder.ContextDependent;
@@ -275,10 +275,10 @@ public sealed class ExcelXfs : StyleXmlHelper
     /// <summary>
     /// Shrink to fit
     /// </summary>
-    public bool ShrinkToFit { get; set; } = false;
+    public bool ShrinkToFit { get; set; }
 
     const string indentPath = "d:alignment/@indent";
-    int _indent = 0;
+    int _indent;
 
     /// <summary>
     /// Indentation

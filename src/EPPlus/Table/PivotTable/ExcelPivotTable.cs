@@ -651,7 +651,7 @@ public class ExcelPivotTable : XmlHelper
         set { this.SetXmlNodeString("@missingCaption", value); }
     }
 
-    ExcelPivotTableFilterCollection _filters = null;
+    ExcelPivotTableFilterCollection _filters;
 
     /// <summary>
     /// Filters applied to the pivot table
@@ -694,7 +694,7 @@ public class ExcelPivotTable : XmlHelper
         set { this.SetXmlNodeString(FIRSTDATACOL_PATH, value.ToString()); }
     }
 
-    ExcelPivotTableFieldCollection _fields = null;
+    ExcelPivotTableFieldCollection _fields;
 
     /// <summary>
     /// The fields in the table 
@@ -704,7 +704,7 @@ public class ExcelPivotTable : XmlHelper
         get { return this._fields ??= new ExcelPivotTableFieldCollection(this); }
     }
 
-    ExcelPivotTableRowColumnFieldCollection _rowFields = null;
+    ExcelPivotTableRowColumnFieldCollection _rowFields;
 
     /// <summary>
     /// Row label fields 
@@ -714,7 +714,7 @@ public class ExcelPivotTable : XmlHelper
         get { return this._rowFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "rowFields"); }
     }
 
-    ExcelPivotTableRowColumnFieldCollection _columnFields = null;
+    ExcelPivotTableRowColumnFieldCollection _columnFields;
 
     /// <summary>
     /// Column label fields 
@@ -724,7 +724,7 @@ public class ExcelPivotTable : XmlHelper
         get { return this._columnFields ??= new ExcelPivotTableRowColumnFieldCollection(this, "colFields"); }
     }
 
-    ExcelPivotTableDataFieldCollection _dataFields = null;
+    ExcelPivotTableDataFieldCollection _dataFields;
 
     /// <summary>
     /// Value fields 
@@ -734,7 +734,7 @@ public class ExcelPivotTable : XmlHelper
         get { return this._dataFields ??= new ExcelPivotTableDataFieldCollection(this); }
     }
 
-    ExcelPivotTableRowColumnFieldCollection _pageFields = null;
+    ExcelPivotTableRowColumnFieldCollection _pageFields;
 
     /// <summary>
     /// Report filter fields
@@ -931,7 +931,7 @@ public class ExcelPivotTable : XmlHelper
 
     #endregion
 
-    int _newFilterId = 0;
+    int _newFilterId;
 
     internal int GetNewFilterId()
     {

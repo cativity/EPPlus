@@ -153,12 +153,12 @@ sealed class InfTree
     // If BMAX needs to be larger than 16, then h and x[] should be uLong.
     internal const int BMAX = 15; // maximum bit length of any code
 
-    internal int[] hn = null; // hufts used in space
-    internal int[] v = null; // work area for huft_build 
-    internal int[] c = null; // bit length count table
-    internal int[] r = null; // table entry for structure assignment
-    internal int[] u = null; // table stack
-    internal int[] x = null; // bit offsets, then code stack
+    internal int[] hn; // hufts used in space
+    internal int[] v; // work area for huft_build 
+    internal int[] c; // bit length count table
+    internal int[] r; // table entry for structure assignment
+    internal int[] u; // table stack
+    internal int[] x; // bit offsets, then code stack
 
     private int huft_build(int[] b, int bindex, int n, int s, int[] d, int[] e, int[] t, int[] m, int[] hp, int[] hn, int[] v)
     {

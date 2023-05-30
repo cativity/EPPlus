@@ -106,7 +106,8 @@ internal class TokenHandler : ITokenIndexProvider
     private bool CharIsTokenSeparator(char c, out Token token)
     {
         bool result = this._tokenProvider.Tokens.ContainsKey(c.ToString());
-        token = result ? token = this._tokenProvider.Tokens[c.ToString()] : default(Token);
+
+        token = result ? this._tokenProvider.Tokens[c.ToString()] : default(Token);
 
         return result;
     }

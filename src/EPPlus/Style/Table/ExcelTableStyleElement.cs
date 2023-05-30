@@ -32,7 +32,7 @@ public class ExcelTableStyleElement : XmlHelper
         this.Type = type;
     }
 
-    ExcelDxfStyleLimitedFont _style = null;
+    ExcelDxfStyleLimitedFont _style;
 
     /// <summary>
     /// Access to style properties

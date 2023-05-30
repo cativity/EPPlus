@@ -34,7 +34,7 @@ public class ExcelChartExValueColor : XmlHelper
         this._positionPath = $"cx:valueColorPositions/cx:{prefix}Position";
     }
 
-    ExcelDrawingColorManager _color = null;
+    ExcelDrawingColorManager _color;
 
     /// <summary>
     /// The color

@@ -35,19 +35,19 @@ internal static class SignatureReader
         Stream? stream = part.GetStream();
         BinaryReader br = new BinaryReader(stream);
         si.cbSignature = br.ReadUInt32();
-        si.signatureOffset = br.ReadUInt32(); //44 ??
-        si.cbSigningCertStore = br.ReadUInt32();
-        si.certStoreOffset = br.ReadUInt32();
-        si.cbProjectName = br.ReadUInt32();
-        si.projectNameOffset = br.ReadUInt32();
-        si.fTimestamp = br.ReadUInt32();
-        si.cbTimestampUrl = br.ReadUInt32();
-        si.timestampUrlOffset = br.ReadUInt32();
+        _ = br.ReadUInt32(); //44 ??signatureOffset
+        _ = br.ReadUInt32(); // cbSigningCertStore
+        _ = br.ReadUInt32(); // certStoreOffset
+        _ = br.ReadUInt32(); // cbProjectName
+        _ = br.ReadUInt32(); // projectNameOffset
+        _ = br.ReadUInt32(); // fTimestamp
+        _ = br.ReadUInt32(); // cbTimestampUrl
+        _ = br.ReadUInt32(); // timestampUrlOffset
         si.signature = br.ReadBytes((int)si.cbSignature);
 
         //Read serialized Properties MS-OSHARED 2.3.2.5.5 VBASigSerializedCertStore
-        si.version = br.ReadUInt32();
-        si.fileType = br.ReadUInt32();
+        _ = br.ReadUInt32(); // version
+        _ = br.ReadUInt32(); // fileType
 
         uint id = br.ReadUInt32();
 
@@ -76,10 +76,10 @@ internal static class SignatureReader
             id = br.ReadUInt32();
         }
 
-        si.endel1 = br.ReadUInt32(); //0
-        si.endel2 = br.ReadUInt32(); //0
-        si.rgchProjectNameBuffer = br.ReadUInt16();
-        si.rgchTimestampBuffer = br.ReadUInt16();
+        _ = br.ReadUInt32(); //0 endel1
+        _ = br.ReadUInt32(); //0 endel2
+        _ = br.ReadUInt16(); // rgchProjectNameBuffer
+        _ = br.ReadUInt16(); // rgchTimestampBuffer
 
         si.Verifier = new SignedCms();
         si.Verifier.Decode(si.signature);

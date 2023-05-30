@@ -75,10 +75,10 @@ public class ValueMatcher
         {
             IRangeInfo? r = (IRangeInfo)v;
 
-            if (r.GetNCells() > 1)
-            {
-                v = ExcelErrorValue.Create(eErrorType.NA);
-            }
+            //if (r.GetNCells() > 1)
+            //{
+            //    v = ExcelErrorValue.Create(eErrorType.NA);
+            //}
 
             v = r.GetOffset(0, 0);
         }

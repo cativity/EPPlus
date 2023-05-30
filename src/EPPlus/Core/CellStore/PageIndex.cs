@@ -54,7 +54,7 @@ internal class PageIndex : IndexBase, IDisposable
         this.Rows = null;
     }
 
-    internal int Offset = 0;
+    internal int Offset;
 
     /// <summary>
     /// Rows in the rows collection. 

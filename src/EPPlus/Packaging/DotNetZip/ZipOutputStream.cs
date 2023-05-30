@@ -1470,7 +1470,7 @@ internal class ZipOutputStream : Stream
                                                                                       this.Comment,
                                                                                       new ZipContainer(this));
 
-                Stream wrappedStream = null;
+                Stream wrappedStream;
                 CountingStream cs = this._outputStream as CountingStream;
 
                 if (cs != null)

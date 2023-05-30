@@ -79,9 +79,9 @@ internal class Conversions
     #endregion
 
     private static Dictionary<string, Unit> _conversions = new Dictionary<string, Unit>();
-    private static List<Prefix> _metricPrefixes = null;
-    private static List<Prefix> _binaryPrefixes = null;
-    private static bool _initialized = false;
+    private static List<Prefix> _metricPrefixes;
+    private static List<Prefix> _binaryPrefixes;
+    private static bool _initialized;
     private static object _syncRoot = new object();
 
     #region Initialization methods

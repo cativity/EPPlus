@@ -52,7 +52,7 @@ namespace OfficeOpenXml.DataValidation;
 public class ExcelDataValidationCollection : IEnumerable<IExcelDataValidation>
 {
     private List<ExcelDataValidation> _validations = new List<ExcelDataValidation>();
-    private ExcelWorksheet _worksheet = null;
+    private ExcelWorksheet _worksheet;
     internal RangeDictionary<ExcelDataValidation> _validationsRD = new RangeDictionary<ExcelDataValidation>();
 
     internal ExcelDataValidationCollection(ExcelWorksheet worksheet)

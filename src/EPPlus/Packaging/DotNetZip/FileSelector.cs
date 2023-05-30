@@ -440,7 +440,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'H':
                             if ((this._Attributes & FileAttributes.Hidden) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.Hidden;
@@ -450,7 +450,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'R':
                             if ((this._Attributes & FileAttributes.ReadOnly) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.ReadOnly;
@@ -460,7 +460,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'S':
                             if ((this._Attributes & FileAttributes.System) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.System;
@@ -470,7 +470,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'A':
                             if ((this._Attributes & FileAttributes.Archive) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.Archive;
@@ -480,7 +480,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'I':
                             if ((this._Attributes & FileAttributes.NotContentIndexed) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.NotContentIndexed;
@@ -490,7 +490,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'L':
                             if ((this._Attributes & FileAttributes.ReparsePoint) != 0)
                             {
-                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), nameof(value));
                             }
 
                             this._Attributes |= FileAttributes.ReparsePoint;

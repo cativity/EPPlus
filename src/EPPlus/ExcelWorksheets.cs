@@ -413,7 +413,7 @@ public class ExcelWorksheets : XmlHelper, IEnumerable<ExcelWorksheet>, IDisposab
 
         if (Name.StartsWith("'", StringComparison.OrdinalIgnoreCase) || Name.EndsWith("'", StringComparison.OrdinalIgnoreCase))
         {
-            throw new ArgumentException("The worksheet name cannot start or end with an apostrophe (').", "Name");
+            throw new ArgumentException("The worksheet name cannot start or end with an apostrophe (').", nameof(Name));
         }
 
         if (Name.Length > 31)

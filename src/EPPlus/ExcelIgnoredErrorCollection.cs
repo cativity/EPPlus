@@ -46,7 +46,7 @@ public class ExcelIgnoredErrorCollection : IEnumerable<ExcelIgnoredError>, IDisp
         {
             if (Index < 0 || Index > this._list.Count)
             {
-                throw new ArgumentOutOfRangeException("Index");
+                throw new ArgumentOutOfRangeException(nameof(Index));
             }
 
             return this._list[Index];

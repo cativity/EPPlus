@@ -597,15 +597,15 @@ public class ExcelDrawings : IEnumerable<ExcelDrawing>, IDisposable, IPictureRel
     {
         if (CategorySerie == null)
         {
-            throw new ArgumentNullException("CategorySerie");
+            throw new ArgumentNullException(nameof(CategorySerie));
         }
         else if (HighSerie == null)
         {
-            throw new ArgumentNullException("HighSerie");
+            throw new ArgumentNullException(nameof(HighSerie));
         }
         else if (LowSerie == null)
         {
-            throw new ArgumentNullException("LowSerie");
+            throw new ArgumentNullException(nameof(LowSerie));
         }
         else if (CloseSerie == null)
         {

@@ -77,7 +77,7 @@ public class ExcelDxfGradientFillColorCollection : DxfStyleBase, IEnumerable<Exc
     {
         if (position < 0 && position > 100)
         {
-            throw new ArgumentOutOfRangeException("position", "Must be a value between 0 and 100");
+            throw new ArgumentOutOfRangeException(nameof(position), "Must be a value between 0 and 100");
         }
 
         ExcelDxfGradientFillColor? color = new ExcelDxfGradientFillColor(this._styles, position, this._callback);

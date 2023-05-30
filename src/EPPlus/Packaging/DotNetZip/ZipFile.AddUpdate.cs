@@ -429,7 +429,7 @@ internal partial class ZipFile
     {
         if (entriesToRemove == null)
         {
-            throw new ArgumentNullException("entriesToRemove");
+            throw new ArgumentNullException(nameof(entriesToRemove));
         }
 
         foreach (ZipEntry e in entriesToRemove)
@@ -454,7 +454,7 @@ internal partial class ZipFile
     {
         if (entriesToRemove == null)
         {
-            throw new ArgumentNullException("entriesToRemove");
+            throw new ArgumentNullException(nameof(entriesToRemove));
         }
 
         foreach (string e in entriesToRemove)
@@ -663,7 +663,7 @@ internal partial class ZipFile
     {
         if (fileNames == null)
         {
-            throw new ArgumentNullException("fileNames");
+            throw new ArgumentNullException(nameof(fileNames));
         }
 
         this._addOperationCanceled = false;
@@ -752,7 +752,7 @@ internal partial class ZipFile
     {
         if (fileNames == null)
         {
-            throw new ArgumentNullException("fileNames");
+            throw new ArgumentNullException(nameof(fileNames));
         }
 
         this.OnAddStarted();
@@ -1843,7 +1843,7 @@ internal partial class ZipFile
     {
         if (string.IsNullOrEmpty(entryName))
         {
-            throw new ArgumentNullException("entryName");
+            throw new ArgumentNullException(nameof(entryName));
         }
 
         string directoryPathInArchive = null;
@@ -1879,7 +1879,7 @@ internal partial class ZipFile
     {
         if (byteContent == null)
         {
-            throw new ArgumentException("bad argument", "byteContent");
+            throw new ArgumentException("bad argument", nameof(byteContent));
         }
 
         MemoryStream? ms = RecyclableMemory.GetStream(byteContent);

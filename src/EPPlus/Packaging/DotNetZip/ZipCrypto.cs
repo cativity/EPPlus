@@ -200,12 +200,12 @@ internal class ZipCrypto
     {
         if (cipherText == null)
         {
-            throw new ArgumentNullException("cipherText");
+            throw new ArgumentNullException(nameof(cipherText));
         }
 
         if (length > cipherText.Length)
         {
-            throw new ArgumentOutOfRangeException("length",
+            throw new ArgumentOutOfRangeException(nameof(length),
                                                   "Bad length during Decryption: the length parameter must be smaller than or equal to the size of the destination array.");
         }
 
@@ -243,7 +243,7 @@ internal class ZipCrypto
 
         if (length > plainText.Length)
         {
-            throw new ArgumentOutOfRangeException("length",
+            throw new ArgumentOutOfRangeException(nameof(length),
                                                   "Bad length during Encryption: The length parameter must be smaller than or equal to the size of the destination array.");
         }
 
@@ -395,7 +395,7 @@ internal class ZipCipherStream : System.IO.Stream
 
         if (buffer == null)
         {
-            throw new ArgumentNullException("buffer");
+            throw new ArgumentNullException(nameof(buffer));
         }
 
         byte[] db = new byte[count];
@@ -419,7 +419,7 @@ internal class ZipCipherStream : System.IO.Stream
 
         if (buffer == null)
         {
-            throw new ArgumentNullException("buffer");
+            throw new ArgumentNullException(nameof(buffer));
         }
 
         // workitem 7696

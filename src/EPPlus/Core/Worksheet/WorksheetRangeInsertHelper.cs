@@ -372,7 +372,7 @@ internal static class WorksheetRangeInsertHelper
     {
         if (range == null || (range.Addresses != null && range.Addresses.Count > 1))
         {
-            throw new ArgumentException("Can't insert into range. ´range´ can't be null or have multiple addresses.", "range");
+            throw new ArgumentException("Can't insert into range. ´range´ can't be null or have multiple addresses.", nameof(range));
         }
     }
 

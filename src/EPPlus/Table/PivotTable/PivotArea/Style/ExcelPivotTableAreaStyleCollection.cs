@@ -68,7 +68,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
         {
             if (ExcelCellBase.IsSimpleAddress(offsetAddress) == false)
             {
-                throw new ArgumentException("Offset address must be a valid address", "offsetAddress");
+                throw new ArgumentException("Offset address must be a valid address", nameof(offsetAddress));
             }
 
             s.Offset = offsetAddress;
@@ -97,7 +97,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
         {
             if (ExcelCellBase.IsSimpleAddress(offsetAddress) == false)
             {
-                throw new ArgumentException("Offset address must be a valid address", "offsetAddress");
+                throw new ArgumentException("Offset address must be a valid address", nameof(offsetAddress));
             }
 
             s.Offset = offsetAddress;
@@ -250,7 +250,7 @@ public class ExcelPivotTableAreaStyleCollection : EPPlusReadOnlyList<ExcelPivotT
     {
         if (index < 0)
         {
-            throw new ArgumentException("Index must be positive", "index");
+            throw new ArgumentException("Index must be positive", nameof(index));
         }
 
         XmlNode? formatNode = this.GetTopNode();

@@ -19,7 +19,7 @@ using System.Text;
 
 namespace OfficeOpenXml.FormulaParsing.Excel.Functions;
 
-[DebuggerDisplay("{Value}")]
+[DebuggerDisplay("{" + nameof(Value) + "}")]
 public struct ExcelDoubleCellValue : IComparable<ExcelDoubleCellValue>, IComparable
 {
     public ExcelDoubleCellValue(double val)

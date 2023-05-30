@@ -38,7 +38,7 @@ public class ExcelPivotTableDataFieldCollection : ExcelPivotTableFieldCollection
     {
         if (field == null)
         {
-            throw new ArgumentNullException("field", "Parameter field cannot be null");
+            throw new ArgumentNullException(nameof(field), "Parameter field cannot be null");
         }
 
         XmlNode? dataFieldsNode = field.TopNode.SelectSingleNode("../../d:dataFields", field.NameSpaceManager);

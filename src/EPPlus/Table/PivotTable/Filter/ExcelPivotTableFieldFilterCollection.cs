@@ -78,7 +78,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     {
         if (value2.HasValue == false && (type == ePivotTableDateValueFilterType.DateBetween || type == ePivotTableDateValueFilterType.DateNotBetween))
         {
-            throw new ArgumentNullException("value2", "Between filters require two values");
+            throw new ArgumentNullException(nameof(value2), "Between filters require two values");
         }
 
         ExcelPivotTableFilter filter = this.CreateFilter();
@@ -127,7 +127,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         if (dfIx < 0)
         {
-            throw new ArgumentException("This datafield is not in the pivot tables DataFields collection", "dataField");
+            throw new ArgumentException("This datafield is not in the pivot tables DataFields collection", nameof(dataField));
         }
 
         return this.AddValueFilter(type, dfIx, value1, value2);
@@ -147,12 +147,12 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     {
         if (dataFieldIndex < 0 || dataFieldIndex >= this._table.DataFields.Count)
         {
-            throw new ArgumentException("dataFieldIndex must point to an item in the pivot tables DataFields collection", "dataFieldIndex");
+            throw new ArgumentException("dataFieldIndex must point to an item in the pivot tables DataFields collection", nameof(dataFieldIndex));
         }
 
         if (value2 == null && (type == ePivotTableValueFilterType.ValueBetween || type == ePivotTableValueFilterType.ValueNotBetween))
         {
-            throw new ArgumentNullException("value2", "Between filters require two values");
+            throw new ArgumentNullException(nameof(value2), "Between filters require two values");
         }
 
         ExcelPivotTableFilter filter = this.CreateFilter();
@@ -183,7 +183,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
 
         if (dfIx < 0)
         {
-            throw new ArgumentException("This data field is not in the pivot tables DataFields collection", "dataField");
+            throw new ArgumentException("This data field is not in the pivot tables DataFields collection", nameof(dataField));
         }
 
         return this.AddTop10Filter(type, dfIx, value, isTop);
@@ -201,7 +201,7 @@ public class ExcelPivotTableFieldFilterCollection : ExcelPivotTableFilterBaseCol
     {
         if (dataFieldIndex < 0 || dataFieldIndex >= this._table.DataFields.Count)
         {
-            throw new ArgumentException("dataFieldIndex must point to an item in the pivot tables DataFields collection", "dataFieldIndex");
+            throw new ArgumentException("dataFieldIndex must point to an item in the pivot tables DataFields collection", nameof(dataFieldIndex));
         }
 
         ExcelPivotTableFilter filter = this.CreateFilter();

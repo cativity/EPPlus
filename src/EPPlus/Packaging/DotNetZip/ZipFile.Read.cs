@@ -275,7 +275,7 @@ internal partial class ZipFile
     {
         if (options == null)
         {
-            throw new ArgumentNullException("options");
+            throw new ArgumentNullException(nameof(options));
         }
 
         return Read(fileName, options.StatusMessageWriter, options.Encoding, options.ReadProgress);
@@ -468,7 +468,7 @@ internal partial class ZipFile
     {
         if (options == null)
         {
-            throw new ArgumentNullException("options");
+            throw new ArgumentNullException(nameof(options));
         }
 
         return Read(zipStream, options.StatusMessageWriter, options.Encoding, options.ReadProgress);
@@ -526,7 +526,7 @@ internal partial class ZipFile
     {
         if (zipStream == null)
         {
-            throw new ArgumentNullException("zipStream");
+            throw new ArgumentNullException(nameof(zipStream));
         }
 
         ZipFile zf = new ZipFile();
@@ -1148,7 +1148,7 @@ internal partial class ZipFile
     {
         if (stream == null)
         {
-            throw new ArgumentNullException("stream");
+            throw new ArgumentNullException(nameof(stream));
         }
 
         bool result = false;

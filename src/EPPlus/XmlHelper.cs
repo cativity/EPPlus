@@ -964,7 +964,7 @@ public abstract class XmlHelper
 
             if (value < -minMaxValue || value > minMaxValue)
             {
-                throw new ArgumentOutOfRangeException("value", $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%");
+                throw new ArgumentOutOfRangeException(nameof(value), $"Percentage out of range. Ranges from {(allowNegative ? 0 : -minMaxValue)}% to {minMaxValue}%");
             }
 
             this.SetXmlNodeString(path, ((int)(value.Value * 1000)).ToString(CultureInfo.InvariantCulture));

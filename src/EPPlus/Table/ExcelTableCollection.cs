@@ -66,7 +66,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     {
         if (Range.WorkSheetName != null && Range.WorkSheetName != this._ws.Name)
         {
-            throw new ArgumentException("Range does not belong to a worksheet", "Range");
+            throw new ArgumentException("Range does not belong to a worksheet", nameof(Range));
         }
 
         if (string.IsNullOrEmpty(Name))
@@ -161,7 +161,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     {
         if (!this._tables.Contains(Table))
         {
-            throw new ArgumentOutOfRangeException("Table", string.Format("Table {0} does not exist in this collection", Table.Name));
+            throw new ArgumentOutOfRangeException(nameof(Table), string.Format("Table {0} does not exist in this collection", Table.Name));
         }
 
         lock (this)

@@ -58,7 +58,7 @@ public class ExcelChartStyleColor : XmlHelper
         {
             if (index < 0)
             {
-                throw new ArgumentOutOfRangeException("index", "Index can't be negative");
+                throw new ArgumentOutOfRangeException(nameof(index), "Index can't be negative");
             }
 
             this.SetXmlNodeString("@val", index.ToString(CultureInfo.InvariantCulture));

@@ -79,7 +79,7 @@ public class ExcelCellAddress
         {
             if (value <= 0)
             {
-                throw new ArgumentOutOfRangeException("value", "Row cannot be less than 1.");
+                throw new ArgumentOutOfRangeException(nameof(value), "Row cannot be less than 1.");
             }
 
             this._row = value;
@@ -105,7 +105,7 @@ public class ExcelCellAddress
         {
             if (value <= 0)
             {
-                throw new ArgumentOutOfRangeException("value", "Column cannot be less than 1.");
+                throw new ArgumentOutOfRangeException(nameof(value), "Column cannot be less than 1.");
             }
 
             this._column = value;

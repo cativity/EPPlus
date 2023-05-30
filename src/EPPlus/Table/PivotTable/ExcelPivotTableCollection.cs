@@ -83,7 +83,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         if (Source.Rows < 2)
         {
-            throw new ArgumentException("The Range must contain at least 2 rows", "Source");
+            throw new ArgumentException("The Range must contain at least 2 rows", nameof(Source));
         }
 
         if (Range.WorkSheetName != this._ws.Name)
@@ -107,7 +107,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
         {
             if (Source.Offset(0, i, 1, 1).Value == null)
             {
-                throw new ArgumentException("First row of source range should contain the field headers and can't have blank cells.", "Source");
+                throw new ArgumentException("First row of source range should contain the field headers and can't have blank cells.", nameof(Source));
             }
         }
     }
@@ -123,7 +123,7 @@ public class ExcelPivotTableCollection : IEnumerable<ExcelPivotTable>
     {
         if (Source.WorkSheet.Workbook != this._ws.Workbook)
         {
-            throw new ArgumentException("The table must be in the same package as the pivottable", "Source");
+            throw new ArgumentException("The table must be in the same package as the pivottable", nameof(Source));
         }
 
         if (string.IsNullOrEmpty(Name))

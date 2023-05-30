@@ -114,7 +114,7 @@ public class ExcelPivotTableFieldItemsCollection : ExcelPivotTableFieldCollectio
     {
         if (index < 0 || index >= this._list.Count)
         {
-            throw new ArgumentOutOfRangeException("index", "Index is out of range");
+            throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range");
         }
 
         foreach (ExcelPivotTableFieldItem? item in this._list)

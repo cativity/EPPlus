@@ -106,7 +106,7 @@ public class ExcelRichTextCollection : XmlHelper, IEnumerable<ExcelRichText>
     {
         if (text == null)
         {
-            throw new ArgumentException("Text can't be null", "text");
+            throw new ArgumentException("Text can't be null", nameof(text));
         }
 
         this.ConvertRichtext();

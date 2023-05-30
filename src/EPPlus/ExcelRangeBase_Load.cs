@@ -78,7 +78,7 @@ namespace OfficeOpenXml
         {
             if (Reader == null)
             {
-                throw new ArgumentNullException("Reader", "Reader can't be null");
+                throw new ArgumentNullException(nameof(Reader), "Reader can't be null");
             }
 
             int fieldCount = Reader.FieldCount;
@@ -175,7 +175,7 @@ namespace OfficeOpenXml
         {
             if (Reader == null)
             {
-                throw new ArgumentNullException("Reader", "Reader can't be null");
+                throw new ArgumentNullException(nameof(Reader), "Reader can't be null");
             }
 
             int fieldCount = Reader.FieldCount;

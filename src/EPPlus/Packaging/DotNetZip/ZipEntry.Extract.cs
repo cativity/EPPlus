@@ -1551,7 +1551,7 @@ internal partial class ZipEntry
             return false;
         }
 
-        throw new ArgumentNullException("outstream");
+        throw new ArgumentNullException(nameof(outstream));
     }
 
     #endregion

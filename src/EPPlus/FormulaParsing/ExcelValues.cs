@@ -188,7 +188,7 @@ public class ExcelErrorValue
 
         if (string.IsNullOrEmpty(val))
         {
-            throw new ArgumentNullException("val");
+            throw new ArgumentNullException(nameof(val));
         }
 
         throw new ArgumentException("Not a valid error value: " + val);

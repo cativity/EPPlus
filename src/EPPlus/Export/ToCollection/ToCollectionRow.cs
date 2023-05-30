@@ -63,7 +63,7 @@ public class ToCollectionRow
         {
             if (index < 0 || index >= this._cellValues.Count)
             {
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
             return this._cellValues[index];
@@ -104,7 +104,7 @@ public class ToCollectionRow
     {
         if (index < 0 || index >= this._cellValues.Count)
         {
-            throw new ArgumentOutOfRangeException("index");
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
         try
@@ -153,7 +153,7 @@ public class ToCollectionRow
     {
         if (index < 0 || index >= this._cellValues.Count)
         {
-            throw new ArgumentOutOfRangeException("index");
+            throw new ArgumentOutOfRangeException(nameof(index));
         }
 
         return ValueToTextHandler.GetFormattedText(this._cellValues[index]._value, this._workbook, this._cellValues[index]._styleId, false);

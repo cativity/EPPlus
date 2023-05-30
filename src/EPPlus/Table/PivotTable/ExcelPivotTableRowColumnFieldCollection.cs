@@ -43,7 +43,7 @@ public class ExcelPivotTableRowColumnFieldCollection : ExcelPivotTableFieldColle
     {
         if (Field == null)
         {
-            throw new ArgumentNullException("Field", "Pivot Table Field can't be null");
+            throw new ArgumentNullException(nameof(Field), "Pivot Table Field can't be null");
         }
 
         if (this._topNode == "colFields" && Field.DragToCol == false)

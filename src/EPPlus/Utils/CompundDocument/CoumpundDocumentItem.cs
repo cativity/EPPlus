@@ -20,7 +20,7 @@ using System.Text;
 
 namespace OfficeOpenXml.Utils.CompundDocument;
 
-[DebuggerDisplay("FullName: {FullName}")]
+[DebuggerDisplay("FullName: {" + nameof(FullName) + "}")]
 internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
 {
     public CompoundDocumentItem()

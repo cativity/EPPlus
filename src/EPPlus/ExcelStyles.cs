@@ -1253,7 +1253,7 @@ public sealed class ExcelStyles : XmlHelper
 
         if (this.tableStyleNames.Contains(name) || this.TableStyles.ExistsKey(name) || this.SlicerStyles.ExistsKey(name))
         {
-            throw new ArgumentException($"Table style name is not unique : {name}", "name");
+            throw new ArgumentException($"Table style name is not unique : {name}", nameof(name));
         }
     }
 

@@ -506,7 +506,7 @@ internal partial class ZipFile
 
         if (Directory.Exists(this._name))
         {
-            throw new ZipException("Bad Directory", new ArgumentException("That name specifies an existing directory. Please specify a filename.", "fileName"));
+            throw new ZipException("Bad Directory", new ArgumentException("That name specifies an existing directory. Please specify a filename.", nameof(fileName)));
         }
 
         this._contentsChanged = true;
@@ -607,12 +607,12 @@ internal partial class ZipFile
     {
         if (outputStream == null)
         {
-            throw new ArgumentNullException("outputStream");
+            throw new ArgumentNullException(nameof(outputStream));
         }
 
         if (!outputStream.CanWrite)
         {
-            throw new ArgumentException("Must be a writable stream.", "outputStream");
+            throw new ArgumentException("Must be a writable stream.", nameof(outputStream));
         }
 
         // if we had a filename to save to, we are now obliterating it.

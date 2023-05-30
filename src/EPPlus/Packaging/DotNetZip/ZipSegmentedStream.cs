@@ -129,7 +129,7 @@ internal class ZipSegmentedStream : Stream
     {
         if (diskNumber >= 99)
         {
-            throw new ArgumentOutOfRangeException("diskNumber");
+            throw new ArgumentOutOfRangeException(nameof(diskNumber));
         }
 
         string fname = string.Format("{0}.z{1:D2}", Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name)), diskNumber + 1);
@@ -360,7 +360,7 @@ internal class ZipSegmentedStream : Stream
         // Console.WriteLine("***ZSS.Trunc:  current disk {0}", CurrentSegment);
         if (diskNumber >= 99)
         {
-            throw new ArgumentOutOfRangeException("diskNumber");
+            throw new ArgumentOutOfRangeException(nameof(diskNumber));
         }
 
         if (this.rwMode != RwMode.Write)

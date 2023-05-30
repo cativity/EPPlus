@@ -3187,7 +3187,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         //    throw new ArgumentException("The entry you specified does not exist in the zip archive.");
         if (entry == null)
         {
-            throw new ArgumentNullException("entry");
+            throw new ArgumentNullException(nameof(entry));
         }
 
         this._entries.Remove(SharedUtilities.NormalizePathForUseInZipFile(entry.FileName));

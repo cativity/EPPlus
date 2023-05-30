@@ -1395,7 +1395,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             if (zip == null)
             {
-                throw new ArgumentNullException("zip");
+                throw new ArgumentNullException(nameof(zip));
             }
 
             List<ZipEntry>? list = new List<ZipEntry>();
@@ -1453,7 +1453,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         {
             if (zip == null)
             {
-                throw new ArgumentNullException("zip");
+                throw new ArgumentNullException(nameof(zip));
             }
 
             List<ZipEntry>? list = new List<ZipEntry>();

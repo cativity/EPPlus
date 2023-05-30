@@ -1208,7 +1208,7 @@ internal class ZipOutputStream : Stream
         {
             this._exceptionPending = true;
 
-            throw new ArgumentNullException("buffer");
+            throw new ArgumentNullException(nameof(buffer));
         }
 
         if (this._currentEntry == null)
@@ -1320,7 +1320,7 @@ internal class ZipOutputStream : Stream
     {
         if (string.IsNullOrEmpty(entryName))
         {
-            throw new ArgumentNullException("entryName");
+            throw new ArgumentNullException(nameof(entryName));
         }
 
         if (this._disposed)

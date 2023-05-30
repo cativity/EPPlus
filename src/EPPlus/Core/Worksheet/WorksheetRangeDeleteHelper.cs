@@ -582,7 +582,7 @@ internal static class WorksheetRangeDeleteHelper
     {
         if (range == null || (range.Addresses != null && range.Addresses.Count > 1))
         {
-            throw new ArgumentException("Can't delete range. ´range´ can't be null or have multiple addresses.", "range");
+            throw new ArgumentException("Can't delete range. ´range´ can't be null or have multiple addresses.", nameof(range));
         }
 
         if (shift == eShiftTypeDelete.Left)

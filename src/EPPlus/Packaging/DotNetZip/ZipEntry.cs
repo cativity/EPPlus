@@ -52,7 +52,7 @@ internal partial class ZipEntry
     /// </remarks>
     public ZipEntry()
     {
-        this._CompressionMethod = (Int16)CompressionMethod.Deflate;
+        this._CompressionMethod = (short)CompressionMethod.Deflate;
         this._CompressionLevel = Zlib.CompressionLevel.Default;
         this._Encryption = EncryptionAlgorithm.None;
         this._Source = ZipEntrySource.None;
@@ -863,7 +863,7 @@ internal partial class ZipEntry
             }
 
             // rename the entry!
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 throw new ZipException("The FileName must be non empty and non-null.");
             }
@@ -1066,7 +1066,7 @@ internal partial class ZipEntry
     ///   archive.
     /// </para>
     /// </remarks>
-    public Int16 VersionNeeded
+    public short VersionNeeded
     {
         get { return this._VersionNeeded; }
     }
@@ -1290,7 +1290,7 @@ internal partial class ZipEntry
     /// </list>
     ///
     /// </remarks>
-    public Int16 BitField
+    public short BitField
     {
         get { return this._BitField; }
     }
@@ -1386,9 +1386,9 @@ internal partial class ZipEntry
             //                 if (this._Source == ZipEntrySource.ZipFile && _sourceIsEncrypted)
             //                     throw new InvalidOperationException("Cannot change compression method on encrypted entries read from archives.");
 
-            this._CompressionMethod = (Int16)value;
+            this._CompressionMethod = (short)value;
 
-            if (this._CompressionMethod == (Int16)CompressionMethod.None)
+            if (this._CompressionMethod == (short)CompressionMethod.None)
             {
                 this._CompressionLevel = Zlib.CompressionLevel.None;
             }
@@ -1501,7 +1501,7 @@ internal partial class ZipEntry
     /// </remarks>
     ///
     /// <seealso cref="ZipEntry.UncompressedSize"/>
-    public Int64 CompressedSize
+    public long CompressedSize
     {
         get { return this._CompressedSize; }
     }
@@ -1519,7 +1519,7 @@ internal partial class ZipEntry
     /// </remarks>
     ///
     /// <seealso cref="Ionic.Zip.ZipEntry.CompressedSize"/>
-    public Int64 UncompressedSize
+    public long UncompressedSize
     {
         get { return this._UncompressedSize; }
     }
@@ -1554,7 +1554,7 @@ internal partial class ZipEntry
     /// </para>
     ///
     /// </remarks>
-    public Double CompressionRatio
+    public double CompressionRatio
     {
         get
         {
@@ -1584,7 +1584,7 @@ internal partial class ZipEntry
     /// of this property reflects the stored CRC for the entry.  </para>
     ///
     /// </remarks>
-    public Int32 Crc
+    public int Crc
     {
         get { return this._Crc32; }
     }
@@ -2257,7 +2257,7 @@ internal partial class ZipEntry
     //     }
     // }
 
-    internal static string NameInArchive(String filename, string directoryPathInArchive)
+    internal static string NameInArchive(string filename, string directoryPathInArchive)
     {
         string result;
         if (directoryPathInArchive == null)
@@ -2267,7 +2267,7 @@ internal partial class ZipEntry
 
         else
         {
-            if (String.IsNullOrEmpty(directoryPathInArchive))
+            if (string.IsNullOrEmpty(directoryPathInArchive))
             {
                 result = Path.GetFileName(filename);
             }
@@ -2285,22 +2285,22 @@ internal partial class ZipEntry
     }
 
     // workitem 9073
-    internal static ZipEntry CreateFromNothing(String nameInArchive)
+    internal static ZipEntry CreateFromNothing(string nameInArchive)
     {
         return Create(nameInArchive, ZipEntrySource.None, null, null);
     }
 
-    internal static ZipEntry CreateFromFile(String filename, string nameInArchive)
+    internal static ZipEntry CreateFromFile(string filename, string nameInArchive)
     {
         return Create(nameInArchive, ZipEntrySource.FileSystem, filename, null);
     }
 
-    internal static ZipEntry CreateForStream(String entryName, Stream s)
+    internal static ZipEntry CreateForStream(string entryName, Stream s)
     {
         return Create(entryName, ZipEntrySource.Stream, s, null);
     }
 
-    internal static ZipEntry CreateForWriter(String entryName, WriteDelegate d)
+    internal static ZipEntry CreateForWriter(string entryName, WriteDelegate d)
     {
         return Create(entryName, ZipEntrySource.WriteDelegate, d, null);
     }
@@ -2315,9 +2315,9 @@ internal partial class ZipEntry
         return Create(nameInArchive, ZipEntrySource.ZipOutputStream, null, null);
     }
 
-    private static ZipEntry Create(string nameInArchive, ZipEntrySource source, Object arg1, Object arg2)
+    private static ZipEntry Create(string nameInArchive, ZipEntrySource source, object arg1, object arg2)
     {
-        if (String.IsNullOrEmpty(nameInArchive))
+        if (string.IsNullOrEmpty(nameInArchive))
         {
             throw new ZipException("The entry name must be non-null and non-empty.");
         }
@@ -2355,9 +2355,9 @@ internal partial class ZipEntry
         }
         else
         {
-            String filename = arg1 as String; // must not be null
+            string filename = arg1 as string; // must not be null
 
-            if (String.IsNullOrEmpty(filename))
+            if (string.IsNullOrEmpty(filename))
             {
                 throw new ZipException("The filename must be non-null and non-empty.");
             }
@@ -2408,7 +2408,7 @@ internal partial class ZipEntry
             catch (PathTooLongException ptle)
             {
                 // workitem 14035
-                string? msg = String.Format("The path is too long, filename={0}", filename);
+                string? msg = string.Format("The path is too long, filename={0}", filename);
 
                 throw new ZipException(msg, ptle);
             }
@@ -2527,9 +2527,9 @@ internal partial class ZipEntry
 
     /// <summary>Provides a string representation of the instance.</summary>
     /// <returns>a string representation of the instance.</returns>
-    public override String ToString()
+    public override string ToString()
     {
-        return String.Format("ZipEntry::{0}", this.FileName);
+        return string.Format("ZipEntry::{0}", this.FileName);
     }
 
     internal Stream ArchiveStream
@@ -2570,7 +2570,7 @@ internal partial class ZipEntry
         }
         catch (IOException exc1)
         {
-            string description = String.Format("Exception seeking  entry({0}) offset(0x{1:X8}) len(0x{2:X8})",
+            string description = string.Format("Exception seeking  entry({0}) offset(0x{1:X8}) len(0x{2:X8})",
                                                this.FileName,
                                                this._RelativeOffsetOfLocalHeader,
                                                this.ArchiveStream.Length);
@@ -2585,8 +2585,8 @@ internal partial class ZipEntry
         // with the contents read from the central header.  We could, but don't need to.
         // So we won't.
 
-        Int16 filenameLength = (short)(block[26] + (block[27] * 256));
-        Int16 extraFieldLength = (short)(block[28] + (block[29] * 256));
+        short filenameLength = (short)(block[26] + (block[27] * 256));
+        short extraFieldLength = (short)(block[28] + (block[29] * 256));
 
         // Console.WriteLine("  pos  0x{0:X8} ({0})", this.ArchiveStream.Position);
         // Console.WriteLine("  seek 0x{0:X8} ({0})", filenameLength + extraFieldLength);
@@ -2693,26 +2693,26 @@ internal partial class ZipEntry
     private bool _TrimVolumeFromFullyQualifiedPaths = true; // by default, trim them.
     internal string _LocalFileName;
     private string _FileNameInArchive;
-    internal Int16 _VersionNeeded;
-    internal Int16 _BitField;
-    internal Int16 _CompressionMethod;
-    private Int16 _CompressionMethod_FromZipFile;
+    internal short _VersionNeeded;
+    internal short _BitField;
+    internal short _CompressionMethod;
+    private short _CompressionMethod_FromZipFile;
     private Ionic.Zlib.CompressionLevel _CompressionLevel;
     internal string _Comment;
     private bool _IsDirectory;
     private byte[] _CommentBytes;
-    internal Int64 _CompressedSize;
-    internal Int64 _CompressedFileDataSize; // CompressedSize less 12 bytes for the encryption header, if any
-    internal Int64 _UncompressedSize;
-    internal Int32 _TimeBlob;
+    internal long _CompressedSize;
+    internal long _CompressedFileDataSize; // CompressedSize less 12 bytes for the encryption header, if any
+    internal long _UncompressedSize;
+    internal int _TimeBlob;
     private bool _crcCalculated;
-    internal Int32 _Crc32;
+    internal int _Crc32;
     internal byte[] _Extra;
     private bool _metadataChanged;
     private bool _restreamRequiredOnSave;
     private bool _sourceIsEncrypted;
     private bool _skippedDuringSave;
-    private UInt32 _diskNumber;
+    private uint _diskNumber;
 
 #if (Core)
     private static System.Text.Encoding ibm437 = System.Text.Encoding.GetEncoding("UTF-8");
@@ -2725,13 +2725,13 @@ internal partial class ZipEntry
 
     private long __FileDataPosition = -1;
     private byte[] _EntryHeader;
-    internal Int64 _RelativeOffsetOfLocalHeader;
-    private Int64 _future_ROLH;
-    private Int64 _TotalEntrySize;
+    internal long _RelativeOffsetOfLocalHeader;
+    private long _future_ROLH;
+    private long _TotalEntrySize;
     private int _LengthOfHeader;
     private int _LengthOfTrailer;
     internal bool _InputUsesZip64;
-    private UInt32 _UnsupportedAlgorithmId;
+    private uint _UnsupportedAlgorithmId;
 
     internal string _Password;
     internal ZipEntrySource _Source;
@@ -2740,7 +2740,7 @@ internal partial class ZipEntry
     internal byte[] _WeakEncryptionHeader;
     internal Stream _archiveStream;
     private Stream _sourceStream;
-    private Nullable<Int64> _sourceStreamOriginalPosition;
+    private Nullable<long> _sourceStreamOriginalPosition;
     private bool _sourceWasJitProvided;
     private bool _ioOperationCanceled;
     private bool _presumeZip64;

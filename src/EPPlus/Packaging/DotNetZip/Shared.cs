@@ -38,7 +38,7 @@ internal static class SharedUtilities
     //private SharedUtilities() { }
 
     // workitem 8423
-    public static Int64 GetFileLength(string fileName)
+    public static long GetFileLength(string fileName)
     {
         if (!File.Exists(fileName))
         {
@@ -148,7 +148,7 @@ internal static class SharedUtilities
     public static string NormalizePathForUseInZipFile(string pathName)
     {
         // boundary case
-        if (String.IsNullOrEmpty(pathName))
+        if (string.IsNullOrEmpty(pathName))
         {
             return pathName;
         }
@@ -309,7 +309,7 @@ internal static class SharedUtilities
 #endif
         if (n != block.Length)
         {
-            throw new BadReadException(String.Format(message, s.Position));
+            throw new BadReadException(string.Format(message, s.Position));
         }
 
         int data = unchecked((((((block[3] * 256) + block[2]) * 256) + block[1]) * 256) + block[0]);
@@ -453,7 +453,7 @@ internal static class SharedUtilities
         }
 #endif
 
-    internal static DateTime PackedToDateTime(Int32 packedDateTime)
+    internal static DateTime PackedToDateTime(int packedDateTime)
     {
         // workitem 7074 & workitem 7170
         if (packedDateTime == 0xFFFF || packedDateTime == 0)
@@ -461,8 +461,8 @@ internal static class SharedUtilities
             return new DateTime(1995, 1, 1, 0, 0, 0, 0); // return a fixed date when none is supplied.
         }
 
-        Int16 packedTime = unchecked((Int16)(packedDateTime & 0x0000ffff));
-        Int16 packedDate = unchecked((Int16)((packedDateTime & 0xffff0000) >> 16));
+        short packedTime = unchecked((short)(packedDateTime & 0x0000ffff));
+        short packedDate = unchecked((short)((packedDateTime & 0xffff0000) >> 16));
 
         int year = 1980 + ((packedDate & 0xFE00) >> 9);
         int month = (packedDate & 0x01E0) >> 5;
@@ -592,9 +592,9 @@ internal static class SharedUtilities
 
         if (!success)
         {
-            string msg = String.Format("y({0}) m({1}) d({2}) h({3}) m({4}) s({5})", year, month, day, hour, minute, second);
+            string msg = string.Format("y({0}) m({1}) d({2}) h({3}) m({4}) s({5})", year, month, day, hour, minute, second);
 
-            throw new ZipException(String.Format("Bad date/time format in the zip file. ({0})", msg));
+            throw new ZipException(string.Format("Bad date/time format in the zip file. ({0})", msg));
         }
 
         // workitem 6191
@@ -604,7 +604,7 @@ internal static class SharedUtilities
         return d;
     }
 
-    internal static Int32 DateTimeToPacked(DateTime time)
+    internal static int DateTimeToPacked(DateTime time)
     {
         // The time is passed in here only for purposes of writing LastModified to the
         // zip archive. It should always be LocalTime, but we convert anyway.  And,
@@ -616,10 +616,10 @@ internal static class SharedUtilities
         //time = AdjustTime_Forward(time);
 
         // see http://www.vsft.com/hal/dostime.htm for the format
-        UInt16 packedDate = (UInt16)((time.Day & 0x0000001F) | ((time.Month << 5) & 0x000001E0) | (((time.Year - 1980) << 9) & 0x0000FE00));
-        UInt16 packedTime = (UInt16)(((time.Second / 2) & 0x0000001F) | ((time.Minute << 5) & 0x000007E0) | ((time.Hour << 11) & 0x0000F800));
+        ushort packedDate = (ushort)((time.Day & 0x0000001F) | ((time.Month << 5) & 0x000001E0) | (((time.Year - 1980) << 9) & 0x0000FE00));
+        ushort packedTime = (ushort)(((time.Second / 2) & 0x0000001F) | ((time.Minute << 5) & 0x000007E0) | ((time.Hour << 11) & 0x0000F800));
 
-        Int32 result = (Int32)((UInt32)(packedDate << 16) | packedTime);
+        int result = (int)((uint)(packedDate << 16) | packedTime);
 
         return result;
     }
@@ -831,9 +831,9 @@ internal class CountingStream : Stream
 {
     // workitem 12374: this class is now public
     private Stream _s;
-    private Int64 _bytesWritten;
-    private Int64 _bytesRead;
-    private Int64 _initialOffset;
+    private long _bytesWritten;
+    private long _bytesRead;
+    private long _initialOffset;
 
     /// <summary>
     /// The constructor.
@@ -865,7 +865,7 @@ internal class CountingStream : Stream
     /// <summary>
     ///   The count of bytes written out to the stream.
     /// </summary>
-    public Int64 BytesWritten
+    public long BytesWritten
     {
         get { return this._bytesWritten; }
     }
@@ -873,7 +873,7 @@ internal class CountingStream : Stream
     /// <summary>
     ///   the count of bytes that have been read from the stream.
     /// </summary>
-    public Int64 BytesRead
+    public long BytesRead
     {
         get { return this._bytesRead; }
     }
@@ -893,7 +893,7 @@ internal class CountingStream : Stream
     ///     as happens in some cases when saving Zip files.
     ///   </para>
     /// </remarks>
-    public void Adjust(Int64 delta)
+    public void Adjust(long delta)
     {
         this._bytesWritten -= delta;
 

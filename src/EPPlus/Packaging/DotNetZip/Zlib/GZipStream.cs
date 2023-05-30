@@ -139,7 +139,7 @@ public class GZipStream : Stream
     ///   (<c>Nothing</c> in VB).
     /// </para>
     /// </remarks>
-    public String Comment
+    public string Comment
     {
         get { return this._Comment; }
         set
@@ -176,7 +176,7 @@ public class GZipStream : Stream
     ///   in VB).
     /// </para>
     /// </remarks>
-    public String FileName
+    public string FileName
     {
         get { return this._FileName; }
         set
@@ -606,7 +606,7 @@ public class GZipStream : Stream
 
             if (value < ZlibConstants.WorkingBufferSizeMin)
             {
-                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
+                throw new ZlibException(string.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
                                                       value,
                                                       ZlibConstants.WorkingBufferSizeMin));
             }
@@ -941,7 +941,7 @@ public class GZipStream : Stream
         this.LastModified ??= DateTime.Now;
 
         TimeSpan delta = this.LastModified.Value - _unixEpoch;
-        Int32 timet = (Int32)delta.TotalSeconds;
+        int timet = (int)delta.TotalSeconds;
         Array.Copy(BitConverter.GetBytes(timet), 0, header, i, 4);
         i += 4;
 
@@ -993,7 +993,7 @@ public class GZipStream : Stream
     /// </param>
     ///
     /// <returns>The string in compressed form</returns>
-    public static byte[] CompressString(String s)
+    public static byte[] CompressString(string s)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
         Stream compressor = new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
@@ -1040,7 +1040,7 @@ public class GZipStream : Stream
     /// </param>
     ///
     /// <returns>The uncompressed string</returns>
-    public static String UncompressString(byte[] compressed)
+    public static string UncompressString(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
         Stream decompressor = new GZipStream(input, CompressionMode.Decompress);

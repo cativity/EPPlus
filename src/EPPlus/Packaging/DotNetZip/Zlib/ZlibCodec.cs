@@ -137,7 +137,7 @@ sealed public class ZlibCodec
     /// <summary>
     /// used for diagnostics, when something goes wrong!
     /// </summary>
-    public String Message;
+    public string Message;
 
     internal DeflateManager dstate;
     internal InflateManager istate;
@@ -726,7 +726,7 @@ sealed public class ZlibCodec
             || this.dstate.pending.Length < this.dstate.nextPending + len
             || this.OutputBuffer.Length < this.NextOut + len)
         {
-            throw new ZlibException(String.Format("Invalid State. (pending.Length={0}, pendingCount={1})",
+            throw new ZlibException(string.Format("Invalid State. (pending.Length={0}, pendingCount={1})",
                                                   this.dstate.pending.Length,
                                                   this.dstate.pendingCount));
         }

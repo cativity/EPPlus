@@ -51,7 +51,7 @@ internal class CRC32
     /// <summary>
     ///   Indicates the total number of bytes applied to the CRC.
     /// </summary>
-    public Int64 TotalBytesRead
+    public long TotalBytesRead
     {
         get { return this._TotalBytesRead; }
     }
@@ -59,9 +59,9 @@ internal class CRC32
     /// <summary>
     /// Indicates the current CRC for all blocks slurped in.
     /// </summary>
-    public Int32 Crc32Result
+    public int Crc32Result
     {
-        get { return unchecked((Int32)(~this._register)); }
+        get { return unchecked((int)(~this._register)); }
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ internal class CRC32
     /// </summary>
     /// <param name="input">The stream over which to calculate the CRC32</param>
     /// <returns>the CRC32 calculation</returns>
-    public Int32 GetCrc32(System.IO.Stream input)
+    public int GetCrc32(System.IO.Stream input)
     {
         return this.GetCrc32AndCopy(input, null);
     }
@@ -81,7 +81,7 @@ internal class CRC32
     /// <param name="input">The stream over which to calculate the CRC32</param>
     /// <param name="output">The stream into which to deflate the input</param>
     /// <returns>the CRC32 calculation</returns>
-    public Int32 GetCrc32AndCopy(System.IO.Stream input, System.IO.Stream output)
+    public int GetCrc32AndCopy(System.IO.Stream input, System.IO.Stream output)
     {
         if (input == null)
         {
@@ -116,7 +116,7 @@ internal class CRC32
                 this._TotalBytesRead += count;
             }
 
-            return (Int32)(~this._register);
+            return (int)(~this._register);
         }
     }
 
@@ -127,14 +127,14 @@ internal class CRC32
     /// <param name="W">The word to start with.</param>
     /// <param name="B">The byte to combine it with.</param>
     /// <returns>The CRC-ized result.</returns>
-    public Int32 ComputeCrc32(Int32 W, byte B)
+    public int ComputeCrc32(int W, byte B)
     {
-        return this._InternalComputeCrc32((UInt32)W, B);
+        return this._InternalComputeCrc32((uint)W, B);
     }
 
-    internal Int32 _InternalComputeCrc32(UInt32 W, byte B)
+    internal int _InternalComputeCrc32(uint W, byte B)
     {
-        return (Int32)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
+        return (int)(this.crc32Table[(W ^ B) & 0xFF] ^ (W >> 8));
     }
 
     /// <summary>
@@ -159,12 +159,12 @@ internal class CRC32
 
             if (this.reverseBits)
             {
-                UInt32 temp = (this._register >> 24) ^ b;
+                uint temp = (this._register >> 24) ^ b;
                 this._register = (this._register << 8) ^ this.crc32Table[temp];
             }
             else
             {
-                UInt32 temp = (this._register & 0x000000FF) ^ b;
+                uint temp = (this._register & 0x000000FF) ^ b;
                 this._register = (this._register >> 8) ^ this.crc32Table[temp];
             }
         }
@@ -180,12 +180,12 @@ internal class CRC32
     {
         if (this.reverseBits)
         {
-            UInt32 temp = (this._register >> 24) ^ b;
+            uint temp = (this._register >> 24) ^ b;
             this._register = (this._register << 8) ^ this.crc32Table[temp];
         }
         else
         {
-            UInt32 temp = (this._register & 0x000000FF) ^ b;
+            uint temp = (this._register & 0x000000FF) ^ b;
             this._register = (this._register >> 8) ^ this.crc32Table[temp];
         }
     }
@@ -216,7 +216,7 @@ internal class CRC32
             }
             else
             {
-                UInt32 temp = (this._register & 0x000000FF) ^ b;
+                uint temp = (this._register & 0x000000FF) ^ b;
 
                 this._register = (this._register >> 8) ^ this.crc32Table[temp >= 0 ? temp : temp + 256];
             }
@@ -252,7 +252,7 @@ internal class CRC32
 
     private void GenerateLookupTable()
     {
-        this.crc32Table = new UInt32[256];
+        this.crc32Table = new uint[256];
 
         unchecked
         {
@@ -260,7 +260,7 @@ internal class CRC32
 
             do
             {
-                UInt32 dwCrc = i;
+                uint dwCrc = i;
 
                 for (byte j = 8; j > 0; j--)
                 {
@@ -488,12 +488,12 @@ internal class CRC32
     }
 
     // private member vars
-    private UInt32 dwPolynomial;
-    private Int64 _TotalBytesRead;
+    private uint dwPolynomial;
+    private long _TotalBytesRead;
     private bool reverseBits;
-    private UInt32[] crc32Table;
+    private uint[] crc32Table;
     private const int BUFFER_SIZE = 8192;
-    private UInt32 _register = 0xFFFFFFFFU;
+    private uint _register = 0xFFFFFFFFU;
 }
 
 /// <summary>
@@ -517,11 +517,11 @@ internal class CRC32
 /// </remarks>
 internal class CrcCalculatorStream : System.IO.Stream, IDisposable
 {
-    private static readonly Int64 UnsetLengthLimit = -99;
+    private static readonly long UnsetLengthLimit = -99;
 
     internal System.IO.Stream _innerStream;
     private CRC32 _Crc32;
-    private Int64 _lengthLimit;
+    private long _lengthLimit;
     private bool _leaveOpen;
 
     /// <summary>
@@ -574,7 +574,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// </remarks>
     /// <param name="stream">The underlying stream</param>
     /// <param name="length">The length of the stream to slurp</param>
-    public CrcCalculatorStream(System.IO.Stream stream, Int64 length)
+    public CrcCalculatorStream(System.IO.Stream stream, long length)
         : this(true, length, stream, null)
     {
         if (length < 0)
@@ -598,7 +598,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// <param name="length">The length of the stream to slurp</param>
     /// <param name="leaveOpen">true to leave the underlying stream
     /// open upon close of the <c>CrcCalculatorStream</c>; false otherwise.</param>
-    public CrcCalculatorStream(System.IO.Stream stream, Int64 length, bool leaveOpen)
+    public CrcCalculatorStream(System.IO.Stream stream, long length, bool leaveOpen)
         : this(leaveOpen, length, stream, null)
     {
         if (length < 0)
@@ -623,7 +623,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     /// <param name="leaveOpen">true to leave the underlying stream
     /// open upon close of the <c>CrcCalculatorStream</c>; false otherwise.</param>
     /// <param name="crc32">the CRC32 instance to use to calculate the CRC32</param>
-    public CrcCalculatorStream(System.IO.Stream stream, Int64 length, bool leaveOpen, CRC32 crc32)
+    public CrcCalculatorStream(System.IO.Stream stream, long length, bool leaveOpen, CRC32 crc32)
         : this(leaveOpen, length, stream, crc32)
     {
         if (length < 0)
@@ -637,7 +637,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     // is no length set.  So we validate the length limit in those ctors that use an
     // explicit param, otherwise we don't validate, because it could be our special
     // value.
-    private CrcCalculatorStream(bool leaveOpen, Int64 length, System.IO.Stream stream, CRC32 crc32)
+    private CrcCalculatorStream(bool leaveOpen, long length, System.IO.Stream stream, CRC32 crc32)
         : base()
     {
         this._innerStream = stream;
@@ -654,7 +654,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     ///   This is either the total number of bytes read, or the total number of
     ///   bytes written, depending on the direction of this stream.
     /// </remarks>
-    public Int64 TotalBytesSlurped
+    public long TotalBytesSlurped
     {
         get { return this._Crc32.TotalBytesRead; }
     }
@@ -669,7 +669,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
     ///     get an accurate CRC for the entire stream.
     ///   </para>
     /// </remarks>
-    public Int32 Crc
+    public int Crc
     {
         get { return this._Crc32.Crc32Result; }
     }
@@ -710,7 +710,7 @@ internal class CrcCalculatorStream : System.IO.Stream, IDisposable
                 return 0; // EOF
             }
 
-            Int64 bytesRemaining = this._lengthLimit - this._Crc32.TotalBytesRead;
+            long bytesRemaining = this._lengthLimit - this._Crc32.TotalBytesRead;
 
             if (bytesRemaining < count)
             {

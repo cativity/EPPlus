@@ -76,13 +76,13 @@ internal partial class ZipEntry
 
         // workitem 11969: Version Needed To Extract in central directory must be
         // the same as the local entry or MS .NET System.IO.Zip fails read.
-        Int16 vNeeded = (Int16)(this.VersionNeeded != 0 ? this.VersionNeeded : 20);
+        short vNeeded = (short)(this.VersionNeeded != 0 ? this.VersionNeeded : 20);
 
         // workitem 12964
         // a zipentry in a zipoutputstream, with zero bytes written
         this._OutputUsesZip64 ??= new Nullable<bool>(this._container.Zip64 == Zip64Option.Always);
 
-        Int16 versionNeededToExtract = (Int16)(this._OutputUsesZip64.Value ? 45 : vNeeded);
+        short versionNeededToExtract = (short)(this._OutputUsesZip64.Value ? 45 : vNeeded);
 #if BZIP
             if (this.CompressionMethod == Ionic.Zip.CompressionMethod.BZip2)
                 versionNeededToExtract = 46;
@@ -138,7 +138,7 @@ internal partial class ZipEntry
         }
 
         byte[] fileNameBytes = this.GetEncodedFileNameBytes();
-        Int16 filenameLength = (Int16)fileNameBytes.Length;
+        short filenameLength = (short)fileNameBytes.Length;
         bytes[i++] = (byte)(filenameLength & 0x00FF);
         bytes[i++] = (byte)((filenameLength & 0xFF00) >> 8);
 
@@ -177,7 +177,7 @@ internal partial class ZipEntry
 
         this._Extra = this.ConstructExtraField(true);
 
-        Int16 extraFieldLength = (Int16)(this._Extra?.Length ?? 0);
+        short extraFieldLength = (short)(this._Extra?.Length ?? 0);
         bytes[i++] = (byte)(extraFieldLength & 0x00FF);
         bytes[i++] = (byte)((extraFieldLength & 0xFF00) >> 8);
 
@@ -449,7 +449,7 @@ internal partial class ZipEntry
             block[i++] = 24;
             block[i++] = 0;
 
-            Int64 z = this._Mtime.ToFileTime();
+            long z = this._Mtime.ToFileTime();
             Array.Copy(BitConverter.GetBytes(z), 0, block, i, 8);
             i += 8;
             z = this._Atime.ToFileTime();
@@ -503,7 +503,7 @@ internal partial class ZipEntry
             // flags
             block[i++] = 0x07;
 
-            Int32 z = unchecked((int)(this._Mtime - _unixEpoch).TotalSeconds);
+            int z = unchecked((int)(this._Mtime - _unixEpoch).TotalSeconds);
             Array.Copy(BitConverter.GetBytes(z), 0, block, i, 4);
             i += 4;
 
@@ -939,7 +939,7 @@ internal partial class ZipEntry
         // necessary or zip64.
 
         this._presumeZip64 = this._container.Zip64 == Zip64Option.Always || (this._container.Zip64 == Zip64Option.AsNecessary && !s.CanSeek);
-        Int16 VersionNeededToExtract = (Int16)(this._presumeZip64 ? 45 : 20);
+        short VersionNeededToExtract = (short)(this._presumeZip64 ? 45 : 20);
 #if BZIP
             if (this.CompressionMethod == Ionic.Zip.CompressionMethod.BZip2)
                 VersionNeededToExtract = 46;
@@ -953,7 +953,7 @@ internal partial class ZipEntry
         // Must determine encoding before setting the bitfield.
         // workitem 6513
         byte[] fileNameBytes = this.GetEncodedFileNameBytes();
-        Int16 filenameLength = (Int16)fileNameBytes.Length;
+        short filenameLength = (short)fileNameBytes.Length;
 
         // general purpose bitfield
         // In the current implementation, this library uses only these bits
@@ -1155,7 +1155,7 @@ internal partial class ZipEntry
         this._Extra = this.ConstructExtraField(false);
 
         // (i==28) extra field length (short)
-        Int16 extraFieldLength = (Int16)(this._Extra?.Length ?? 0);
+        short extraFieldLength = (short)(this._Extra?.Length ?? 0);
         block[i++] = (byte)(extraFieldLength & 0x00FF);
         block[i++] = (byte)((extraFieldLength & 0xFF00) >> 8);
 
@@ -1193,7 +1193,7 @@ internal partial class ZipEntry
         if (zss != null)
         {
             zss.ContiguousWrite = true;
-            UInt32 requiredSegment = zss.ComputeSegment(i);
+            uint requiredSegment = zss.ComputeSegment(i);
 
             if (requiredSegment != zss.CurrentSegment)
             {
@@ -1230,7 +1230,7 @@ internal partial class ZipEntry
         this._EntryHeader = bytes;
     }
 
-    private Int32 FigureCrc32()
+    private int FigureCrc32()
     {
         if (this._crcCalculated == false)
         {
@@ -1317,7 +1317,7 @@ internal partial class ZipEntry
     {
         if (this._sourceStream == null)
         {
-            throw new ZipException(String.Format("The input stream is null for entry '{0}'.", this.FileName));
+            throw new ZipException(string.Format("The input stream is null for entry '{0}'.", this.FileName));
         }
 
         if (this._sourceStreamOriginalPosition != null)
@@ -1328,7 +1328,7 @@ internal partial class ZipEntry
         else if (this._sourceStream.CanSeek)
         {
             // this will happen the first cycle through, if seekable
-            this._sourceStreamOriginalPosition = new Nullable<Int64>(this._sourceStream.Position);
+            this._sourceStreamOriginalPosition = new Nullable<long>(this._sourceStream.Position);
         }
         else if (this.Encryption == EncryptionAlgorithm.PkzipWeak)
         {
@@ -1393,7 +1393,7 @@ internal partial class ZipEntry
         this._emitNtfsTimes = source._emitNtfsTimes;
     }
 
-    private void OnWriteBlock(Int64 bytesXferred, Int64 totalBytesToXfer)
+    private void OnWriteBlock(long bytesXferred, long totalBytesToXfer)
     {
         if (this._container.ZipFile != null)
         {
@@ -1778,8 +1778,8 @@ internal partial class ZipEntry
         this.SetZip64Flags();
 
         // (i==26) filename length (Int16)
-        Int16 filenameLength = (short)(this._EntryHeader[26] + (this._EntryHeader[27] * 256));
-        Int16 extraFieldLength = (short)(this._EntryHeader[28] + (this._EntryHeader[29] * 256));
+        short filenameLength = (short)(this._EntryHeader[26] + (this._EntryHeader[27] * 256));
+        short extraFieldLength = (short)(this._EntryHeader[28] + (this._EntryHeader[29] * 256));
 
         if (this._OutputUsesZip64.Value)
         {
@@ -1845,7 +1845,7 @@ internal partial class ZipEntry
                 // we determine if the first header is a putative zip64 header
                 // by examining the datasize.  UInt16 HeaderId =
                 // (UInt16)(_EntryHeader[i] + _EntryHeader[i + 1] * 256);
-                Int16 DataSize = (short)(this._EntryHeader[i + 2] + (this._EntryHeader[i + 3] * 256));
+                short DataSize = (short)(this._EntryHeader[i + 2] + (this._EntryHeader[i + 3] * 256));
 
                 if (DataSize == 16)
                 {
@@ -2745,5 +2745,5 @@ internal partial class ZipEntry
         }
     }
 
-    private object _outputLock = new Object();
+    private object _outputLock = new object();
 }

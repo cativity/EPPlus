@@ -132,7 +132,7 @@ internal class ZipSegmentedStream : Stream
             throw new ArgumentOutOfRangeException("diskNumber");
         }
 
-        string fname = String.Format("{0}.z{1:D2}", Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name)), diskNumber + 1);
+        string fname = string.Format("{0}.z{1:D2}", Path.Combine(Path.GetDirectoryName(name), Path.GetFileNameWithoutExtension(name)), diskNumber + 1);
 
         // Console.WriteLine("ZSS: ForUpdate ({0})",
         //                   Path.GetFileName(fname));
@@ -147,7 +147,7 @@ internal class ZipSegmentedStream : Stream
 
     public bool ContiguousWrite { get; set; }
 
-    public UInt32 CurrentSegment
+    public uint CurrentSegment
     {
         get { return this._currentDiskNumber; }
         private set
@@ -168,12 +168,12 @@ internal class ZipSegmentedStream : Stream
     ///     started.
     ///   </para>
     /// </remarks>
-    public String CurrentName
+    public string CurrentName
     {
         get { return this._currentName ??= this._NameForSegment(this.CurrentSegment); }
     }
 
-    public String CurrentTempName
+    public string CurrentTempName
     {
         get { return this._currentTempName; }
     }
@@ -187,7 +187,7 @@ internal class ZipSegmentedStream : Stream
             throw new OverflowException("The number of zip segments would exceed 99.");
         }
 
-        return String.Format("{0}.z{1:D2}",
+        return string.Format("{0}.z{1:D2}",
                              Path.Combine(Path.GetDirectoryName(this._baseName), Path.GetFileNameWithoutExtension(this._baseName)),
                              diskNumber + 1);
     }
@@ -196,7 +196,7 @@ internal class ZipSegmentedStream : Stream
     // a block of the given length.
     // This isn't exactly true. It could roll over beyond
     // this number.
-    public UInt32 ComputeSegment(int length)
+    public uint ComputeSegment(int length)
     {
         if (this._innerStream.Position + length > this._maxSegmentSize)
 
@@ -209,9 +209,9 @@ internal class ZipSegmentedStream : Stream
         return this.CurrentSegment;
     }
 
-    public override String ToString()
+    public override string ToString()
     {
-        return String.Format("{0}[{1}][{2}], pos=0x{3:X})", "ZipSegmentedStream", this.CurrentName, this.rwMode.ToString(), this.Position);
+        return string.Format("{0}[{1}][{2}], pos=0x{3:X})", "ZipSegmentedStream", this.CurrentName, this.rwMode.ToString(), this.Position);
     }
 
     private void _SetReadStream()
@@ -261,7 +261,7 @@ internal class ZipSegmentedStream : Stream
             {
                 this._exceptionPending = true;
 
-                throw new ZipException(String.Format("Read error in file {0}", this.CurrentName));
+                throw new ZipException(string.Format("Read error in file {0}", this.CurrentName));
             }
 
             if (this.CurrentSegment + 1 == this._maxDiskNumber)

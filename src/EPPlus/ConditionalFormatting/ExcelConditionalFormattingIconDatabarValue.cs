@@ -264,7 +264,7 @@ public class ExcelConditionalFormattingIconDataBarValue : XmlHelper
     /// <summary>
     /// The value
     /// </summary>
-    public Double Value
+    public double Value
     {
         get
         {

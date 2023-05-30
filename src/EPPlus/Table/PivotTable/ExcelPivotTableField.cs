@@ -880,7 +880,7 @@ public class ExcelPivotTableField : XmlHelper
 
     private void AddDateGrouping(eDateGroupBy groupBy, DateTime startDate, DateTime endDate, int groupInterval)
     {
-        if (groupInterval < 1 || groupInterval >= Int16.MaxValue)
+        if (groupInterval < 1 || groupInterval >= short.MaxValue)
         {
             throw new ArgumentOutOfRangeException("Group interval is out of range");
         }

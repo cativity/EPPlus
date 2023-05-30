@@ -275,7 +275,7 @@ public class ZlibException : Exception
     /// This ctor collects a message attached to the exception.
     /// </summary>
     /// <param name="s">the message for the exception.</param>
-    public ZlibException(String s)
+    public ZlibException(string s)
         : base(s)
     {
     }
@@ -322,7 +322,7 @@ internal class SharedUtils
     ///   count depending on the data available in the source TextReader. Returns -1
     ///   if the end of the stream is reached.
     /// </returns>
-    public static Int32 ReadInput(System.IO.TextReader sourceTextReader, byte[] target, int start, int count)
+    public static int ReadInput(System.IO.TextReader sourceTextReader, byte[] target, int start, int count)
     {
         // Returns 0 bytes if not enough space in target
         if (target.Length == 0)
@@ -347,7 +347,7 @@ internal class SharedUtils
         return bytesRead;
     }
 
-    internal static byte[] ToByteArray(String sourceString)
+    internal static byte[] ToByteArray(string sourceString)
     {
         return System.Text.Encoding.UTF8.GetBytes(sourceString);
     }

@@ -72,9 +72,9 @@ public class CalculationTests
         ExcelWorksheet? ws = pck.Workbook.Worksheets.Add("Calc1");
         ws.SetValue("A1", (short)1);
         ws.SetValue("A2", (long)2);
-        ws.SetValue("A3", (Single)3);
+        ws.SetValue("A3", (float)3);
         ws.SetValue("A4", (double)4);
-        ws.SetValue("A5", (Decimal)5);
+        ws.SetValue("A5", (decimal)5);
         ws.SetValue("A6", (byte)6);
         ws.SetValue("A7", null);
         ws.Cells["A10"].Formula = "Sum(A1:A8)";

@@ -245,7 +245,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         ///
         /// <param name="selectionCriteria">The criteria for file selection</param>
-        public void AddSelectedFiles(String selectionCriteria)
+        public void AddSelectedFiles(string selectionCriteria)
         {
             this.AddSelectedFiles(selectionCriteria, ".", null, false);
         }
@@ -305,7 +305,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="recurseDirectories">
         ///   If true, the file selection will recurse into subdirectories.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria, bool recurseDirectories)
+        public void AddSelectedFiles(string selectionCriteria, bool recurseDirectories)
         {
             this.AddSelectedFiles(selectionCriteria, ".", null, recurseDirectories);
         }
@@ -363,7 +363,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="directoryOnDisk">
         /// The name of the directory on the disk from which to select files.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk)
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk)
         {
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, false);
         }
@@ -438,7 +438,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="recurseDirectories">
         ///   If true, the file selection will recurse into subdirectories.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, bool recurseDirectories)
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, bool recurseDirectories)
         {
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, null, recurseDirectories);
         }
@@ -502,7 +502,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   the empty string ("") will insert the item at the root path within the
         ///   archive.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive)
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive)
         {
             this.AddSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, false);
         }
@@ -568,7 +568,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         ///   If true, the method also scans subdirectories for files matching the
         ///   criteria.
         /// </param>
-        public void AddSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive, bool recurseDirectories)
+        public void AddSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories)
         {
             this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, false);
         }
@@ -613,7 +613,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="AddSelectedFiles(String, String, String, bool)" />
-        public void UpdateSelectedFiles(String selectionCriteria, String directoryOnDisk, String directoryPathInArchive, bool recurseDirectories)
+        public void UpdateSelectedFiles(string selectionCriteria, string directoryOnDisk, string directoryPathInArchive, bool recurseDirectories)
         {
             this._AddOrUpdateSelectedFiles(selectionCriteria, directoryOnDisk, directoryPathInArchive, recurseDirectories, true);
         }
@@ -628,9 +628,9 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
             return s + "\\";
         }
 
-        private void _AddOrUpdateSelectedFiles(String selectionCriteria,
-                                               String directoryOnDisk,
-                                               String directoryPathInArchive,
+        private void _AddOrUpdateSelectedFiles(string selectionCriteria,
+                                               string directoryOnDisk,
+                                               string directoryPathInArchive,
                                                bool recurseDirectories,
                                                bool wantUpdate)
         {
@@ -639,7 +639,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
                 directoryOnDisk = selectionCriteria;
                 selectionCriteria = "*.*";
             }
-            else if (String.IsNullOrEmpty(directoryOnDisk))
+            else if (string.IsNullOrEmpty(directoryOnDisk))
             {
                 directoryOnDisk = ".";
             }
@@ -797,7 +797,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         /// <param name="selectionCriteria">the string that specifies which entries to select</param>
         /// <returns>a collection of ZipEntry objects that conform to the inclusion spec</returns>
-        public ICollection<ZipEntry> SelectEntries(String selectionCriteria)
+        public ICollection<ZipEntry> SelectEntries(string selectionCriteria)
         {
             FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
 
@@ -869,7 +869,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <returns>a collection of ZipEntry objects that conform to the inclusion spec</returns>
-        public ICollection<ZipEntry> SelectEntries(String selectionCriteria, string directoryPathInArchive)
+        public ICollection<ZipEntry> SelectEntries(string selectionCriteria, string directoryPathInArchive)
         {
             FileSelector ff = new FileSelector(selectionCriteria, this.AddDirectoryWillTraverseReparsePoints);
 
@@ -929,7 +929,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </example>
         /// <param name="selectionCriteria">the string that specifies which entries to select</param>
         /// <returns>the number of entries removed</returns>
-        public int RemoveSelectedEntries(String selectionCriteria)
+        public int RemoveSelectedEntries(string selectionCriteria)
         {
             ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria);
             this.RemoveEntries(selection);
@@ -995,7 +995,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// all directories in the archive are used.
         /// </param>
         /// <returns>the number of entries removed</returns>
-        public int RemoveSelectedEntries(String selectionCriteria, string directoryPathInArchive)
+        public int RemoveSelectedEntries(string selectionCriteria, string directoryPathInArchive)
         {
             ICollection<ZipEntry>? selection = this.SelectEntries(selectionCriteria, directoryPathInArchive);
             this.RemoveEntries(selection);
@@ -1037,7 +1037,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="selectionCriteria">the selection criteria for entries to extract.</param>
         ///
         /// <seealso cref="ExtractSelectedEntries(String,ExtractExistingFileAction)"/>
-        public void ExtractSelectedEntries(String selectionCriteria)
+        public void ExtractSelectedEntries(string selectionCriteria)
         {
             foreach (ZipEntry e in this.SelectEntries(selectionCriteria))
             {
@@ -1080,7 +1080,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// <param name="extractExistingFile">
         /// The action to take if extraction would overwrite an existing file.
         /// </param>
-        internal void ExtractSelectedEntries(String selectionCriteria, ExtractExistingFileAction extractExistingFile)
+        internal void ExtractSelectedEntries(string selectionCriteria, ExtractExistingFileAction extractExistingFile)
         {
             foreach (ZipEntry e in this.SelectEntries(selectionCriteria))
             {
@@ -1131,7 +1131,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </param>
         ///
         /// <seealso cref="ExtractSelectedEntries(String,String,String,ExtractExistingFileAction)"/>
-        public void ExtractSelectedEntries(String selectionCriteria, String directoryPathInArchive)
+        public void ExtractSelectedEntries(string selectionCriteria, string directoryPathInArchive)
         {
             foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryPathInArchive))
             {
@@ -1166,7 +1166,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// the directory on the disk into which to extract. It will be created
         /// if it does not exist.
         /// </param>
-        public void ExtractSelectedEntries(String selectionCriteria, string directoryInArchive, string extractDirectory)
+        public void ExtractSelectedEntries(string selectionCriteria, string directoryInArchive, string extractDirectory)
         {
             foreach (ZipEntry e in this.SelectEntries(selectionCriteria, directoryInArchive))
             {
@@ -1222,7 +1222,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// The action to take if extraction would overwrite an existing file.
         /// </param>
         ///
-        internal void ExtractSelectedEntries(String selectionCriteria,
+        internal void ExtractSelectedEntries(string selectionCriteria,
                                              string directoryPathInArchive,
                                              string extractDirectory,
                                              ExtractExistingFileAction extractExistingFile)

@@ -234,7 +234,7 @@ internal partial class ZipFile
                 {
                     this.StatusMessageTextWriter.WriteLine("\n{1,-22} {2,-8} {3,4}   {4,-8}  {0}", "Name", "Modified", "Size", "Ratio", "Packed");
 
-                    this.StatusMessageTextWriter.WriteLine(new String('-', 72));
+                    this.StatusMessageTextWriter.WriteLine(new string('-', 72));
                     header = false;
                 }
 
@@ -247,7 +247,7 @@ internal partial class ZipFile
                                                            e.CompressionRatio,
                                                            e.CompressedSize);
 
-                    if (!String.IsNullOrEmpty(e.Comment))
+                    if (!string.IsNullOrEmpty(e.Comment))
                     {
                         this.StatusMessageTextWriter.WriteLine("  Comment: {0}", e.Comment);
                     }

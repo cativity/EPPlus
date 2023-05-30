@@ -83,7 +83,7 @@ public class FormulaParserManager
     public IEnumerable<string> GetImplementedFunctionNames()
     {
         List<string>? fnList = this._parser.FunctionNames.ToList();
-        fnList.Sort((x, y) => String.Compare(x, y, StringComparison.Ordinal));
+        fnList.Sort((x, y) => string.Compare(x, y, StringComparison.Ordinal));
 
         return fnList;
     }

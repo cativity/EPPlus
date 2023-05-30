@@ -388,7 +388,7 @@ public class ExcelConditionalFormattingColorScaleValue : XmlHelper
     /// <summary>
     /// The value of the conditional formatting
     /// </summary>
-    public Double Value
+    public double Value
     {
         get
         {

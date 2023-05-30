@@ -67,7 +67,7 @@ internal abstract class GenericFontMetricsTextMeasurerBase
                 {
                     float fw = sFont.ClassWidths[sFont.CharMetrics[c]];
 
-                    if (Char.IsDigit(c))
+                    if (char.IsDigit(c))
                     {
                         fw *= FontScaleFactors.DigitsScalingFactor;
                     }

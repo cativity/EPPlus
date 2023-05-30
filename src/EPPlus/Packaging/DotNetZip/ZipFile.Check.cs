@@ -209,7 +209,7 @@ internal partial class ZipFile
             if (!isOk && fixIfNecessary)
             {
                 string newFileName = Path.GetFileNameWithoutExtension(zipFileName);
-                newFileName = String.Format("{0}_fixed.zip", newFileName);
+                newFileName = string.Format("{0}_fixed.zip", newFileName);
                 zip1.Save(newFileName);
             }
         }

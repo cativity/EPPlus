@@ -1429,7 +1429,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// Thrown when setting the property if the directory does not exist.
     /// </exception>
     ///
-    public String TempFileFolder
+    public string TempFileFolder
     {
         get { return this._TempFileFolder; }
 
@@ -1444,7 +1444,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
             if (!Directory.Exists(value))
             {
-                throw new FileNotFoundException(String.Format("That directory ({0}) does not exist.", value));
+                throw new FileNotFoundException(string.Format("That directory ({0}) does not exist.", value));
             }
         }
     }
@@ -1589,7 +1589,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.Encryption">ZipFile.Encryption</seealso>
     /// <seealso cref="ZipEntry.Password">ZipEntry.Password</seealso>
-    public String Password
+    public string Password
     {
         set
         {
@@ -1997,7 +1997,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// </remarks>
     ///
     /// <seealso cref="NumberOfSegmentsForMostRecentSave"/>
-    public Int32 MaxOutputSegmentSize
+    public int MaxOutputSegmentSize
     {
         get { return this._maxOutputSegmentSize; }
         set
@@ -2029,9 +2029,9 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   </para>
     /// </remarks>
     /// <seealso cref="MaxOutputSegmentSize"/>
-    public Int32 NumberOfSegmentsForMostRecentSave
+    public int NumberOfSegmentsForMostRecentSave
     {
-        get { return unchecked((Int32)this._numberOfSegmentsForMostRecentSave + 1); }
+        get { return unchecked((int)this._numberOfSegmentsForMostRecentSave + 1); }
     }
 
 #if !NETCF
@@ -2199,9 +2199,9 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
     /// <summary>Provides a string representation of the instance.</summary>
     /// <returns>a string representation of the instance.</returns>
-    public override String ToString()
+    public override string ToString()
     {
-        return String.Format("ZipFile::{0}", this.Name);
+        return string.Format("ZipFile::{0}", this.Name);
     }
 
     /// <summary>
@@ -2378,7 +2378,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         }
         catch (Exception e1)
         {
-            throw new ZipException(String.Format("Could not read {0} as a zip file", fileName), e1);
+            throw new ZipException(string.Format("Could not read {0} as a zip file", fileName), e1);
         }
     }
 
@@ -2429,7 +2429,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         }
         catch (Exception e1)
         {
-            throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
+            throw new ZipException(string.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
 
@@ -2593,7 +2593,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         }
         catch (Exception e1)
         {
-            throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
+            throw new ZipException(string.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
 
@@ -2665,7 +2665,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         }
         catch (Exception e1)
         {
-            throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
+            throw new ZipException(string.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
 
@@ -2699,7 +2699,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         }
         catch (Exception e1)
         {
-            throw new ZipException(String.Format("{0} is not a valid zip file", fileName), e1);
+            throw new ZipException(string.Format("{0} is not a valid zip file", fileName), e1);
         }
     }
 
@@ -2708,7 +2708,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
         // workitem 9868
         StringComparer sc = this.CaseSensitiveRetrieval ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
 
-        this._entries = this._entries == null ? new Dictionary<String, ZipEntry>(sc) : new Dictionary<String, ZipEntry>(this._entries, sc);
+        this._entries = this._entries == null ? new Dictionary<string, ZipEntry>(sc) : new Dictionary<string, ZipEntry>(this._entries, sc);
     }
 
     private void _InitInstance(string zipFileName, TextWriter statusMessageWriter)
@@ -2875,7 +2875,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   returns <c>null</c> (<c>Nothing</c> in VB).
     /// </returns>
     ///
-    public ZipEntry this[String fileName]
+    public ZipEntry this[string fileName]
     {
         get
         {
@@ -3000,7 +3000,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     ///   The list of strings for the filenames contained within the Zip archive.
     /// </returns>
     ///
-    public ICollection<String> EntryFileNames
+    public ICollection<string> EntryFileNames
     {
         get { return this._entries.Keys; }
     }
@@ -3085,7 +3085,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
 
             StringComparison sc = this.CaseSensitiveRetrieval ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
 
-            coll.Sort((x, y) => { return String.Compare(x.FileName, y.FileName, sc); });
+            coll.Sort((x, y) => { return string.Compare(x.FileName, y.FileName, sc); });
 
             return coll.AsReadOnly();
         }
@@ -3274,7 +3274,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     /// pathname can use forward-slashes or backward slashes.
     /// </param>
     ///
-    public void RemoveEntry(String fileName)
+    public void RemoveEntry(string fileName)
     {
         string modifiedName = ZipEntry.NameInArchive(fileName, null);
         ZipEntry e = this[modifiedName];
@@ -3485,17 +3485,17 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     private bool _CaseSensitiveRetrieval;
     private Stream _readstream;
     private Stream _writestream;
-    private UInt16 _versionMadeBy;
-    private UInt16 _versionNeededToExtract;
-    private UInt32 _diskNumberWithCd;
-    private Int32 _maxOutputSegmentSize;
-    private UInt32 _numberOfSegmentsForMostRecentSave;
+    private ushort _versionMadeBy;
+    private ushort _versionNeededToExtract;
+    private uint _diskNumberWithCd;
+    private int _maxOutputSegmentSize;
+    private uint _numberOfSegmentsForMostRecentSave;
     private ZipErrorAction _zipErrorAction;
 
     private bool _disposed;
 
     //private System.Collections.Generic.List<ZipEntry> _entries;
-    private Dictionary<String, ZipEntry> _entries;
+    private Dictionary<string, ZipEntry> _entries;
     private List<ZipEntry> _zipEntriesAsList;
     private string _name;
     private string _readName;
@@ -3509,7 +3509,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     private string _temporaryFileName;
     private bool _contentsChanged;
     private bool _hasBeenSaved;
-    private String _TempFileFolder;
+    private string _TempFileFolder;
     private bool _ReadStreamIsOurs = true;
     private object LOCK = new object();
     private bool _saveOperationCanceled;
@@ -3519,7 +3519,7 @@ internal partial class ZipFile : System.Collections.IEnumerable, IEnumerable<Zip
     private bool _JustSaved;
     private long _locEndOfCDS = -1;
     private uint _OffsetOfCentralDirectory;
-    private Int64 _OffsetOfCentralDirectory64;
+    private long _OffsetOfCentralDirectory64;
     private Nullable<bool> _OutputUsesZip64;
     internal bool _inExtractAll;
 #if (Core)

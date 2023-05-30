@@ -703,7 +703,7 @@ internal partial class ZipFile
         _ = s.Seek(-40, SeekOrigin.Current);
         _ = s.Read(block, 0, 16);
 
-        Int64 offset64 = BitConverter.ToInt64(block, 8);
+        long offset64 = BitConverter.ToInt64(block, 8);
         zf._OffsetOfCentralDirectory = 0xFFFFFFFF;
         zf._OffsetOfCentralDirectory64 = offset64;
 
@@ -716,11 +716,11 @@ internal partial class ZipFile
 
         if (datum != ZipConstants.Zip64EndOfCentralDirectoryRecordSignature)
         {
-            throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) looking for ZIP64 EoCD Record at position 0x{1:X8}", datum, s.Position));
+            throw new BadReadException(string.Format("  Bad signature (0x{0:X8}) looking for ZIP64 EoCD Record at position 0x{1:X8}", datum, s.Position));
         }
 
         _ = s.Read(block, 0, 8);
-        Int64 Size = BitConverter.ToInt64(block, 0);
+        long Size = BitConverter.ToInt64(block, 0);
 
         block = new byte[Size];
         _ = s.Read(block, 0, block.Length);
@@ -753,7 +753,7 @@ internal partial class ZipFile
         bool inputUsesZip64 = false;
 
         // in lieu of hashset, use a dictionary
-        Dictionary<string, object>? previouslySeen = new Dictionary<String, object>();
+        Dictionary<string, object>? previouslySeen = new Dictionary<string, object>();
 
         while (ZipEntry.ReadDirEntry(zf, previouslySeen) is { } de)
         {
@@ -790,7 +790,7 @@ internal partial class ZipFile
 
         ReadCentralDirectoryFooter(zf);
 
-        if (zf.Verbose && !String.IsNullOrEmpty(zf.Comment))
+        if (zf.Verbose && !string.IsNullOrEmpty(zf.Comment))
         {
             zf.StatusMessageTextWriter.WriteLine("Zip file Comment: {0}", zf.Comment);
         }
@@ -811,7 +811,7 @@ internal partial class ZipFile
         zf.OnReadStarted();
 
         //zf._entries = new System.Collections.Generic.List<ZipEntry>();
-        zf._entries = new Dictionary<String, ZipEntry>();
+        zf._entries = new Dictionary<string, ZipEntry>();
 
         if (zf.Verbose)
         {
@@ -846,7 +846,7 @@ internal partial class ZipFile
         try
         {
             // in lieu of hashset, use a dictionary
-            Dictionary<string, object>? previouslySeen = new Dictionary<String, Object>();
+            Dictionary<string, object>? previouslySeen = new Dictionary<string, object>();
 
             while (ZipEntry.ReadDirEntry(zf, previouslySeen) is { } de)
             {
@@ -878,7 +878,7 @@ internal partial class ZipFile
 
             ReadCentralDirectoryFooter(zf);
 
-            if (zf.Verbose && !String.IsNullOrEmpty(zf.Comment))
+            if (zf.Verbose && !string.IsNullOrEmpty(zf.Comment))
             {
                 zf.StatusMessageTextWriter.WriteLine("Zip file Comment: {0}", zf.Comment);
             }
@@ -922,7 +922,7 @@ internal partial class ZipFile
             block = new byte[8 + 44];
             _ = s.Read(block, 0, block.Length);
 
-            Int64 DataSize = BitConverter.ToInt64(block, 0); // == 44 + the variable length
+            long DataSize = BitConverter.ToInt64(block, 0); // == 44 + the variable length
 
             if (DataSize < 44)
             {
@@ -964,7 +964,7 @@ internal partial class ZipFile
         {
             _ = s.Seek(-4, SeekOrigin.Current);
 
-            throw new BadReadException(String.Format("Bad signature ({0:X8}) at position 0x{1:X8}", signature, s.Position));
+            throw new BadReadException(string.Format("Bad signature ({0:X8}) at position 0x{1:X8}", signature, s.Position));
         }
 
         // read the End-of-Central-Directory-Record
@@ -1000,7 +1000,7 @@ internal partial class ZipFile
         byte[] block = new byte[2];
         _ = zf.ReadStream.Read(block, 0, block.Length);
 
-        Int16 commentLength = (short)(block[0] + (block[1] * 256));
+        short commentLength = (short)(block[0] + (block[1] * 256));
 
         if (commentLength > 0)
         {

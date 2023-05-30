@@ -487,7 +487,7 @@ namespace OfficeOpenXml
 #endif
             if (isWorksheets1Based != null)
             {
-                if (Boolean.TryParse(isWorksheets1Based.ToLowerInvariant(), out bool value))
+                if (bool.TryParse(isWorksheets1Based.ToLowerInvariant(), out bool value))
                 {
                     this.Compatibility.IsWorksheets1Based = value;
                 }
@@ -1293,7 +1293,7 @@ namespace OfficeOpenXml
                 this._zipPackage.Save(this._stream);
             }
 
-            Byte[] byRet = new byte[this.Stream.Length];
+            byte[] byRet = new byte[this.Stream.Length];
             long pos = this.Stream.Position;
             _ = this.Stream.Seek(0, SeekOrigin.Begin);
             _ = this.Stream.Read(byRet, 0, (int)this.Stream.Length);

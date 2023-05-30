@@ -120,7 +120,7 @@ internal class CompoundDocumentItem : IComparable<CompoundDocumentItem>
         byte[]? name = Encoding.Unicode.GetBytes(this.Name);
         bw.Write(name);
         bw.Write(new byte[0x40 - name.Length]);
-        bw.Write((Int16)(name.Length + 2));
+        bw.Write((short)(name.Length + 2));
 
         bw.Write(this.ObjectType);
         bw.Write(this.ColorFlag);

@@ -485,7 +485,7 @@ internal partial class ZipFile
     /// </code>
     ///
     /// </example>
-    public void Save(String fileName)
+    public void Save(string fileName)
     {
         // Check for the case where we are re-saving a zip archive
         // that was originally instantiated with a stream.  In that case,
@@ -632,7 +632,7 @@ internal static class ZipOutput
                                                       ICollection<ZipEntry> entries,
                                                       uint numSegments,
                                                       Zip64Option zip64,
-                                                      String comment,
+                                                      string comment,
                                                       ZipContainer container)
     {
         ZipSegmentedStream? zss = s as ZipSegmentedStream;
@@ -644,7 +644,7 @@ internal static class ZipOutput
 
         // write to a memory stream in order to keep the
         // CDR contiguous
-        Int64 aLength;
+        long aLength;
 
         using (MemoryStream? ms = RecyclableMemory.GetStream())
         {
@@ -683,9 +683,9 @@ internal static class ZipOutput
         long Start = Finish - aLength;
 
         // need to know which segment the EOCD record starts in
-        UInt32 startSegment = zss?.CurrentSegment ?? 0;
+        uint startSegment = zss?.CurrentSegment ?? 0;
 
-        Int64 SizeOfCentralDirectory = Finish - Start;
+        long SizeOfCentralDirectory = Finish - Start;
 
         int countOfEntries = CountEntries(entries);
 
@@ -714,7 +714,7 @@ internal static class ZipOutput
 
             if (startSegment != 0)
             {
-                UInt32 thisSegment = zss.ComputeSegment(a.Length + a2.Length);
+                uint thisSegment = zss.ComputeSegment(a.Length + a2.Length);
                 int i = 16;
 
                 // number of this disk
@@ -751,7 +751,7 @@ internal static class ZipOutput
             // The assumption is the central directory is never split across
             // segment boundaries.
 
-            UInt16 thisSegment = (UInt16)zss.ComputeSegment(a2.Length);
+            ushort thisSegment = (ushort)zss.ComputeSegment(a2.Length);
             int i = 4;
 
             // number of this disk
@@ -814,12 +814,12 @@ internal static class ZipOutput
         Encoding encoding = GetEncoding(container, comment);
         int bufferLength = 22;
         byte[] block = null;
-        Int16 commentLength = 0;
+        short commentLength = 0;
 
         if (comment != null && comment.Length != 0)
         {
             block = encoding.GetBytes(comment);
-            commentLength = (Int16)block.Length;
+            commentLength = (short)block.Length;
         }
 
         bufferLength += commentLength;
@@ -865,7 +865,7 @@ internal static class ZipOutput
         }
 
         // size of the central directory
-        Int64 SizeOfCentralDirectory = EndOfCentralDirectory - StartOfCentralDirectory;
+        long SizeOfCentralDirectory = EndOfCentralDirectory - StartOfCentralDirectory;
 
         if (SizeOfCentralDirectory >= 0xFFFFFFFF || StartOfCentralDirectory >= 0xFFFFFFFF)
         {
@@ -902,7 +902,7 @@ internal static class ZipOutput
             // the size of our buffer defines the max length of the comment we can write
             if (commentLength + i + 2 > bytes.Length)
             {
-                commentLength = (Int16)(bytes.Length - i - 2);
+                commentLength = (short)(bytes.Length - i - 2);
             }
 
             bytes[i++] = (byte)(commentLength & 0x00FF);
@@ -968,7 +968,7 @@ internal static class ZipOutput
         i += 8;
 
         // offset 40
-        Int64 SizeofCentraldirectory = EndOfCentralDirectory - StartOfCentralDirectory;
+        long SizeofCentraldirectory = EndOfCentralDirectory - StartOfCentralDirectory;
         Array.Copy(BitConverter.GetBytes(SizeofCentraldirectory), 0, bytes, i, 8);
         i += 8;
         Array.Copy(BitConverter.GetBytes(StartOfCentralDirectory), 0, bytes, i, 8);

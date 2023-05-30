@@ -582,7 +582,7 @@ internal partial class ZipEntry
         // from the stream AFTER decompression and decryption.
         // It is the uncompressed size, unless ... there is no compression in which
         // case ...?  :< I'm not sure why it's not always UncompressedSize
-        Int64 LeftToRead = this._CompressionMethod_FromZipFile == (short)CompressionMethod.None ? this._CompressedFileDataSize : this.UncompressedSize;
+        long LeftToRead = this._CompressionMethod_FromZipFile == (short)CompressionMethod.None ? this._CompressedFileDataSize : this.UncompressedSize;
 
         Stream input = this.ArchiveStream;
 
@@ -597,7 +597,7 @@ internal partial class ZipEntry
         return new CrcCalculatorStream(input3, LeftToRead);
     }
 
-    private void OnExtractProgress(Int64 bytesWritten, Int64 totalBytesToWrite)
+    private void OnExtractProgress(long bytesWritten, long totalBytesToWrite)
     {
         if (this._container.ZipFile != null)
         {
@@ -658,7 +658,7 @@ internal partial class ZipEntry
         File.Delete(fileName);
     }
 
-    private void WriteStatus(string format, params Object[] args)
+    private void WriteStatus(string format, params object[] args)
     {
         if (this._container.ZipFile != null && this._container.ZipFile.Verbose)
         {
@@ -796,7 +796,7 @@ internal partial class ZipEntry
                 goto ExitTry;
             }
 
-            Int32 ActualCrc32 = this.ExtractOne(output);
+            int ActualCrc32 = this.ExtractOne(output);
 
             if (this._ioOperationCanceled)
             {
@@ -949,7 +949,7 @@ internal partial class ZipEntry
         }
 #endif
 
-    internal void VerifyCrcAfterExtract(Int32 actualCrc32)
+    internal void VerifyCrcAfterExtract(int actualCrc32)
     {
 #if AESCRYPTO
                 // After extracting, Validate the CRC32
@@ -982,7 +982,7 @@ internal partial class ZipEntry
         if (actualCrc32 != this._Crc32)
         {
             throw new BadCrcException("CRC error: the file being extracted appears to be corrupted. "
-                                      + String.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
+                                      + string.Format("Expected 0x{0:X8}, Actual 0x{1:X8}", this._Crc32, actualCrc32));
         }
 #endif
     }
@@ -1010,7 +1010,7 @@ internal partial class ZipEntry
                 case ExtractExistingFileAction.InvokeExtractProgressEvent:
                     if (loop > 0)
                     {
-                        throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
+                        throw new ZipException(string.Format("The file {0} already exists.", targetFileName));
                     }
 
                     this.OnExtractExisting(baseDir);
@@ -1025,7 +1025,7 @@ internal partial class ZipEntry
 
                 case ExtractExistingFileAction.Throw:
                 default:
-                    throw new ZipException(String.Format("The file {0} already exists.", targetFileName));
+                    throw new ZipException(string.Format("The file {0} already exists.", targetFileName));
             }
 
             loop++;
@@ -1036,15 +1036,15 @@ internal partial class ZipEntry
     {
         if (nbytes == 0)
         {
-            throw new BadReadException(String.Format("bad read of entry {0} from compressed archive.", this.FileName));
+            throw new BadReadException(string.Format("bad read of entry {0} from compressed archive.", this.FileName));
         }
     }
 
     private Stream _inputDecryptorStream;
 
-    private Int32 ExtractOne(Stream output)
+    private int ExtractOne(Stream output)
     {
-        Int32 CrcResult;
+        int CrcResult;
         Stream input = this.ArchiveStream;
 
         try
@@ -1063,14 +1063,14 @@ internal partial class ZipEntry
             // both the encryption flag and the compression flag, and take
             // the proper action in all cases.
 
-            Int64 LeftToRead = this._CompressionMethod_FromZipFile != (short)CompressionMethod.None ? this.UncompressedSize : this._CompressedFileDataSize;
+            long LeftToRead = this._CompressionMethod_FromZipFile != (short)CompressionMethod.None ? this.UncompressedSize : this._CompressedFileDataSize;
 
             // Get a stream that either decrypts or not.
             this._inputDecryptorStream = this.GetExtractDecryptor(input);
 
             Stream input3 = this.GetExtractDecompressor(this._inputDecryptorStream);
 
-            Int64 bytesWritten = 0;
+            long bytesWritten = 0;
 
             // As we read, we maybe decrypt, and then we maybe decompress. Then we write.
             using CrcCalculatorStream? s1 = new CrcCalculatorStream(input3);
@@ -1318,7 +1318,7 @@ internal partial class ZipEntry
 
                 case 0xFFFF: // - Unknown algorithm
                 default:
-                    alg = String.Format("Unknown (0x{0:X4})", this._UnsupportedAlgorithmId);
+                    alg = string.Format("Unknown (0x{0:X4})", this._UnsupportedAlgorithmId);
 
                     break;
             }
@@ -1376,7 +1376,7 @@ internal partial class ZipEntry
                     break;
 
                 default:
-                    meth = String.Format("Unknown (0x{0:X4})", this._CompressionMethod);
+                    meth = string.Format("Unknown (0x{0:X4})", this._CompressionMethod);
 
                     break;
             }
@@ -1398,13 +1398,13 @@ internal partial class ZipEntry
             // workitem 7968
             if (this._UnsupportedAlgorithmId != 0)
             {
-                throw new ZipException(String.Format("Cannot extract: Entry {0} is encrypted with an algorithm not supported by DotNetZip: {1}",
+                throw new ZipException(string.Format("Cannot extract: Entry {0} is encrypted with an algorithm not supported by DotNetZip: {1}",
                                                      this.FileName,
                                                      this.UnsupportedAlgorithm));
             }
             else
             {
-                throw new ZipException(String.Format("Cannot extract: Entry {0} uses an unsupported encryption algorithm ({1:X2})",
+                throw new ZipException(string.Format("Cannot extract: Entry {0} uses an unsupported encryption algorithm ({1:X2})",
                                                      this.FileName,
                                                      (int)this.Encryption));
             }
@@ -1419,7 +1419,7 @@ internal partial class ZipEntry
 #endif
            )
         {
-            throw new ZipException(String.Format("Entry {0} uses an unsupported compression method (0x{1:X2}, {2})",
+            throw new ZipException(string.Format("Entry {0} uses an unsupported compression method (0x{1:X2}, {2})",
                                                  this.FileName,
                                                  this._CompressionMethod_FromZipFile,
                                                  this.UnsupportedCompressionMethod));

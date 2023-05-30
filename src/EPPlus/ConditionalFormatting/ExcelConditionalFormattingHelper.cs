@@ -59,7 +59,7 @@ internal static class ExcelConditionalFormattingHelper
     {
         try
         {
-            return Color.FromArgb(Int32.Parse(colorCode.Replace("#", ""), NumberStyles.HexNumber));
+            return Color.FromArgb(int.Parse(colorCode.Replace("#", ""), NumberStyles.HexNumber));
         }
         catch
         {

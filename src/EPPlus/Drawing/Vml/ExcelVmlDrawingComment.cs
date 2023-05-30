@@ -300,7 +300,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
     /// <summary>
     /// Width of the border
     /// </summary>
-    public Single LineWidth
+    public float LineWidth
     {
         get
         {
@@ -308,7 +308,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
 
             if (wt == "")
             {
-                return (Single).75;
+                return (float).75;
             }
 
             if (wt.EndsWith("pt"))
@@ -316,7 +316,7 @@ public class ExcelVmlDrawingComment : ExcelVmlDrawingBase, IRangeID
                 wt = wt.Substring(0, wt.Length - 2);
             }
 
-            if (Single.TryParse(wt, NumberStyles.Any, CultureInfo.InvariantCulture, out Single ret))
+            if (float.TryParse(wt, NumberStyles.Any, CultureInfo.InvariantCulture, out float ret))
             {
                 return ret;
             }

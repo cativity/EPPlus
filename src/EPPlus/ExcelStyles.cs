@@ -1772,7 +1772,7 @@ public sealed class ExcelStyles : XmlHelper
                 }
 
                 //rake36: Don't add another format if it's blank
-                if (!String.IsNullOrEmpty(format))
+                if (!string.IsNullOrEmpty(format))
                 {
                     int ix = this.NumberFormats.FindIndexById(format);
 

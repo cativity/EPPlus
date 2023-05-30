@@ -110,12 +110,12 @@ sealed class InflateBlocks
     internal int end; // one byte after sliding window
     internal int readAt; // window read pointer
     internal int writeAt; // window write pointer
-    internal Object checkfn; // check function
+    internal object checkfn; // check function
     internal uint check; // check on output
 
     internal InfTree inftree = new InfTree();
 
-    internal InflateBlocks(ZlibCodec codec, Object checkfn, int w)
+    internal InflateBlocks(ZlibCodec codec, object checkfn, int w)
     {
         this._codec = codec;
         this.hufts = new int[MANY * 3];
@@ -1782,7 +1782,7 @@ internal sealed class InflateManager
                     if (((this.method = this._codec.InputBuffer[this._codec.NextIn++]) & 0xf) != Z_DEFLATED)
                     {
                         this.mode = InflateManagerMode.BAD;
-                        this._codec.Message = String.Format("unknown compression method (0x{0:X2})", this.method);
+                        this._codec.Message = string.Format("unknown compression method (0x{0:X2})", this.method);
                         this.marker = 5; // can't try inflateSync
 
                         break;
@@ -1791,7 +1791,7 @@ internal sealed class InflateManager
                     if ((this.method >> 4) + 8 > this.wbits)
                     {
                         this.mode = InflateManagerMode.BAD;
-                        this._codec.Message = String.Format("invalid window size ({0})", (this.method >> 4) + 8);
+                        this._codec.Message = string.Format("invalid window size ({0})", (this.method >> 4) + 8);
                         this.marker = 5; // can't try inflateSync
 
                         break;
@@ -1994,7 +1994,7 @@ internal sealed class InflateManager
                     return ZlibConstants.Z_STREAM_END;
 
                 case InflateManagerMode.BAD:
-                    throw new ZlibException(String.Format("Bad state ({0})", this._codec.Message));
+                    throw new ZlibException(string.Format("Bad state ({0})", this._codec.Message));
 
                 default:
                     throw new ZlibException("Stream error.");

@@ -141,13 +141,13 @@ partial class ZipEntry
 
                 if (m.Success)
                 {
-                    n = Int32.Parse(m.Groups[1].Value) + 1;
-                    string copy = String.Format(" (copy {0})", n);
+                    n = int.Parse(m.Groups[1].Value) + 1;
+                    string copy = string.Format(" (copy {0})", n);
                     f = f.Substring(0, m.Index) + copy;
                 }
                 else
                 {
-                    string copy = String.Format(" (copy {0})", n);
+                    string copy = string.Format(" (copy {0})", n);
                     f += copy;
                 }
             }
@@ -158,13 +158,13 @@ partial class ZipEntry
 
                 if (m.Success)
                 {
-                    n = Int32.Parse(m.Groups[1].Value) + 1;
-                    string copy = String.Format(" (copy {0})", n);
+                    n = int.Parse(m.Groups[1].Value) + 1;
+                    string copy = string.Format(" (copy {0})", n);
                     f = f.Substring(0, m.Index) + copy + f.Substring(r);
                 }
                 else
                 {
-                    string copy = String.Format(" (copy {0})", n);
+                    string copy = string.Format(" (copy {0})", n);
                     f = f.Substring(0, r) + copy + f.Substring(r);
                 }
 
@@ -191,7 +191,7 @@ partial class ZipEntry
     /// </param>
     ///
     /// <returns>the entry read from the archive.</returns>
-    internal static ZipEntry ReadDirEntry(ZipFile zf, Dictionary<String, Object> previouslySeen)
+    internal static ZipEntry ReadDirEntry(ZipFile zf, Dictionary<string, object> previouslySeen)
     {
         System.IO.Stream s = zf.ReadStream;
         Encoding expectedEncoding = zf.AlternateEncodingUsage == ZipOption.Always ? zf.AlternateEncoding : ZipFile.DefaultEncoding;
@@ -216,7 +216,7 @@ partial class ZipEntry
                 && signature != ZipConstants.ZipEntrySignature // workitem 8299
                )
             {
-                throw new BadReadException(String.Format("  Bad signature (0x{0:X8}) at position 0x{1:X8}", signature, s.Position));
+                throw new BadReadException(string.Format("  Bad signature (0x{0:X8}) at position 0x{1:X8}", signature, s.Position));
             }
 
             return null;
@@ -241,7 +241,7 @@ partial class ZipEntry
             zde._VersionMadeBy = (short)(block[i++] + (block[i++] * 256));
             zde._VersionNeeded = (short)(block[i++] + (block[i++] * 256));
             zde._BitField = (short)(block[i++] + (block[i++] * 256));
-            zde._CompressionMethod = (Int16)(block[i++] + (block[i++] * 256));
+            zde._CompressionMethod = (short)(block[i++] + (block[i++] * 256));
             zde._TimeBlob = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
             zde._LastModified = SharedUtilities.PackedToDateTime(zde._TimeBlob);
             zde._timestamp |= ZipEntryTimestamp.DOS;
@@ -257,7 +257,7 @@ partial class ZipEntry
         zde._filenameLength = (short)(block[i++] + (block[i++] * 256));
         zde._extraFieldLength = (short)(block[i++] + (block[i++] * 256));
         zde._commentLength = (short)(block[i++] + (block[i++] * 256));
-        zde._diskNumber = (UInt32)(block[i++] + (block[i++] * 256));
+        zde._diskNumber = (uint)(block[i++] + (block[i++] * 256));
 
         zde._InternalFileAttrs = (short)(block[i++] + (block[i++] * 256));
         zde._ExternalFileAttrs = block[i++] + (block[i++] * 256) + (block[i++] * 256 * 256) + (block[i++] * 256 * 256 * 256);
@@ -385,12 +385,12 @@ partial class ZipEntry
         return signature != ZipConstants.ZipDirEntrySignature;
     }
 
-    private Int16 _VersionMadeBy;
-    private Int16 _InternalFileAttrs;
-    private Int32 _ExternalFileAttrs;
+    private short _VersionMadeBy;
+    private short _InternalFileAttrs;
+    private int _ExternalFileAttrs;
 
     //private Int32 _LengthOfDirEntry;
-    private Int16 _filenameLength;
-    private Int16 _extraFieldLength;
-    private Int16 _commentLength;
+    private short _filenameLength;
+    private short _extraFieldLength;
+    private short _commentLength;
 }

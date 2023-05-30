@@ -313,7 +313,7 @@ internal class ZipOutputStream : Stream
     /// End Sub
     /// </code>
     /// </example>
-    public ZipOutputStream(String fileName)
+    public ZipOutputStream(string fileName)
     {
         Stream stream = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
         this._Init(stream, false, fileName);
@@ -349,7 +349,7 @@ internal class ZipOutputStream : Stream
         this.CompressionLevel = OfficeOpenXml.Packaging.Ionic.Zlib.CompressionLevel.Default;
         this.CompressionMethod = CompressionMethod.Deflate;
         this._encryption = EncryptionAlgorithm.None;
-        this._entriesWritten = new Dictionary<String, ZipEntry>(StringComparer.Ordinal);
+        this._entriesWritten = new Dictionary<string, ZipEntry>(StringComparer.Ordinal);
         this._zip64 = Zip64Option.Never;
         this._leaveUnderlyingStreamOpen = leaveOpen;
         this.Strategy = CompressionStrategy.Default;
@@ -366,9 +366,9 @@ internal class ZipOutputStream : Stream
     ///   </para>
     /// </remarks>
     /// <returns>a string representation of the instance.</returns>
-    public override String ToString()
+    public override string ToString()
     {
-        return String.Format("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
+        return string.Format("ZipOutputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
     }
 
     /// <summary>
@@ -419,7 +419,7 @@ internal class ZipOutputStream : Stream
     /// </para>
     ///
     /// </remarks>
-    public String Password
+    public string Password
     {
         set
         {
@@ -1150,7 +1150,7 @@ internal class ZipOutputStream : Stream
         {
             this._exceptionPending = true;
 
-            throw new ArgumentException(String.Format("The entry '{0}' already exists in the zip archive.", ze1.FileName));
+            throw new ArgumentException(string.Format("The entry '{0}' already exists in the zip archive.", ze1.FileName));
         }
     }
 
@@ -1159,7 +1159,7 @@ internal class ZipOutputStream : Stream
         get { return this._outputStream; }
     }
 
-    internal String Name
+    internal string Name
     {
         get { return this._name; }
     }
@@ -1316,9 +1316,9 @@ internal class ZipOutputStream : Stream
     ///   The ZipEntry created.
     /// </returns>
     ///
-    public ZipEntry PutNextEntry(String entryName)
+    public ZipEntry PutNextEntry(string entryName)
     {
-        if (String.IsNullOrEmpty(entryName))
+        if (string.IsNullOrEmpty(entryName))
         {
             throw new ArgumentNullException("entryName");
         }
@@ -1586,12 +1586,12 @@ internal class ZipOutputStream : Stream
 
     private EncryptionAlgorithm _encryption;
     private ZipEntryTimestamp _timestamp;
-    internal String _password;
-    private String _comment;
+    internal string _password;
+    private string _comment;
     private Stream _outputStream;
     private ZipEntry _currentEntry;
     internal Zip64Option _zip64;
-    private Dictionary<String, ZipEntry> _entriesWritten;
+    private Dictionary<string, ZipEntry> _entriesWritten;
     private int _entryCount;
     private ZipOption _alternateEncodingUsage = ZipOption.Never;
 #if (Core)
@@ -1641,7 +1641,7 @@ internal class ZipContainer
     private ZipOutputStream _zos;
     private ZipInputStream _zis;
 
-    public ZipContainer(Object o)
+    public ZipContainer(object o)
     {
         this._zf = o as ZipFile;
         this._zos = o as ZipOutputStream;

@@ -160,7 +160,7 @@ internal class ZipCrypto
     {
         get
         {
-            UInt16 t = (UInt16)((UInt16)(this._Keys[2] & 0xFFFF) | 2);
+            ushort t = (ushort)((ushort)(this._Keys[2] & 0xFFFF) | 2);
 
             return (byte)((t * (t ^ 1)) >> 8);
         }
@@ -321,10 +321,10 @@ internal class ZipCrypto
 
     private void UpdateKeys(byte byteValue)
     {
-        this._Keys[0] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[0], byteValue);
+        this._Keys[0] = (uint)this.crc32.ComputeCrc32((int)this._Keys[0], byteValue);
         this._Keys[1] += (byte)this._Keys[0];
         this._Keys[1] = (this._Keys[1] * 0x08088405) + 1;
-        this._Keys[2] = (UInt32)this.crc32.ComputeCrc32((int)this._Keys[2], (byte)(this._Keys[1] >> 24));
+        this._Keys[2] = (uint)this.crc32.ComputeCrc32((int)this._Keys[2], (byte)(this._Keys[1] >> 24));
     }
 
     ///// <summary>
@@ -354,7 +354,7 @@ internal class ZipCrypto
     //}
 
     // private fields for the crypto stuff:
-    private UInt32[] _Keys = { 0x12345678, 0x23456789, 0x34567890 };
+    private uint[] _Keys = { 0x12345678, 0x23456789, 0x34567890 };
     private Crc.CRC32 crc32 = new Crc.CRC32();
 }
 

@@ -217,7 +217,7 @@ internal static class GammaHelper
 
         if (double.IsNaN(a) || double.IsNaN(x) || a <= 0.0 || x < 0.0)
         {
-            ret = Double.NaN;
+            ret = double.NaN;
         }
         else if (x == 0.0)
         {
@@ -418,7 +418,7 @@ internal static class GammaHelper
     {
         if (x == System.Math.Round(x) && x <= 0.0)
         {
-            return Double.NaN;
+            return double.NaN;
         }
 
         double ret;

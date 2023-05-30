@@ -514,7 +514,7 @@ internal partial class ZipFile
     /// <seealso cref="Ionic.Zip.ZipFile.ExtractProgress"/>
     internal event EventHandler<SaveProgressEventArgs> SaveProgress;
 
-    internal bool OnSaveBlock(ZipEntry entry, Int64 bytesXferred, Int64 totalBytesToXfer)
+    internal bool OnSaveBlock(ZipEntry entry, long bytesXferred, long totalBytesToXfer)
     {
         EventHandler<SaveProgressEventArgs> sp = this.SaveProgress;
 
@@ -701,9 +701,9 @@ internal partial class ZipFile
         }
     }
 
-    private Int64 _lengthOfReadStream = -99;
+    private long _lengthOfReadStream = -99;
 
-    private Int64 LengthOfReadStream
+    private long LengthOfReadStream
     {
         get
         {
@@ -888,7 +888,7 @@ internal partial class ZipFile
     }
 
     // Can be called from within ZipEntry._ExtractOne.
-    internal bool OnExtractBlock(ZipEntry entry, Int64 bytesWritten, Int64 totalBytesToWrite)
+    internal bool OnExtractBlock(ZipEntry entry, long bytesWritten, long totalBytesToWrite)
     {
         EventHandler<ExtractProgressEventArgs> ep = this.ExtractProgress;
 

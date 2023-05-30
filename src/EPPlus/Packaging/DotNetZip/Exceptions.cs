@@ -61,7 +61,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public BadPasswordException(String message)
+        public BadPasswordException(string message)
             : base(message)
         {
         }
@@ -71,7 +71,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         /// <param name="message">The message in the exception.</param>
         /// <param name="innerException">The innerException for this exception.</param>
-        public BadPasswordException(String message, Exception innerException)
+        public BadPasswordException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
@@ -110,7 +110,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public BadReadException(String message)
+        public BadReadException(string message)
             : base(message)
         {
         }
@@ -120,7 +120,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         /// <param name="message">The message in the exception.</param>
         /// <param name="innerException">The innerException for this exception.</param>
-        public BadReadException(String message, Exception innerException)
+        public BadReadException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
@@ -158,7 +158,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public BadCrcException(String message)
+        public BadCrcException(string message)
             : base(message)
         {
         }
@@ -196,7 +196,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public SfxGenerationException(String message)
+        public SfxGenerationException(string message)
             : base(message)
         {
         }
@@ -231,7 +231,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public BadStateException(String message)
+        public BadStateException(string message)
             : base(message)
         {
         }
@@ -241,7 +241,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         /// <param name="message">The message in the exception.</param>
         /// <param name="innerException">The innerException for this exception.</param>
-        public BadStateException(String message, Exception innerException)
+        public BadStateException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
@@ -279,7 +279,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// Come on, you know how exceptions work. Why are you looking at this documentation?
         /// </summary>
         /// <param name="message">The message in the exception.</param>
-        public ZipException(String message)
+        public ZipException(string message)
             : base(message)
         {
         }
@@ -289,7 +289,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip
         /// </summary>
         /// <param name="message">The message in the exception.</param>
         /// <param name="innerException">The innerException for this exception.</param>
-        public ZipException(String message, Exception innerException)
+        public ZipException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

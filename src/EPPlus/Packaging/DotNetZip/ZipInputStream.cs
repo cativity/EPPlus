@@ -310,7 +310,7 @@ internal class ZipInputStream : Stream
     /// End Sub
     /// </code>
     /// </example>
-    public ZipInputStream(String fileName)
+    public ZipInputStream(string fileName)
     {
         Stream stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
         this._Init(stream, false, fileName);
@@ -363,9 +363,9 @@ internal class ZipInputStream : Stream
     ///   </para>
     /// </remarks>
     /// <returns>a string representation of the instance.</returns>
-    public override String ToString()
+    public override string ToString()
     {
-        return String.Format("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
+        return string.Format("ZipInputStream::{0}(leaveOpen({1})))", this._name, this._leaveUnderlyingStreamOpen);
     }
 
     /// <summary>
@@ -433,7 +433,7 @@ internal class ZipInputStream : Stream
     ///
     /// </code>
     /// </example>
-    public String Password
+    public string Password
     {
         set
         {
@@ -769,9 +769,9 @@ internal class ZipInputStream : Stream
     private bool _needSetup;
     private ZipContainer _container;
     private CrcCalculatorStream _crcStream;
-    private Int64 _LeftToRead;
-    internal String _Password;
-    private Int64 _endOfEntry;
+    private long _LeftToRead;
+    internal string _Password;
+    private long _endOfEntry;
     private string _name;
 
     private bool _leaveUnderlyingStreamOpen;

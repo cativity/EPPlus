@@ -29,7 +29,7 @@ public interface IExcelConditionalFormattingWithRank
     /// <summary>
     /// Rank Attribute
     /// </summary>
-    UInt16 Rank { get; set; }
+    ushort Rank { get; set; }
 
     #endregion Public Properties
 }

@@ -29,7 +29,7 @@ public interface IExcelConditionalFormattingWithStdDev
     /// <summary>
     /// StdDev Attribute
     /// </summary>
-    UInt16 StdDev { get; set; }
+    ushort StdDev { get; set; }
 
     #endregion Public Properties
 }

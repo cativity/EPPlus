@@ -317,7 +317,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// <summary>
     /// StdDev (zero is not allowed and will be converted to 1)
     /// </summary>
-    public UInt16 StdDev
+    public ushort StdDev
     {
         get { return Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.StdDevAttribute)); }
         set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.StdDevAttribute, value == 0 ? "1" : value.ToString(), true); }
@@ -326,7 +326,7 @@ public abstract class ExcelConditionalFormattingRule : XmlHelper, IExcelConditio
     /// <summary>
     /// Rank (zero is not allowed and will be converted to 1)
     /// </summary>
-    public UInt16 Rank
+    public ushort Rank
     {
         get { return Convert.ToUInt16(this.GetXmlNodeInt(ExcelConditionalFormattingConstants.Paths.RankAttribute)); }
         set { this.SetXmlNodeString(ExcelConditionalFormattingConstants.Paths.RankAttribute, value == 0 ? "1" : value.ToString(), true); }

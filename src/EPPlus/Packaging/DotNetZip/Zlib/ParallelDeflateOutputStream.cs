@@ -122,11 +122,11 @@ public class ParallelDeflateOutputStream : Stream
     private object _latestLock = new object();
     private Queue<int> _toWrite;
     private Queue<int> _toFill;
-    private Int64 _totalBytesProcessed;
+    private long _totalBytesProcessed;
     private CompressionLevel _compressLevel;
     private volatile Exception _pendingException;
     private bool _handlingException;
-    private object _eLock = new Object(); // protects _pendingException
+    private object _eLock = new object(); // protects _pendingException
 
     // This bitfield is used only when Trace is defined.
     //private TraceBits _DesiredTrace = TraceBits.Write | TraceBits.WriteBegin |
@@ -462,7 +462,7 @@ public class ParallelDeflateOutputStream : Stream
     /// <remarks>
     /// This value is meaningful only after a call to Close().
     /// </remarks>
-    public Int64 BytesProcessed
+    public long BytesProcessed
     {
         get { return this._totalBytesProcessed; }
     }
@@ -1165,7 +1165,7 @@ public class ParallelDeflateOutputStream : Stream
         }
 #endif
 
-    private void _DeflateOne(Object wi)
+    private void _DeflateOne(object wi)
     {
         // compress one buffer
         WorkItem workitem = (WorkItem)wi;

@@ -130,7 +130,7 @@ internal class ZlibBaseStream : Stream
         get { return this._workingBuffer ??= new byte[this._bufferSize]; }
     }
 
-    public override void Write(Byte[] buffer, int offset, int count)
+    public override void Write(byte[] buffer, int offset, int count)
     {
         // workitem 7159
         // calculate the CRC on the unccompressed data  (before writing)
@@ -206,7 +206,7 @@ internal class ZlibBaseStream : Stream
 
                     if (this._z.Message == null)
                     {
-                        throw new ZlibException(String.Format("{0}: (rc = {1})", verb, rc));
+                        throw new ZlibException(string.Format("{0}: (rc = {1})", verb, rc));
                     }
                     else
                     {
@@ -238,7 +238,7 @@ internal class ZlibBaseStream : Stream
                     // Emit the GZIP trailer: CRC32 and  size mod 2^32
                     int c1 = this.crc.Crc32Result;
                     this._stream.Write(BitConverter.GetBytes(c1), 0, 4);
-                    int c2 = (Int32)(this.crc.TotalBytesRead & 0x00000000FFFFFFFF);
+                    int c2 = (int)(this.crc.TotalBytesRead & 0x00000000FFFFFFFF);
                     this._stream.Write(BitConverter.GetBytes(c2), 0, 4);
                 }
                 else
@@ -275,7 +275,7 @@ internal class ZlibBaseStream : Stream
 
                         if (bytesNeeded != bytesRead)
                         {
-                            throw new ZlibException(String.Format("Missing or incomplete GZIP trailer. Expected 8 bytes, got {0}.",
+                            throw new ZlibException(string.Format("Missing or incomplete GZIP trailer. Expected 8 bytes, got {0}.",
                                                                   this._z.AvailableBytesIn + bytesRead));
                         }
                     }
@@ -284,19 +284,19 @@ internal class ZlibBaseStream : Stream
                         Array.Copy(this._z.InputBuffer, this._z.NextIn, trailer, 0, trailer.Length);
                     }
 
-                    Int32 crc32_expected = BitConverter.ToInt32(trailer, 0);
-                    Int32 crc32_actual = this.crc.Crc32Result;
-                    Int32 isize_expected = BitConverter.ToInt32(trailer, 4);
-                    Int32 isize_actual = (Int32)(this._z.TotalBytesOut & 0x00000000FFFFFFFF);
+                    int crc32_expected = BitConverter.ToInt32(trailer, 0);
+                    int crc32_actual = this.crc.Crc32Result;
+                    int isize_expected = BitConverter.ToInt32(trailer, 4);
+                    int isize_actual = (int)(this._z.TotalBytesOut & 0x00000000FFFFFFFF);
 
                     if (crc32_actual != crc32_expected)
                     {
-                        throw new ZlibException(String.Format("Bad CRC32 in GZIP trailer. (actual({0:X8})!=expected({1:X8}))", crc32_actual, crc32_expected));
+                        throw new ZlibException(string.Format("Bad CRC32 in GZIP trailer. (actual({0:X8})!=expected({1:X8}))", crc32_actual, crc32_expected));
                     }
 
                     if (isize_actual != isize_expected)
                     {
-                        throw new ZlibException(String.Format("Bad size in GZIP trailer. (actual({0})!=expected({1}))", isize_actual, isize_expected));
+                        throw new ZlibException(string.Format("Bad size in GZIP trailer. (actual({0})!=expected({1}))", isize_actual, isize_expected));
                     }
                 }
                 else
@@ -355,14 +355,14 @@ internal class ZlibBaseStream : Stream
         this._stream.Flush();
     }
 
-    public override Int64 Seek(Int64 offset, SeekOrigin origin)
+    public override long Seek(long offset, SeekOrigin origin)
     {
         throw new NotImplementedException();
 
         //_outStream.Seek(offset, origin);
     }
 
-    public override void SetLength(Int64 value)
+    public override void SetLength(long value)
     {
         this._stream.SetLength(value);
     }
@@ -437,7 +437,7 @@ internal class ZlibBaseStream : Stream
             throw new ZlibException("Bad GZIP header.");
         }
 
-        Int32 timet = BitConverter.ToInt32(header, 4);
+        int timet = BitConverter.ToInt32(header, 4);
         _ = GZipStream._unixEpoch.AddSeconds(timet);
         totalBytesRead += n;
 
@@ -447,7 +447,7 @@ internal class ZlibBaseStream : Stream
             n = this._stream.Read(header, 0, 2); // 2-byte length field
             totalBytesRead += n;
 
-            Int16 extraLength = (Int16)(header[0] + (header[1] * 256));
+            short extraLength = (short)(header[0] + (header[1] * 256));
             byte[] extra = new byte[extraLength];
             n = this._stream.Read(extra, 0, extra.Length);
 
@@ -477,7 +477,7 @@ internal class ZlibBaseStream : Stream
         return totalBytesRead;
     }
 
-    public override Int32 Read(Byte[] buffer, Int32 offset, Int32 count)
+    public override int Read(byte[] buffer, int offset, int count)
     {
         // According to MS documentation, any implementation of the IO.Stream.Read function must:
         // (a) throw an exception if offset & count reference an invalid part of the buffer,
@@ -584,7 +584,7 @@ internal class ZlibBaseStream : Stream
 
             if (rc != ZlibConstants.Z_OK && rc != ZlibConstants.Z_STREAM_END)
             {
-                throw new ZlibException(String.Format("{0}flating:  rc={1}  msg={2}", this._wantCompress ? "de" : "in", rc, this._z.Message));
+                throw new ZlibException(string.Format("{0}flating:  rc={1}  msg={2}", this._wantCompress ? "de" : "in", rc, this._z.Message));
             }
 
             if ((this.nomoreinput || rc == ZlibConstants.Z_STREAM_END) && this._z.AvailableBytesOut == count)
@@ -617,7 +617,7 @@ internal class ZlibBaseStream : Stream
 
                     if (rc != ZlibConstants.Z_OK && rc != ZlibConstants.Z_STREAM_END)
                     {
-                        throw new ZlibException(String.Format("Deflating:  rc={0}  msg={1}", rc, this._z.Message));
+                        throw new ZlibException(string.Format("Deflating:  rc={0}  msg={1}", rc, this._z.Message));
                     }
                 }
             }
@@ -634,22 +634,22 @@ internal class ZlibBaseStream : Stream
         return rc;
     }
 
-    public override Boolean CanRead
+    public override bool CanRead
     {
         get { return this._stream.CanRead; }
     }
 
-    public override Boolean CanSeek
+    public override bool CanSeek
     {
         get { return this._stream.CanSeek; }
     }
 
-    public override Boolean CanWrite
+    public override bool CanWrite
     {
         get { return this._stream.CanWrite; }
     }
 
-    public override Int64 Length
+    public override long Length
     {
         get { return this._stream.Length; }
     }
@@ -667,7 +667,7 @@ internal class ZlibBaseStream : Stream
         Undefined,
     }
 
-    public static void CompressString(String s, Stream compressor)
+    public static void CompressString(string s, Stream compressor)
     {
         byte[] uncompressed = Encoding.UTF8.GetBytes(s);
 
@@ -686,7 +686,7 @@ internal class ZlibBaseStream : Stream
         }
     }
 
-    public static String UncompressString(byte[] compressed, Stream decompressor)
+    public static string UncompressString(byte[] compressed, Stream decompressor)
     {
         // workitem 8460
         byte[] working = new byte[1024];

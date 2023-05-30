@@ -3775,7 +3775,7 @@ public class Issues : TestBase
             ExcelRange? cell = p.Workbook.Worksheets[0].Cells[row, 3];
             string? cellColor = "";
 
-            if (!String.IsNullOrEmpty(cell.Style.Font.Color.Theme.ToString()))
+            if (!string.IsNullOrEmpty(cell.Style.Font.Color.Theme.ToString()))
             {
                 string? theme = cell.Style.Font.Color.Theme.ToString();
 
@@ -4053,7 +4053,7 @@ public class Issues : TestBase
         Assert.AreEqual(";A1", cellsSingleAdress);
         Assert.AreEqual(1, CounterSingleAdress);
 
-        cellsSingleAdress = String.Empty;
+        cellsSingleAdress = string.Empty;
         CounterSingleAdress = 0;
 
         foreach (ExcelRangeBase? cell in rangeSingleAdress)
@@ -4077,7 +4077,7 @@ public class Issues : TestBase
         Assert.AreEqual(11, CounterMultipleRanges);
 
         CounterMultipleRanges = 0;
-        cellsMultipleRanges = String.Empty;
+        cellsMultipleRanges = string.Empty;
 
         foreach (ExcelRangeBase? cell in rangeMultipleRanges)
         {
@@ -4100,7 +4100,7 @@ public class Issues : TestBase
         Assert.AreEqual(7, CounterRangesFirst);
 
         CounterRangesFirst = 0;
-        cellsRangesFirst = String.Empty;
+        cellsRangesFirst = string.Empty;
 
         foreach (ExcelRangeBase? cell in rangeRangeFirst)
         {
@@ -4123,7 +4123,7 @@ public class Issues : TestBase
         Assert.AreEqual(7, CounterRangesLast);
 
         CounterRangesLast = 0;
-        cellsRangesLast = String.Empty;
+        cellsRangesLast = string.Empty;
 
         foreach (ExcelRangeBase? cell in rangeRangeLast)
         {
@@ -4168,7 +4168,7 @@ public class Issues : TestBase
         Assert.AreEqual(7, counterMixed);
 
         int counter = 0;
-        String cells = String.Empty;
+        string cells = string.Empty;
 
         foreach (ExcelRangeBase? cell in sheet.Cells)
         {

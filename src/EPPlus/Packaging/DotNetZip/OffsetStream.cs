@@ -32,7 +32,7 @@ namespace OfficeOpenXml.Packaging.Ionic.Zip;
 
 internal class OffsetStream : Stream, IDisposable
 {
-    private Int64 _originalPosition;
+    private long _originalPosition;
     private Stream _innerStream;
 
     public OffsetStream(Stream s)

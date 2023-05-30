@@ -199,7 +199,7 @@ internal partial class ZipFile
     /// </code>
     /// </example>
     /// <returns>The <c>ZipEntry</c> added.</returns>
-    public ZipEntry AddItem(String fileOrDirectoryName, String directoryPathInArchive)
+    public ZipEntry AddItem(string fileOrDirectoryName, string directoryPathInArchive)
     {
         if (File.Exists(fileOrDirectoryName))
         {
@@ -211,7 +211,7 @@ internal partial class ZipFile
             return this.AddDirectory(fileOrDirectoryName, directoryPathInArchive);
         }
 
-        throw new FileNotFoundException(String.Format("That file or directory ({0}) does not exist!", fileOrDirectoryName));
+        throw new FileNotFoundException(string.Format("That file or directory ({0}) does not exist!", fileOrDirectoryName));
     }
 
     /// <summary>
@@ -398,7 +398,7 @@ internal partial class ZipFile
     /// </param>
     ///
     /// <returns>The <c>ZipEntry</c> corresponding to the file added.</returns>
-    public ZipEntry AddFile(string fileName, String directoryPathInArchive)
+    public ZipEntry AddFile(string fileName, string directoryPathInArchive)
     {
         string nameInArchive = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
         ZipEntry ze = ZipEntry.CreateFromFile(fileName, nameInArchive);
@@ -450,14 +450,14 @@ internal partial class ZipFile
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.SelectEntries(String)" />
     /// <seealso cref="Ionic.Zip.ZipFile.RemoveSelectedEntries(String)" />
-    public void RemoveEntries(ICollection<String> entriesToRemove)
+    public void RemoveEntries(ICollection<string> entriesToRemove)
     {
         if (entriesToRemove == null)
         {
             throw new ArgumentNullException("entriesToRemove");
         }
 
-        foreach (String e in entriesToRemove)
+        foreach (string e in entriesToRemove)
         {
             this.RemoveEntry(e);
         }
@@ -518,7 +518,7 @@ internal partial class ZipFile
     /// </example>
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<String> fileNames)
+    public void AddFiles(IEnumerable<string> fileNames)
     {
         this.AddFiles(fileNames, null);
     }
@@ -548,7 +548,7 @@ internal partial class ZipFile
     ///   the filesystem. The name of the file may be a relative path or a fully-qualified path.
     /// </param>
     ///
-    public void UpdateFiles(IEnumerable<String> fileNames)
+    public void UpdateFiles(IEnumerable<string> fileNames)
     {
         this.UpdateFiles(fileNames, null);
     }
@@ -595,7 +595,7 @@ internal partial class ZipFile
     /// </param>
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<String> fileNames, String directoryPathInArchive)
+    public void AddFiles(IEnumerable<string> fileNames, string directoryPathInArchive)
     {
         this.AddFiles(fileNames, false, directoryPathInArchive);
     }
@@ -659,7 +659,7 @@ internal partial class ZipFile
     ///   the entries added to the ZipFile.
     /// </param>
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void AddFiles(IEnumerable<String> fileNames, bool preserveDirHierarchy, String directoryPathInArchive)
+    public void AddFiles(IEnumerable<string> fileNames, bool preserveDirHierarchy, string directoryPathInArchive)
     {
         if (fileNames == null)
         {
@@ -748,7 +748,7 @@ internal partial class ZipFile
     /// </param>
     ///
     /// <seealso cref="Ionic.Zip.ZipFile.AddSelectedFiles(String, String)" />
-    public void UpdateFiles(IEnumerable<String> fileNames, String directoryPathInArchive)
+    public void UpdateFiles(IEnumerable<string> fileNames, string directoryPathInArchive)
     {
         if (fileNames == null)
         {
@@ -908,7 +908,7 @@ internal partial class ZipFile
     /// <returns>
     ///   The <c>ZipEntry</c> corresponding to the File that was added or updated.
     /// </returns>
-    public ZipEntry UpdateFile(string fileName, String directoryPathInArchive)
+    public ZipEntry UpdateFile(string fileName, string directoryPathInArchive)
     {
         // ideally this would all be transactional!
         string? key = ZipEntry.NameInArchive(fileName, directoryPathInArchive);
@@ -989,7 +989,7 @@ internal partial class ZipFile
     /// <returns>
     ///   The <c>ZipEntry</c> corresponding to the Directory that was added or updated.
     /// </returns>
-    public ZipEntry UpdateDirectory(string directoryName, String directoryPathInArchive)
+    public ZipEntry UpdateDirectory(string directoryName, string directoryPathInArchive)
     {
         return this.AddOrUpdateDirectoryImpl(directoryName, directoryPathInArchive, AddOrUpdateAction.AddOrUpdate);
     }
@@ -1090,7 +1090,7 @@ internal partial class ZipFile
 
         else
         {
-            throw new FileNotFoundException(String.Format("That file or directory ({0}) does not exist!", itemName));
+            throw new FileNotFoundException(string.Format("That file or directory ({0}) does not exist!", itemName));
         }
     }
 
@@ -1841,7 +1841,7 @@ internal partial class ZipFile
 
     private void RemoveEntryForUpdate(string entryName)
     {
-        if (String.IsNullOrEmpty(entryName))
+        if (string.IsNullOrEmpty(entryName))
         {
             throw new ArgumentNullException("entryName");
         }
@@ -2091,7 +2091,7 @@ internal partial class ZipFile
         return this.AddOrUpdateDirectoryImpl(directoryName, rootDirectoryPathInArchive, action, true, 0);
     }
 
-    internal void InternalAddEntry(String name, ZipEntry entry)
+    internal void InternalAddEntry(string name, ZipEntry entry)
     {
         this._entries.Add(name, entry);
         this._zipEntriesAsList = null;
@@ -2157,12 +2157,12 @@ internal partial class ZipFile
 
         if (!this._addOperationCanceled)
         {
-            String[] filenames = Directory.GetFiles(directoryName);
+            string[] filenames = Directory.GetFiles(directoryName);
 
             if (recurse)
             {
                 // add the files:
-                foreach (String filename in filenames)
+                foreach (string filename in filenames)
                 {
                     if (this._addOperationCanceled)
                     {
@@ -2182,9 +2182,9 @@ internal partial class ZipFile
                 if (!this._addOperationCanceled)
                 {
                     // add the subdirectories:
-                    String[] dirnames = Directory.GetDirectories(directoryName);
+                    string[] dirnames = Directory.GetDirectories(directoryName);
 
-                    foreach (String dir in dirnames)
+                    foreach (string dir in dirnames)
                     {
                         // workitem 8617: Optionally traverse reparse points
 #if SILVERLIGHT

@@ -116,9 +116,9 @@ namespace OfficeOpenXml.Packaging.Ionic
     internal partial class SizeCriterion : SelectionCriterion
     {
         internal ComparisonOperator Operator;
-        internal Int64 Size;
+        internal long Size;
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             _ = sb.Append("size ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.Size.ToString());
@@ -134,7 +134,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             return this._Evaluate(fi.Length);
         }
 
-        private bool _Evaluate(Int64 Length)
+        private bool _Evaluate(long Length)
         {
             bool result;
             switch (this.Operator)
@@ -183,7 +183,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         internal WhichTime Which;
         internal DateTime Time;
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -274,7 +274,7 @@ namespace OfficeOpenXml.Packaging.Ionic
     internal partial class NameCriterion : SelectionCriterion
     {
         private Regex _re;
-        private String _regexString;
+        private string _regexString;
         internal ComparisonOperator Operator;
         private string _MatchingFileSpec;
 
@@ -308,7 +308,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             _ = sb.Append("name ").Append(EnumUtil.GetDescription(this.Operator)).Append(" '").Append(this._MatchingFileSpec).Append("'");
@@ -329,7 +329,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
             // No slash in the pattern implicitly means recurse, which means compare to
             // filename only, not full path.
-            String f = this._MatchingFileSpec.IndexOf('\\') == -1 ? Path.GetFileName(fullpath) : fullpath; // compare to fullpath
+            string f = this._MatchingFileSpec.IndexOf('\\') == -1 ? Path.GetFileName(fullpath) : fullpath; // compare to fullpath
 
             bool result = this._re.IsMatch(f);
 
@@ -361,7 +361,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             _ = sb.Append("type ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
@@ -440,7 +440,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'H':
                             if ((this._Attributes & FileAttributes.Hidden) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.Hidden;
@@ -450,7 +450,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'R':
                             if ((this._Attributes & FileAttributes.ReadOnly) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.ReadOnly;
@@ -460,7 +460,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'S':
                             if ((this._Attributes & FileAttributes.System) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.System;
@@ -470,7 +470,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'A':
                             if ((this._Attributes & FileAttributes.Archive) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.Archive;
@@ -480,7 +480,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'I':
                             if ((this._Attributes & FileAttributes.NotContentIndexed) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.NotContentIndexed;
@@ -490,7 +490,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                         case 'L':
                             if ((this._Attributes & FileAttributes.ReparsePoint) != 0)
                             {
-                                throw new ArgumentException(String.Format("Repeated flag. ({0})", c), "value");
+                                throw new ArgumentException(string.Format("Repeated flag. ({0})", c), "value");
                             }
 
                             this._Attributes |= FileAttributes.ReparsePoint;
@@ -504,7 +504,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             _ = sb.Append("attributes ").Append(EnumUtil.GetDescription(this.Operator)).Append(" ").Append(this.AttributeString);
@@ -644,7 +644,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             return result;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -732,7 +732,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         /// </remarks>
         ///
         /// <param name="selectionCriteria">The criteria for file selection.</param>
-        public FileSelector(String selectionCriteria)
+        public FileSelector(string selectionCriteria)
             : this(selectionCriteria, true)
         {
         }
@@ -757,9 +757,9 @@ namespace OfficeOpenXml.Packaging.Ionic
         /// <param name="traverseDirectoryReparsePoints">
         /// whether to traverse NTFS reparse points (junctions).
         /// </param>
-        public FileSelector(String selectionCriteria, bool traverseDirectoryReparsePoints)
+        public FileSelector(string selectionCriteria, bool traverseDirectoryReparsePoints)
         {
-            if (!String.IsNullOrEmpty(selectionCriteria))
+            if (!string.IsNullOrEmpty(selectionCriteria))
             {
                 this._Criterion = _ParseCriterion(selectionCriteria);
             }
@@ -951,7 +951,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         /// <exception cref="System.Exception">
         ///   Thrown in the setter if the value has an invalid syntax.
         /// </exception>
-        public String SelectionCriteria
+        public string SelectionCriteria
         {
             get
             {
@@ -995,11 +995,11 @@ namespace OfficeOpenXml.Packaging.Ionic
 
         private static class RegexAssertions
         {
-            public static readonly String PrecededByOddNumberOfSingleQuotes = "(?<=(?:[^']*'[^']*')*'[^']*)";
-            public static readonly String FollowedByOddNumberOfSingleQuotesAndLineEnd = "(?=[^']*'(?:[^']*'[^']*')*[^']*$)";
+            public static readonly string PrecededByOddNumberOfSingleQuotes = "(?<=(?:[^']*'[^']*')*'[^']*)";
+            public static readonly string FollowedByOddNumberOfSingleQuotesAndLineEnd = "(?=[^']*'(?:[^']*'[^']*')*[^']*$)";
 
-            public static readonly String PrecededByEvenNumberOfSingleQuotes = "(?<=(?:[^']*'[^']*')*[^']*)";
-            public static readonly String FollowedByEvenNumberOfSingleQuotesAndLineEnd = "(?=(?:[^']*'[^']*')*[^']*$)";
+            public static readonly string PrecededByEvenNumberOfSingleQuotes = "(?<=(?:[^']*'[^']*')*[^']*)";
+            public static readonly string FollowedByEvenNumberOfSingleQuotesAndLineEnd = "(?=(?:[^']*'[^']*')*[^']*$)";
         }
 
         private static string NormalizeCriteriaExpression(string source)
@@ -1113,7 +1113,7 @@ namespace OfficeOpenXml.Packaging.Ionic
             return Regex.Replace(interim, regexPattern, "\u0006");
         }
 
-        private static SelectionCriterion _ParseCriterion(String s)
+        private static SelectionCriterion _ParseCriterion(string s)
         {
             if (s == null)
             {
@@ -1157,12 +1157,12 @@ namespace OfficeOpenXml.Packaging.Ionic
 
                         if (state != ParseState.CriterionDone)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         if (tokens.Length <= i + 3)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         LogicalConjunction pendingConjunction =
@@ -1180,12 +1180,12 @@ namespace OfficeOpenXml.Packaging.Ionic
 
                         if (state != ParseState.Start && state != ParseState.ConjunctionPending && state != ParseState.OpenParen)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         if (tokens.Length <= i + 4)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         stateStack.Push(ParseState.OpenParen);
@@ -1197,7 +1197,7 @@ namespace OfficeOpenXml.Packaging.Ionic
 
                         if (stateStack.Peek() != ParseState.OpenParen)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         stateStack.Pop();
@@ -1210,7 +1210,7 @@ namespace OfficeOpenXml.Packaging.Ionic
                     case "mtime":
                         if (tokens.Length <= i + 2)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         DateTime t;
@@ -1263,39 +1263,39 @@ namespace OfficeOpenXml.Packaging.Ionic
                     case "size":
                         if (tokens.Length <= i + 2)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
-                        Int64 sz;
+                        long sz;
                         string v = tokens[i + 2];
 
                         if (v.EndsWith("K", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 1)) * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 1)) * 1024;
                         }
                         else if (v.EndsWith("KB", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 2)) * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 2)) * 1024;
                         }
                         else if (v.EndsWith("M", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 1)) * 1024 * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 1)) * 1024 * 1024;
                         }
                         else if (v.EndsWith("MB", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 2)) * 1024 * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 2)) * 1024 * 1024;
                         }
                         else if (v.EndsWith("G", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 1)) * 1024 * 1024 * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 1)) * 1024 * 1024 * 1024;
                         }
                         else if (v.EndsWith("GB", StringComparison.OrdinalIgnoreCase))
                         {
-                            sz = Int64.Parse(v.Substring(0, v.Length - 2)) * 1024 * 1024 * 1024;
+                            sz = long.Parse(v.Substring(0, v.Length - 2)) * 1024 * 1024 * 1024;
                         }
                         else
                         {
-                            sz = Int64.Parse(tokens[i + 2]);
+                            sz = long.Parse(tokens[i + 2]);
                         }
 
                         current = new SizeCriterion { Size = sz, Operator = (ComparisonOperator)EnumUtil.Parse(typeof(ComparisonOperator), tokens[i + 1]) };
@@ -1309,14 +1309,14 @@ namespace OfficeOpenXml.Packaging.Ionic
                     {
                         if (tokens.Length <= i + 2)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         ComparisonOperator c = (ComparisonOperator)EnumUtil.Parse(typeof(ComparisonOperator), tokens[i + 1]);
 
                         if (c != ComparisonOperator.NotEqualTo && c != ComparisonOperator.EqualTo)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         string m = tokens[i + 2];
@@ -1348,14 +1348,14 @@ namespace OfficeOpenXml.Packaging.Ionic
                     {
                         if (tokens.Length <= i + 2)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
                         ComparisonOperator c = (ComparisonOperator)EnumUtil.Parse(typeof(ComparisonOperator), tokens[i + 1]);
 
                         if (c != ComparisonOperator.NotEqualTo && c != ComparisonOperator.EqualTo)
                         {
-                            throw new ArgumentException(String.Join(" ", tokens, i, tokens.Length - i));
+                            throw new ArgumentException(string.Join(" ", tokens, i, tokens.Length - i));
                         }
 
 #if SILVERLIGHT
@@ -1428,7 +1428,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         /// </summary>
         /// <returns>The string representation of the boolean logic statement of the file
         /// selection criteria for this instance. </returns>
-        public override String ToString()
+        public override string ToString()
         {
             return "FileSelector(" + this._Criterion.ToString() + ")";
         }
@@ -1470,7 +1470,7 @@ namespace OfficeOpenXml.Packaging.Ionic
         ///   A collection of strings containing fully-qualified pathnames of files
         ///   that match the criteria specified in the FileSelector instance.
         /// </returns>
-        public ICollection<String> SelectFiles(String directory)
+        public ICollection<string> SelectFiles(string directory)
         {
             return this.SelectFiles(directory, false);
         }
@@ -1501,23 +1501,23 @@ namespace OfficeOpenXml.Packaging.Ionic
         ///   A collection of strings containing fully-qualified pathnames of files
         ///   that match the criteria specified in the FileSelector instance.
         /// </returns>
-        public System.Collections.ObjectModel.ReadOnlyCollection<String> SelectFiles(String directory, bool recurseDirectories)
+        public System.Collections.ObjectModel.ReadOnlyCollection<string> SelectFiles(string directory, bool recurseDirectories)
         {
             if (this._Criterion == null)
             {
                 throw new ArgumentException("SelectionCriteria has not been set");
             }
 
-            List<string>? list = new List<String>();
+            List<string>? list = new List<string>();
 
             try
             {
                 if (Directory.Exists(directory))
                 {
-                    String[] filenames = Directory.GetFiles(directory);
+                    string[] filenames = Directory.GetFiles(directory);
 
                     // add the files:
-                    foreach (String filename in filenames)
+                    foreach (string filename in filenames)
                     {
                         if (this.Evaluate(filename))
                         {
@@ -1528,9 +1528,9 @@ namespace OfficeOpenXml.Packaging.Ionic
                     if (recurseDirectories)
                     {
                         // add the subdirectories:
-                        String[] dirnames = Directory.GetDirectories(directory);
+                        string[] dirnames = Directory.GetDirectories(directory);
 
-                        foreach (String dir in dirnames)
+                        foreach (string dir in dirnames)
                         {
                             if (this.TraverseReparsePoints
 #if !SILVERLIGHT

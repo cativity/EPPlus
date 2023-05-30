@@ -46,7 +46,7 @@ namespace OfficeOpenXml.Utils
             }
 
             const int bufferLength = 8096;
-            byte[]? buffer = new Byte[bufferLength];
+            byte[]? buffer = new byte[bufferLength];
 
             lock (_lock)
             {

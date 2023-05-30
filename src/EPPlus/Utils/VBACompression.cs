@@ -221,7 +221,7 @@ internal static class VBACompression
                         int bitCount = GetLengthBits(decomprPos);
                         int bits = 16 - bitCount;
                         ushort lengthMask = (ushort)(0xFFFF >> bits);
-                        UInt16 offsetMask = (ushort)~lengthMask;
+                        ushort offsetMask = (ushort)~lengthMask;
                         int length = (lengthMask & t) + 3;
                         int offset = (offsetMask & t) >> bitCount;
                         int source = decomprPos - offset - 1;

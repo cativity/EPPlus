@@ -161,7 +161,7 @@ public class ExcelTableCollection : IEnumerable<ExcelTable>
     {
         if (!this._tables.Contains(Table))
         {
-            throw new ArgumentOutOfRangeException("Table", String.Format("Table {0} does not exist in this collection", Table.Name));
+            throw new ArgumentOutOfRangeException("Table", string.Format("Table {0} does not exist in this collection", Table.Name));
         }
 
         lock (this)

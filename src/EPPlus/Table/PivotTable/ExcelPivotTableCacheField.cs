@@ -541,7 +541,7 @@ public class ExcelPivotTableCacheField : XmlHelper
         }
     }
 
-    private void AddItems(EPPlusReadOnlyList<Object> items, XmlNode itemsNode, bool updateCacheLookup)
+    private void AddItems(EPPlusReadOnlyList<object> items, XmlNode itemsNode, bool updateCacheLookup)
     {
         if (updateCacheLookup)
         {

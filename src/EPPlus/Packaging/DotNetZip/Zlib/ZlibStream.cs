@@ -374,7 +374,7 @@ public class ZlibStream : Stream
 
             if (value < ZlibConstants.WorkingBufferSizeMin)
             {
-                throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
+                throw new ZlibException(string.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.",
                                                       value,
                                                       ZlibConstants.WorkingBufferSizeMin));
             }
@@ -672,7 +672,7 @@ public class ZlibStream : Stream
     /// </param>
     ///
     /// <returns>The string in compressed form</returns>
-    public static byte[] CompressString(String s)
+    public static byte[] CompressString(string s)
     {
         using MemoryStream? ms = RecyclableMemory.GetStream();
         Stream compressor = new ZlibStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
@@ -719,7 +719,7 @@ public class ZlibStream : Stream
     /// </param>
     ///
     /// <returns>The uncompressed string</returns>
-    public static String UncompressString(byte[] compressed)
+    public static string UncompressString(byte[] compressed)
     {
         using MemoryStream? input = RecyclableMemory.GetStream(compressed);
         Stream decompressor = new ZlibStream(input, CompressionMode.Decompress);
